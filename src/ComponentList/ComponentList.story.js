@@ -18,9 +18,19 @@ const components = [
     owner: 'Jannis Pohlman',
     thumbnail: 'http://placehold.it/380x380',
   },
+  {
+    name: 'Host View',
+    owner: 'Jannis Pohlman',
+    thumbnail: 'http://placehold.it/380x380',
+  },
+  {
+    name: 'Host View',
+    owner: 'Jannis Pohlman',
+    thumbnail: 'http://placehold.it/380x380',
+  },
 ]
 
-storiesOf('ComponentList', module)
+storiesOf('Component List', module)
   .add('Regular', () => (
     <ComponentList
       components={components}

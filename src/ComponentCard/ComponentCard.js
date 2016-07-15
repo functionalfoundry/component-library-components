@@ -15,7 +15,8 @@ const ComponentCard = ({
   <Tile
     style={{
       backgroundColor: 'white',
-      border: '1px solid #efefef'
+      border: '1px solid #efefef',
+      height: 300,
     }}
   >
     <Image src={thumbnail} />

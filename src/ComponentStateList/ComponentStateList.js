@@ -6,14 +6,11 @@ import Footer from 'grommet/components/Footer'
 import Section from 'grommet/components/Section'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
-import ComponentCard from '../ComponentCard'
-import LiveEditor from './LiveEditor'
-/* TODO: Move PropertyPane rendering to LiveView */
-import PropertyPane from './PropertyPane'
-import { components, properties } from '../../mocks/components'
+import ComponentStateCard from '../ComponentStateCard'
 
-const LiveView = ({
+const ComponentStateList = ({
   children,
+  states,
 }) => (
   <div
     style={{
@@ -21,7 +18,7 @@ const LiveView = ({
       padding: 24,
     }}
   >
-    <section
+    <div
       style={{
         ...style.section,
         backgroundColor: '#fcfcfc',
@@ -33,35 +30,22 @@ const LiveView = ({
           grow: 1,
         }}
       >
-        <ComponentCard
-          {...components[0]}
-        />
+        {states.map((state, index) => (
+          <div
+            key={index}
+            style={style.row}
+          >
+            <ComponentStateCard
+              {...state}
+            />
+          </div>
+        ))}
       </div>
-      <div
-        style={style.column}
-      >
-        <LiveEditor
-        />
-      </div>
-    </section>
-    <section
-      style={style.section}
-    >
-      <div
-        style={{
-          ...style.column,
-          color: '#fefefe',
-        }}
-      >
-          <PropertyPane
-            properties={properties}
-          />
-      </div>
-    </section>
+    </div>
   </div>
 )
 
-export default LiveView
+export default ComponentStateList
 
 const style = {
   section: {
@@ -74,4 +58,7 @@ const style = {
     flexShrink: 1,
     flexBasis: 0,
   },
+  row: {
+    margin: 40,
+  }
 }

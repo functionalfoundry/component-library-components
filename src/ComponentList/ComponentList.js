@@ -6,9 +6,9 @@ const ComponentList = ({
   components,
 }) => (
   <Tiles
-    justify='center'
+    justify='around'
     flush={false}
-    size='large'
+    size='medium'
   >
     {components.map((component, index) => (
       <ComponentCard

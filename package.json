@@ -35,7 +35,7 @@
     "css-loader": "^0.23.1",
     "draft-js": "^0.7.0",
     "draft-js-code": "^0.2.0",
-    "draft-js-prism": "^1.0.3",
+    "draft-js-prism": "workfloapp/draft-js-prism",
     "grommet": "^0.6.9",
     "lodash": "^4.13.1",
     "react": "15.2.0",

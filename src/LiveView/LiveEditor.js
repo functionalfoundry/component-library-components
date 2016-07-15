@@ -1,217 +1,133 @@
-import Draft from 'draft-js'
 import React from 'react'
-import PrismDraftDecorator from 'draft-js-prism'
+import ReactDOM from 'react-dom'
+import Draft from 'draft-js'
+import CodeUtils from 'draft-js-code'
+import PrismDecorator from 'draft-js-prism'
 
 const {
-  Editor,
-  EditorState,
-  RichUtils,
-  DefaultDraftBlockRenderMap,
-  Decorator,
-  convertFromRaw
+    Editor,
+    EditorState,
+    RichUtils,
+    DefaultDraftBlockRenderMap,
+    Decorator,
+    convertFromRaw
 } = Draft
 
-class LiveEditor extends React.Component {
+export default class LiveView extends React.Component {
+
   constructor(props) {
-      super(props);
-
-      var decorator = new PrismDraftDecorator({ defaultSyntax: 'javascript' });
-      var contentState = convertFromRaw({
-          entityMap: {},
-          blocks: [
-              {
-                  type: 'header-one',
-                  text: 'Demo for draft-js-prism'
-              },
-              {
-                  type: 'unstyled',
-                  text: 'Type some JavaScript below:'
-              },
-              {
-                  type: 'code-block',
-                  text: 'var message = "This is awesome"',
-              }
-          ]
-      })
-
-      this.state = {
-          editorState: EditorState.createWithContent(contentState, decorator),
-      };
-
-      this.focus = () => this.refs.editor.focus();
-      this.onChange = (editorState) => this.setState({editorState});
-
-      this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-      this.toggleBlockType = (type) => this._toggleBlockType(type);
-      this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    super(props)
+    const decorator = new PrismDecorator({ defaultSyntax: 'javascript' })
+    var contentState = convertFromRaw({
+      entityMap: {},
+      blocks: [
+        {
+          type: 'code-block',
+          text: `<ListingCard
+  listing={listing}
+  size='medium'
+/>`
+        }
+      ]
+    })
+    this.state = {
+      editorState: EditorState.createWithContent(contentState, decorator)
+    }
+    this.onChange = this.onChange.bind(this)
+    this.handleKeyCommand = this.handleKeyCommand.bind(this)
+    this.keyBindingFn = this.keyBindingFn.bind(this)
+    this.handleReturn = this.handleReturn.bind(this)
+    this.handleTab = this.handleTab.bind(this)
   }
 
-  _handleKeyCommand(command) {
-      const {editorState} = this.state;
-      const newState = RichUtils.handleKeyCommand(editorState, command);
-      if (newState) {
-          this.onChange(newState);
-          return true;
-      }
-      return false;
+  onChange(editorState) {
+    this.setState({
+      editorState: editorState
+    })
   }
 
-  _toggleBlockType(blockType) {
-      this.onChange(
-          RichUtils.toggleBlockType(
-              this.state.editorState,
-              blockType
-          )
-      );
+  handleKeyCommand(command) {
+    const { editorState } = this.state
+    let newState
+
+    if (CodeUtils.hasSelectionInBlock(editorState)) {
+      newState = CodeUtils.handleKeyCommand(editorState, command)
+    }
+
+    if (!newState) {
+      newState = Draft.RichUtils.handleKeyCommand(editorState, command)
+    }
+
+    if (newState) {
+      this.onChange(newState)
+      return true
+    }
+    return false
   }
 
-  _toggleInlineStyle(inlineStyle) {
-      this.onChange(
-          RichUtils.toggleInlineStyle(
-              this.state.editorState,
-              inlineStyle
-          )
-      );
+  keyBindingFn(e) {
+    const editorState = this.state.editorState
+    let command
+
+    if (CodeUtils.hasSelectionInBlock(editorState)) {
+        command = CodeUtils.getKeyBinding(e)
+    }
+    if (command) {
+        return command
+    }
+
+    return Draft.getDefaultKeyBinding(e)
+  }
+
+  handleReturn(e) {
+    const editorState = this.state.editorState
+
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return
+    }
+
+    this.onChange(
+      CodeUtils.handleReturn(e, editorState)
+    )
+    return true
+  }
+
+  handleTab(e) {
+    const editorState = this.state.editorState
+
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return
+    }
+
+    this.onChange(
+      CodeUtils.handleTab(e, editorState)
+    )
   }
 
   render() {
-    const {editorState} = this.state;
-
-    // If the user changes block type before entering any text, we can
-    // either style the placeholder or hide it. Let's just hide it now.
-    let className = 'RichEditor-editor';
-    var contentState = editorState.getCurrentContent();
-    if (!contentState.hasText()) {
-        if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-            className += ' RichEditor-hidePlaceholder';
-        }
-    }
-
     return (
-        <div className="RichEditor-root">
-            <BlockStyleControls
-                editorState={editorState}
-                onToggle={this.toggleBlockType}
-            />
-            <InlineStyleControls
-                editorState={editorState}
-                onToggle={this.toggleInlineStyle}
-            />
-            <div className={className} onClick={this.focus}>
-                <Editor
-                    blockStyleFn={getBlockStyle}
-                    customStyleMap={styleMap}
-                    editorState={editorState}
-                    handleKeyCommand={this.handleKeyCommand}
-                    onChange={this.onChange}
-                    placeholder="Tell a story..."
-                    ref="editor"
-                    spellCheck={true}
-                />
-            </div>
-        </div>
-    );
+      <div
+        style={{ padding: 12 }}
+      >
+      <Draft.Editor
+        customStyleMap={styleMap}
+        editorState={this.state.editorState}
+        onChange={this.onChange}
+        keyBindingFn={this.keyBindingFn}
+        handleKeyCommand={this.handleKeyCommand}
+        handleReturn={this.handleReturn}
+        onTab={this.handleTab}
+      />
+      </div>
+    )
   }
 }
 
-// Custom overrides for "code" style.
 const styleMap = {
-    CODE: {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-        fontSize: 16,
-        padding: 2,
-    },
-};
-
-function getBlockStyle(block) {
-    switch (block.getType()) {
-        case 'blockquote': return 'RichEditor-blockquote';
-        default: return null;
-    }
+  CODE: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontSize: 16,
+    padding: 2,
+  },
 }
-
-class StyleButton extends React.Component {
-    constructor() {
-        super();
-        this.onToggle = (e) => {
-            e.preventDefault();
-            this.props.onToggle(this.props.style);
-        };
-    }
-
-    render() {
-        let className = 'RichEditor-styleButton';
-        if (this.props.active) {
-            className += ' RichEditor-activeButton';
-        }
-
-        return (
-            <span className={className} onMouseDown={this.onToggle}>
-                {this.props.label}
-            </span>
-        );
-    }
-}
-
-const BLOCK_TYPES = [
-    {label: 'H1', style: 'header-one'},
-    {label: 'H2', style: 'header-two'},
-    {label: 'H3', style: 'header-three'},
-    {label: 'H4', style: 'header-four'},
-    {label: 'H5', style: 'header-five'},
-    {label: 'H6', style: 'header-six'},
-    {label: 'Blockquote', style: 'blockquote'},
-    {label: 'UL', style: 'unordered-list-item'},
-    {label: 'OL', style: 'ordered-list-item'},
-    {label: 'Code Block', style: 'code-block'},
-];
-
-const BlockStyleControls = (props) => {
-    const {editorState} = props;
-    const selection = editorState.getSelection();
-    const blockType = editorState
-        .getCurrentContent()
-        .getBlockForKey(selection.getStartKey())
-        .getType();
-
-    return (
-        <div className="RichEditor-controls">
-            {BLOCK_TYPES.map((type) =>
-                <StyleButton
-                    key={type.label}
-                    active={type.style === blockType}
-                    label={type.label}
-                    onToggle={props.onToggle}
-                    style={type.style}
-                />
-            )}
-        </div>
-    );
-};
-
-var INLINE_STYLES = [
-    {label: 'Bold', style: 'BOLD'},
-    {label: 'Italic', style: 'ITALIC'},
-    {label: 'Underline', style: 'UNDERLINE'},
-    {label: 'Monospace', style: 'CODE'},
-];
-
-const InlineStyleControls = (props) => {
-    var currentStyle = props.editorState.getCurrentInlineStyle();
-    return (
-        <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
-                <StyleButton
-                    key={type.label}
-                    active={currentStyle.has(type.style)}
-                    label={type.label}
-                    onToggle={props.onToggle}
-                    style={type.style}
-                />
-            )}
-        </div>
-    );
-};
-
-export default LiveEditor

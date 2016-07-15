@@ -30,3 +30,22 @@ export const properties = [
     description: 'The host object with id, name, profilePhoto',
   }
 ]
+
+export const states = [
+  {
+    name: 'Regular',
+    thumbnail: 'http://placehold.it/300x380',
+  },
+  {
+    name: 'About to sell out',
+    thumbnail: 'http://placehold.it/300x380',
+  },
+  {
+    name: 'Preferred',
+    thumbnail: 'http://placehold.it/300x380',
+  },
+  {
+    name: 'Unverified',
+    thumbnail: 'http://placehold.it/380x380',
+  },
+]

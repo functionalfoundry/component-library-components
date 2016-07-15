@@ -17,7 +17,7 @@ storiesOf('Component Card', module)
         <Tiles
           justify='center'
           flush={false}
-          size='large'
+          size='medium'
         >
           <ComponentCard
             name='Listing Card'

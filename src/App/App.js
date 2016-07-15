@@ -15,10 +15,16 @@ import { components, properties } from '../../mocks/components'
 const App = ({
   children,
 }) => (
-  <div>
+  <div
+    style={{
+      backgroundColor: '#212D33',
+      padding: 24,
+    }}
+  >
     <section
       style={{
         ...style.section,
+        backgroundColor: '#fcfcfc',
       }}
     >
       <div
@@ -44,7 +50,6 @@ const App = ({
       <div
         style={{
           ...style.column,
-          backgroundColor: '#013',
           color: '#fefefe',
         }}
       >
