@@ -21,7 +21,6 @@ const ComponentStateList = ({
     <div
       style={{
         ...style.section,
-        backgroundColor: '#fcfcfc',
       }}
     >
       <div
@@ -49,16 +48,17 @@ export default ComponentStateList
 
 const style = {
   section: {
-    margin: '0 auto',
     display: 'flex',
+
   },
   column: {
-    margin: 10,
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
+    padding: '0 15px',
   },
   row: {
-    margin: 40,
+    margin: 24,
+    backgroundColor: '#fcfcfc',
   }
 }

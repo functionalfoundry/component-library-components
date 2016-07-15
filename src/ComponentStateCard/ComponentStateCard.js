@@ -45,12 +45,6 @@ const Actions = ({
 
 }) => (
   <div>
-    <span>
-      Pass
-    </span>
-    <span>
-      Fail
-    </span>
     <Button
       label='Play'
     />
@@ -61,7 +55,6 @@ export default ComponentState
 
 const style = {
   section: {
-    margin: '0 auto',
     display: 'flex',
   },
   column: {

@@ -34,18 +34,18 @@ export const properties = [
 export const states = [
   {
     name: 'Regular',
-    thumbnail: 'http://placehold.it/300x380',
+    thumbnail: 'http://placehold.it/300x200',
   },
   {
     name: 'About to sell out',
-    thumbnail: 'http://placehold.it/300x380',
+    thumbnail: 'http://placehold.it/300x200',
   },
   {
     name: 'Preferred',
-    thumbnail: 'http://placehold.it/300x380',
+    thumbnail: 'http://placehold.it/300x200',
   },
   {
     name: 'Unverified',
-    thumbnail: 'http://placehold.it/380x380',
+    thumbnail: 'http://placehold.it/300x200',
   },
 ]

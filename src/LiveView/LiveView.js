@@ -6,7 +6,7 @@ import Footer from 'grommet/components/Footer'
 import Section from 'grommet/components/Section'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
-import ComponentCard from '../ComponentCard'
+import LivePreview from './LivePreview'
 import LiveEditor from './LiveEditor'
 /* TODO: Move PropertyPane rendering to LiveView */
 import PropertyPane from './PropertyPane'
@@ -33,7 +33,7 @@ const LiveView = ({
           grow: 1,
         }}
       >
-        <ComponentCard
+        <LivePreview
           {...components[0]}
         />
       </div>

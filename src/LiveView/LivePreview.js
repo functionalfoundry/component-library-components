@@ -7,7 +7,7 @@ import Image from 'grommet/components/Image'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
 
-const ComponentCard = ({
+const LivePreview = ({
   name,
   owner,
   thumbnail,
@@ -16,6 +16,7 @@ const ComponentCard = ({
     style={{
       backgroundColor: 'white',
       border: '1px solid #efefef',
+      height: 300,
     }}
   >
     <Image src={thumbnail} />
@@ -37,4 +38,4 @@ const ComponentCard = ({
   </Tile>
 )
 
-export default ComponentCard
+export default LivePreview
