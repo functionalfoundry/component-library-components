@@ -5,19 +5,68 @@ import Header from 'grommet/components/Header'
 import Footer from 'grommet/components/Footer'
 import Section from 'grommet/components/Section'
 import Label from 'grommet/components/Label'
+import Box from 'grommet/components/Box'
+import ComponentCard from '../ComponentCard'
+import LiveEditor from '../LiveView'
+/* TODO: Move PropertyPane rendering to LiveView */
+import PropertyPane from '../LiveView/PropertyPane'
+import { components, properties } from '../../mocks/components'
 
 const App = ({
   children,
 }) => (
-  <GrommetApp>
-    <Header>
-    </Header>
-    <Section
-      primary
+  <div>
+    <section
+      style={{
+        ...style.section,
+      }}
     >
-     {children}
-    </Section>
-  </GrommetApp>
+      <div
+        style={{
+          ...style.column,
+          grow: 1,
+        }}
+      >
+        <ComponentCard
+          {...components[0]}
+        />
+      </div>
+      <div
+        style={style.column}
+      >
+        <LiveEditor
+        />
+      </div>
+    </section>
+    <section
+      style={style.section}
+    >
+      <div
+        style={{
+          ...style.column,
+          backgroundColor: '#013',
+          color: '#fefefe',
+        }}
+      >
+          <PropertyPane
+            properties={properties}
+          />
+      </div>
+    </section>
+  </div>
 )
 
 export default App
+
+const style = {
+  section: {
+    margin: '0 auto',
+    display: 'flex',
+  },
+  column: {
+    margin: 10,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+  },
+}
