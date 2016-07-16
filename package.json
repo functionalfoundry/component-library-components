@@ -32,6 +32,8 @@
     "babel": "inherit"
   },
   "dependencies": {
+    "@workflo/components": "0.0.3",
+    "@workflo/styles": "0.0.5",
     "css-loader": "^0.23.1",
     "draft-js": "^0.7.0",
     "draft-js-code": "^0.2.0",

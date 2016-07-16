@@ -7,16 +7,14 @@ import Section from 'grommet/components/Section'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
 import ComponentStateCard from '../ComponentStateCard'
+import { Colors, Spacing } from '@workflo/styles'
 
 const ComponentStateList = ({
   children,
   states,
 }) => (
   <div
-    style={{
-      backgroundColor: '#212D33',
-      padding: 24,
-    }}
+    style={style.container}
   >
     <div
       style={{
@@ -47,6 +45,9 @@ const ComponentStateList = ({
 export default ComponentStateList
 
 const style = {
+  container: {
+    padding: Spacing.base,
+  },
   section: {
     display: 'flex',
 
@@ -55,10 +56,9 @@ const style = {
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
-    padding: '0 15px',
   },
   row: {
-    margin: 24,
+    margin: Spacing.base,
     backgroundColor: '#fcfcfc',
   }
 }

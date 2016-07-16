@@ -2,65 +2,96 @@ import React from 'react'
 import Title from 'grommet/components/Title'
 import Tile from 'grommet/components/Tile'
 import Header from 'grommet/components/Header'
-import Button from 'grommet/components/Button'
 import Image from 'grommet/components/Image'
 import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
+import View from '@workflo/components/lib/View/View'
+import Button from '@workflo/components/lib/Button/Button'
+import Icon from '@workflo/components/lib/Icon/Icon'
+import { Colors, Spacing } from '@workflo/styles'
 
-const ComponentState = ({
+const ComponentStateCard = ({
   name,
   thumbnail,
+  onClickEdit,
 }) => (
-  <div
-    style={{
-      ...style.section,
-      height: 300,
-    }}
+  <View
+    style={style.card}
   >
-    <div
-      style={{
-        ...style.column,
-      }}
+    <View
+      style={style.section}
     >
-      <h4>{name}</h4>
-    </div>
-    <div
-      style={{
-        ...style.column,
-      }}
-    >
-      <Image src={thumbnail} />
-    </div>
-    <div
-      style={{
-        ...style.column,
-      }}
-    >
-      <Actions />
-    </div>
-  </div>
+      <View
+        style={style.titleContainer}
+      >
+        <h4
+          style={style.title}
+        >
+          {name}
+        </h4>
+      </View>
+      <View
+        style={style.thumbnail}
+      >
+        <Image src={thumbnail} />
+      </View>
+      <View
+        style={style.actions}
+      >
+        <Actions
+          onClickEdit={onClickEdit}
+        />
+      </View>
+    </View>
+  </View>
 )
 
 const Actions = ({
-
+  onClickEdit,
 }) => (
-  <div>
+  <View>
     <Button
-      label='Play'
-    />
-  </div>
+      kind='primary'
+      shade='dark'
+      onClick={onClickEdit}
+      round
+    >
+      <Icon
+        name='trash'
+        size='s'
+        fill={Colors.primary}
+      />
+    </Button>
+  </View>
 )
 
-export default ComponentState
+export default ComponentStateCard
 
 const style = {
+  card: {
+    position: 'relative',
+  },
+  titleContainer: {
+    position: 'absolute',
+    top: Spacing.base,
+    left: Spacing.base,
+  },
+  title: {
+    fontWeight: 300,
+    fontSize: 22,
+  },
+  actions: {
+    position: 'absolute',
+    top: Spacing.base,
+    right: Spacing.base,
+  },
   section: {
     display: 'flex',
+    alignContent: 'center',
+    height: 300,
   },
-  column: {
-    margin: 10,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
+  thumbnail: {
+    width: 200,
+    margin: 'auto',
   },
 }

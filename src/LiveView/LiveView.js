@@ -1,77 +1,83 @@
 import React from 'react'
-import Title from 'grommet/components/Title'
-import GrommetApp from 'grommet/components/App'
-import Header from 'grommet/components/Header'
-import Footer from 'grommet/components/Footer'
-import Section from 'grommet/components/Section'
-import Label from 'grommet/components/Label'
-import Box from 'grommet/components/Box'
+import View from '@workflo/components/lib/View/View'
+import { Spacing, Colors } from '@workflo/styles'
 import LivePreview from './LivePreview'
 import LiveEditor from './LiveEditor'
-/* TODO: Move PropertyPane rendering to LiveView */
 import PropertyPane from './PropertyPane'
-import { components, properties } from '../../mocks/components'
 
 const LiveView = ({
-  children,
+  component,
+  properties,
 }) => (
-  <div
-    style={{
-      backgroundColor: '#212D33',
-      padding: 24,
-    }}
+  <View
+    style={style.container}
   >
-    <section
-      style={{
-        ...style.section,
-        backgroundColor: '#fcfcfc',
-      }}
+    <View
+      style={style.previewAndEditor}
     >
-      <div
-        style={{
-          ...style.column,
-          grow: 1,
-        }}
+      <View
+        style={style.livePreviewContainer}
       >
         <LivePreview
-          {...components[0]}
+          {...component}
         />
-      </div>
-      <div
-        style={style.column}
+      </View>
+      <View
+        style={style.liveEditorContainer}
       >
         <LiveEditor
         />
-      </div>
-    </section>
-    <section
+      </View>
+    </View>
+    <View
       style={style.section}
     >
-      <div
-        style={{
-          ...style.column,
-          color: '#fefefe',
-        }}
+      <View
+        style={style.propertyPaneContainer}
       >
-          <PropertyPane
-            properties={properties}
-          />
-      </div>
-    </section>
-  </div>
+        <PropertyPane
+          properties={properties}
+        />
+      </View>
+    </View>
+  </View>
 )
 
 export default LiveView
 
+const flex = {
+  margin: '0 auto',
+  display: 'flex',
+}
+
+const column = {
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: 0,
+}
+
 const style = {
-  section: {
-    margin: '0 auto',
-    display: 'flex',
+  container: {
+    backgroundColor: Colors.steel2,
+    padding: Spacing.base,
   },
-  column: {
-    margin: 10,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
+  section: {
+    ...flex,
+  },
+  previewAndEditor: {
+    ...flex,
+    backgroundColor: Colors.aluminum6,
+    padding: Spacing.small,
+  },
+  livePreviewContainer: {
+    ...column,
+  },
+  liveEditorContainer: {
+    ...column,
+  },
+  propertyPaneContainer: {
+    ...column,
+    color: Colors.aluminum6,
+    marginTop: Spacing.small,
   },
 }

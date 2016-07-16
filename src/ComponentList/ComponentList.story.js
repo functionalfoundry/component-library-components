@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import ComponentList from '.'
+import { Colors } from '@workflo/styles'
 
 const components = [
   {
@@ -32,7 +33,9 @@ const components = [
 
 storiesOf('Component List', module)
   .add('Regular', () => (
-    <ComponentList
-      components={components}
-    />
+    <div style={{ backgroundColor: Colors.aluminum6 }}>
+      <ComponentList
+        components={components}
+      />
+    </div>
   ))
