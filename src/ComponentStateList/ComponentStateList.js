@@ -1,18 +1,18 @@
 import React from 'react'
-import Title from 'grommet/components/Title'
-import GrommetApp from 'grommet/components/App'
-import Header from 'grommet/components/Header'
-import Footer from 'grommet/components/Footer'
-import Section from 'grommet/components/Section'
-import Label from 'grommet/components/Label'
-import Box from 'grommet/components/Box'
 import ComponentStateCard from '../ComponentStateCard'
-import { Colors, Spacing } from '@workflo/styles'
+import {
+  Spacing,
+} from '@workflo/styles'
+
+type Props = {
+  children: any,
+  states: Array<Object>,
+}
 
 const ComponentStateList = ({
   children,
   states,
-}) => (
+}: Props) => (
   <div
     style={style.container}
   >
@@ -60,5 +60,5 @@ const style = {
   row: {
     margin: Spacing.base,
     backgroundColor: '#fcfcfc',
-  }
+  },
 }

@@ -4,9 +4,12 @@ import Tile from 'grommet/components/Tile'
 import Image from 'grommet/components/Image'
 import { Colors } from '@workflo/styles'
 
+type Props = {
+  thumbnail: string,
+}
 const LivePreview = ({
   thumbnail,
-}) => (
+}: Props) => (
   <Tile
     style={styles.card}
   >

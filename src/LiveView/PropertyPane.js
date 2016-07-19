@@ -1,7 +1,5 @@
 import React from 'react'
-import List from 'grommet/components/List'
 import Table from 'grommet/components/Table'
-import Box from 'grommet/components/Box'
 
 const PropertyPane = ({
   properties = [],

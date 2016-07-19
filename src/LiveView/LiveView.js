@@ -1,17 +1,35 @@
 import React from 'react'
-import View from '@workflo/components/lib/View/View'
-import { Spacing, Colors } from '@workflo/styles'
 import LivePreview from './LivePreview'
 import LiveEditor from './LiveEditor'
+import LiveHeader from './LiveHeader'
 import PropertyPane from './PropertyPane'
+import {
+  View,
+} from '@workflo/components'
+import {
+  Spacing,
+  Colors,
+} from '@workflo/styles'
+
+type Props = {
+  component: any,
+  properties: any,
+  profile: Object,
+}
 
 const LiveView = ({
   component,
   properties,
-}) => (
+  profile = {},
+}: Props) => (
   <View
     style={style.container}
   >
+    <LiveHeader
+      firstName={profile.firstName}
+      lastName={profile.lastName}
+      image={profile.image}
+    />
     <View
       style={style.previewAndEditor}
     >
@@ -60,6 +78,11 @@ const style = {
   container: {
     backgroundColor: Colors.steel2,
     padding: Spacing.base,
+  },
+  header: {
+    backgroundColor: Colors.steel3,
+    color: Colors.aluminum6,
+    padding: Spacing.small,
   },
   section: {
     ...flex,

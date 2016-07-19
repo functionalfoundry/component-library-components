@@ -1,22 +1,19 @@
 import React from 'react'
-import Title from 'grommet/components/Title'
-import Tile from 'grommet/components/Tile'
-import Header from 'grommet/components/Header'
 import Footer from 'grommet/components/Footer'
 import Image from 'grommet/components/Image'
-import Label from 'grommet/components/Label'
 import Box from 'grommet/components/Box'
+import {
+  Card,
+} from '@workflo/components'
 
 const ComponentCard = ({
   name,
   owner,
   thumbnail,
 }) => (
-  <Tile
-    style={{
-      backgroundColor: 'white',
-      border: '1px solid #efefef',
-    }}
+  <Card
+    size='medium'
+    flush
   >
     <Image src={thumbnail} />
     <Footer
@@ -32,9 +29,8 @@ const ComponentCard = ({
         <span style={{ fontSize: 20, marginTop: 8 }}>{name}</span>
         <span style={{ marginTop: 8, marginBottom: 8 }}>{owner}</span>
       </Box>
-      
     </Footer>
-  </Tile>
+  </Card>
 )
 
 export default ComponentCard

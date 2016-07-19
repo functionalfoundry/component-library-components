@@ -3,7 +3,6 @@ import { storiesOf, action } from '@kadira/storybook'
 import ComponentStateCard from '.'
 import App from 'grommet/components/App'
 import Section from 'grommet/components/Section'
-import Tiles from 'grommet/components/Tiles'
 
 storiesOf('Component State Card', module)
   .add('Regular', () => (

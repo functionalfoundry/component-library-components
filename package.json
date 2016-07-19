@@ -32,7 +32,7 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "0.0.3",
+    "@workflo/components": "^0.1.0",
     "@workflo/styles": "0.0.5",
     "css-loader": "^0.23.1",
     "draft-js": "^0.7.0",
@@ -47,7 +47,7 @@
     "@kadira/storybook": "*",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.7.2",
-    "babel-eslint": "6.0.0-beta.6",
+    "babel-eslint": "^6.0.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-class-properties": "^6.9.0",
     "babel-plugin-transform-flow-strip-types": "^6.8.0",

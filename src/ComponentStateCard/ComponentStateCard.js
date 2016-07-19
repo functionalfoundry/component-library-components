@@ -1,20 +1,26 @@
 import React from 'react'
-import Title from 'grommet/components/Title'
-import Tile from 'grommet/components/Tile'
-import Header from 'grommet/components/Header'
 import Image from 'grommet/components/Image'
-import Label from 'grommet/components/Label'
-import Box from 'grommet/components/Box'
-import View from '@workflo/components/lib/View/View'
-import Button from '@workflo/components/lib/Button/Button'
-import Icon from '@workflo/components/lib/Icon/Icon'
-import { Colors, Spacing } from '@workflo/styles'
+import {
+  View,
+  Button,
+  Icon,
+} from '@workflo/components'
+import {
+  Colors,
+  Spacing,
+} from '@workflo/styles'
+
+type Props = {
+  name: String,
+  thumbnail: String,
+  onClickEdit: Function,
+}
 
 const ComponentStateCard = ({
   name,
   thumbnail,
   onClickEdit,
-}) => (
+}: Props) => (
   <View
     style={style.card}
   >
@@ -46,9 +52,13 @@ const ComponentStateCard = ({
   </View>
 )
 
+type ActionsPropsT = {
+  onClickEdit: Function,
+}
+
 const Actions = ({
   onClickEdit,
-}) => (
+}: ActionsPropsT) => (
   <View>
     <Button
       kind='primary'
@@ -58,14 +68,11 @@ const Actions = ({
     >
       <Icon
         name='trash'
-        size='s'
         fill={Colors.primary}
       />
     </Button>
   </View>
 )
-
-export default ComponentStateCard
 
 const style = {
   card: {
@@ -95,3 +102,5 @@ const style = {
     margin: 'auto',
   },
 }
+
+export default ComponentStateCard

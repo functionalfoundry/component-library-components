@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Draft from 'draft-js'
 import CodeUtils from 'draft-js-code'
 import PrismDecorator from 'draft-js-prism'
@@ -7,15 +6,12 @@ import PrismDecorator from 'draft-js-prism'
 const {
     Editor,
     EditorState,
-    RichUtils,
-    DefaultDraftBlockRenderMap,
-    Decorator,
     convertFromRaw
 } = Draft
 
 export default class LiveView extends React.Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     const decorator = new PrismDecorator({ defaultSyntax: 'javascript' })
     var contentState = convertFromRaw({
@@ -40,13 +36,13 @@ export default class LiveView extends React.Component {
     this.handleTab = this.handleTab.bind(this)
   }
 
-  onChange(editorState) {
+  onChange (editorState) {
     this.setState({
       editorState: editorState
     })
   }
 
-  handleKeyCommand(command) {
+  handleKeyCommand (command) {
     const { editorState } = this.state
     let newState
 
@@ -65,21 +61,21 @@ export default class LiveView extends React.Component {
     return false
   }
 
-  keyBindingFn(e) {
+  keyBindingFn (e) {
     const editorState = this.state.editorState
     let command
 
     if (CodeUtils.hasSelectionInBlock(editorState)) {
-        command = CodeUtils.getKeyBinding(e)
+      command = CodeUtils.getKeyBinding(e)
     }
     if (command) {
-        return command
+      return command
     }
 
     return Draft.getDefaultKeyBinding(e)
   }
 
-  handleReturn(e) {
+  handleReturn (e) {
     const editorState = this.state.editorState
 
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
@@ -92,7 +88,7 @@ export default class LiveView extends React.Component {
     return true
   }
 
-  handleTab(e) {
+  handleTab (e) {
     const editorState = this.state.editorState
 
     if (!CodeUtils.hasSelectionInBlock(editorState)) {
@@ -104,20 +100,20 @@ export default class LiveView extends React.Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <div
         style={{ padding: 12 }}
       >
-      <Draft.Editor
-        customStyleMap={styleMap}
-        editorState={this.state.editorState}
-        onChange={this.onChange}
-        keyBindingFn={this.keyBindingFn}
-        handleKeyCommand={this.handleKeyCommand}
-        handleReturn={this.handleReturn}
-        onTab={this.handleTab}
-      />
+        <Draft.Editor
+          customStyleMap={styleMap}
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+          keyBindingFn={this.keyBindingFn}
+          handleKeyCommand={this.handleKeyCommand}
+          handleReturn={this.handleReturn}
+          onTab={this.handleTab}
+        />
       </div>
     )
   }
