@@ -7,6 +7,7 @@ import {
 import {
   Colors,
 } from '@workflo/styles'
+import { profile } from '../../mocks/profile'
 
 storiesOf('Header', module)
   .add('Regular', () => (
@@ -14,9 +15,7 @@ storiesOf('Header', module)
       style={{ backgroundColor: Colors.steel2, width: '100%', height: '120px' }}
     >
       <Header
-        name='Listing Card'
-        owner='Yaniv Tal'
-        thumbnail='http://placehold.it/380x380'
+        profile={profile}
       />
     </View>
   ))

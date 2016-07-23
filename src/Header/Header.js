@@ -2,9 +2,12 @@ import React from 'react'
 import {
   View,
   Icon,
+  // ProfilePhoto,
 } from '@workflo/components'
+import Heading from '@workflo/components/lib/Heading' // TODO: Fix
 import {
   Colors,
+  Fonts,
   Spacing,
 } from '@workflo/styles'
 
@@ -12,10 +15,12 @@ type Props = {
   name: String,
   thumbnail: String,
   onClickEdit: Function,
+  profile: Object,
 }
 
 const Header = ({
   name,
+  profile,
 }: Props) => (
   <View
     style={styles.container}
@@ -27,7 +32,9 @@ const Header = ({
       <Separator />
       <Titles />
     </View>
-    <Actions />
+    <Actions
+      profile={profile}
+    />
   </View>
 )
 
@@ -45,32 +52,51 @@ const Back = () => (
 const Separator = () => (
   <View
     style={styles.separator}
-  >
-  </View>
+  />
 )
 
 const Titles = () => (
   <View
     style={styles.titles}
   >
-    <h1
+    <Heading
+      size={1}
       style={styles.title}
     >
       Slider
-    </h1>
+    </Heading>
+    <Heading
+      size={2}
+      style={styles.subtitle}
+    >
+      In Focus
+    </Heading>
   </View>
 )
 
-const Actions = () => (
+type ActionsPropsT = {
+  profile: Object,
+}
+
+const Actions = ({
+  profile,
+}: ActionsPropsT) => (
   <View
     style={styles.actions}
   >
     <Icon
       name='search'
+      style={styles.icon}
     />
     <Icon
       name='widget-feed'
     />
+    {/* <ProfilePhoto
+      size='medium'
+      image={profile.image}
+      firstName={profile.firstName}
+      lastName={profile.lastName}
+    />*/}
   </View>
 )
 
@@ -98,18 +124,33 @@ const styles = {
   },
   titles: {
     flex: 1,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    marginLeft: Spacing.large,
   },
   title: {
-
+    ...Fonts.title,
+    ...Fonts.large,
+    color: Colors.aluminum3,
+    justifyContent: 'flex-start',
+    marginBottom: 0,
   },
   subtitle: {
-
+    ...Fonts.title,
+    ...Fonts.huge,
+    color: Colors.aluminum6,
+    justifyContent: 'flex-start',
+    width: 250,
+    marginTop: 0,
   },
   actions: {
     flex: 1,
     display: 'flex',
     justifyContent: 'flex-end',
     padding: Spacing.tiny,
+  },
+  icon: {
+    marginRight: Spacing.tiny,
   },
 }
 
