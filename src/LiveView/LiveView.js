@@ -94,9 +94,11 @@ const style = {
   },
   livePreviewContainer: {
     ...column,
+    flexBasis: '60%',
   },
   liveEditorContainer: {
     ...column,
+    flexBasis: '34%',
   },
   propertyPaneContainer: {
     ...column,

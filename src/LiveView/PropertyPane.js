@@ -1,9 +1,16 @@
 import React from 'react'
 import Table from 'grommet/components/Table'
+import {
+  Colors,
+} from '@workflo/styles'
+
+type Props = {
+  properties: Array<Object>,
+}
 
 const PropertyPane = ({
   properties = [],
-}) => (
+}: Props) => (
   <Table>
     <tbody>
       {properties.map((property, index) => (
@@ -17,7 +24,7 @@ const PropertyPane = ({
           <td>
             {property.default}
           </td>
-          <td>
+          <td style={style.description}>
             {property.description}
           </td>
         </tr>
@@ -42,5 +49,8 @@ const style = {
   },
   name: {
     color: '#02c95d',
-  }
+  },
+  description: {
+    color: Colors.aluminum2,
+  },
 }

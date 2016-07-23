@@ -1,6 +1,8 @@
 import React from 'react'
-import Tiles from 'grommet/components/Tiles'
 import ComponentCard from '../ComponentCard'
+import {
+  Grid,
+} from '@workflo/components'
 
 type Props = {
   components: Object,
@@ -9,18 +11,11 @@ type Props = {
 const ComponentList = ({
   components,
 }: Props) => (
-  <Tiles
-    justify='around'
-    flush={false}
+  <Grid
     size='medium'
-  >
-    {components.map((component, index) => (
-      <ComponentCard
-        {...component}
-        key={index}
-      />
-    ))}
-  </Tiles>
+    data={components}
+    renderer={ComponentCard}
+  />
 )
 
 export default ComponentList

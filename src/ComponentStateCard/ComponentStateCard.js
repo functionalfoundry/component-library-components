@@ -2,7 +2,6 @@ import React from 'react'
 import Image from 'grommet/components/Image'
 import {
   View,
-  Button,
   Icon,
 } from '@workflo/components'
 import {
@@ -60,17 +59,11 @@ const Actions = ({
   onClickEdit,
 }: ActionsPropsT) => (
   <View>
-    <Button
-      kind='primary'
-      shade='dark'
+    <Icon
+      name='open'
       onClick={onClickEdit}
-      round
-    >
-      <Icon
-        name='trash'
-        fill={Colors.primary}
-      />
-    </Button>
+      size='m'
+    />
   </View>
 )
 

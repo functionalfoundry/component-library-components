@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Icon,
   View,
   ProfilePhoto,
 } from '@workflo/components'
@@ -27,6 +28,8 @@ const LiveHeader = ({
       lastName={lastName}
       image={image}
     />
+    <ActionsView
+    />
   </View>
 )
 
@@ -47,12 +50,32 @@ const ProfileView = ({
       size='small'
       image={image}
       firstName={firstName}
+      lastName={lastName}
     />
     <View
       style={styles.profileName}
     >
-      `${firstName} ${lastName}`
+      {`${firstName || ''} ${lastName || ''}`}
     </View>
+  </View>
+)
+
+const ActionsPropsT = {
+  isEditorDirty: Boolean,
+}
+
+const ActionsView = ({
+  isEditorDirty,
+}: ActionsPropsT) => (
+  <View
+    style={styles.actions}
+  >
+    {/* <Icon
+      name='layout'
+      fill={Colors.aluminum3}
+      size='s'
+    /> */}
+    LAYOUT
   </View>
 )
 
@@ -61,10 +84,11 @@ const styles = {
     backgroundColor: Colors.steel3,
     color: Colors.aluminum6,
     padding: Spacing.small,
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   profileView: {
     display: 'flex',
-
     alignItems: 'center',
   },
   profileLabel: {
@@ -76,6 +100,10 @@ const styles = {
     paddingLeft: Spacing.small/2,
     color: Colors.primary,
     fontWeight: 200,
+    fontSize: 14,
+  },
+  actions: {
+    color: Colors.aluminum3,
     fontSize: 14,
   },
 }
