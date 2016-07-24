@@ -150,7 +150,7 @@ const styles = {
     padding: Spacing.tiny,
   },
   icon: {
-    marginRight: Spacing.tiny,
+    marginRight: Spacing.small,
   },
 }
 

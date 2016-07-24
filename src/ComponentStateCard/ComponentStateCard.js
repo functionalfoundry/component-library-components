@@ -1,13 +1,15 @@
 import React from 'react'
-import Image from 'grommet/components/Image'
 import {
   View,
   Icon,
+  Image,
 } from '@workflo/components'
 import {
   Colors,
+  Fonts,
   Spacing,
 } from '@workflo/styles'
+import Heading from '@workflo/components/lib/Heading'
 
 type Props = {
   name: String,
@@ -29,16 +31,21 @@ const ComponentStateCard = ({
       <View
         style={style.titleContainer}
       >
-        <h4
+        <Heading
+          size={2}
           style={style.title}
         >
           {name}
-        </h4>
+        </Heading>
       </View>
       <View
         style={style.thumbnail}
       >
-        <Image src={thumbnail} />
+        <Image
+          src={thumbnail}
+          width={300}
+          height={200}
+        />
       </View>
       <View
         style={style.actions}
@@ -77,8 +84,9 @@ const style = {
     left: Spacing.base,
   },
   title: {
-    fontWeight: 300,
-    fontSize: 22,
+    ...Fonts.title,
+    ...Fonts.large,
+    color: Colors.steel3,
   },
   actions: {
     position: 'absolute',
@@ -88,11 +96,13 @@ const style = {
   section: {
     display: 'flex',
     alignContent: 'center',
-    height: 300,
+    height: 340,
   },
   thumbnail: {
     width: 200,
-    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }
 

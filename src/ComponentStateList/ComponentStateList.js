@@ -1,6 +1,10 @@
 import React from 'react'
 import ComponentStateCard from '../ComponentStateCard'
 import {
+  View,
+} from '@workflo/components'
+import {
+  Colors,
   Spacing,
 } from '@workflo/styles'
 
@@ -13,52 +17,54 @@ const ComponentStateList = ({
   children,
   states,
 }: Props) => (
-  <div
-    style={style.container}
+  <View
+    style={styles.container}
   >
-    <div
-      style={{
-        ...style.section,
-      }}
+    <View
+      style={styles.section}
     >
-      <div
-        style={{
-          ...style.column,
-          grow: 1,
-        }}
+      <View
+        style={styles.column}
       >
         {states.map((state, index) => (
-          <div
+          <View
             key={index}
-            style={style.row}
+            style={styles.row}
           >
             <ComponentStateCard
               {...state}
             />
-          </div>
+          </View>
         ))}
-      </div>
-    </div>
-  </div>
+      </View>
+    </View>
+  </View>
 )
 
 export default ComponentStateList
 
-const style = {
+const styles = {
   container: {
-    padding: Spacing.base,
+    display: 'flex',
+    flex: 1,
   },
   section: {
     display: 'flex',
-
+    flex: 1,
+    flexDirection: 'column',
   },
   column: {
     flexGrow: 1,
     flexShrink: 1,
-    flexBasis: 0,
+    display: 'flex',
+    flexDirection: 'column',
   },
   row: {
-    margin: Spacing.base,
-    backgroundColor: '#fcfcfc',
+    marginLeft: Spacing.base,
+    marginRight: Spacing.base,
+    backgroundColor: Colors.aluminum6,
+    ':nth-child(even)': {
+      backgroundColor: Colors.aluminum5,
+    }
   },
 }

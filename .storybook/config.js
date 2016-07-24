@@ -12,6 +12,7 @@ function loadStories () {
   // require('../src/ComponentCard/ComponentCard.story.js')
   require('../src/LiveView/LiveView.story.js')
   require('../src/Header/Header.story.js')
+  require('../src/App/App.story.js')
 }
 
 configure(loadStories, module)
