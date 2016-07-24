@@ -2,12 +2,32 @@ import React from 'react'
 import { storiesOf } from '@kadira/storybook'
 import App from './App'
 import { profile } from '../../mocks/profile'
-import { states } from '../../mocks/components'
+import { components, states } from '../../mocks/components'
+import ComponentStateList from '../ComponentStateList'
+import ComponentList from '../ComponentList'
 
 storiesOf('App', module)
-  .add('Regular', () => (
+  .add('Component List', () => (
     <App
       profile={profile}
-      states={states}
+      content={<List />}
     />
   ))
+  .add('Component State List', () => (
+    <App
+      profile={profile}
+      content={<StateList />}
+    />
+  ))
+
+const List = () => (
+  <ComponentList
+    components={components}
+  />
+)
+
+const StateList = () => (
+  <ComponentStateList
+    states={states}
+  />
+)

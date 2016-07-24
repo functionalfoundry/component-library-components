@@ -2,7 +2,12 @@ import React from 'react'
 import ComponentCard from '../ComponentCard'
 import {
   Grid,
+  View,
 } from '@workflo/components'
+import {
+  Colors,
+  Spacing,
+} from '@workflo/styles'
 
 type Props = {
   components: Object,
@@ -11,11 +16,23 @@ type Props = {
 const ComponentList = ({
   components,
 }: Props) => (
-  <Grid
-    size='medium'
-    data={components}
-    renderer={ComponentCard}
-  />
+  <View
+    style={styles.container}
+  >
+    <Grid
+      size='base'
+      data={components}
+      renderer={ComponentCard}
+    />
+  </View>
 )
+
+const styles = {
+  container: {
+    marginRight: Spacing.base,
+    marginLeft: Spacing.base,
+    backgroundColor: Colors.aluminum3,
+  },
+}
 
 export default ComponentList

@@ -1,36 +1,78 @@
 import React from 'react'
-import Footer from 'grommet/components/Footer'
-import Image from 'grommet/components/Image'
-import Box from 'grommet/components/Box'
 import {
   Card,
+  Image,
+  View,
 } from '@workflo/components'
+import {
+  Colors,
+  Fonts,
+  Spacing,
+} from '@workflo/styles'
+
+type Props = {
+  name: String,
+  owner: String,
+  thumbnail: String,
+}
 
 const ComponentCard = ({
   name,
   owner,
   thumbnail,
-}) => (
+}: Props) => (
   <Card
     size='medium'
     flush
+    style={styles.card}
   >
-    <Image src={thumbnail} />
-    <Footer
-      size='small'
-      pad={{horizontal: 'small'}}
-      align='start'
-      alignContent='start'
+  <Image
+    src={thumbnail}
+    style={styles.image}
+    height={200}
+  />
+    <View
+      style={styles.footer}
     >
-      <Box
-        pad={{horizontal: 'small'}}
-        justify='start'
+      <View
+        style={styles.name}
       >
-        <span style={{ fontSize: 20, marginTop: 8 }}>{name}</span>
-        <span style={{ marginTop: 8, marginBottom: 8 }}>{owner}</span>
-      </Box>
-    </Footer>
+        {name}
+      </View>
+      <View
+        style={styles.owner}
+      >
+        {owner}
+      </View>
+    </View>
   </Card>
 )
+
+const styles = {
+  card: {
+    color: Colors.steel2,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  thumbnail: {
+    flex: 1,
+    display: 'flex',
+  },
+  image: {
+    flex: 1,
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '0 0 72px'
+  },
+  name: {
+    ...Fonts.large,
+  },
+  owner: {
+    ...Fonts.base,
+  },
+}
 
 export default ComponentCard

@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from '../Header'
-import ComponentStateList from '../ComponentStateList'
 import {
   View,
 } from '@workflo/components'
@@ -11,12 +10,12 @@ import {
 
 type Props = {
   profile: Object,
-  states: Array<Object>,
+  content: any,
 }
 
 const App = ({
   profile,
-  states,
+  content,
 }: Props) => (
   <View
     style={styles.container}
@@ -31,9 +30,7 @@ const App = ({
     <View
       style={styles.content}
     >
-      <ComponentStateList
-        states={states}
-      />
+      {content}
     </View>
   </View>
 )
@@ -48,8 +45,10 @@ const styles = {
     alignItems: 'stretch',
   },
   header: {
-    flex: 1,
-    margin: Spacing.base,
+    flex: '1 0 92px',
+    margin: Spacing.small,
+    boxSizing: 'border-box',
+    backgroundColor: Colors.steel2,
   },
   content: {
     flex: 1,
