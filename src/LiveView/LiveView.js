@@ -78,6 +78,9 @@ const style = {
   container: {
     backgroundColor: Colors.steel2,
     padding: Spacing.base,
+    paddingTop: 0,
+    display: flex,
+    flexDirection: 'column',
   },
   header: {
     backgroundColor: Colors.steel3,

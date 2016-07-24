@@ -1,9 +1,7 @@
 import { configure } from '@kadira/storybook'
-import './grommet.css'
 import './draft.css'
 import './prism.css'
 import './editor.css'
-
 
 function loadStories () {
   require('../src/ComponentList/ComponentList.story.js')

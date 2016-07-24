@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   Card,
+  Heading,
   Image,
   View,
 } from '@workflo/components'
@@ -26,24 +27,26 @@ const ComponentCard = ({
     flush
     style={styles.card}
   >
-  <Image
-    src={thumbnail}
-    style={styles.image}
-    height={200}
-  />
+    <Image
+      src={thumbnail}
+      style={styles.image}
+      height={230}
+    />
     <View
       style={styles.footer}
     >
-      <View
+      <Heading
+        size={2}
         style={styles.name}
       >
         {name}
-      </View>
-      <View
+      </Heading>
+      <Heading
+        size={3}
         style={styles.owner}
       >
         {owner}
-      </View>
+      </Heading>
     </View>
   </Card>
 )
@@ -65,13 +68,17 @@ const styles = {
   footer: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '0 0 72px'
+    flex: '0 1 60px',
+    padding: `${Spacing.tiny}px ${Spacing.small}px`,
   },
   name: {
     ...Fonts.large,
+    ...Fonts.title,
+    marginBottom: Spacing.tiny/2,
   },
   owner: {
     ...Fonts.base,
+    ...Fonts.title,
   },
 }
 

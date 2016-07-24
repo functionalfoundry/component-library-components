@@ -31,7 +31,6 @@ const styles = {
   container: {
     marginRight: Spacing.base,
     marginLeft: Spacing.base,
-    backgroundColor: Colors.aluminum3,
   },
 }
 

@@ -46,12 +46,16 @@ const ProfileView = ({
     >
       By
     </View>
-    <ProfilePhoto
-      size='small'
-      image={image}
-      firstName={firstName}
-      lastName={lastName}
-    />
+    <View
+      style={styles.profilePhoto}
+    >
+      <ProfilePhoto
+        size='small'
+        image={image}
+        firstName={firstName}
+        lastName={lastName}
+      />
+    </View>
     <View
       style={styles.profileName}
     >
@@ -89,22 +93,29 @@ const styles = {
   },
   profileView: {
     display: 'flex',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
   },
   profileLabel: {
     color: Colors.aluminum1,
     paddingRight: Spacing.small/2,
     fontSize: 14,
+    flex: '0 1',
+  },
+  profilePhoto: {
+    flex: '0 1',
   },
   profileName: {
     paddingLeft: Spacing.small/2,
     color: Colors.primary,
     fontWeight: 200,
     fontSize: 14,
+    flex: '0 1',
   },
   actions: {
     color: Colors.aluminum3,
     fontSize: 14,
+    justifyContent: 'flex-end',
   },
 }
 

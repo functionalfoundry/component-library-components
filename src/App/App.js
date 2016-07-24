@@ -11,11 +11,13 @@ import {
 type Props = {
   profile: Object,
   content: any,
+  backgroundColor: String,
 }
 
 const App = ({
   profile,
   content,
+  backgroundColor = Colors.steel2,
 }: Props) => (
   <View
     style={styles.container}
@@ -28,7 +30,7 @@ const App = ({
       />
     </View>
     <View
-      style={styles.content}
+      style={{ ...styles.content, backgroundColor }}
     >
       {content}
     </View>
@@ -55,6 +57,7 @@ const styles = {
     display: 'flex',
     alignItems: 'stretch',
     marginBottom: Spacing.base,
+    backgroundColor: Colors.aluminum6,
   },
 }
 

@@ -114,9 +114,10 @@ const styles = {
   },
   back: {
     padding: Spacing.tiny,
+    flex: '0 1',
   },
   separator: {
-    flex: 1,
+    flex: '0 1',
     borderLeft: `1px solid ${Colors.aluminum5}`,
     marginTop: 12,
     marginLeft: Spacing.base,
