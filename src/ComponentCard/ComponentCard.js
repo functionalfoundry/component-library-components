@@ -65,7 +65,7 @@ const styles = {
     cursor: 'pointer',
     ':hover .component-footer': {
       // HACK
-      backgroundColor: '#f4f4f4',
+      backgroundColor: '#e6e6e6',
     }
   },
   thumbnail: {
@@ -76,7 +76,7 @@ const styles = {
     width: '100%',
     maxHeight: '100%',
     height: 'auto',
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
   imageContainer: {
     flex: 1,
@@ -88,6 +88,7 @@ const styles = {
     flexDirection: 'column',
     flex: '0 1 65px',
     padding: `${Spacing.tiny}px ${Spacing.small}px`,
+    backgroundColor: '#f4f4f4',
   },
   name: {
     ...Fonts.large,

@@ -1,21 +1,21 @@
 export const components = [
   {
     id: 1,
-    name: 'Listing Card',
+    name: 'Comment',
     owner: 'Yaniv Tal',
-    thumbnail: 'http://placehold.it/500x500',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-regular_yexhv7.png',
   },
   {
     id: 2,
-    name: 'Listing List',
-    owner: 'Yaniv Tal',
-    thumbnail: 'http://placehold.it/500x500',
+    name: 'Discussion Feed',
+    owner: 'Jannis Pohlman',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/discussion-feed-regular_keicrt.png',
   },
   {
     id: 3,
-    name: 'Host View',
-    owner: 'Jannis Pohlman',
-    thumbnail: 'http://placehold.it/500x500',
+    name: 'Calendar',
+    owner: 'Yaniv Tal',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/calendar-regular_kucscj.png',
   },
   {
     id: 4,
@@ -50,21 +50,21 @@ export const states = [
   {
     id: 23,
     name: 'Regular',
-    thumbnail: 'http://placehold.it/400x200',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-regular_yexhv7.png',
   },
   {
     id: 24,
-    name: 'About to sell out',
-    thumbnail: 'http://placehold.it/400x200',
+    name: 'With Publisher',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-with-publisher_tu9k8u.png',
   },
   {
     id: 25,
-    name: 'Preferred',
-    thumbnail: 'http://placehold.it/400x200',
+    name: 'With Attachment',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-with-attachment_cuiwpi.png',
   },
   {
     id: 26,
-    name: 'Unverified',
-    thumbnail: 'http://placehold.it/400x200',
+    name: 'With Replies',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-with-replies_nxbf5x.png',
   },
 ]

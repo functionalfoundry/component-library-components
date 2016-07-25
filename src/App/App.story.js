@@ -4,18 +4,18 @@ import App from './App'
 import { profile } from '../../mocks/profile'
 import { components, states, properties } from '../../mocks/components'
 import ComponentStateList from '../ComponentStateList'
-import ComponentList from '../ComponentList'
+import ComponentGrid from '../ComponentGrid'
 import LiveView from '../LiveView'
 import {
   Colors,
 } from '@workflo/styles'
 
 storiesOf('App', module)
-  .add('Component List', () => (
+  .add('Component Grid', () => (
     <App
       profile={profile}
       layout={{
-        content: <List />,
+        content: <Grid />,
       }}
       navigation={{
         title: 'Workflo Components',
@@ -50,8 +50,8 @@ storiesOf('App', module)
     />
   ))
 
-const List = () => (
-  <ComponentList
+const Grid = () => (
+  <ComponentGrid
     components={components}
     onClickComponent={action('clicked component')}
   />

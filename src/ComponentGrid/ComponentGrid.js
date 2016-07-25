@@ -13,7 +13,7 @@ type Props = {
   onClickComponent: Function,
 }
 
-const ComponentList = ({
+const ComponentGrid = ({
   components,
   onClickComponent,
 }: Props) => (
@@ -36,4 +36,4 @@ const styles = {
   },
 }
 
-export default ComponentList
+export default ComponentGrid
