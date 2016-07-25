@@ -12,11 +12,14 @@ type Props = {
   profile: Object,
   content: any,
   backgroundColor: String,
+  layout: Object,
+  navigation: Object,
 }
 
 const App = ({
   profile,
-  content,
+  layout = {},
+  navigation = {},
   backgroundColor = Colors.steel2,
 }: Props) => (
   <View
@@ -27,12 +30,15 @@ const App = ({
     >
       <Header
         profile={profile}
+        onClickBack={navigation.onClickBack}
+        title={navigation.title}
+        subtitle={navigation.subtitle}
       />
     </View>
     <View
       style={{ ...styles.content, backgroundColor }}
     >
-      {content}
+      {layout.content}
     </View>
   </View>
 )
@@ -56,7 +62,7 @@ const styles = {
     flex: 1,
     display: 'flex',
     alignItems: 'stretch',
-    marginBottom: Spacing.base,
+    paddingBottom: Spacing.base,
     backgroundColor: Colors.aluminum6,
   },
 }

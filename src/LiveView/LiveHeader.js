@@ -1,12 +1,14 @@
 import React from 'react'
 import {
   Icon,
+  Heading, // Probably shouldn't be using Heading for this. Text?
   View,
   ProfilePhoto,
 } from '@workflo/components'
 import {
-  Spacing,
   Colors,
+  Fonts,
+  Spacing,
 } from '@workflo/styles'
 
 type Props = {
@@ -41,11 +43,12 @@ const ProfileView = ({
   <View
     style={styles.profileView}
   >
-    <View
+    <Heading
+      size={3}
       style={styles.profileLabel}
     >
       By
-    </View>
+    </Heading>
     <View
       style={styles.profilePhoto}
     >
@@ -56,11 +59,12 @@ const ProfileView = ({
         lastName={lastName}
       />
     </View>
-    <View
+    <Heading
+      size={3}
       style={styles.profileName}
     >
       {`${firstName || ''} ${lastName || ''}`}
-    </View>
+    </Heading>
   </View>
 )
 
@@ -71,7 +75,8 @@ const ActionsPropsT = {
 const ActionsView = ({
   isEditorDirty,
 }: ActionsPropsT) => (
-  <View
+  <Heading
+    size={3}
     style={styles.actions}
   >
     {/* <Icon
@@ -80,7 +85,7 @@ const ActionsView = ({
       size='s'
     /> */}
     LAYOUT
-  </View>
+  </Heading>
 )
 
 const styles = {
@@ -90,31 +95,35 @@ const styles = {
     padding: Spacing.small,
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: '0 0 34px',
   },
   profileView: {
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'baseline',
+    alignItems: 'center',
   },
   profileLabel: {
+    ...Fonts.title,
+    ...Fonts.base,
     color: Colors.aluminum1,
     paddingRight: Spacing.small/2,
-    fontSize: 14,
     flex: '0 1',
   },
   profilePhoto: {
     flex: '0 1',
   },
   profileName: {
+    ...Fonts.title,
+    ...Fonts.base,
     paddingLeft: Spacing.small/2,
     color: Colors.primary,
-    fontWeight: 200,
-    fontSize: 14,
     flex: '0 1',
   },
   actions: {
+    ...Fonts.title,
+    ...Fonts.base,
     color: Colors.aluminum3,
-    fontSize: 14,
     justifyContent: 'flex-end',
   },
 }

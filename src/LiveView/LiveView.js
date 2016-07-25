@@ -48,38 +48,23 @@ const LiveView = ({
       </View>
     </View>
     <View
-      style={style.section}
+      style={style.propertyPaneContainer}
     >
-      <View
-        style={style.propertyPaneContainer}
-      >
-        <PropertyPane
-          properties={properties}
-        />
-      </View>
+      <PropertyPane
+        properties={properties}
+      />
     </View>
   </View>
 )
 
 export default LiveView
 
-const flex = {
-  margin: '0 auto',
-  display: 'flex',
-}
-
-const column = {
-  flexGrow: 1,
-  flexShrink: 1,
-  flexBasis: 0,
-}
-
 const style = {
   container: {
     backgroundColor: Colors.steel2,
     padding: Spacing.base,
     paddingTop: 0,
-    display: flex,
+    display: 'flex',
     flexDirection: 'column',
   },
   header: {
@@ -87,24 +72,22 @@ const style = {
     color: Colors.aluminum6,
     padding: Spacing.small,
   },
-  section: {
-    ...flex,
-  },
   previewAndEditor: {
-    ...flex,
+    display: 'flex',
     backgroundColor: Colors.aluminum6,
-    padding: Spacing.small,
+    flex: '1 0 300px',
   },
   livePreviewContainer: {
-    ...column,
-    flexBasis: '60%',
+    display: 'flex',
+    flex: '1 1 66%',
   },
   liveEditorContainer: {
-    ...column,
-    flexBasis: '34%',
+    display: 'flex',
+    flex: '0 1 34%'
   },
   propertyPaneContainer: {
-    ...column,
+    display: 'flex',
+    flex: '1 1',
     color: Colors.aluminum6,
     marginTop: Spacing.small,
   },

@@ -36,17 +36,6 @@ const PropertyPane = ({
 export default PropertyPane
 
 const style = {
-  section: {
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'flex-start',
-  },
-  column: {
-    margin: 10,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-  },
   name: {
     color: '#02c95d',
   },

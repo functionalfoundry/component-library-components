@@ -1,4 +1,5 @@
 import { configure } from '@kadira/storybook'
+import './grommet.css'
 import './draft.css'
 import './prism.css'
 import './editor.css'

@@ -27,13 +27,17 @@ const ComponentCard = ({
     flush
     style={styles.card}
   >
-    <Image
-      src={thumbnail}
-      style={styles.image}
-      height={230}
-    />
+    <View
+      style={styles.imageContainer}
+    >
+      <Image
+        src={thumbnail}
+        style={styles.image}
+      />
+    </View>
     <View
       style={styles.footer}
+      className='component-footer'
     >
       <Heading
         size={2}
@@ -57,18 +61,32 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    margin: 20,
+    cursor: 'pointer',
+    ':hover .component-footer': {
+      // HACK
+      backgroundColor: '#f4f4f4',
+    }
   },
   thumbnail: {
     flex: 1,
     display: 'flex',
   },
   image: {
+    width: '100%',
+    maxHeight: '100%',
+    height: 'auto',
+    objectFit: 'cover',
+  },
+  imageContainer: {
     flex: 1,
+    height: 230,
+    position: 'relative',
   },
   footer: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '0 1 60px',
+    flex: '0 1 65px',
     padding: `${Spacing.tiny}px ${Spacing.small}px`,
   },
   name: {

@@ -4,7 +4,7 @@
   "description": "Components for the Workflo Component Library app",
   "main": "lib",
   "scripts": {
-    "build": "npm run clean-lib && babel src --out-dir lib",
+    "build": "npm run clean-lib && webpack -p --config webpack.config.js --colors --progress --inline && node scripts/generate-index.js",
     "prepublish": "npm run build",
     "start": "node .storybook/server.js",
     "lint": "esw **.js .storybook/**.js --no-ignore",
@@ -32,11 +32,12 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "^0.2.4",
-    "@workflo/styles": "^0.1.1",
+    "@workflo/components": "^0.2.5",
+    "@workflo/styles": "^0.1.2",
     "draft-js": "^0.7.0",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "workfloapp/draft-js-prism",
+    "grommet": "^0.6.10",
     "lodash": "^4.13.1",
     "react": "15.2.0",
     "react-dom": "15.2.0"

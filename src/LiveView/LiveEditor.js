@@ -2,6 +2,14 @@ import React from 'react'
 import Draft from 'draft-js'
 import CodeUtils from 'draft-js-code'
 import PrismDecorator from 'draft-js-prism'
+import {
+  View,
+} from '@workflo/components'
+import {
+  Fonts,
+  Spacing,
+  Colors,
+} from '@workflo/styles'
 
 const {
     Editor,
@@ -102,8 +110,8 @@ export default class LiveView extends React.Component {
 
   render () {
     return (
-      <div
-        style={{ padding: 12 }}
+      <View
+        style={styles.editor}
       >
         <Draft.Editor
           customStyleMap={styleMap}
@@ -114,7 +122,7 @@ export default class LiveView extends React.Component {
           handleReturn={this.handleReturn}
           onTab={this.handleTab}
         />
-      </div>
+      </View>
     )
   }
 }
@@ -124,6 +132,17 @@ const styleMap = {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
     fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
     fontSize: 16,
+    color: 'black',
     padding: 2,
+  },
+}
+
+const styles = {
+  editor: {
+    ...Fonts.content,
+    ...Fonts.base,
+    padding: Spacing.small,
+    backgroundColor: 'white',
+    color: Colors.steel3,
   },
 }

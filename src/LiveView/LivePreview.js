@@ -1,8 +1,11 @@
-/* @flow */
 import React from 'react'
-import Tile from 'grommet/components/Tile'
-import Image from 'grommet/components/Image'
-import { Colors } from '@workflo/styles'
+import {
+  Image,
+  View,
+} from '@workflo/components'
+import {
+  Colors
+} from '@workflo/styles'
 
 type Props = {
   thumbnail: string,
@@ -10,19 +13,25 @@ type Props = {
 const LivePreview = ({
   thumbnail,
 }: Props) => (
-  <Tile
+  <View
     style={styles.card}
   >
     <Image
       src={thumbnail}
+      style={styles.image}
     />
-  </Tile>
+  </View>
 )
 
 const styles = {
   card: {
     backgroundColor: 'white',
     border: `1px solid ${Colors.aluminum6}`,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  image: {
+    flex: 1,
   },
 }
 

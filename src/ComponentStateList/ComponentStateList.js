@@ -11,11 +11,13 @@ import {
 type Props = {
   children: any,
   states: Array<Object>,
+  onClickState: Function,
 }
 
 const ComponentStateList = ({
   children,
   states,
+  onClickState = () => {},
 }: Props) => (
   <View
     style={styles.container}
@@ -33,6 +35,7 @@ const ComponentStateList = ({
           >
             <ComponentStateCard
               {...state}
+              onClickEdit={() => onClickState(state.id)}
             />
           </View>
         ))}

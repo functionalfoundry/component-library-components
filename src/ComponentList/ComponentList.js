@@ -5,16 +5,17 @@ import {
   View,
 } from '@workflo/components'
 import {
-  Colors,
   Spacing,
 } from '@workflo/styles'
 
 type Props = {
   components: Object,
+  onClickComponent: Function,
 }
 
 const ComponentList = ({
   components,
+  onClickComponent,
 }: Props) => (
   <View
     style={styles.container}
@@ -23,6 +24,7 @@ const ComponentList = ({
       size='base'
       data={components}
       renderer={ComponentCard}
+      onClickItem={(component) => onClickComponent(component.id)}
     />
   </View>
 )

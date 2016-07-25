@@ -70,6 +70,7 @@ const Actions = ({
       name='open'
       onClick={onClickEdit}
       size='m'
+      style={style.editButton}
     />
   </View>
 )
@@ -103,6 +104,9 @@ const style = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  editButton: {
+    cursor: 'pointer',
   },
 }
 

@@ -12,15 +12,17 @@ import {
 } from '@workflo/styles'
 
 type Props = {
-  name: String,
-  thumbnail: String,
-  onClickEdit: Function,
   profile: Object,
+  onClickBack: Function,
+  title: String,
+  subtitle: String,
 }
 
 const Header = ({
-  name,
   profile,
+  title,
+  subtitle,
+  onClickBack,
 }: Props) => (
   <View
     style={styles.container}
@@ -28,9 +30,14 @@ const Header = ({
     <View
       style={styles.leftBlock}
     >
-      <Back />
+      <Back
+        onClickBack={onClickBack}
+      />
       <Separator />
-      <Titles />
+      <Titles
+        title={title}
+        subtitle={subtitle}
+      />
     </View>
     <Actions
       profile={profile}
@@ -38,14 +45,27 @@ const Header = ({
   </View>
 )
 
-const Back = () => (
+type BackPropsT = {
+  onClickBack: Function,
+}
+
+const Back = ({
+  onClickBack,
+}: BackPropsT) => (
   <View
     style={styles.back}
   >
-    <Icon
+    {onClickBack && <Icon
       name='back'
       size='m'
-    />
+      style={styles.backButton}
+      onClick={onClickBack}
+    />}
+    {!onClickBack && <Icon
+      name='logo'
+      size='m'
+      style={styles.backButton}
+    />}
   </View>
 )
 
@@ -55,7 +75,15 @@ const Separator = () => (
   />
 )
 
-const Titles = () => (
+type TitlesPropsT = {
+  title: string,
+  subtitle: string,
+}
+
+const Titles = ({
+  title,
+  subtitle,
+}: TitlesPropsT) => (
   <View
     style={styles.titles}
   >
@@ -63,13 +91,13 @@ const Titles = () => (
       size={1}
       style={styles.title}
     >
-      Slider
+      {title}
     </Heading>
     <Heading
       size={2}
       style={styles.subtitle}
     >
-      In Focus
+      {subtitle}
     </Heading>
   </View>
 )
@@ -116,6 +144,9 @@ const styles = {
     padding: Spacing.tiny,
     flex: '0 1',
   },
+  backButton: {
+    cursor: 'pointer',
+  },
   separator: {
     flex: '0 1',
     borderLeft: `1px solid ${Colors.aluminum5}`,
@@ -127,7 +158,8 @@ const styles = {
     flex: 1,
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    marginLeft: Spacing.large,
+    marginLeft: Spacing.base + Spacing.tiny,
+    paddingTop: 18,
   },
   title: {
     ...Fonts.title,
