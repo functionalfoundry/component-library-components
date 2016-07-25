@@ -43,7 +43,6 @@ const ComponentStateCard = ({
       >
         <Image
           src={thumbnail}
-          width={300}
           height={200}
         />
       </View>

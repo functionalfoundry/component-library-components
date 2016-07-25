@@ -29,9 +29,13 @@ const styles = {
     border: `1px solid ${Colors.aluminum6}`,
     display: 'flex',
     justifyContent: 'center',
+    position: 'relative',
   },
   image: {
-    flex: 1,
+    width: '100%',
+    maxHeight: '100%',
+    height: 'auto',
+    objectFit: 'cover',
   },
 }
 
