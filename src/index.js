@@ -1,6 +1,6 @@
 const App = require('./App')
 const ComponentCard = require('./ComponentCard')
-const ComponentList = require('./ComponentList')
+const ComponentGrid = require('./ComponentGrid')
 const ComponentStateCard = require('./ComponentStateCard')
 const ComponentStateList = require('./ComponentStateList')
 const Header = require('./Header')
@@ -9,7 +9,7 @@ const LiveView = require('./LiveView')
 const WorkfloComponents = {
   App,
   ComponentCard,
-  ComponentList,
+  ComponentGrid,
   ComponentStateCard,
   ComponentStateList,
   Header,
