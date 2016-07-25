@@ -1,10 +1,12 @@
 import React from 'react'
+import { ActionsT } from '../../types/Action'
+import { SearchT } from '../../types/Search'
 import {
   View,
   Icon,
+  Heading,
   // ProfilePhoto,
 } from '@workflo/components'
-import Heading from '@workflo/components/lib/Heading' // TODO: Fix
 import {
   Colors,
   Fonts,
@@ -16,6 +18,8 @@ type Props = {
   onClickBack: Function,
   title: String,
   subtitle: String,
+  actions: ActionsT,
+  search: SearchT,
 }
 
 const Header = ({
@@ -23,6 +27,8 @@ const Header = ({
   title,
   subtitle,
   onClickBack,
+  actions,
+  search,
 }: Props) => (
   <View
     style={styles.container}
@@ -41,6 +47,8 @@ const Header = ({
     </View>
     <Actions
       profile={profile}
+      actions={actions}
+      search={search}
     />
   </View>
 )
@@ -104,21 +112,31 @@ const Titles = ({
 
 type ActionsPropsT = {
   profile: Object,
+  actions: ActionsT,
+  search: SearchT,
 }
 
 const Actions = ({
-  profile,
+  profile = {},
+  actions = [],
+  search = {},
 }: ActionsPropsT) => (
   <View
     style={styles.actions}
   >
-    <Icon
-      name='search'
-      style={styles.icon}
-    />
-    <Icon
-      name='widget-feed'
-    />
+    {search.show &&
+      <Icon
+        name='search'
+        style={styles.icon}
+      />}
+
+    {actions.map((action, index) => (
+      <Icon
+        key={index}
+        name={action.icon}
+        onClick={action.onClick}
+      />
+    ))}
     {/* <ProfilePhoto
       size='medium'
       image={profile.image}

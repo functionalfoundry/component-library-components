@@ -77,6 +77,7 @@ const Actions = ({
 const style = {
   card: {
     position: 'relative',
+    overflow: 'hidden',
   },
   titleContainer: {
     position: 'absolute',
@@ -100,6 +101,7 @@ const style = {
   },
   thumbnail: {
     width: 200,
+    maxWidth: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

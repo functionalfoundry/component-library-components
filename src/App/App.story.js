@@ -21,6 +21,13 @@ storiesOf('App', module)
         title: 'Workflo Components',
       }}
       backgroundColor={Colors.aluminum6}
+      actions={[{
+        icon: 'widget-feed',
+        onClick: action('clicked widget feed'),
+      }]}
+      search={{
+        show: true,
+      }}
     />
   ))
   .add('Component State List', () => (
@@ -33,6 +40,13 @@ storiesOf('App', module)
         title: 'Slider',
         subtitle: 'In focus',
         onClickBack: action('clicked back'),
+      }}
+      actions={[{
+        icon: 'widget-feed',
+        onClick: action('clicked widget feed'),
+      }]}
+      search={{
+        show: true,
       }}
     />
   ))
@@ -47,6 +61,10 @@ storiesOf('App', module)
         subtitle: 'In focus',
         onClickBack: action('clicked back'),
       }}
+      actions={[{
+        icon: 'widget-feed',
+        onClick: action('clicked widget feed'),
+      }]}
     />
   ))
 

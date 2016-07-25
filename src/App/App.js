@@ -4,6 +4,8 @@ import './prism.css'
 import './editor.css'
 import React from 'react'
 import Header from '../Header'
+import { ActionsT } from '../../types/Action'
+import { SearchT } from '../../types/Search'
 import {
   View,
 } from '@workflo/components'
@@ -18,6 +20,8 @@ type Props = {
   backgroundColor: String,
   layout: Object,
   navigation: Object,
+  actions: ActionsT,
+  search: SearchT,
 }
 
 const App = ({
@@ -25,6 +29,8 @@ const App = ({
   layout = {},
   navigation = {},
   backgroundColor = Colors.steel2,
+  actions,
+  search,
 }: Props) => (
   <View
     style={styles.container}
@@ -37,6 +43,8 @@ const App = ({
         onClickBack={navigation.onClickBack}
         title={navigation.title}
         subtitle={navigation.subtitle}
+        actions={actions}
+        search={search}
       />
     </View>
     <View
