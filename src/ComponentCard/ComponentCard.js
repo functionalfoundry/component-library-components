@@ -4,6 +4,7 @@ import {
   Heading,
   Image,
   View,
+  ProfilePhoto,
 } from '@workflo/components'
 import {
   Colors,
@@ -15,11 +16,13 @@ type Props = {
   name: String,
   owner: String,
   thumbnail: String,
+  profilePhoto: String,
 }
 
 const ComponentCard = ({
   name,
   owner,
+  profilePhoto,
   thumbnail,
 }: Props) => (
   <Card
@@ -45,12 +48,13 @@ const ComponentCard = ({
       >
         {name}
       </Heading>
-      <Heading
-        size={3}
-        style={styles.owner}
-      >
-        {owner}
-      </Heading>
+      <ProfilePhoto
+        image={profilePhoto}
+        firstName={'Yaniv'}
+        lastName={'Tal'}
+        size='small'
+        showName
+      />
     </View>
   </Card>
 )
@@ -65,7 +69,7 @@ const styles = {
     cursor: 'pointer',
     ':hover .component-footer': {
       // HACK
-      backgroundColor: '#e6e6e6',
+      backgroundColor: '#f4f4f4',
     }
   },
   thumbnail: {
@@ -86,13 +90,13 @@ const styles = {
   footer: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '0 1 65px',
+    flex: '0 1 50px',
     padding: `${Spacing.tiny}px ${Spacing.small}px`,
-    backgroundColor: '#f4f4f4',
   },
   name: {
-    ...Fonts.large,
+    ...Fonts.base,
     ...Fonts.title,
+    fontWeight: 600,
     marginBottom: Spacing.tiny/2,
   },
   owner: {

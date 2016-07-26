@@ -97,7 +97,7 @@ const style = {
   section: {
     display: 'flex',
     alignContent: 'center',
-    height: 340,
+    minHeight: 340,
   },
   thumbnail: {
     width: 200,
