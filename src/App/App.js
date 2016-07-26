@@ -1,3 +1,4 @@
+import './insertFont'
 import './grommet.css'
 import './draft.css'
 import './prism.css'
