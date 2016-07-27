@@ -1,7 +1,7 @@
 import './insertFont'
 import './grommet.css'
 import './draft.css'
-import './prism.css'
+import './rc-trigger.css'
 import './editor.css'
 import React from 'react'
 import { ActionsT } from '../../types/Action'

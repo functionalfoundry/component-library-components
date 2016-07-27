@@ -147,5 +147,9 @@ const styles = {
     backgroundColor: 'white',
     color: Colors.steel6,
     lineHeight: '1.8em',
+    display: 'flex',
+    flex: '1',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 }

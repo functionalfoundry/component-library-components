@@ -7,6 +7,11 @@ const {
 } = Draft
 
 import {
+  Popover,
+} from '@workflo/components'
+import Radio from '@workflo/components/lib/Radio/Radio'
+import RadioGroup from '@workflo/components/lib/Radio/RadioGroup'
+import {
   Colors,
 } from '@workflo/styles'
 
@@ -90,11 +95,15 @@ const PropSpan = (props) => (
 )
 
 const ValueSpan = (props) => (
-  <span
-    {...props} style={{color: 'purple'}}
+  <Popover
+    renderer={<Radios />}
   >
-    {props.children}
-  </span>
+    <span
+      {...props} style={{color: 'purple'}}
+    >
+      {props.children}
+    </span>
+  </Popover>
 )
 
 export const ReactDecorator = new CompositeDecorator([
@@ -111,6 +120,32 @@ export const ReactDecorator = new CompositeDecorator([
     component: ValueSpan,
   },
 ])
+
+class Radios extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { value: true }
+  }
+
+  render () {
+    const { value } = this.state
+    return (
+      <RadioGroup
+        value={value}
+        onChange={value => this.setState({ value })}
+      >
+        <Radio
+          label='true'
+          value={true}
+        />
+        <Radio
+          label='false'
+          value={false}
+        />
+      </RadioGroup>
+    )
+  }
+}
 
 /**
  * Returns array of props from React component passed to input
