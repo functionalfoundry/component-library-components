@@ -132,6 +132,7 @@ const styles = {
     cursor: 'pointer',
     marginRight: Spacing.small,
     marginLeft: Spacing.tiny,
+    marginTop: Spacing.tiny,
   },
   wrapper: {
     display: 'flex',
@@ -140,6 +141,7 @@ const styles = {
     alignItems: 'center',
     ...Fonts.large,
     ...Fonts.title,
+    letterSpacing: '.03em',
 
   }
 }

@@ -4,7 +4,6 @@ import './draft.css'
 import './prism.css'
 import './editor.css'
 import React from 'react'
-import Header from '../Header'
 import { ActionsT } from '../../types/Action'
 import { SearchT } from '../../types/Search'
 import {
@@ -61,7 +60,10 @@ const styles = {
   },
   header: {
     flex: '1 0 92px',
-    margin: Spacing.small,
+    marginLeft: Spacing.small,
+    marginRight: Spacing.small,
+    marginTop: Spacing.base,
+    marginBottom: Spacing.tiny,
     boxSizing: 'border-box',
     backgroundColor: Colors.steel2,
   },

@@ -35,22 +35,43 @@ const Header = ({
     style={styles.container}
   >
     <View
-      style={styles.leftBlock}
+      style={styles.topRow}
     >
-      <Back
-        onClickBack={onClickBack}
-      />
-      <Separator />
-      <Titles
-        title={title}
-        subtitle={subtitle}
-      />
+      <View
+        style={styles.leftBlock}
+      >
+        <Back
+          onClickBack={onClickBack}
+        />
+        <Separator />
+        <Heading
+          size={1}
+          style={styles.title}
+        >
+          {title}
+        </Heading>
+      </View>
+      <View
+        style={styles.rightBlock}
+      >
+        <Actions
+          profile={profile}
+          actions={actions}
+          search={search}
+        />
+      </View>
     </View>
-    <Actions
-      profile={profile}
-      actions={actions}
-      search={search}
-    />
+    <View
+      style={styles.bottomRow}
+    >
+      <Heading
+        size={2}
+        style={styles.subtitle}
+      >
+        {subtitle}
+      </Heading>
+    </View>
+
   </View>
 )
 
@@ -72,7 +93,7 @@ const Back = ({
     />}
     {!onClickBack && <Icon
       name='logo'
-      size='m'
+      size='s'
       style={styles.backButton}
     />}
   </View>
@@ -82,33 +103,6 @@ const Separator = () => (
   <View
     style={styles.separator}
   />
-)
-
-type TitlesPropsT = {
-  title: string,
-  subtitle: string,
-}
-
-const Titles = ({
-  title,
-  subtitle,
-}: TitlesPropsT) => (
-  <View
-    style={styles.titles}
-  >
-    <Heading
-      size={1}
-      style={styles.title}
-    >
-      {title}
-    </Heading>
-    <Heading
-      size={2}
-      style={styles.subtitle}
-    >
-      {subtitle}
-    </Heading>
-  </View>
 )
 
 type ActionsPropsT = {
@@ -149,13 +143,30 @@ const styles = {
   container: {
     color: Colors.aluminum5,
     display: 'flex',
+    flexDirection: 'column',
+  },
+  topRow: {
+    display: 'flex',
+    flex: '1',
+    justifyContent: 'space-between',
+
+  },
+  bottomRow: {
+    display: 'flex',
+    flex: '1',
     alignContent: 'space-between',
-    alignItems: 'baseline'
   },
   leftBlock: {
     display: 'flex',
     justifyContent: 'flex-start',
-    flex: 1,
+    alignItems: 'center',
+    flex: '1',
+  },
+  rightBlock: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flex: '1',
   },
   back: {
     padding: Spacing.tiny,
@@ -167,16 +178,9 @@ const styles = {
   separator: {
     flex: '0 1',
     borderLeft: `1px solid ${Colors.aluminum5}`,
-    marginTop: 12,
     marginLeft: Spacing.base,
-    height: Spacing.large, // Make line-size height
-  },
-  titles: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
-    marginLeft: Spacing.base + Spacing.tiny,
-    paddingTop: 18,
+    marginRight: Spacing.base,
+    height: 40, // Make line-size height
   },
   title: {
     ...Fonts.title,
@@ -191,7 +195,8 @@ const styles = {
     color: Colors.aluminum6,
     justifyContent: 'flex-start',
     width: 250,
-    marginTop: 0,
+    marginTop: -7,
+    marginLeft: 116,
   },
   actions: {
     flex: 1,
