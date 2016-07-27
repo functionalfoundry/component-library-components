@@ -39,14 +39,7 @@ const App = ({
     <View
       style={styles.header}
     >
-      <Header
-        profile={profile}
-        onClickBack={navigation.onClickBack}
-        title={navigation.title}
-        subtitle={navigation.subtitle}
-        actions={actions}
-        search={search}
-      />
+      {layout.header}
     </View>
     <View
       style={{ ...styles.content, backgroundColor }}

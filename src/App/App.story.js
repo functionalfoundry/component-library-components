@@ -4,6 +4,7 @@ import App from './App'
 import { profile } from '../../mocks/profile'
 import { components, states, properties } from '../../mocks/components'
 import ComponentStateList from '../ComponentStateList'
+import Header from '../Header'
 import ComponentGrid from '../ComponentGrid'
 import LiveView from '../LiveView'
 import {
@@ -28,10 +29,34 @@ const Grid = () => (
   />
 )
 
+const GridHeader = ({
+  search,
+}) => (
+  <Header
+    profile={profile}
+    title='Workflo Components'
+    actions={[]}
+    search={search}
+  />
+)
+
 const StateList = () => (
   <ComponentStateList
     states={states}
     onClickState={action('clicked state')}
+  />
+)
+
+const StateListHeader = ({
+  search,
+}) => (
+  <Header
+    profile={profile}
+    onClickBack={action('onClickBack')}
+    title='Slider'
+    subtitle='In focus'
+    actions={[]}
+    search={search}
   />
 )
 
@@ -71,17 +96,13 @@ class ComponentsScreen extends React.Component {
         profile={profile}
         layout={{
           content: <Grid />,
-        }}
-        navigation={{
-          title: 'Workflo Components',
+          header: <GridHeader search={{
+            show: true,
+            onSearch: this.handleSearch,
+            text: search.text,
+          }} />,
         }}
         backgroundColor={Colors.aluminum6}
-        actions={[]}
-        search={{
-          show: true,
-          onSearch: this.handleSearch,
-          text: search.text,
-        }}
       />
     )
   }
@@ -115,17 +136,11 @@ class StatesScreen extends React.Component {
         profile={profile}
         layout={{
           content: <StateList />,
-        }}
-        navigation={{
-          title: 'Slider',
-          subtitle: 'In focus',
-          onClickBack: action('clicked back'),
-        }}
-        actions={[]}
-        search={{
-          show: true,
-          onSearch: this.handleSearch,
-          text: search.text,
+          header: <StateListHeader search={{
+            show: true,
+            onSearch: this.handleSearch,
+            text: search.text,
+          }} />,
         }}
       />
     )
@@ -160,17 +175,11 @@ class LiveScreen extends React.Component {
         profile={profile}
         layout={{
           content: <Live />,
-        }}
-        navigation={{
-          title: 'Slider',
-          subtitle: 'In focus',
-          onClickBack: action('clicked back'),
-        }}
-        actions={[]}
-        search={{
-          show: true,
-          onSearch: this.handleSearch,
-          text: search.text,
+          header: <StateListHeader search={{
+            show: true,
+            onSearch: this.handleSearch,
+            text: search.text,
+          }} />,
         }}
       />
     )

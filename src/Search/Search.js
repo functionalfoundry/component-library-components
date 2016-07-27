@@ -111,6 +111,7 @@ const styles = {
     display: 'flex',
     flex: '1',
     justifyContent: 'flex-end',
+    cursor: 'pointer',
   },
   textField: {
     flex: '1 0 200px',
