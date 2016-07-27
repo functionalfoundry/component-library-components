@@ -12,60 +12,13 @@ import {
 
 storiesOf('App', module)
   .add('Component Grid', () => (
-    <App
-      profile={profile}
-      layout={{
-        content: <Grid />,
-      }}
-      navigation={{
-        title: 'Workflo Components',
-      }}
-      backgroundColor={Colors.aluminum6}
-      actions={[{
-        icon: 'widget-feed',
-        onClick: action('clicked widget feed'),
-      }]}
-      search={{
-        show: true,
-      }}
-    />
+    <ComponentsScreen />
   ))
   .add('Component State List', () => (
-    <App
-      profile={profile}
-      layout={{
-        content: <StateList />,
-      }}
-      navigation={{
-        title: 'Slider',
-        subtitle: 'In focus',
-        onClickBack: action('clicked back'),
-      }}
-      actions={[{
-        icon: 'widget-feed',
-        onClick: action('clicked widget feed'),
-      }]}
-      search={{
-        show: true,
-      }}
-    />
+    <StatesScreen />
   ))
   .add('Live View', () => (
-    <App
-      profile={profile}
-      layout={{
-        content: <Live />,
-      }}
-      navigation={{
-        title: 'Slider',
-        subtitle: 'In focus',
-        onClickBack: action('clicked back'),
-      }}
-      actions={[{
-        icon: 'widget-feed',
-        onClick: action('clicked widget feed'),
-      }]}
-    />
+    <LiveScreen />
   ))
 
 const Grid = () => (
@@ -89,3 +42,137 @@ const Live = () => (
     profile={profile}
   />
 )
+
+class ComponentsScreen extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      search: {
+        text: null,
+      }
+    }
+    this.handleSearch = this.handleSearch.bind(this)
+  }
+
+  handleSearch (text) {
+    this.setState({
+      search: {
+        text,
+      }
+    })
+  }
+
+  render () {
+    const {
+      search,
+    } = this.state
+    return (
+      <App
+        profile={profile}
+        layout={{
+          content: <Grid />,
+        }}
+        navigation={{
+          title: 'Workflo Components',
+        }}
+        backgroundColor={Colors.aluminum6}
+        actions={[]}
+        search={{
+          show: true,
+          onSearch: this.handleSearch,
+          text: search.text,
+        }}
+      />
+    )
+  }
+}
+
+class StatesScreen extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      search: {
+        text: null,
+      }
+    }
+    this.handleSearch = this.handleSearch.bind(this)
+  }
+
+  handleSearch (text) {
+    this.setState({
+      search: {
+        text,
+      }
+    })
+  }
+
+  render () {
+    const {
+      search,
+    } = this.state
+    return (
+      <App
+        profile={profile}
+        layout={{
+          content: <StateList />,
+        }}
+        navigation={{
+          title: 'Slider',
+          subtitle: 'In focus',
+          onClickBack: action('clicked back'),
+        }}
+        actions={[]}
+        search={{
+          show: true,
+          onSearch: this.handleSearch,
+          text: search.text,
+        }}
+      />
+    )
+  }
+}
+
+class LiveScreen extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      search: {
+        text: null,
+      }
+    }
+    this.handleSearch = this.handleSearch.bind(this)
+  }
+
+  handleSearch (text) {
+    this.setState({
+      search: {
+        text,
+      }
+    })
+  }
+
+  render () {
+    const {
+      search,
+    } = this.state
+    return (
+      <App
+        profile={profile}
+        layout={{
+          content: <Live />,
+        }}
+        navigation={{
+          title: 'Slider',
+          subtitle: 'In focus',
+          onClickBack: action('clicked back'),
+        }}
+        actions={[]}
+        search={{
+          show: true,
+          onSearch: this.handleSearch,
+          text: search.text,
+        }}
+      />
+    )
+  }
+}

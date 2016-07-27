@@ -64,6 +64,7 @@ const styles = {
     flexDirection: 'column',
     alignContent: 'space-between',
     alignItems: 'stretch',
+    flex: '1',
   },
   header: {
     flex: '1 0 92px',

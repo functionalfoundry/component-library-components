@@ -12,6 +12,7 @@ import {
   Fonts,
   Spacing,
 } from '@workflo/styles'
+import Search from '../Search'
 
 type Props = {
   profile: Object,
@@ -124,11 +125,9 @@ const Actions = ({
   <View
     style={styles.actions}
   >
-    {search.show &&
-      <Icon
-        name='search'
-        style={styles.icon}
-      />}
+    <Search
+      {...search}
+    />
 
     {actions.map((action, index) => (
       <Icon
@@ -199,9 +198,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-end',
     padding: Spacing.tiny,
-  },
-  icon: {
-    marginRight: Spacing.small,
   },
 }
 
