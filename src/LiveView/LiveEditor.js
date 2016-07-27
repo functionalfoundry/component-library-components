@@ -11,6 +11,8 @@ import {
   Colors,
 } from '@workflo/styles'
 
+import { ReactDecorator } from './Decorators'
+
 const {
     Editor,
     EditorState,
@@ -21,7 +23,6 @@ export default class LiveView extends React.Component {
 
   constructor (props) {
     super(props)
-    const decorator = new PrismDecorator({ defaultSyntax: 'javascript' })
     var contentState = convertFromRaw({
       entityMap: {},
       blocks: [
@@ -35,7 +36,7 @@ export default class LiveView extends React.Component {
       ]
     })
     this.state = {
-      editorState: EditorState.createWithContent(contentState, decorator)
+      editorState: EditorState.createWithContent(contentState, ReactDecorator)
     }
     this.onChange = this.onChange.bind(this)
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
@@ -141,8 +142,10 @@ const styles = {
   editor: {
     ...Fonts.content,
     ...Fonts.base,
+    fontWeight: 500,
     padding: Spacing.small,
     backgroundColor: 'white',
-    color: Colors.steel3,
+    color: Colors.steel6,
+    lineHeight: '1.8em',
   },
 }

@@ -70,6 +70,7 @@ const styles = {
     ':hover .component-footer': {
       // HACK
       backgroundColor: '#f4f4f4',
+      borderRadius: '0px 0px 3px 3px', // TODO: Sync with Card
     }
   },
   thumbnail: {

@@ -106,7 +106,7 @@ class ComponentsScreen extends React.Component {
             text: search.text,
           }} />,
         }}
-        backgroundColor={Colors.aluminum6}
+        backgroundColor={Colors.steel2}
       />
     )
   }
