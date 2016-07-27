@@ -33,6 +33,10 @@ class SignIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentDidMount () {
+    this.refs.email.focus()
+  }
+
   handleChangeEmail (email) {
     this.setState({
       email,
@@ -80,6 +84,7 @@ class SignIn extends React.Component {
           style={styles.fields}
         >
           <TextField
+            ref='email'
             placeholder='Email'
             value={email}
             theme={{
@@ -88,6 +93,7 @@ class SignIn extends React.Component {
             onChange={this.handleChangeEmail}
           />
           <TextField
+            ref='password'
             placeholder='Password'
             value={password}
             type='password'
