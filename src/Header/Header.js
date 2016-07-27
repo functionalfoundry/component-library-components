@@ -93,7 +93,7 @@ const Back = ({
     />}
     {!onClickBack && <Icon
       name='logo'
-      size='s'
+      size='m'
       style={styles.backButton}
     />}
   </View>

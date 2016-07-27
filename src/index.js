@@ -5,6 +5,7 @@ const ComponentStateCard = require('./ComponentStateCard')
 const ComponentStateList = require('./ComponentStateList')
 const Header = require('./Header')
 const LiveView = require('./LiveView')
+const SignIn = require('./SignIn')
 
 const WorkfloComponents = {
   App,
@@ -14,6 +15,7 @@ const WorkfloComponents = {
   ComponentStateList,
   Header,
   LiveView,
+  SignIn,
 }
 
 module.exports = WorkfloComponents

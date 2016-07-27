@@ -6,6 +6,7 @@ import { components, states, properties } from '../../mocks/components'
 import ComponentStateList from '../ComponentStateList'
 import Header from '../Header'
 import ComponentGrid from '../ComponentGrid'
+import SignIn from '../SignIn'
 import LiveView from '../LiveView'
 import {
   Colors,
@@ -20,6 +21,9 @@ storiesOf('App', module)
   ))
   .add('Live View', () => (
     <LiveScreen />
+  ))
+  .add('Sign In', () => (
+    <SignInScreen />
   ))
 
 const Grid = () => (
@@ -181,6 +185,48 @@ class LiveScreen extends React.Component {
             text: search.text,
           }} />,
         }}
+      />
+    )
+  }
+}
+
+class SignInScreen extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: '',
+    }
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange ({
+    email,
+    password,
+  }) {
+    this.setState({
+      email,
+      password,
+    })
+  }
+
+  render () {
+    const {
+      email,
+      password,
+    } = this.state
+    return (
+      <App
+        layout={{
+          content: (
+            <SignIn
+              email={email}
+              password={password}
+              onSignIn={this.handleChange}
+            />
+          ),
+        }}
+        backgroundColor={Colors.steel2}
       />
     )
   }
