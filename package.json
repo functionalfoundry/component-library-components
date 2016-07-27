@@ -32,8 +32,8 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "^0.2.7",
-    "@workflo/styles": "^0.1.2",
+    "@workflo/components": "^0.2.8",
+    "@workflo/styles": "^0.1.3",
     "draft-js": "^0.7.0",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "workfloapp/draft-js-prism",
@@ -69,10 +69,8 @@
     "express": "^4.13.3",
     "pre-commit": "^1.1.3",
     "raw-loader": "^0.5.1",
-    "react-addons-test-utils": "15.2.0",
     "react-hot-loader": "^1.3.0",
     "redbox-react": "1.2.10",
-    "redux-devtools": "^3.3.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
