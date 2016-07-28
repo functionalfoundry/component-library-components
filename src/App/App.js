@@ -38,12 +38,28 @@ const App = ({
     <View
       style={styles.header}
     >
-      {layout.header}
+      <View
+        style={styles.center}
+      >
+        <View
+          style={styles.maxWidth}
+        >
+          {layout.header}
+        </View>
+      </View>
     </View>
     <View
       style={{ ...styles.content, backgroundColor }}
     >
-      {layout.content}
+      <View
+        style={styles.center}
+      >
+        <View
+          style={styles.maxWidth}
+        >
+          {layout.content}
+        </View>
+      </View>
     </View>
   </View>
 )
@@ -53,10 +69,21 @@ const styles = {
     backgroundColor: Colors.steel2,
     color: Colors.aluminum5,
     display: 'flex',
+    flex: '1 1',
+    flexDirection: 'column',
+  },
+  center: {
+    display: 'flex',
+    flex: '1 1 auto',
+    justifyContent: 'center',
+  },
+  maxWidth: {
+    display: 'flex',
     flexDirection: 'column',
     alignContent: 'space-between',
     alignItems: 'stretch',
-    flex: '1',
+    flex: '1 1 auto',
+    maxWidth: 1050,
   },
   header: {
     flex: '1 0 92px',
