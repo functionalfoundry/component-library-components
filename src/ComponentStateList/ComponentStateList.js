@@ -37,6 +37,9 @@ const ComponentStateList = ({
               {...state}
               onClickEdit={() => onClickState(state.id)}
             />
+            <View
+              style={styles.separator}
+            />
           </View>
         ))}
       </View>
@@ -50,6 +53,9 @@ const styles = {
   container: {
     display: 'flex',
     flex: 1,
+    marginLeft: Spacing.large,
+    marginRight: Spacing.large,
+
   },
   section: {
     display: 'flex',
@@ -63,11 +69,17 @@ const styles = {
     flexDirection: 'column',
   },
   row: {
+    backgroundColor: 'white',
+    ':nth-child(even)': {
+      backgroundColor: 'white',
+    },
+    flexDirection: 'column',
+    justifyContent: 'stretch',
+  },
+  separator: {
+    borderBottom: `1px solid ${Colors.aluminum5}`,
+    flex: '0 1',
     marginLeft: Spacing.base,
     marginRight: Spacing.base,
-    backgroundColor: Colors.aluminum6,
-    ':nth-child(even)': {
-      backgroundColor: Colors.aluminum5,
-    }
   },
 }

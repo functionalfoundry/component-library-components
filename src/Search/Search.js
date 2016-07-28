@@ -114,6 +114,7 @@ const styles = {
     cursor: 'pointer',
   },
   textField: {
+    ...Fonts.base,
     flex: '1 0 200px',
     backgroundColor: Colors.steel3,
     justifyContent: 'flex-end',
@@ -122,27 +123,23 @@ const styles = {
     borderRight: `1px solid ${Colors.steel5}`,
     borderLeft: `1px solid ${Colors.steel5}`,
     borderBottom: 0,
-    ...Fonts.large,
-    letterSpacing: '.03em',
+    color: Colors.aluminum5,
   },
   closeIcon: {
     marginRight: Spacing.small,
   },
   searchIcon: {
     cursor: 'pointer',
-    marginRight: Spacing.small,
     marginLeft: Spacing.tiny,
     marginTop: Spacing.tiny,
   },
   wrapper: {
+    ...Fonts.base,
     display: 'flex',
     flex: '1',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    ...Fonts.large,
-    ...Fonts.title,
-    letterSpacing: '.03em',
-
+    color: Colors.aluminum5,
   }
 }
 

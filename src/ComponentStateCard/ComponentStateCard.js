@@ -78,6 +78,7 @@ const style = {
   card: {
     position: 'relative',
     overflow: 'hidden',
+    flex: '1',
   },
   titleContainer: {
     position: 'absolute',

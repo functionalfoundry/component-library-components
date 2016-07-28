@@ -92,17 +92,15 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     flex: '0 1 50px',
-    padding: `${Spacing.tiny}px ${Spacing.small}px`,
+    padding: `${Spacing.tiny}px ${Spacing.small}px ${Spacing.tiny + 2}px`,
   },
   name: {
     ...Fonts.base,
-    ...Fonts.title,
-    fontWeight: 600,
-    marginBottom: Spacing.tiny/2,
+    marginBottom: Spacing.tiny/2 - 2,
   },
   owner: {
     ...Fonts.base,
-    ...Fonts.title,
+    color: Colors.steel3,
   },
 }
 

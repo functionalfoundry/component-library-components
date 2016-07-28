@@ -177,20 +177,18 @@ const styles = {
   },
   separator: {
     flex: '0 1',
-    borderLeft: `1px solid ${Colors.aluminum5}`,
+    borderLeft: `1px solid ${Colors.steel6}`,
     marginLeft: Spacing.base,
     marginRight: Spacing.base,
     height: 40, // Make line-size height
   },
   title: {
-    ...Fonts.title,
     ...Fonts.large,
     color: Colors.aluminum3,
     justifyContent: 'flex-start',
     marginBottom: 0,
   },
   subtitle: {
-    ...Fonts.title,
     ...Fonts.huge,
     color: Colors.aluminum6,
     justifyContent: 'flex-start',

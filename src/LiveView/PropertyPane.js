@@ -12,7 +12,7 @@ const PropertyPane = ({
   properties = [],
 }: Props) => (
   <Table>
-    <tbody>
+    <tbody style={{fontFamily: '"Roboto Mono"'}}>
       {properties.map((property, index) => (
         <tr key={index}>
           <td style={style.name}>

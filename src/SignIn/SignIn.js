@@ -76,7 +76,7 @@ class SignIn extends React.Component {
             size={3}
             style={styles.heading}
           >
-            Get into the flo
+            Get into your flo
           </Heading>
         </View>
         <View
@@ -142,8 +142,7 @@ const styles = {
     borderBottom: `1px solid ${Colors.aluminum1}`,
     alignItems: 'center',
     padding: Spacing.tiny,
-    ...Fonts.large,
-    letterSpacing: '.03em',
+    ...Fonts.base,
     marginBottom: Spacing.base,
   },
   heroContainer: {
@@ -154,9 +153,7 @@ const styles = {
     margin: 30,
   },
   heading: {
-    ...Fonts.title,
-    ...Fonts.huge,
-    fontWeight: 400,
+    ...Fonts.large,
     color: Colors.aluminum5,
     marginTop: 30
   },

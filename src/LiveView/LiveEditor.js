@@ -132,22 +132,20 @@ export default class LiveView extends React.Component {
 const styleMap = {
   CODE: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+    fontFamily: '"Open Sans", "Menlo", "Consolas", monospace',
     fontSize: 16,
-    color: 'black',
+    color: 'red',
     padding: 2,
   },
 }
 
 const styles = {
   editor: {
-    ...Fonts.content,
     ...Fonts.base,
-    fontWeight: 500,
     padding: Spacing.small,
     backgroundColor: 'white',
     color: Colors.steel6,
-    lineHeight: '1.8em',
+    lineHeight: '1.6em',
     display: 'flex',
     flex: '1',
     flexDirection: 'column',
