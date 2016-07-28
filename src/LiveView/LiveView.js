@@ -66,6 +66,7 @@ const style = {
     paddingTop: 0,
     display: 'flex',
     flexDirection: 'column',
+    flex: '1',
   },
   header: {
     backgroundColor: Colors.steel3,
@@ -87,7 +88,7 @@ const style = {
   },
   propertyPaneContainer: {
     display: 'flex',
-    flex: '1 1',
+    flex: '1',
     color: Colors.aluminum6,
     marginTop: Spacing.small,
   },

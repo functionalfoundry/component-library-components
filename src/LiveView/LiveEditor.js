@@ -122,6 +122,7 @@ export default class LiveView extends React.Component {
           handleKeyCommand={this.handleKeyCommand}
           handleReturn={this.handleReturn}
           onTab={this.handleTab}
+          readOnly={true}
         />
       </View>
     )

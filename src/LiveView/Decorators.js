@@ -1,6 +1,7 @@
 import React from 'react'
 import Draft from 'draft-js'
 const acorn = require('acorn-jsx')
+import { StyleSheet, css } from 'aphrodite'
 
 const {
     CompositeDecorator
@@ -68,8 +69,8 @@ export const valueStrategy = (contentBlock, callback) => {
     } else if (attribute.value.type === 'Literal') {
       values.push({
         name: attribute.value.value,
-        start: attribute.value.start,
-        end: attribute.value.end,
+        start: attribute.value.start + 1, // Don't include quote
+        end: attribute.value.end - 1,
       })
     }
   })
@@ -88,7 +89,8 @@ const ComponentSpan = (props) => (
 
 const PropSpan = (props) => (
   <span
-    {...props} style={{color: '#009e71'}}
+    {...props}
+    style={{color: '#009e71'}}
   >
     {props.children}
   </span>
@@ -99,7 +101,8 @@ const ValueSpan = (props) => (
     renderer={<Radios />}
   >
     <span
-      {...props} style={{color: 'purple'}}
+      {...props}
+      className={css(styles.value)}
     >
       {props.children}
     </span>
@@ -146,6 +149,15 @@ class Radios extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  value: {
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: Colors.aluminum5,
+    }
+  }
+})
 
 /**
  * Returns array of props from React component passed to input
