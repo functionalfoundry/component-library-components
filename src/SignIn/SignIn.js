@@ -122,7 +122,7 @@ class SignIn extends React.Component {
 const styles = {
   signIn: {
     display: 'flex',
-    flex: '1',
+    flex: '1 1',
     flexDirection: 'column',
     backgroundColor: Colors.steel2,
     justifyContent: 'center',
@@ -130,13 +130,13 @@ const styles = {
   },
   fields: {
     display: 'flex',
-    flex: '1',
+    flex: '0 1 130px',
     flexDirection: 'column',
     padding: Spacing.small,
     width: 400,
   },
   textField: {
-    flex: '1',
+    flex: '1 1',
     backgroundColor: Colors.steel2,
     justifyContent: 'flex-end',
     borderBottom: `1px solid ${Colors.aluminum1}`,
@@ -147,6 +147,7 @@ const styles = {
   },
   heroContainer: {
     display: 'flex',
+    flex: '0 1 120px',
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',

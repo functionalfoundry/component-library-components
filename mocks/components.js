@@ -22,17 +22,17 @@ export const components = [
   },
   {
     id: 4,
-    name: 'Host Settings',
+    name: 'Dropdown Menu',
     owner: 'Jannis Pohlman',
     profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
-    thumbnail: 'http://placehold.it/500x500',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469816905/dropdown-menu-double-icon-left-right_tujd6v.png',
   },
   {
     id: 5,
-    name: 'Host List',
+    name: 'Popover',
     owner: 'Jannis Pohlman',
     profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
-    thumbnail: 'http://placehold.it/500x500',
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469816906/popover-success_dfgcda.png',
   },
 ]
 

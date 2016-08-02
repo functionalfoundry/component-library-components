@@ -5,9 +5,16 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'lib'),
     filename: 'bundle.js',
-    publicPath: '/lib/',
     libraryTarget: 'var',
     library: 'WorkfloComponents'
+  },
+  resolve: {
+    root: path.resolve(__dirname),
+    alias: {
+      'react': 'src/React',
+      'react-dom': 'src/ReactDOM'
+    },
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [

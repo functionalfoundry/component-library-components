@@ -1,4 +1,5 @@
 import './insertFont'
+import './reset.css'
 import './grommet.css'
 import './draft.css'
 import './rc-trigger.css'
@@ -35,19 +36,21 @@ const App = ({
   <View
     style={styles.container}
   >
-    <View
-      style={styles.header}
-    >
+    {layout.header && (
       <View
-        style={styles.center}
+        style={styles.header}
       >
         <View
-          style={styles.maxWidth}
+          style={styles.center}
         >
-          {layout.header}
+          <View
+            style={styles.maxWidth}
+          >
+            {layout.header}
+          </View>
         </View>
       </View>
-    </View>
+    )}
     <View
       style={{ ...styles.content, backgroundColor }}
     >
@@ -86,7 +89,7 @@ const styles = {
     maxWidth: 1200,
   },
   header: {
-    flex: '1 0 92px',
+    flex: '0 0 92px',
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
     marginTop: Spacing.base,
