@@ -1,6 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-
 var config = {
   entry: [
     'webpack-hot-middleware/client',
@@ -26,34 +25,20 @@ var config = {
     })
   ],
 
-  resolve: {
-    root: path.resolve(__dirname) + '/..',
-    extensions: ['', '.js']
-  },
-
   module: {
     loaders: [
       {
-        test: /\.js/,
+        test: /\.js$/,
         loaders: ['babel'],
-        include: [
-          path.join(__dirname, 'src'),
-        ]
+        exclude: path.join(__dirname, '..', 'node_modules'),
+        include: path.join(__dirname, '..')
       },
       {
-        test: /\.css/,
-        loaders: ['style-loader', 'css-loader'],
-        exclude: path.join(__dirname, '../node_modules')
+        test: /\.css$/,
+        loaders: ['style', 'css'],
+        exclude: path.join(__dirname, '..', 'node_modules'),
+        include: path.join(__dirname, '..')
       },
-      {
-        test: /\.json?$/,
-        loaders: ['raw']
-      },
-      {
-        test: /\.png$/,
-        loader: 'url',
-        query: { limit: 8192, mimetype: 'image/png' }
-      }
     ]
   }
 }

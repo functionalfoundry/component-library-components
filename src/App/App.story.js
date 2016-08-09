@@ -2,7 +2,8 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import App from './App'
 import { profile } from '../../mocks/profile'
-import { components, states, properties } from '../../mocks/components'
+import { components, states } from '../../mocks/components'
+import { liveViewState } from '../../mocks/live-view'
 import ComponentStateList from '../ComponentStateList'
 import Header from '../Header'
 import ComponentGrid from '../ComponentGrid'
@@ -66,8 +67,7 @@ const StateListHeader = ({
 
 const Live = () => (
   <LiveView
-    component={components[0]}
-    properties={properties}
+    {...liveViewState}
     profile={profile}
   />
 )

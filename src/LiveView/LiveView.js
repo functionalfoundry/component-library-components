@@ -13,13 +13,13 @@ import {
 
 type Props = {
   component: any,
-  properties: any,
+  componentState: any,
   profile: Object,
 }
 
 const LiveView = ({
   component,
-  properties,
+  componentState,
   profile = {},
 }: Props) => (
   <View
@@ -51,7 +51,7 @@ const LiveView = ({
       style={style.propertyPaneContainer}
     >
       <PropertyPane
-        properties={properties}
+        properties={component.props}
       />
     </View>
   </View>
