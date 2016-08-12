@@ -103,6 +103,8 @@ const styles = {
     alignItems: 'stretch',
     paddingBottom: Spacing.huge,
     backgroundColor: Colors.aluminum6,
+    marginLeft: Spacing.large,
+    marginRight: Spacing.large,
   },
 }
 

@@ -63,8 +63,6 @@ const style = {
   container: {
     backgroundColor: Colors.steel2,
     paddingTop: 0,
-    marginLeft: Spacing.large,
-    marginRight: Spacing.large,
     display: 'flex',
     flexDirection: 'column',
     flex: '1',

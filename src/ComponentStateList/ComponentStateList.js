@@ -53,9 +53,6 @@ const styles = {
   container: {
     display: 'flex',
     flex: 1,
-    marginLeft: Spacing.large,
-    marginRight: Spacing.large,
-
   },
   section: {
     display: 'flex',

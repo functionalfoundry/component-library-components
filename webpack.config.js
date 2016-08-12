@@ -11,8 +11,8 @@ module.exports = {
   resolve: {
     root: path.resolve(__dirname),
     alias: {
-      'react': 'src/React',
-      'react-dom': 'src/ReactDOM'
+      'react': path.join(__dirname, 'src', 'React'),
+      'react-dom': path.join(__dirname, 'src', 'ReactDOM')
     },
     extensions: ['', '.js', '.jsx']
   },

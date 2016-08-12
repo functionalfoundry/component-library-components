@@ -31,8 +31,6 @@ const ComponentGrid = ({
 
 const styles = {
   container: {
-    marginRight: Spacing.large,
-    marginLeft: Spacing.large,
   },
 }
 
