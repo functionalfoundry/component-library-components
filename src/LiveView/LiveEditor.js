@@ -28,9 +28,11 @@ export default class LiveView extends React.Component {
       blocks: [
         {
           type: 'code-block',
-          text: `<ListingCard
-  listing={listing}
+          text: `<Comment
+  comment={comment}
+  description={description}
   size='medium'
+  likeCount={21}
 />`
         }
       ]

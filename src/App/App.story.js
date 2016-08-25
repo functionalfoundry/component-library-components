@@ -58,8 +58,8 @@ const StateListHeader = ({
   <Header
     profile={profile}
     onClickBack={action('onClickBack')}
-    title='Slider'
-    subtitle='In focus'
+    title='Comment'
+    subtitle='with topics'
     actions={[]}
     search={search}
   />
@@ -222,7 +222,7 @@ class SignInScreen extends React.Component {
             <SignIn
               email={email}
               password={password}
-              onSignIn={this.handleChange}
+              onSignIn={action('Sign in')}
             />
           ),
         }}

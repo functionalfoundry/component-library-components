@@ -64,6 +64,7 @@ const styles = {
     color: Colors.steel2,
     display: 'flex',
     flexDirection: 'column',
+    flex: 1,
     justifyContent: 'flex-start',
     margin: 20,
     cursor: 'pointer',
