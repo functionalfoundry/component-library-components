@@ -14,6 +14,7 @@ import {
 
 type Props = {
   show: Boolean,
+  focus: Boolean,
   text: String,
   onSearch: Function,
 }
@@ -24,11 +25,20 @@ class Search extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      isFocused: false,
+      isFocused: props.focus,
     }
     this.handleClickSearch = this.handleClickSearch.bind(this)
     this.handleWindowClick = this.handleWindowClick.bind(this)
     this.handleClickOutside = this.handleClickOutside.bind(this)
+  }
+
+  componentWillMount () {
+    if (this.state.isFocused && window) {
+      setTimeout(() => {
+        this.windowListener = window.addEventListener('click', this.handleWindowClick)
+        this.refs.textField.focus()
+      })
+    }
   }
 
   componentWillUnmount () {

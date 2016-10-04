@@ -102,6 +102,7 @@ class ComponentsScreen extends React.Component {
           content: <Grid />,
           header: <GridHeader search={{
             show: true,
+            focus: true,
             onSearch: this.handleSearch,
             text: search.text,
           }} />,
