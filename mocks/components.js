@@ -56,6 +56,7 @@ export const states = [
     id: 23,
     name: 'Regular',
     thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-regular_yexhv7.png',
+    code: '<Comment\n  comment={comment}\n  description={description}\n  size=\'medium\'\n  likeCount={21}\n/>',
   },
   {
     id: 24,

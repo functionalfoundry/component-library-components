@@ -33,6 +33,7 @@ export const liveViewState = {
     ],
   },
   componentState: {
+    code: "<Comment\n  comment={comment}\n  description={description}\n  size=\'medium\'\n  likeCount={21}\n/>",
     propKeyValues: [
       {
         prop: 'auto',

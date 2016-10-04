@@ -192,7 +192,6 @@ const styles = {
     ...Fonts.huge,
     color: Colors.aluminum6,
     justifyContent: 'flex-start',
-    width: 250,
     marginTop: -7,
     marginLeft: 116,
   },
