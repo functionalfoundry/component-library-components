@@ -44,6 +44,7 @@ const LiveView = ({
         style={style.liveEditorContainer}
       >
         <LiveEditor
+          code={componentState.code}
         />
       </View>
     </View>

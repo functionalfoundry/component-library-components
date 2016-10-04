@@ -28,12 +28,7 @@ export default class LiveView extends React.Component {
       blocks: [
         {
           type: 'code-block',
-          text: `<Comment
-  comment={comment}
-  description={description}
-  size='medium'
-  likeCount={21}
-/>`
+          text: props.code || ""
         }
       ]
     })
