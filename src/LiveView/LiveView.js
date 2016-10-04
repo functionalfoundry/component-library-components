@@ -90,5 +90,6 @@ const style = {
     flex: '1',
     color: Colors.aluminum6,
     marginTop: Spacing.small,
+    marginBottom: Spacing.large,
   },
 }
