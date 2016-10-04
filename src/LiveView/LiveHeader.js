@@ -118,7 +118,7 @@ const styles = {
     ...Fonts.base,
     paddingLeft: Spacing.small/2,
     color: Colors.primary,
-    flex: '0 1',
+    flex: '1 1',
   },
   actions: {
     ...Fonts.title,
