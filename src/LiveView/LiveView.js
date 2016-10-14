@@ -37,7 +37,8 @@ const LiveView = ({
         style={style.livePreviewContainer}
       >
         <LivePreview
-          {...component}
+          component={component}
+          componentState={componentState}
         />
       </View>
       <View
