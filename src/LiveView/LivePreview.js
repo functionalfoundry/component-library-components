@@ -8,18 +8,21 @@ import {
 } from '@workflo/styles'
 
 type Props = {
-  thumbnail: string,
+  thumbnail: String,
+  implementation: Function,
 }
 const LivePreview = ({
   thumbnail,
+  implementation,
 }: Props) => (
   <View
     style={styles.card}
   >
-    <Image
-      src={thumbnail}
-      style={styles.image}
-    />
+    {implementation && implementation.call({})}
+    {!implementation && <Image
+                          src={thumbnail}
+                          style={styles.image}
+                          />}
   </View>
 )
 
