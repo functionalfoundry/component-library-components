@@ -1,5 +1,7 @@
 import React from 'react'
+import Theme from 'js-theme'
 import {
+  Card,
   View,
   Icon,
   Image,
@@ -12,34 +14,36 @@ import {
 import Heading from '@workflo/components/lib/Heading'
 
 type Props = {
-  name: String,
-  thumbnail: String,
+  name: string,
+  thumbnail: string,
   onClickEdit: Function,
+  theme: Object,
 }
 
 const ComponentStateCard = ({
   name,
   thumbnail,
   onClickEdit,
+  theme,
 }: Props) => (
-  <View
-    style={style.card}
+  <Card
+    {...theme.componentStateCard}
   >
     <View
-      style={style.section}
+      {...theme.section}
     >
       <View
-        style={style.titleContainer}
+        {...theme.titleContainer}
       >
         <Heading
+          {...theme.title}
           size={2}
-          style={style.title}
         >
           {name}
         </Heading>
       </View>
       <View
-        style={style.thumbnail}
+        {...theme.thumbnail}
       >
         <Image
           src={thumbnail}
@@ -47,61 +51,67 @@ const ComponentStateCard = ({
         />
       </View>
       <View
-        style={style.actions}
+        {...theme.actions}
       >
         <Actions
           onClickEdit={onClickEdit}
+          theme={theme}
         />
       </View>
     </View>
-  </View>
+  </Card>
 )
 
 type ActionsPropsT = {
   onClickEdit: Function,
+  theme: Object,
 }
 
 const Actions = ({
   onClickEdit,
+  theme,
 }: ActionsPropsT) => (
   <View>
     <Icon
+      {...theme.editButton}
       name='open'
       onClick={onClickEdit}
-      size='m'
-      style={style.editButton}
+      size='huge'
     />
   </View>
 )
 
-const style = {
-  card: {
+const defaultTheme = {
+  componentStateCard: {
     position: 'relative',
     overflow: 'hidden',
+    width: 'inherit', // FIX
+    height: 320, // FIX
     flex: '1',
   },
   titleContainer: {
     position: 'absolute',
-    top: Spacing.base,
-    left: Spacing.base,
+    top: Spacing.tiny,
+    left: Spacing.tiny,
   },
   title: {
     ...Fonts.title,
     ...Fonts.large,
-    color: Colors.steel3,
+    color: Colors.grey800,
   },
   actions: {
     position: 'absolute',
-    top: Spacing.base,
-    right: Spacing.base,
+    top: Spacing.tiny,
+    right: Spacing.tiny,
   },
   section: {
     display: 'flex',
     alignContent: 'center',
-    minHeight: 340,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   thumbnail: {
-    width: 200,
+    height: 200,
     maxWidth: '100%',
     display: 'flex',
     justifyContent: 'center',
@@ -112,4 +122,4 @@ const style = {
   },
 }
 
-export default ComponentStateCard
+export default Theme('ComponentStateCard', defaultTheme)(ComponentStateCard)
