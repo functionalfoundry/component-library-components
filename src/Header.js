@@ -1,6 +1,7 @@
 import React from 'react'
-import { ActionsT } from '../../types/Action'
-import { SearchT } from '../../types/Search'
+import Theme from 'js-theme'
+import { ActionsT } from '../types/Action'
+import { SearchT } from '../types/Search'
 import {
   View,
   Icon,
@@ -12,15 +13,18 @@ import {
   Fonts,
   Spacing,
 } from '@workflo/styles'
-import Search from '../Search'
+import Search from './Search'
+import SubHeader from './SubHeader'
 
 type Props = {
   profile: Object,
   onClickBack: Function,
-  title: String,
-  subtitle: String,
+  title: string,
+  subtitle: string,
   actions: ActionsT,
+  subHeaderActions: ActionsT,
   search: SearchT,
+  theme: Object,
 }
 
 const Header = ({
@@ -29,95 +33,104 @@ const Header = ({
   subtitle,
   onClickBack,
   actions,
+  subHeaderActions,
   search,
+  theme,
 }: Props) => (
   <View
-    style={styles.container}
+    {...theme.header}
   >
     <View
-      style={styles.topRow}
+      {...theme.topRow}
     >
       <View
-        style={styles.leftBlock}
+        {...theme.leftBlock}
       >
         <Back
           onClickBack={onClickBack}
+          theme={theme}
         />
-        <Separator />
+        <View
+          {...theme.separator}
+          inline
+        />
         <Heading
-          size={1}
-          style={styles.title}
+          size='huge'
+          {...theme.title}
         >
           {title}
         </Heading>
       </View>
       <View
-        style={styles.rightBlock}
+        {...theme.rightBlock}
       >
         <Actions
           profile={profile}
           actions={actions}
           search={search}
+          theme={theme}
         />
       </View>
     </View>
     <View
-      style={styles.bottomRow}
+      {...theme.bottomRow}
     >
       <Heading
         size={2}
-        style={styles.subtitle}
+        {...theme.subtitle}
       >
         {subtitle}
       </Heading>
     </View>
-
+    <SubHeader
+      actions={subHeaderActions}
+    />
   </View>
 )
 
 type BackPropsT = {
   onClickBack: Function,
+  theme: Object,
 }
 
 const Back = ({
   onClickBack,
+  theme,
 }: BackPropsT) => (
   <View
-    style={styles.back}
+    {...theme.back}
   >
-    {onClickBack && <Icon
-      name='back'
-      size='m'
-      style={styles.backButton}
-      onClick={onClickBack}
-    />}
-    {!onClickBack && <Icon
-      name='logo'
-      size='m'
-      style={styles.backButton}
-    />}
+    {onClickBack &&
+      <Icon
+        name='back'
+        size='large'
+        {...theme.backButton}
+        onClick={onClickBack}
+      />}
+    {!onClickBack &&
+      <Icon
+        name='logo'
+        size='large'
+        {...theme.backButton}
+      />}
   </View>
-)
-
-const Separator = () => (
-  <View
-    style={styles.separator}
-  />
 )
 
 type ActionsPropsT = {
   profile: Object,
   actions: ActionsT,
   search: SearchT,
+  theme: Object,
 }
 
 const Actions = ({
   profile = {},
   actions = [],
   search = {},
+  theme,
 }: ActionsPropsT) => (
   <View
-    style={styles.actions}
+    {...theme.actions}
   >
     <Search
       {...search}
@@ -139,61 +152,62 @@ const Actions = ({
   </View>
 )
 
-const styles = {
-  container: {
+const LOGO_WIDTH = 60
+const SEPARATOR_MARGIN = Spacing.small
+const SEPARATOR_WIDTH = SEPARATOR_MARGIN + 1
+
+const defaultTheme = {
+  header: {
     color: Colors.aluminum5,
     display: 'flex',
     flexDirection: 'column',
   },
   topRow: {
-    display: 'flex',
-    flex: '1',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-
   },
   bottomRow: {
-    display: 'flex',
-    flex: '1',
+    flexDirection: 'row',
     alignContent: 'space-between',
   },
   leftBlock: {
     display: 'flex',
     justifyContent: 'flex-start',
+    flexDirection: 'row',
     alignItems: 'center',
-    flex: '1',
+    flexShrink: 1,
   },
   rightBlock: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flex: '1',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flexShrink: 1
   },
   back: {
     padding: Spacing.tiny,
-    flex: '0 1',
+    flex: `0 1 ${LOGO_WIDTH}px`,
   },
   backButton: {
     cursor: 'pointer',
   },
   separator: {
-    flex: '0 1',
-    borderLeft: `1px solid ${Colors.steel6}`,
-    marginLeft: Spacing.base,
-    marginRight: Spacing.base,
+    flex: '0 1 auto',
+    borderLeft: `1px solid ${Colors.grey500}`,
     height: 40, // Make line-size height
+    marginRight: SEPARATOR_MARGIN,
   },
   title: {
     ...Fonts.large,
-    color: Colors.aluminum3,
+    color: Colors.grey300,
     justifyContent: 'flex-start',
     marginBottom: 0,
   },
   subtitle: {
     ...Fonts.huge,
-    color: Colors.aluminum6,
+    color: 'white',
     justifyContent: 'flex-start',
-    marginTop: -7,
-    marginLeft: 116,
+    width: 250,
+    marginLeft: LOGO_WIDTH + SEPARATOR_WIDTH,
+    marginTop: -12,
   },
   actions: {
     flex: 1,
@@ -203,4 +217,4 @@ const styles = {
   },
 }
 
-export default Header
+export default Theme('Header', defaultTheme)(Header)
