@@ -1,4 +1,6 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/react/node_modules/fbjs.*
-<PROJECT_ROOT>/node_modules/@kadira.*
-<PROJECT_ROOT>/node_modules/@workflo.*
+
+[options]
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable

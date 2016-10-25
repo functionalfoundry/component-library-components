@@ -1,78 +1,85 @@
+/* @flow */
 import React from 'react'
+import Theme from 'js-theme'
+import mergeProps from 'js-theme/lib/mergeProps'
 import {
+  Avatar,
   Card,
   Heading,
   Image,
   View,
-  ProfilePhoto,
 } from '@workflo/components'
 import {
   Colors,
+  Corners,
   Fonts,
   Spacing,
 } from '@workflo/styles'
 
 type Props = {
-  name: String,
-  owner: String,
-  thumbnail: String,
-  profilePhoto: String,
+  name: string,
+  owner: string,
+  theme: Object,
+  thumbnail: string,
+  profilePhoto: string,
 }
 
 const ComponentCard = ({
   name,
   owner,
   profilePhoto,
+  theme,
   thumbnail,
+  ...props,
 }: Props) => (
   <Card
+    {...theme.componentCard}
+    {...props}
     size='medium'
     flush
-    style={styles.card}
   >
     <View
-      style={styles.imageContainer}
+      {...theme.imageContainer}
     >
       <Image
+        {...theme.image}
         src={thumbnail}
-        style={styles.image}
       />
     </View>
     <View
-      style={styles.footer}
-      className='component-footer'
+      {...mergeProps(theme.footer, { className: 'component-footer' })}
     >
       <Heading
+        {...theme.name}
         size={2}
-        style={styles.name}
       >
         {name}
       </Heading>
-      <ProfilePhoto
+      <Avatar
         image={profilePhoto}
         firstName={'Yaniv'}
         lastName={'Tal'}
         size='small'
+        backgroundShade='Light'
         showName
       />
     </View>
   </Card>
 )
 
-const styles = {
-  card: {
-    color: Colors.steel2,
+const defaultTheme = {
+  componentCard: {
+    ...Corners.round,
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'flex-start',
-    margin: 20,
     cursor: 'pointer',
     ':hover .component-footer': {
       // HACK
-      backgroundColor: '#f4f4f4',
-      borderRadius: '0px 0px 3px 3px', // TODO: Sync with Card
-    }
+      backgroundColor: Colors.grey100,
+      borderRadius: `0px 0px ${Corners.round.borderRadius}px ${Corners.round.borderRadius}px`,
+    },
   },
   thumbnail: {
     flex: 1,
@@ -92,17 +99,17 @@ const styles = {
   footer: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '0 1 50px',
-    padding: `${Spacing.tiny}px ${Spacing.small}px ${Spacing.tiny + 2}px`,
+    flex: '0 1',
+    padding: Spacing.tiny,
   },
   name: {
     ...Fonts.base,
-    marginBottom: Spacing.tiny/2 - 2,
+    color: Colors.grey800,
   },
   owner: {
     ...Fonts.base,
-    color: Colors.steel3,
+    // color: Colors.steel3,
   },
 }
 
-export default ComponentCard
+export default Theme('ComponentCard', defaultTheme)(ComponentCard)
