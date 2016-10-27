@@ -10,6 +10,7 @@ function loadStories () {
   require('../src/ComponentStateCard.story.js')
   require('../src/Search.story.js')
   require('../src/Header.story.js')
+  require('../src/FocusedView.story.js')
 }
 
 configure(loadStories, module)

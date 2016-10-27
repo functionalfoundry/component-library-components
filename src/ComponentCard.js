@@ -51,7 +51,7 @@ const ComponentCard = ({
     >
       <Heading
         {...theme.name}
-        size={2}
+        size='base'
       >
         {name}
       </Heading>
@@ -72,11 +72,10 @@ const defaultTheme = {
     ...Corners.round,
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
+    flex: '0 1 auto',
     justifyContent: 'flex-start',
     cursor: 'pointer',
     ':hover .component-footer': {
-      // HACK
       backgroundColor: Colors.grey100,
       borderRadius: `0px 0px ${Corners.round.borderRadius}px ${Corners.round.borderRadius}px`,
     },

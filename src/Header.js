@@ -160,6 +160,7 @@ const defaultTheme = {
   header: {
     color: Colors.aluminum5,
     display: 'flex',
+    flex: '0 1 auto',
     flexDirection: 'column',
   },
   topRow: {
