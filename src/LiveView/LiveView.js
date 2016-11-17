@@ -1,8 +1,9 @@
 import React from 'react'
 import LivePreview from './LivePreview'
-import LiveEditor from './LiveEditor'
 import LiveHeader from './LiveHeader'
 import PropertyPane from './PropertyPane'
+import TextEditor from '@workflo/components/TextEditor'
+
 import {
   View,
 } from '@workflo/components'
@@ -15,12 +16,14 @@ type Props = {
   component: any,
   componentState: any,
   profile: Object,
+  onChangePropKeyValue: Function,
 }
 
 const LiveView = ({
   component,
   componentState,
   profile = {},
+  onChangePropKeyValue,
 }: Props) => (
   <View
     style={style.container}
@@ -44,8 +47,10 @@ const LiveView = ({
       <View
         style={style.liveEditorContainer}
       >
-        <LiveEditor
-          code={componentState.code}
+        <TextEditor
+          componentName={component.name}
+          propKeyValues={componentState.propKeyValues}
+          onChange={onChangePropKeyValue}
         />
       </View>
     </View>
