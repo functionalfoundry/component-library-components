@@ -2,7 +2,7 @@ import React from 'react'
 import LivePreview from './LivePreview'
 import LiveHeader from './LiveHeader'
 import PropertyPane from './PropertyPane'
-import TextEditor from '@workflo/components/TextEditor'
+import TextEditor from '@workflo/components/lib/TextEditor'
 
 import {
   View,
