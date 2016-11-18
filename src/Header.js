@@ -82,9 +82,9 @@ const Header = ({
         {subtitle}
       </Heading>
     </View>
-    <SubHeader
-      actions={subHeaderActions}
-    />
+    //<SubHeader
+    //  actions={subHeaderActions}
+    ///>
   </View>
 )
 
