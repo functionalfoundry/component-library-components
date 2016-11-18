@@ -4,7 +4,7 @@ import {
   Heading,
   Icon,
   View,
-  TextField,
+  TextInput,
 } from '@workflo/components'
 import {
   Colors,
@@ -82,7 +82,7 @@ class SignIn extends React.Component {
         <View
           style={styles.fields}
         >
-          <TextField
+          <TextInput
             ref='email'
             placeholder='Email'
             value={email}
@@ -91,7 +91,7 @@ class SignIn extends React.Component {
             }}
             onChange={this.handleChangeEmail}
           />
-          <TextField
+          <TextInput
             ref='password'
             placeholder='Password'
             value={password}
