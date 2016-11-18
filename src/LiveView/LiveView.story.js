@@ -1,5 +1,5 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
 import { components, states, propKeyValues } from '../../mocks/components'
 import { profile } from '../../mocks/profile'
@@ -29,7 +29,7 @@ storiesOf('Live View', module)
       propKeyValues={propKeyValues}
       properties={properties}
       profile={profile}
-      onUpdatePropKeyValue={() => {}}
+      onUpdatePropKeyValue={action('onUpdatePropKeyValue')}
     />
   ))
 

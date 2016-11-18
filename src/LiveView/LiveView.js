@@ -96,7 +96,10 @@ const defaultTheme = {
   },
   liveEditorContainer: {
     display: 'flex',
-    flex: '0 1 40%'
+    flex: '0 1 40%',
+    '@media (max-width: 800px)': {
+      display: 'none',
+    },
   },
   propertyPaneContainer: {
     display: 'flex',
