@@ -96,7 +96,7 @@ const Actions = ({
 
 const defaultTheme = {
   header: {
-    backgroundColor: Colors.grey900,
+    backgroundColor: Colors.grey800,
     color: Colors.grey200,
     padding: Spacing.small,
     display: 'flex',
