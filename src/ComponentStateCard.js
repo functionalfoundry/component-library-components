@@ -120,6 +120,7 @@ const defaultTheme = {
     height: 200,
     maxWidth: '100%',
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
