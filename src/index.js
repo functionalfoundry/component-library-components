@@ -1,9 +1,9 @@
 const App = require('./App')
 const ComponentCard = require('./ComponentCard')
-const ComponentGrid = require('./ComponentGrid')
+const ComponentGrid = require('./ComponentGrid').default
 const ComponentStateCard = require('./ComponentStateCard')
 const ComponentStateList = require('./ComponentStateList')
-const Header = require('./Header')
+const Header = require('./Header').default
 const LiveView = require('./LiveView')
 const SignIn = require('./SignIn')
 
