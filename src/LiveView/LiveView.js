@@ -17,6 +17,10 @@ type Props = {
   component: any,
   componentState: any,
   profile: Object,
+  propKeyValues: Array<any>,
+  properties: Object,
+  theme: Object,
+  onUpdatePropKeyValue: Function,
 }
 
 const LiveView = ({
@@ -24,6 +28,7 @@ const LiveView = ({
   componentState,
   profile = {},
   propKeyValues,
+  properties,
   theme,
   onUpdatePropKeyValue,
 }: Props) => (
@@ -43,7 +48,7 @@ const LiveView = ({
       >
         <LivePreview
           component={component}
-          componentState={componentState}
+          properties={properties}
         />
       </View>
       <View

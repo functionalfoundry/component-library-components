@@ -1,19 +1,25 @@
 import React from 'react'
 import { storiesOf } from '@kadira/storybook'
 import LiveView from './LiveView'
-import { components, states, properties, propKeyValues } from '../../mocks/components'
+import { components, states, propKeyValues } from '../../mocks/components'
 import { profile } from '../../mocks/profile'
 
 const component = components[0]
-component.implementation = () => (
+component.implementation = ({children}) => (
   <div
     style={{
       width: 100,
       height: 100,
       backgroundColor: 'red',
     }}
-  />
+  >
+    {children}
+  </div>
 )
+
+const properties = {
+  children: <div>Child</div>,
+}
 
 storiesOf('Live View', module)
   .add('Regular', () => (
@@ -21,6 +27,7 @@ storiesOf('Live View', module)
       component={component}
       componentState={states[0]}
       propKeyValues={propKeyValues}
+      properties={properties}
       profile={profile}
       onUpdatePropKeyValue={() => {}}
     />

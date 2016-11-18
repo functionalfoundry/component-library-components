@@ -9,18 +9,18 @@ import {
 
 type Props = {
   component: any,
-  componentState: any,
+  properties: Object,
 }
 const LivePreview = ({
   component,
-  componentState,
+  properties,
 }: Props) => (
   <View
     style={styles.card}
   >
     {component.implementation &&
      <component.implementation
-       {...componentState.propKeyValues}
+       {...properties}
      />}
   </View>
 )

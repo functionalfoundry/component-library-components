@@ -120,6 +120,8 @@ const defaultTheme = {
   },
   profilePhoto: {
     flex: '0 1',
+    width: 'auto',
+    minWidth: 'auto',
   },
   profileName: {
     ...Fonts.title,
