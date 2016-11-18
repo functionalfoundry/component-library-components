@@ -1,4 +1,5 @@
 import React from 'react'
+import Theme from 'js-theme'
 import LivePreview from './LivePreview'
 import LiveEditor from './LiveEditor'
 import LiveHeader from './LiveHeader'
@@ -6,6 +7,7 @@ import PropertyPane from './PropertyPane'
 import {
   View,
 } from '@workflo/components'
+import TextEditor from '@workflo/components/lib/TextEditor'
 import {
   Spacing,
   Colors,
@@ -21,9 +23,12 @@ const LiveView = ({
   component,
   componentState,
   profile = {},
+  propKeyValues,
+  theme,
+  onUpdatePropKeyValue,
 }: Props) => (
   <View
-    style={style.container}
+    {...theme.liveView}
   >
     <LiveHeader
       firstName={profile.firstName}
@@ -31,10 +36,10 @@ const LiveView = ({
       image={profile.image}
     />
     <View
-      style={style.previewAndEditor}
+      {...theme.previewAndEditor}
     >
       <View
-        style={style.livePreviewContainer}
+        {...theme.livePreviewContainer}
       >
         <LivePreview
           component={component}
@@ -42,15 +47,17 @@ const LiveView = ({
         />
       </View>
       <View
-        style={style.liveEditorContainer}
+        {...theme.liveEditorContainer}
       >
-        <LiveEditor
-          code={componentState.code}
+        <TextEditor
+          componentName={component.name}
+          propKeyValues={propKeyValues}
+          onChange={onUpdatePropKeyValue}
         />
       </View>
     </View>
     <View
-      style={style.propertyPaneContainer}
+      {...theme.propertyPaneContainer}
     >
       <PropertyPane
         properties={component.props}
@@ -59,39 +66,41 @@ const LiveView = ({
   </View>
 )
 
-export default LiveView
-
-const style = {
-  container: {
-    backgroundColor: Colors.steel2,
+const defaultTheme = {
+  liveView: {
+    backgroundColor: Colors.grey900,
     paddingTop: 0,
     display: 'flex',
     flexDirection: 'column',
     flex: '1',
   },
   header: {
-    backgroundColor: Colors.steel3,
-    color: Colors.aluminum6,
+    backgroundColor: Colors.grey800,
+    color: Colors.grey300,
     padding: Spacing.small,
   },
   previewAndEditor: {
     display: 'flex',
-    backgroundColor: Colors.aluminum6,
+    flexDirection: 'row',
+    backgroundColor: Colors.grey700,
     flex: '1 0 300px',
   },
   livePreviewContainer: {
     display: 'flex',
-    flex: '1 1 66%',
+    flex: '1 1 60%',
   },
   liveEditorContainer: {
     display: 'flex',
-    flex: '0 1 34%'
+    flex: '0 1 40%'
   },
   propertyPaneContainer: {
     display: 'flex',
+    flexDirection: 'column',
     flex: '1',
-    color: Colors.aluminum6,
+    color: Colors.grey700,
     marginTop: Spacing.small,
     marginBottom: Spacing.large,
   },
 }
+
+export default Theme('LiveView', defaultTheme)(LiveView)

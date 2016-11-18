@@ -15,16 +15,25 @@ import Heading from '@workflo/components/lib/Heading'
 
 type Props = {
   name: string,
-  thumbnail: string,
+  Component: any, // Component Implementation
+  properties: Object, // Props as a map that can be spread
   onClickEdit: Function,
   theme: Object,
 }
 
+const defaultComponent = () => (<div />)
+
+const defaultProps = {
+  Component: defaultComponent,
+  properties: {},
+}
+
 const ComponentStateCard = ({
   name,
-  thumbnail,
   onClickEdit,
   theme,
+  Component,
+  properties,
 }: Props) => (
   <Card
     {...theme.componentStateCard}
@@ -45,10 +54,7 @@ const ComponentStateCard = ({
       <View
         {...theme.thumbnail}
       >
-        <Image
-          src={thumbnail}
-          height={200}
-        />
+        <Component {...properties} />
       </View>
       <View
         {...theme.actions}
@@ -96,7 +102,7 @@ const defaultTheme = {
   },
   title: {
     ...Fonts.title,
-    ...Fonts.large,
+    ...Fonts.base,
     color: Colors.grey800,
   },
   actions: {
@@ -121,5 +127,7 @@ const defaultTheme = {
     cursor: 'pointer',
   },
 }
+
+ComponentStateCard.defaultProps = defaultProps
 
 export default Theme('ComponentStateCard', defaultTheme)(ComponentStateCard)

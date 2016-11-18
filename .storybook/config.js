@@ -3,9 +3,8 @@ import { configure } from '@kadira/storybook'
 function loadStories () {
   // require('../src/App/App.story.js')
   // require('../src/ComponentGrid/ComponentGrid.story.js')
-  // require('../src/ComponentStateList/ComponentStateList.story.js')
-  // require('../src/LiveView/LiveView.story.js')
-  // require('../src/ComponentStateCard/ComponentStateCard.story.js')
+  require('../src/ComponentStateList/ComponentStateList.story.js')
+  require('../src/LiveView/LiveView.story.js')
   require('../src/ComponentCard.story.js')
   require('../src/ComponentStateCard.story.js')
   require('../src/Search.story.js')
