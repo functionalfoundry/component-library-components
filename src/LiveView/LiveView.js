@@ -95,6 +95,7 @@ const defaultTheme = {
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
   liveEditorContainer: {
     display: 'flex',
