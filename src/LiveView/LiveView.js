@@ -73,7 +73,6 @@ const LiveView = ({
 
 const defaultTheme = {
   liveView: {
-    backgroundColor: Colors.grey900,
     paddingTop: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -87,12 +86,15 @@ const defaultTheme = {
   previewAndEditor: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: Colors.grey700,
     flex: '1 0 300px',
   },
   livePreviewContainer: {
     display: 'flex',
     flex: '1 1 60%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   liveEditorContainer: {
     display: 'flex',

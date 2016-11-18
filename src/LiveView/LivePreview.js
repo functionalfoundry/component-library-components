@@ -35,6 +35,7 @@ const styles = {
     borderRight: `1px solid ${Colors.grey200}`,
     display: 'flex',
     flexDirection: 'row',
+    flex: '0 1 auto',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',

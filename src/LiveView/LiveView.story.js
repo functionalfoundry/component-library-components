@@ -3,18 +3,11 @@ import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
 import { components, states, propKeyValues } from '../../mocks/components'
 import { profile } from '../../mocks/profile'
+import { Button } from '@workflo/components'
 
 const component = components[0]
 component.implementation = ({children}) => (
-  <div
-    style={{
-      width: 100,
-      height: 100,
-      backgroundColor: 'red',
-    }}
-  >
-    {children}
-  </div>
+  <Button>{children}</Button>
 )
 
 const properties = {
