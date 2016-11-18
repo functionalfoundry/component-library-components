@@ -34,6 +34,7 @@ const styles = {
     backgroundColor: 'white',
     borderRight: `1px solid ${Colors.grey200}`,
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
