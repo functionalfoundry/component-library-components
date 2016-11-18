@@ -13,37 +13,39 @@ const PropertyPane = ({
   properties = [],
   theme,
 }: Props) => (
-  <tbody
+  <table
     {...theme.table}
   >
-    {properties.map((property, index) => (
-      <tr
-        {...theme.row}
-        key={index}
-      >
-        <td
-          {...theme.name}
+    <tbody>
+      {properties.map((property, index) => (
+        <tr
+          {...theme.row}
+          key={index}
         >
-          {property.name}
-        </td>
-        <td
-          {...theme.column}
-        >
-          {property.type}
-        </td>
-        <td
-          {...theme.column}
-        >
-          {property.default}
-        </td>
-        <td
-          {...theme.description}
-        >
-          {property.description}
-        </td>
-      </tr>
-    ))}
-  </tbody>
+          <td
+            {...theme.name}
+          >
+            {property.name}
+          </td>
+          <td
+            {...theme.column}
+          >
+            {property.type}
+          </td>
+          <td
+            {...theme.column}
+          >
+            {property.default}
+          </td>
+          <td
+            {...theme.description}
+          >
+            {property.description}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 )
 
 const defaultTheme = {
@@ -63,6 +65,9 @@ const defaultTheme = {
     paddingLeft: Spacing.tiny,
     paddingRight: Spacing.small,
     paddingBottom: Spacing.tiny,
+    '@media (max-width: 800px)': {
+      display: 'none',
+    },
   },
   column: {
     color: Colors.grey200,

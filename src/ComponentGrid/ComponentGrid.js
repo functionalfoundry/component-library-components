@@ -17,21 +17,18 @@ const ComponentGrid = ({
   components,
   onClickComponent,
 }: Props) => (
-  <View
-    style={styles.container}
-  >
-    <Grid
-      size='base'
-      data={components}
-      renderer={ComponentCard}
-      onClickItem={(component) => onClickComponent(component.id)}
-    />
-  </View>
+  <Grid
+    size='base'
+    data={components}
+    renderer={ComponentCard}
+    onClickItem={(component) => onClickComponent(component.id)}
+    theme={{
+      item: {
+        marginLeft: Spacing.tiny,
+        marginRight: Spacing.tiny,
+      }
+    }}
+  />
 )
-
-const styles = {
-  container: {
-  },
-}
 
 export default ComponentGrid

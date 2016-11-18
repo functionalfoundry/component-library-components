@@ -110,9 +110,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@0.7.11":
-  version "0.7.11"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.7.11.tgz#282510d53ab251b1e772f8e25b723700d5a8bb66"
+"@workflo/components@0.7.12":
+  version "0.7.12"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.7.12.tgz#0ce989c455551943b25ef71a68f5916a2401f679"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "0.7.2"
@@ -135,7 +135,6 @@
     js-theme "0.7.0"
     rc-animate "^2.3.1"
     rc-util "^4.0.0"
-    react-addons-shallow-compare "^15.3.2"
 
 "@workflo/styles@^0.7.0":
   version "0.7.0"
@@ -4395,10 +4394,6 @@ rc@~1.1.0:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
-
-react-addons-shallow-compare@^15.3.2:
-  version "15.4.0"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.0.tgz#17b2cced1928937bbcdb4832fb200bc34bd47871"
 
 react-addons-transition-group@^15.3.0:
   version "15.3.2"
