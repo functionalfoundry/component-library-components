@@ -206,7 +206,7 @@ const defaultTheme = {
     ...Fonts.huge,
     color: 'white',
     justifyContent: 'flex-start',
-    width: 250,
+    width: 500,
     marginLeft: LOGO_WIDTH + SEPARATOR_WIDTH,
     marginTop: -12,
   },
