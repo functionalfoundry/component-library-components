@@ -16,6 +16,10 @@ storiesOf('Header', module)
     >
       <Header
         profile={profile}
+        title='Drawer'
+        search={{
+          show: true,
+        }}
       />
     </View>
   ))

@@ -1,7 +1,8 @@
 import React from 'react'
-import Table from 'grommet/components/Table'
+import Theme from 'js-theme'
 import {
   Colors,
+  Spacing,
 } from '@workflo/styles'
 
 type Props = {
@@ -10,36 +11,65 @@ type Props = {
 
 const PropertyPane = ({
   properties = [],
+  theme,
 }: Props) => (
-  <Table>
-    <tbody style={{fontFamily: '"Roboto Mono"'}}>
-      {properties.map((property, index) => (
-        <tr key={index}>
-          <td style={style.name}>
-            {property.name}
-          </td>
-          <td>
-            {property.type}
-          </td>
-          <td>
-            {property.default}
-          </td>
-          <td style={style.description}>
-            {property.description}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
+  <tbody
+    {...theme.table}
+  >
+    {properties.map((property, index) => (
+      <tr
+        {...theme.row}
+        key={index}
+      >
+        <td
+          {...theme.name}
+        >
+          {property.name}
+        </td>
+        <td
+          {...theme.column}
+        >
+          {property.type}
+        </td>
+        <td
+          {...theme.column}
+        >
+          {property.default}
+        </td>
+        <td
+          {...theme.description}
+        >
+          {property.description}
+        </td>
+      </tr>
+    ))}
+  </tbody>
 )
 
-export default PropertyPane
-
-const style = {
+const defaultTheme = {
+  table: {
+    fontFamily: '"Roboto Mono"',
+    width: '100%',
+    maxWidth: '100%',
+  },
   name: {
     color: '#02c95d',
+    paddingLeft: Spacing.tiny,
+    paddingRight: Spacing.small,
+    paddingBottom: Spacing.tiny,
   },
   description: {
-    color: Colors.aluminum2,
+    color: Colors.grey400,
+    paddingLeft: Spacing.tiny,
+    paddingRight: Spacing.small,
+    paddingBottom: Spacing.tiny,
+  },
+  column: {
+    color: Colors.grey200,
+    paddingLeft: Spacing.small,
+    paddingRight: Spacing.small,
+    paddingBottom: Spacing.tiny,
   },
 }
+
+export default Theme('PropertyPane', defaultTheme)(PropertyPane)

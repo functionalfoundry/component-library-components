@@ -1,9 +1,10 @@
 import React from 'react'
+import Theme from 'js-theme'
 import {
   Icon,
   Heading, // Probably shouldn't be using Heading for this. Text?
   View,
-  ProfilePhoto,
+  Avatar,
 } from '@workflo/components'
 import {
   Colors,
@@ -21,16 +22,19 @@ const LiveHeader = ({
   firstName,
   lastName,
   image,
+  theme,
 }: Props) => (
   <View
-    style={styles.header}
+    {...theme.header}
   >
     <ProfileView
       firstName={firstName}
       lastName={lastName}
       image={image}
+      theme={theme}
     />
-    <ActionsView
+    <Actions
+      theme={theme}
     />
   </View>
 )
@@ -39,20 +43,21 @@ const ProfileView = ({
   firstName,
   lastName,
   image,
+  theme,
 }: Props) => (
   <View
-    style={styles.profileView}
+    {...theme.profileView}
   >
     <Heading
+      {...theme.profileLabel}
       size={3}
-      style={styles.profileLabel}
     >
       By
     </Heading>
     <View
-      style={styles.profilePhoto}
+      {...theme.profilePhoto}
     >
-      <ProfilePhoto
+      <Avatar
         size='small'
         image={image}
         firstName={firstName}
@@ -60,8 +65,8 @@ const ProfileView = ({
       />
     </View>
     <Heading
+      {...theme.profileName}
       size={3}
-      style={styles.profileName}
     >
       {`${firstName || ''} ${lastName || ''}`}
     </Heading>
@@ -72,12 +77,13 @@ const ActionsPropsT = {
   isEditorDirty: Boolean,
 }
 
-const ActionsView = ({
+const Actions = ({
   isEditorDirty,
+  theme,
 }: ActionsPropsT) => (
   <Heading
+    {...theme.actions}
     size={3}
-    style={styles.actions}
   >
     {/* <Icon
       name='layout'
@@ -88,12 +94,13 @@ const ActionsView = ({
   </Heading>
 )
 
-const styles = {
+const defaultTheme = {
   header: {
-    backgroundColor: Colors.steel3,
-    color: Colors.aluminum6,
+    backgroundColor: Colors.grey900,
+    color: Colors.grey200,
     padding: Spacing.small,
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     flex: '0 0 34px',
@@ -102,16 +109,19 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   profileLabel: {
     ...Fonts.title,
     ...Fonts.base,
-    color: Colors.aluminum1,
+    color: Colors.grey300,
     paddingRight: Spacing.small/2,
     flex: '0 1',
   },
   profilePhoto: {
     flex: '0 1',
+    width: 'auto',
+    minWidth: 'auto',
   },
   profileName: {
     ...Fonts.title,
@@ -123,9 +133,9 @@ const styles = {
   actions: {
     ...Fonts.title,
     ...Fonts.base,
-    color: Colors.aluminum3,
+    color: Colors.grey300,
     justifyContent: 'flex-end',
   },
 }
 
-export default LiveHeader
+export default Theme('LiveHeader', defaultTheme)(LiveHeader)

@@ -74,7 +74,7 @@ const styles = {
     justifyContent: 'stretch',
   },
   separator: {
-    borderBottom: `1px solid ${Colors.aluminum5}`,
+    borderBottom: `1px solid ${Colors.grey200}`,
     flex: '0 1',
     marginLeft: Spacing.base,
     marginRight: Spacing.base,
