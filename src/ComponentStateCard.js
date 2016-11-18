@@ -121,6 +121,7 @@ const defaultTheme = {
     maxWidth: '100%',
     display: 'flex',
     flexDirection: 'row',
+    flex: '0 1 auto;',
     justifyContent: 'center',
     alignItems: 'center',
   },
