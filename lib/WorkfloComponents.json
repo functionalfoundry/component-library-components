@@ -1,7 +1,9 @@
 [
   "App",
+  "Code",
   "ComponentGrid",
   "ComponentStateList",
+  "Data",
   "Header",
   "LiveView",
   "Search",
