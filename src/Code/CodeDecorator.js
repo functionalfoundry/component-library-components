@@ -8,6 +8,7 @@ import Radio from '@workflo/components/lib/Radio'
 import RadioGroup from '@workflo/components/lib/Radio/RadioGroup'
 import Popover from '@workflo/components/lib/Popover'
 import View from '@workflo/components/lib/View'
+import Trigger from '@workflo/components/lib/Trigger'
 import SimpleDecorator from '@workflo/components/lib/TextEditor/SimpleDecorator'
 import MultiDecorator from '@workflo/components/lib/TextEditor/MultiDecorator'
 
@@ -44,8 +45,8 @@ export const propStrategy = (contentBlock, callback) => {
       end: attribute.name.end,
     })
   })
-  props.forEach((prop) => {
-    callback(prop.start, prop.end)
+  props.forEach((prop, index) => {
+    callback(prop.start, prop.end, { attribute: prop.name })
   })
 }
 
@@ -90,17 +91,56 @@ const ComponentSpan = ({
   </span>
 )
 
-const PropSpan = ({
-  theme,
-  children,
-  ...props
-}) => (
-  <span
-    {...theme.propSpan}
-  >
-    {children}
-  </span>
-)
+class PropSpan extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      isShowingMinus: false,
+    }
+  }
+
+  handleToggleShowing = () => {
+    this.setState({
+      isShowingMinus: !this.state.isShowingMinus,
+    })
+  }
+
+  render () {
+    const {
+      theme,
+      children,
+      attribute,
+      onRemoveProp,
+      ...props
+    } = this.props
+    const {
+      isShowingMinus,
+    } = this.state
+
+    return (
+      <span
+        {...theme.propSpan}
+      >
+
+        <Trigger
+          triggerOn={['Hover', 'Mouse leave']}
+          onTrigger={this.handleToggleShowing}
+        >
+          <span {...theme.propRemoveWrapper}>
+            {isShowingMinus &&
+              <span
+                onClick={() => onRemoveProp(attribute)}
+              >
+                {'-'}
+              </span>}
+          </span>
+        </Trigger>
+        {children}
+      </span>
+    )
+  }
+}
 
 const getValue = (propKeyValues, index) => {
   const propKeyValue = propKeyValues[index]
@@ -190,17 +230,32 @@ const defaultTheme = {
   },
   propSpan: {
     color: '#009e71',
-  }
+    position: 'relative',
+  },
+  propRemoveWrapper: {
+    cursor: 'pointer',
+    top: 0,
+    left: '-35px',
+    width: 35,
+    height: 22,
+    display: 'inline-block',
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }
 
 const ThemedComponentSpan = Theme('ComponentSpan', defaultTheme)(ComponentSpan)
 const ThemedPropSpan = Theme('PropSpan', defaultTheme)(PropSpan)
 const ThemedValueSpan = Theme('ValueSpan', defaultTheme)(ValueSpan)
 
-export const codeDecoratorFactory = (propKeyValues, onChange) =>
+export const codeDecoratorFactory = (propKeyValues, onRemoveProp, onChange) =>
   new MultiDecorator([
     new SimpleDecorator(componentStrategy, ThemedComponentSpan),
-    new SimpleDecorator(propStrategy, ThemedPropSpan),
+    new SimpleDecorator(propStrategy, ThemedPropSpan, {
+      onRemoveProp,
+    }),
     new SimpleDecorator(valueStrategy, ThemedValueSpan, {
       propKeyValues,
       onChange,

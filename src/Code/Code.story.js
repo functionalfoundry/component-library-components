@@ -1,5 +1,5 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import Code from './Code'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import Preview from '@workflo/components/lib/Preview'
@@ -73,6 +73,7 @@ class StoryContainer extends React.Component {
         componentName='Comment'
         propKeyValues={this.state.propKeyValues}
         onChange={this.handleChange}
+        onRemoveProp={action('onRemoveProp')}
       />
     )
   }

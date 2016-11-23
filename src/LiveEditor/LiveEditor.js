@@ -45,6 +45,7 @@ class LiveEditor extends React.Component {
       propKeyValues,
       onChangeCode,
       onChangeData,
+      onRemoveProp,
       dataCode,
       theme,
     } = this.props
@@ -55,7 +56,7 @@ class LiveEditor extends React.Component {
         <Tabs
           onSelect={this.handleSelect}
           selectedIndex={this.state.selectedIndex}
-          {...theme.tabs}
+          {...theme.liveEditorTabs}
         >
           <TabList>
             <Tab>Code</Tab>
@@ -67,6 +68,7 @@ class LiveEditor extends React.Component {
               componentName={componentName}
               propKeyValues={propKeyValues}
               onChange={onChangeCode}
+              onRemoveProp={onRemoveProp}
             />
           </TabPanel>
           <TabPanel>
@@ -89,7 +91,11 @@ const defaultTheme = {
     padding: Spacing.small,
     backgroundColor: 'white',
     color: Colors.grey600,
+    height: 400,
+    overflowY: 'scroll',
   },
+  liveEditorTabs: {
+  }
 }
 
 export default Theme('LiveEditor', defaultTheme)(LiveEditor)

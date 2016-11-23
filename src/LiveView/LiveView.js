@@ -1,9 +1,9 @@
 import React from 'react'
 import Theme from 'js-theme'
+import PropertiesPane from '../PropertiesPane/PropertiesPane'
 import LivePreview from './LivePreview'
-import LiveEditor from './LiveEditor'
+import LiveEditor from '../LiveEditor/LiveEditor'
 import LiveHeader from './LiveHeader'
-import PropertyPane from './PropertyPane'
 import {
   View,
 } from '@workflo/components'
@@ -16,21 +16,30 @@ import {
 type Props = {
   component: any,
   componentState: any,
+  dataCode: string,
   profile: Object,
   propKeyValues: Array<any>,
   properties: Object,
   theme: Object,
   onUpdatePropKeyValue: Function,
+  onAddPropToLiveEditor: Function,
+}
+
+const defaultProps = {
+  dataCode: '',
 }
 
 const LiveView = ({
   component,
   componentState,
+  dataCode,
   profile = {},
   propKeyValues,
   properties,
   theme,
   onUpdatePropKeyValue,
+  onRemoveProp,
+  onAddPropToLiveEditor,
 }: Props) => (
   <View
     {...theme.liveView}
@@ -54,22 +63,27 @@ const LiveView = ({
       <View
         {...theme.liveEditorContainer}
       >
-        <TextEditor
+        <LiveEditor
           componentName={component.name}
           propKeyValues={propKeyValues}
-          onChange={onUpdatePropKeyValue}
+          onChangeCode={onUpdatePropKeyValue}
+          onRemoveProp={onRemoveProp}
+          dataCode={dataCode}
         />
       </View>
     </View>
     <View
       {...theme.propertyPaneContainer}
     >
-      <PropertyPane
+      <PropertiesPane
         properties={component.props}
+        onClickPlus={onAddPropToLiveEditor}
       />
     </View>
   </View>
 )
+
+LiveView.defaultProps = defaultProps
 
 const defaultTheme = {
   liveView: {
@@ -86,7 +100,7 @@ const defaultTheme = {
   previewAndEditor: {
     display: 'flex',
     flexDirection: 'row',
-    flex: '1 0 300px',
+    flex: '1 0 400px',
   },
   livePreviewContainer: {
     display: 'flex',

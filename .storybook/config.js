@@ -5,7 +5,7 @@ function loadStories () {
   require('../src/ComponentGrid/ComponentGrid.story.js')
   require('../src/ComponentStateList/ComponentStateList.story.js')
   require('../src/LiveEditor/LiveEditor.story.js')
-  // require('../src/LiveView/LiveView.story.js')
+  require('../src/LiveView/LiveView.story.js')
   require('../src/ComponentCard.story.js')
   require('../src/ComponentStateCard.story.js')
   require('../src/Search.story.js')

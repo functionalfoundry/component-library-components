@@ -17,6 +17,7 @@ type PropsT = {
   componentName: string,
   propKeyValues: Array<CodePropKeyValueT>,
   onChange: Function,
+  onRemoveProp: Function,
 }
 
 const defaultProps = {
@@ -46,8 +47,9 @@ export default class Code extends React.Component {
   getText = ({ componentName, propKeyValues }: PropsT) =>
     getCodeString(componentName, propKeyValues)
 
-  getDecorator = ({ propKeyValues }: PropsT) =>
-    codeDecoratorFactory(propKeyValues, this.handleChange)
+  getDecorator = ({ propKeyValues, onRemoveProp }: PropsT) => {
+    return codeDecoratorFactory(propKeyValues, onRemoveProp, this.handleChange)
+  }
 
   handleChange = (key, value) => {
     const {

@@ -1,9 +1,12 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
-import { components, states, propKeyValues } from '../../mocks/components'
+import { components, states, propKeyValues, dataCode } from '../../mocks/components'
 import { profile } from '../../mocks/profile'
 import { Button } from '@workflo/components'
+import {
+  Colors,
+} from '@workflo/styles'
 
 const component = components[0]
 component.implementation = ({children}) => (
@@ -16,14 +19,19 @@ const properties = {
 
 storiesOf('Live View', module)
   .add('Regular', () => (
-    <LiveView
-      component={component}
-      componentState={states[0]}
-      propKeyValues={propKeyValues}
-      properties={properties}
-      profile={profile}
-      onUpdatePropKeyValue={action('onUpdatePropKeyValue')}
-    />
+    <div style={{ backgroundColor: Colors.grey900, }}>
+      <LiveView
+        component={component}
+        componentState={states[0]}
+        dataCode={dataCode}
+        propKeyValues={propKeyValues}
+        properties={properties}
+        profile={profile}
+        onUpdatePropKeyValue={action('onUpdatePropKeyValue')}
+        onAddPropToLiveEditor={action('onAddPropToLiveEditor')}
+        onRemoveProp={action('onRemoveProp')}
+      />
+    </div>
   ))
 
   // class StoryContainer extends React.Component {
