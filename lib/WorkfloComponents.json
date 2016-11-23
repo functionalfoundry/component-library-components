@@ -5,6 +5,7 @@
   "ComponentStateList",
   "Data",
   "Header",
+  "LiveEditor",
   "LiveView",
   "Search",
   "SignIn"
