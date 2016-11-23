@@ -89,6 +89,7 @@ class LiveEditor extends React.Component {
 const defaultTheme = {
   liveEditor: {
     padding: Spacing.small,
+    paddingTop: Spacing.base + Spacing.small,
     backgroundColor: 'white',
     color: Colors.grey600,
     height: 400,

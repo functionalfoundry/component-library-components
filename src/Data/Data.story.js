@@ -7,7 +7,7 @@ import Preview from '@workflo/components/lib/Preview'
 storiesOf('Data', module)
   .add('Regular', () => (
     <PreviewContainer
-      shade='dark'
+      shade='light'
     >
       <Preview
         label='Data'

@@ -1,10 +1,10 @@
 import React from 'react'
 import Theme from 'js-theme'
 import {
+  Button,
   Icon,
   Heading, // Probably shouldn't be using Heading for this. Text?
   View,
-  Avatar,
 } from '@workflo/components'
 import {
   Colors,
@@ -36,6 +36,7 @@ const LiveHeader = ({
     <Actions
       theme={theme}
     />
+    <PrimaryAction />
   </View>
 )
 
@@ -48,28 +49,7 @@ const ProfileView = ({
   <View
     {...theme.profileView}
   >
-    <Heading
-      {...theme.profileLabel}
-      size={3}
-    >
-      By
-    </Heading>
-    <View
-      {...theme.profilePhoto}
-    >
-      <Avatar
-        size='small'
-        image={image}
-        firstName={firstName}
-        lastName={lastName}
-      />
-    </View>
-    <Heading
-      {...theme.profileName}
-      size={3}
-    >
-      {`${firstName || ''} ${lastName || ''}`}
-    </Heading>
+
   </View>
 )
 
@@ -85,25 +65,39 @@ const Actions = ({
     {...theme.actions}
     size={3}
   >
-    {/* <Icon
-      name='layout'
-      fill={Colors.aluminum3}
-      size='s'
-    /> */}
-    LAYOUT
+    <Icon
+      name='card-like'
+      fill={Colors.grey100}
+      size='base'
+    />
   </Heading>
+)
+
+const PrimaryAction = () => (
+  <div style={{ display: 'flex', alignSelf: 'stretch', backgroundColor: 'red' }}>
+    <Button
+      label='Save'
+      theme={{
+        button: {
+          borderRadius: 0,
+          height: 'auto',
+          ...Fonts.small,
+          letterSpacing: 2,
+        },
+      }}
+    />
+  </div>
 )
 
 const defaultTheme = {
   header: {
-    backgroundColor: Colors.grey800,
+    backgroundColor: '#1C1C1C', // grey850
     color: Colors.grey200,
-    padding: Spacing.small,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flex: '0 0 34px',
+    flex: '0 0 60px',
   },
   profileView: {
     display: 'flex',
@@ -134,6 +128,8 @@ const defaultTheme = {
     ...Fonts.title,
     ...Fonts.base,
     color: Colors.grey300,
+    display: 'flex',
+    padding: Spacing.small,
     justifyContent: 'flex-end',
   },
 }
