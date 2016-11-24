@@ -1,9 +1,13 @@
 [
   "App",
+  "Code",
   "ComponentGrid",
   "ComponentStateList",
+  "Data",
   "Header",
+  "LiveEditor",
   "LiveView",
+  "PropertiesPane",
   "Search",
   "SignIn"
 ]

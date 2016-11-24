@@ -56,6 +56,26 @@ export const components = [
   },
 ]
 
+export const dataCode = `const user = {
+  firstName: 'Brenda',
+  lastName: 'Jenner',
+}
+
+const comment = {
+  description: 'Something good',
+}
+
+const responders = [
+  {
+    firstName: 'Brenda',
+    lastName: 'Jenner',
+  },
+  {
+    firstName: 'Jenna',
+    lastName: 'Doe',
+  },
+]`
+
 export const states = [
   {
     id: 23,

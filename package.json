@@ -14,7 +14,7 @@
     "flow": "flow check",
     "flow:watch": "flow",
     "flow:stop": "flow stop",
-    "storybook": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 9001 --dont-track"
   },
   "files": [
     "lib",
@@ -32,10 +32,19 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "0.7.12",
+    "@workflo/components": "0.8.0",
     "@workflo/styles": "^0.7.0",
+    "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
     "aphrodite": "^0.5.0",
+    "babel-core": "^6.18.2",
+    "babel-generator": "^6.18.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-standalone": "^6.18.1",
+    "babel-template": "^6.16.0",
+    "babel-traverse": "^6.18.0",
+    "babel-types": "^6.18.0",
+    "babylon": "^6.13.1",
     "draft-js": "^0.7.0",
     "draft-js-code": "^0.2.0",
     "draft-js-prism": "workfloapp/draft-js-prism",
@@ -56,7 +65,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.6.0",
-    "babel-preset-react": "^6.11.1",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
     "babel-runtime": "^6.6.1",
     "better-npm-run": "0.0.8",
     "css-loader": "^0.23.1",
