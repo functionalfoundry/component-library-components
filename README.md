@@ -22,7 +22,11 @@
   * key - string
   * options - Array\<string>
   * value - string
-  * inputType - 'TextField' | 'Slider' | 'Radio'
+  * input - <PropKeyValueInputT>
+    * type - 'TextField' | 'Slider' | 'Radio'
+    * ?start - number
+    * ?end - number
+    * ?step - number
 
 ### data
 Code to parse and display as a string
