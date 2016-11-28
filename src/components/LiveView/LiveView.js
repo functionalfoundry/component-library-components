@@ -1,9 +1,9 @@
 import React from 'react'
 import Theme from 'js-theme'
-import PropertiesPane from '../PropertiesPane/PropertiesPane'
-import LivePreview from './LivePreview'
-import LiveEditor from '../LiveEditor/LiveEditor'
-import LiveHeader, { ActionT } from './LiveHeader'
+import Properties from '../Properties'
+import LivePreview from '../LivePreview'
+import LiveEditor from '../LiveEditor'
+import LiveHeader, { ActionT } from '../LiveHeader'
 import {
   View,
 } from '@workflo/components'
@@ -86,7 +86,7 @@ const LiveView = ({
     <View
       {...theme.propertyPaneContainer}
     >
-      <PropertiesPane
+      <Properties
         properties={component.properties}
         onClickPlus={onAddPropToPropKeyValues}
       />

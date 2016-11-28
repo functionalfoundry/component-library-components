@@ -1,8 +1,8 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
-import { components, componentStates, dataCode } from '../../mocks/components'
-import { profile } from '../../mocks/profile'
+import { components, componentStates, dataCode } from '../../../mocks/components'
+import { profile } from '../../../mocks/profile'
 import { Button } from '@workflo/components'
 import {
   Colors,
@@ -24,13 +24,21 @@ storiesOf('Live View', module)
         component={component}
         componentState={componentStates[0]}
         data={dataCode}
+        quickActions={[
+          {
+            icon: 'card-like',
+            onClick: action('onLike'),
+          },
+        ]}
         secondaryActions={[
           {
             label: 'Cancel',
+            onClick: action('onCancel'),
           },
         ]}
         primaryAction={{
           label: 'Save',
+          onClick: action('onSave'),
         }}
         onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
         onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}

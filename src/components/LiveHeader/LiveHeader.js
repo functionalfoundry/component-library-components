@@ -3,7 +3,7 @@ import Theme from 'js-theme'
 import {
   Button,
   Icon,
-  Heading, // Probably shouldn't be using Heading for this. Text?
+  Text, // Probably shouldn't be using Heading for this. Text?
   View,
 } from '@workflo/components'
 import {
@@ -38,7 +38,8 @@ const LiveHeader = ({
   <View
     {...theme.header}
   >
-    <Actions
+    <QuickActions
+      quickActions={quickActions}
       theme={theme}
     />
     <SecondaryActions secondaryActions={secondaryActions} />
@@ -54,21 +55,31 @@ const ActionsPropsT = {
   isEditorDirty: Boolean,
 }
 
-const Actions = ({
-  isEditorDirty,
+const QuickActions = ({
+  quickActions = [],
   theme,
-}: ActionsPropsT) => (
-  <Heading
-    {...theme.actions}
-    size={3}
-  >
-    <Icon
-      name='card-like'
-      fill={Colors.grey100}
-      size='base'
-    />
-  </Heading>
-)
+}: ActionsPropsT) => {
+  if (quickActions.length < 1) return null
+  return (
+    <div
+      {...theme.actions}
+    >
+      {quickActions.map((action, index) => (
+        <div
+          onClick={action.onClick}
+          style={{ cursor: 'pointer' }}
+        >
+          <Icon
+            key={index}
+            name={action.icon}
+            fill={Colors.grey100}
+            size='base'
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
 
 const ActionButton = ({
   label,

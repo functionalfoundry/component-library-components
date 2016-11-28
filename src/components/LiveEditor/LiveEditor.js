@@ -11,8 +11,8 @@ import {
   Colors,
   Spacing,
 } from '@workflo/styles'
-import Code from '../Code/Code'
-import Data from '../Data/Data'
+import Code from '../Code'
+import Data from '../Data'
 
 type PropsT = {
   onChangeCode: Function,
@@ -89,7 +89,7 @@ class LiveEditor extends React.Component {
 const defaultTheme = {
   liveEditor: {
     padding: Spacing.small,
-    paddingTop: Spacing.base + Spacing.small,
+    paddingTop: Spacing.base + Spacing.tiny,
     backgroundColor: 'white',
     color: Colors.grey600,
     height: 400,

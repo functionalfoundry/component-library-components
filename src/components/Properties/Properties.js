@@ -13,7 +13,7 @@ type Props = {
   onClickPlus: Function,
 }
 
-class PropertiesPane extends React.Component {
+class Properties extends React.Component {
   getHandleClickPlus = (index) => {
     return () => {
       const { onClickPlus, properties } = this.props
@@ -32,7 +32,7 @@ class PropertiesPane extends React.Component {
 
     return (
       <table
-        {...theme.propertiesPane}
+        {...theme.properties}
         cellSpacing='0'
       >
         <tbody>
@@ -92,7 +92,7 @@ const cellBorder = {
 }
 
 const defaultTheme = {
-  propertiesPane: {
+  properties: {
     fontFamily: '"Roboto Mono"',
     width: '100%',
     maxWidth: '100%',
@@ -119,4 +119,4 @@ const defaultTheme = {
   },
 }
 
-export default Theme('PropertiesPane', defaultTheme)(PropertiesPane)
+export default Theme('Properties', defaultTheme)(Properties)

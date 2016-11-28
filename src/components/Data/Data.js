@@ -2,8 +2,8 @@
 import React from 'react'
 import TextEditor from '@workflo/components/lib/TextEditor'
 
-import DataDecorator from './DataDecorator'
-import dataBabelPlugin from './DataBabelPlugin'
+import DataDecorator from '../../utils/DataDecorator'
+import dataBabelPlugin from '../../utils/DataBabelPlugin'
 
 type PropsT = {
   text: string,
@@ -30,11 +30,9 @@ export default class Data extends React.Component {
   }
 
   onChange = (text) => {
-    console.log('onChange: ', text)
     try {
       const es5Ast = Babel.transform(text, babelOptions)
       eval(es5Ast.code)
-      console.log('es5Ast: ', es5Ast.code)
     } catch (err) {
       console.error(err.message)
     }
