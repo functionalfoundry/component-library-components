@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
-import { components, componentStates, dataCode } from '../../../mocks/components'
+import { components, componentStates, dataCode, actionsCode } from '../../../mocks/components'
 import { profile } from '../../../mocks/profile'
 import { Button } from '@workflo/components'
 import {
@@ -23,7 +23,8 @@ storiesOf('Live View', module)
       <LiveView
         component={component}
         componentState={componentStates[0]}
-        data={dataCode}
+        dataCode={dataCode}
+        actionsCode={actionsCode}
         quickActions={[
           {
             icon: 'card-like',
@@ -43,6 +44,8 @@ storiesOf('Live View', module)
         onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
         onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}
         onRemovePropFromPropKeyValues={action('onRemovePropFromPropKeyValues')}
+        onChangeData={action('onChangeData')}
+        onChangeActions={action('onChangeActions')}
       />
     </div>
   ))

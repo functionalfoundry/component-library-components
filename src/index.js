@@ -4,7 +4,7 @@ const ComponentGrid = require('./ComponentGrid')
 const ComponentStateCard = require('./ComponentStateCard')
 const ComponentStateList = require('./ComponentStateList')
 const Header = require('./Header').default
-const LiveView = require('./LiveView')
+const LiveView = require('./components/LiveView')
 const SignIn = require('./SignIn')
 
 const WorkfloComponents = {

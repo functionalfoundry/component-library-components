@@ -13,7 +13,9 @@ function dataBabelPlugin({ types: t }) {
         const liveViewI = t.memberExpression(workfloI, t.identifier('liveView'))
         const dataI = t.memberExpression(liveViewI, t.identifier('data'))
         const lVal = t.memberExpression(dataI, variableI)
-        const rexpression = path.node.declarations[0].init
+        const rexpression = !path.node.declarations[0].init.id
+          ? path.node.declarations[0].init
+          : path.node.declarations[0].init.id.name
         path.insertAfter(
           t.expressionStatement(t.assignmentExpression('=', lVal, rexpression))
         )

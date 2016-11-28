@@ -68,7 +68,8 @@ export const components = [
   },
 ]
 
-export const dataCode = `const user = {
+export const dataCode =
+`const user = {
   firstName: 'Brenda',
   lastName: 'Jenner',
 }
@@ -87,6 +88,11 @@ const responders = [
     lastName: 'Doe',
   },
 ]`
+
+export const actionsCode =
+`const handleClick = () => {
+  setState({ clicked: true })
+}`
 
 export const propKeyValues = [
   {

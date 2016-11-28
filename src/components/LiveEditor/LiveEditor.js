@@ -21,11 +21,13 @@ type PropsT = {
   componentName: string,
   propKeyValues: any,
   dataCode: string,
+  actionsCode: string,
 }
 
 const defaultProps = {
   onChangeCode: () => {},
   onChangeData: () => {},
+  onChangeActions: () => {},
 }
 
 class LiveEditor extends React.Component {
@@ -45,7 +47,9 @@ class LiveEditor extends React.Component {
       propKeyValues,
       onChangeCode,
       onChangeData,
+      onChangeActions,
       onRemoveProp,
+      actionsCode,
       dataCode,
       theme,
     } = this.props
@@ -78,7 +82,10 @@ class LiveEditor extends React.Component {
             />
           </TabPanel>
           <TabPanel>
-            <h2>Hello from Baz</h2>
+          <Data
+            text={actionsCode}
+            onChange={onChangeActions}
+          />
           </TabPanel>
         </Tabs>
       </View>

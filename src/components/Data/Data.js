@@ -33,6 +33,12 @@ export default class Data extends React.Component {
     try {
       const es5Ast = Babel.transform(text, babelOptions)
       eval(es5Ast.code)
+      if(this.props.onChange) {
+        this.props.onChange({
+          data: window.workflo.liveView.data,
+          text,
+        })
+      }
     } catch (err) {
       console.error(err.message)
     }

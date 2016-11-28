@@ -16,7 +16,8 @@ import {
 type Props = {
   component: any,
   componentState: any,
-  data: string,
+  dataCode: string,
+  actionsCode: string,
   primaryAction: ActionT,
   secondaryActions: Array<ActionT>,
   quickActions: Array<ActionT>,
@@ -24,10 +25,13 @@ type Props = {
   onUpdatePropKeyValues: Function,
   onAddPropToPropKeyValues: Function,
   onRemovePropFromPropKeyValues: Function,
+  onChangeActions: Function,
+  onChangeData: Function,
 }
 
 const defaultProps = {
-  data: '',
+  dataCode: '',
+  actionsCode: '',
 }
 
 const getPropMap = (propKeyValues) => {
@@ -43,7 +47,8 @@ const getPropMap = (propKeyValues) => {
 const LiveView = ({
   component,
   componentState,
-  data,
+  dataCode,
+  actionsCode,
   primaryAction,
   secondaryActions,
   quickActions,
@@ -51,6 +56,8 @@ const LiveView = ({
   onUpdatePropKeyValues,
   onAddPropToPropKeyValues,
   onRemovePropFromPropKeyValues,
+  onChangeData,
+  onChangeActions,
 }: Props) => (
   <View
     {...theme.liveView}
@@ -78,8 +85,11 @@ const LiveView = ({
           componentName={component.name}
           propKeyValues={componentState.propKeyValues}
           onChangeCode={onUpdatePropKeyValues}
+          onChangeData={onChangeData}
+          onChangeActions={onChangeActions}
           onRemoveProp={onRemovePropFromPropKeyValues}
-          dataCode={data}
+          dataCode={dataCode}
+          actionsCode={actionsCode}
         />
       </View>
     </View>

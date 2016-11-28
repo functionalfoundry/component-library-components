@@ -28,7 +28,7 @@
     * ?end - number
     * ?step - number
 
-### data
+### dataCode
 Code to parse and display as a string
 
 Ex)
@@ -54,6 +54,16 @@ const responders = [
 ]
 ```
 
+### actionsCode
+Code to parse and display in the editor
+
+Ex)
+```
+const handleClick = () => {
+  setState({ clicked: true })
+}
+```
+
 ### onUpdatePropKeyValues
 Called with the new propKeyValues array when the user changes the selection in the LiveEditor
 
@@ -62,3 +72,17 @@ Called with the prop name that should be added to the LiveEditor propKeyValues
 
 ### onRemovePropFromPropKeyValues
 Called with the prop name that should be removed from the LiveEditor propKeyValues
+
+### onChangeData
+Called with an object with the following structure on every key press
+{
+  data: Object - Map with data key and values,
+  text: string - Updated code string. Must be passed back in as dataCode,
+}
+
+### onChangeActions
+Called with an object with the following structure on every key press
+{
+  data: Object - Map with action key and values,
+  text: string - Updated code string. Must be passed back in as actionsCode,
+}

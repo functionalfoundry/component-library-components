@@ -4,7 +4,7 @@ import React from 'react'
 import { codeDecoratorFactory } from './CodeDecorator'
 import TextEditor from '@workflo/components/lib/TextEditor'
 
-export type CodePropKeyValueTypeT = 'string' | 'variable' | 'number'
+export type CodePropKeyValueTypeT = 'Radio' | 'Checkbox' | 'Slider' | 'TextInput' | 'Date' | 'Color' | 'Icon'
 
 export type CodePropKeyValueT = {
   type: CodePropKeyValueTypeT,
