@@ -12,46 +12,43 @@ import {
   Spacing,
 } from '@workflo/styles'
 
+export type ActionT = {
+  label: string,
+  icon: string,
+  onClick: Function,
+}
+
 type Props = {
-  firstName: string,
-  lastName: string,
-  image: string,
+  theme: Object,
+  primaryAction: ActionT,
+  secondaryActions: Array<ActionT>,
+  quickActions: Array<ActionT>,
+}
+
+const defaultProps = {
+  // primaryAction: {},
 }
 
 const LiveHeader = ({
-  firstName,
-  lastName,
-  image,
+  primaryAction,
+  secondaryActions,
+  quickActions,
   theme,
 }: Props) => (
   <View
     {...theme.header}
   >
-    <ProfileView
-      firstName={firstName}
-      lastName={lastName}
-      image={image}
-      theme={theme}
-    />
     <Actions
       theme={theme}
     />
-    <PrimaryAction />
+    <SecondaryActions secondaryActions={secondaryActions} />
+    <PrimaryAction
+      primaryAction={primaryAction}
+    />
   </View>
 )
 
-const ProfileView = ({
-  firstName,
-  lastName,
-  image,
-  theme,
-}: Props) => (
-  <View
-    {...theme.profileView}
-  >
-
-  </View>
-)
+LiveHeader.defaultProps = defaultProps
 
 const ActionsPropsT = {
   isEditorDirty: Boolean,
@@ -73,21 +70,58 @@ const Actions = ({
   </Heading>
 )
 
-const PrimaryAction = () => (
-  <div style={{ display: 'flex', alignSelf: 'stretch', backgroundColor: 'red' }}>
-    <Button
-      label='Save'
-      theme={{
-        button: {
-          borderRadius: 0,
-          height: 'auto',
-          ...Fonts.small,
-          letterSpacing: 2,
-        },
-      }}
-    />
-  </div>
+const ActionButton = ({
+  label,
+  onClick,
+  icon,
+  kind = 'secondary',
+}) => {
+  if (!arguments[0]) return null
+  return (
+    <div style={{ display: 'flex', alignSelf: 'stretch' }}>
+      <Button
+        label={label}
+        onClick={onClick}
+        kind={kind}
+        theme={{
+          button: primaryStyle,
+        }}
+      />
+    </div>
+  )
+}
+
+const PrimaryAction = ({ primaryAction }) => (
+  <ActionButton
+    {...primaryAction}
+    kind='regular'
+  />
 )
+
+const SecondaryAction = ({ action }) => (
+  <ActionButton
+    {...action}
+    kind='secondary'
+  />
+)
+
+const SecondaryActions = ({
+  secondaryActions = [],
+}) => {
+  if (secondaryActions.length < 1) return null
+  return (
+    <div style={{ display: 'flex', alignSelf: 'stretch' }}>
+      {secondaryActions.map((action) => <SecondaryAction action={action} />)}
+    </div>
+  )
+}
+
+const primaryStyle = {
+  ...Fonts.small,
+  borderRadius: 0,
+  height: 'auto',
+  letterSpacing: 2,
+}
 
 const defaultTheme = {
   header: {
@@ -95,7 +129,7 @@ const defaultTheme = {
     color: Colors.grey200,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     flex: '0 0 60px',
   },

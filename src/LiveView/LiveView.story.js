@@ -24,6 +24,14 @@ storiesOf('Live View', module)
         component={component}
         componentState={componentStates[0]}
         data={dataCode}
+        secondaryActions={[
+          {
+            label: 'Cancel',
+          },
+        ]}
+        primaryAction={{
+          label: 'Save',
+        }}
         onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
         onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}
         onRemovePropFromPropKeyValues={action('onRemovePropFromPropKeyValues')}
