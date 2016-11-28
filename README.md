@@ -4,19 +4,24 @@
 ### component
 * id
 * implementation - Function | Class
-* name - String
+* name - string
 * owner
-  * firstName - String
-  * lastName - String
-  * profilePhoto - String
+  * firstName - string
+  * lastName - string
+  * profilePhoto - string
+* properties - Array\<PropertyT>
+  * name - string
+  * type - string
+  * default - string
+  * description - string
 
 ### componentState
 * id
-* name - String
+* name - string
 * propKeyValues - Array\<PropKeyValueT>
-  * key - String
-  * options - Array\<String>
-  * value - String
+  * key - string
+  * options - Array\<string>
+  * value - string
   * inputType - 'TextField' | 'Slider' | 'Radio'
 
 ### data
@@ -44,12 +49,6 @@ const responders = [
   },
 ]
 ```
-
-### properties - Array\<PropertyT>
-* name - String
-* type - String
-* default - String
-* description - String
 
 ### onUpdatePropKeyValues
 Called with the new propKeyValues array when the user changes the selection in the LiveEditor
