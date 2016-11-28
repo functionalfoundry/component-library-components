@@ -16,38 +16,43 @@ import {
 type Props = {
   component: any,
   componentState: any,
-  dataCode: string,
-  profile: Object,
-  propKeyValues: Array<any>,
-  properties: Object,
+  data: string,
   theme: Object,
-  onUpdatePropKeyValue: Function,
-  onAddPropToLiveEditor: Function,
+  onUpdatePropKeyValues: Function,
+  onAddPropToPropKeyValues: Function,
+  onRemovePropFromPropKeyValues: Function,
 }
 
 const defaultProps = {
-  dataCode: '',
+  data: '',
+}
+
+const getPropMap = (propKeyValues) => {
+  /* TODO: memoize */
+  console.log('get map for: ', propKeyValues)
+  return propKeyValues
+    .reduce((propKeyValue, acc) => ({
+      ...acc,
+      [propKeyValue.key]: propKeyValue.value,
+    }), {})
 }
 
 const LiveView = ({
   component,
   componentState,
-  dataCode,
-  profile = {},
-  propKeyValues,
-  properties,
+  data,
   theme,
-  onUpdatePropKeyValue,
-  onRemoveProp,
-  onAddPropToLiveEditor,
+  onUpdatePropKeyValues,
+  onAddPropToPropKeyValues,
+  onRemovePropFromPropKeyValues,
 }: Props) => (
   <View
     {...theme.liveView}
   >
     <LiveHeader
-      firstName={profile.firstName}
-      lastName={profile.lastName}
-      image={profile.image}
+      firstName={component.owner.firstName}
+      lastName={component.owner.lastName}
+      profilePhoto={component.owner.profilePhoto}
     />
     <View
       {...theme.previewAndEditor}
@@ -57,7 +62,7 @@ const LiveView = ({
       >
         <LivePreview
           component={component}
-          properties={properties}
+          propMap={getPropMap(componentState.propKeyValues)}
         />
       </View>
       <View
@@ -65,10 +70,10 @@ const LiveView = ({
       >
         <LiveEditor
           componentName={component.name}
-          propKeyValues={propKeyValues}
-          onChangeCode={onUpdatePropKeyValue}
-          onRemoveProp={onRemoveProp}
-          dataCode={dataCode}
+          propKeyValues={componentState.propKeyValues}
+          onChangeCode={onUpdatePropKeyValues}
+          onRemoveProp={onRemovePropFromPropKeyValues}
+          dataCode={data}
         />
       </View>
     </View>
@@ -76,8 +81,8 @@ const LiveView = ({
       {...theme.propertyPaneContainer}
     >
       <PropertiesPane
-        properties={component.props}
-        onClickPlus={onAddPropToLiveEditor}
+        properties={component.properties}
+        onClickPlus={onAddPropToPropKeyValues}
       />
     </View>
   </View>

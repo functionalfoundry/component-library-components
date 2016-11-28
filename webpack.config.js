@@ -34,6 +34,11 @@ module.exports = {
         exclude: /node_modules/,
         include: __dirname
       },
+      {
+        test: /\.json$/,
+        loader: 'json',
+        include: path.join(__dirname, 'node_modules', 'globals')
+      }
     ]
   }
 }

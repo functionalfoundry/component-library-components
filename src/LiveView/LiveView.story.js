@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
-import { components, states, propKeyValues, dataCode } from '../../mocks/components'
+import { components, componentStates, dataCode } from '../../mocks/components'
 import { profile } from '../../mocks/profile'
 import { Button } from '@workflo/components'
 import {
@@ -22,14 +22,11 @@ storiesOf('Live View', module)
     <div style={{ backgroundColor: Colors.grey900, }}>
       <LiveView
         component={component}
-        componentState={states[0]}
-        dataCode={dataCode}
-        propKeyValues={propKeyValues}
-        properties={properties}
-        profile={profile}
-        onUpdatePropKeyValue={action('onUpdatePropKeyValue')}
-        onAddPropToLiveEditor={action('onAddPropToLiveEditor')}
-        onRemoveProp={action('onRemoveProp')}
+        componentState={componentStates[0]}
+        data={dataCode}
+        onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
+        onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}
+        onRemovePropFromPropKeyValues={action('onRemovePropFromPropKeyValues')}
       />
     </div>
   ))

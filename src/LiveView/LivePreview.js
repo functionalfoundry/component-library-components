@@ -7,20 +7,41 @@ import {
   Colors
 } from '@workflo/styles'
 
+// type OwnerT = {
+//   firstName: string,
+//   lastName: string,
+//   profilePhoto: string,
+// }
+
+// type PropertyT = {
+//   name: string,
+//   type: string,
+//   default: string,
+//   description: string,
+// }
+
+type ComponentT = {
+  id: string,
+  implementation: any,
+  name: string,
+  // owner: OwnerT,
+  // properties: Array<PropertyT>,
+}
+
 type Props = {
-  component: any,
-  properties: Object,
+  component: ComponentT,
+  propMap: any,
 }
 const LivePreview = ({
   component,
-  properties,
+  propMap,
 }: Props) => (
   <View
     style={styles.card}
   >
     {component.implementation &&
      <component.implementation
-       {...properties}
+       {...propMap}
      />}
   </View>
 )
