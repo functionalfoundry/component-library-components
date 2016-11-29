@@ -1,10 +1,6 @@
-import './insertFont'
-import './reset.css'
-import './grommet.css'
-import './draft.css'
-import './rc-trigger.css'
-import './editor.css'
 import React from 'react'
+import Theme from 'js-theme'
+import '../../utils/insertFont'
 import { ActionsT } from '../../types/Action'
 import { SearchT } from '../../types/Search'
 import {
@@ -32,19 +28,20 @@ const App = ({
   backgroundColor = Colors.steel2,
   actions,
   search,
+  theme,
 }: Props) => (
   <View
-    style={styles.container}
+    {...theme.container}
   >
     {layout.header && (
       <View
-        style={styles.header}
+        {...theme.header}
       >
         <View
-          style={styles.center}
+          {...theme.center}
         >
           <View
-            style={styles.maxWidth}
+            {...theme.maxWidth}
           >
             {layout.header}
           </View>
@@ -52,13 +49,13 @@ const App = ({
       </View>
     )}
     <View
-      style={{ ...styles.content, backgroundColor }}
+      {...theme.content}
     >
       <View
-        style={styles.center}
+        {...theme.center}
       >
         <View
-          style={styles.maxWidth}
+          {...theme.maxWidth}
         >
           {layout.content}
         </View>
@@ -67,10 +64,10 @@ const App = ({
   </View>
 )
 
-const styles = {
+const defaultTheme = {
   container: {
-    backgroundColor: Colors.steel2,
-    color: Colors.aluminum5,
+    backgroundColor: Colors.grey900,
+    color: Colors.grey200,
     display: 'flex',
     flex: '1 1',
     flexDirection: 'column',
@@ -89,13 +86,15 @@ const styles = {
     maxWidth: 1200,
   },
   header: {
-    flex: '0 0 92px',
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
-    marginTop: Spacing.base,
-    marginBottom: Spacing.tiny,
+    marginTop: Spacing.small,
     boxSizing: 'border-box',
     backgroundColor: Colors.steel2,
+    '@media (max-width: 800px)': {
+      marginLeft: Spacing.small,
+      marginRight: Spacing.small,
+    },
   },
   content: {
     flex: 1,
@@ -105,7 +104,11 @@ const styles = {
     backgroundColor: Colors.aluminum6,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
+    '@media (max-width: 800px)': {
+      marginLeft: Spacing.small,
+      marginRight: Spacing.small,
+    },
   },
 }
 
-export default App
+export default Theme('App', defaultTheme)(App)

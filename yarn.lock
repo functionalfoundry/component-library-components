@@ -140,9 +140,9 @@
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.2.tgz#b29637fedf185e180414e6fdaf16acd1bec07e67"
 
-"@workflo/styles@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.0.tgz#3b08152ff0c49c000d4aaf0219e340fa7acef9e4"
+"@workflo/styles@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.3.tgz#73b1c8335d5bb39c644cdc7856534412afbffd38"
 
 Base64@~0.2.0:
   version "0.2.1"

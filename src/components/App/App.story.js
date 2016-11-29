@@ -1,13 +1,18 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import App from './App'
-import { profile } from '../../mocks/profile'
-import { components, states } from '../../mocks/components'
-import { liveViewState } from '../../mocks/live-view'
-import ComponentStateList from '../ComponentStateList'
+import { profile } from '../../../mocks/profile'
+import {
+  components,
+  states,
+  componentStates,
+  dataCode,
+  actionsCode,
+} from '../../../mocks/components'
+import ComponentStateList from '../../ComponentStateList'
 import Header from '../Header'
-import ComponentGrid from '../ComponentGrid'
-import SignIn from '../SignIn'
+import ComponentGrid from '../../ComponentGrid'
+import SignIn from '../../SignIn'
 import LiveView from '../LiveView'
 import {
   Colors,
@@ -27,6 +32,32 @@ storiesOf('App', module)
     <SignInScreen />
   ))
 
+const actions = {
+  quickActions: [
+    {
+      icon: 'add',
+      onClick: action('onLike'),
+    },
+    {
+      icon: 'layout',
+      onClick: action('onLayout'),
+    },
+    {
+      icon: 'close',
+    }
+  ],
+  secondaryActions: [
+    {
+      label: 'Cancel',
+      onClick: action('onCancel'),
+    },
+  ],
+  primaryAction: {
+    label: 'Save',
+    onClick: action('onSave'),
+  }
+}
+
 const Grid = () => (
   <ComponentGrid
     components={components}
@@ -38,9 +69,9 @@ const GridHeader = ({
   search,
 }) => (
   <Header
+    {...actions}
     profile={profile}
     title='Workflo Components'
-    actions={[]}
     search={search}
   />
 )
@@ -56,19 +87,26 @@ const StateListHeader = ({
   search,
 }) => (
   <Header
+    {...actions}
     profile={profile}
     onClickBack={action('onClickBack')}
     title='Comment'
     subtitle='with topics'
-    actions={[]}
     search={search}
   />
 )
 
 const Live = () => (
   <LiveView
-    {...liveViewState}
-    profile={profile}
+    component={components[0]}
+    componentState={componentStates[0]}
+    dataCode={dataCode}
+    actionsCode={actionsCode}
+    onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
+    onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}
+    onRemovePropFromPropKeyValues={action('onRemovePropFromPropKeyValues')}
+    onChangeData={action('onChangeData')}
+    onChangeActions={action('onChangeActions')}
   />
 )
 
@@ -105,6 +143,7 @@ class ComponentsScreen extends React.Component {
             focus: true,
             onSearch: this.handleSearch,
             text: search.text,
+            ...actions
           }} />,
         }}
         backgroundColor={Colors.steel2}
@@ -180,11 +219,16 @@ class LiveScreen extends React.Component {
         profile={profile}
         layout={{
           content: <Live />,
-          header: <StateListHeader search={{
-            show: true,
-            onSearch: this.handleSearch,
-            text: search.text,
-          }} />,
+          header: (
+            <StateListHeader
+              {...actions}
+              search={{
+                show: true,
+                onSearch: this.handleSearch,
+                text: search.text,
+              }}
+            />
+          ),
         }}
       />
     )

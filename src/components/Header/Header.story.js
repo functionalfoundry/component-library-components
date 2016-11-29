@@ -20,22 +20,26 @@ storiesOf('Header', module)
           profile={profile}
           title='Drawer'
           subtitle='Collapsed'
+          onClickBack={() => {}}
+          search={{
+            show: true,
+          }}
         />
       </Preview>
       <Preview
-        label='With back button'
+        label='With Logo'
       >
         <Header
           profile={profile}
           title='Drawer'
           subtitle='Collapsed'
-          onClickBack={() => {}}
         />
       </Preview>
       <Preview
         label='With back button and search'
       >
         <Header
+          {...actions}
           profile={profile}
           title='Component State'
           subtitle='Collapsed'
@@ -43,17 +47,6 @@ storiesOf('Header', module)
           search={{
             show: true,
           }}
-          subHeaderActions={[
-            {
-              icon: 'add',
-            },
-            {
-              icon: 'card-like',
-            },
-            {
-              icon: 'layout',
-            },
-          ]}
         />
       </Preview>
       <Preview

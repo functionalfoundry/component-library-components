@@ -84,7 +84,7 @@ class Properties extends React.Component {
 }
 
 const cellBorder = {
-  borderBottom: `1px solid ${Colors.grey700}`,
+  borderBottom: `1px solid ${Colors.grey800}`,
   paddingTop: Spacing.tiny,
   paddingLeft: Spacing.tiny,
   paddingRight: Spacing.small,

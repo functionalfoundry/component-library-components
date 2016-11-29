@@ -42,9 +42,13 @@ const SubHeader = ({
       quickActions={quickActions}
       theme={theme}
     />
-    <SecondaryActions secondaryActions={secondaryActions} />
+    <SecondaryActions
+      secondaryActions={secondaryActions}
+      theme={theme}
+    />
     <PrimaryAction
       primaryAction={primaryAction}
+      theme={theme}
     />
   </View>
 )
@@ -67,7 +71,7 @@ const QuickActions = ({
       {quickActions.map((action, index) => (
         <div
           onClick={action.onClick}
-          style={{ cursor: 'pointer' }}
+          {...theme.quickAction}
         >
           <Icon
             key={index}
@@ -86,10 +90,13 @@ const ActionButton = ({
   onClick,
   icon,
   kind = 'secondary',
+  theme,
 }) => {
   if (!arguments[0]) return null
   return (
-    <div style={{ display: 'flex', alignSelf: 'stretch' }}>
+    <div
+      {...theme.primaryAction}
+    >
       <Button
         label={label}
         onClick={onClick}
@@ -102,27 +109,37 @@ const ActionButton = ({
   )
 }
 
-const PrimaryAction = ({ primaryAction }) => (
+const PrimaryAction = ({ primaryAction, theme }) => (
   <ActionButton
     {...primaryAction}
+    theme={theme}
     kind='regular'
   />
 )
 
-const SecondaryAction = ({ action }) => (
+const SecondaryAction = ({ action, theme }) => (
   <ActionButton
     {...action}
+    theme={theme}
     kind='secondary'
   />
 )
 
 const SecondaryActions = ({
   secondaryActions = [],
+  theme,
 }) => {
   if (secondaryActions.length < 1) return null
   return (
-    <div style={{ display: 'flex', alignSelf: 'stretch' }}>
-      {secondaryActions.map((action) => <SecondaryAction action={action} />)}
+    <div
+      {...theme.secondaryActions}
+    >
+      {secondaryActions.map((action) => (
+        <SecondaryAction
+          action={action}
+          theme={theme}
+        />
+      ))}
     </div>
   )
 }
@@ -170,6 +187,14 @@ const defaultTheme = {
     color: Colors.primary,
     flex: '1 1',
   },
+  primaryAction: {
+    display: 'flex',
+    alignSelf: 'stretch',
+  },
+  secondaryActions: {
+    display: 'flex',
+    alignSelf: 'stretch',
+  },
   actions: {
     ...Fonts.title,
     ...Fonts.base,
@@ -177,6 +202,10 @@ const defaultTheme = {
     display: 'flex',
     padding: Spacing.small,
     justifyContent: 'flex-end',
+  },
+  quickAction: {
+    marginLeft: Spacing.small,
+    cursor: 'pointer',
   },
 }
 

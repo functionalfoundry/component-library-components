@@ -1,4 +1,4 @@
-const App = require('./App')
+const App = require('./components/App')
 const ComponentCard = require('./ComponentCard')
 const ComponentGrid = require('./ComponentGrid')
 const ComponentStateCard = require('./ComponentStateCard')

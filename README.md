@@ -86,3 +86,42 @@ Called with an object with the following structure on every key press
   data: Object - Map with action key and values,
   text: string - Updated code string. Must be passed back in as actionsCode,
 }
+
+
+## Header
+Includes the title, subtitle, back button, search, and action bar
+
+### title - string
+
+### subtitle - string
+
+### onClickBack - Function
+
+### search
+{
+  show: boolean,
+  text: string,
+  onSearch: Function,
+}
+
+### quickActions
+[
+  {
+    icon: string,
+    onClick: Function,
+  },
+]
+
+### secondaryActions
+[
+  {
+    label: string,
+    onClick: Function,
+  },
+]
+
+### primaryAction
+{
+  label: string,
+  onClick: Function,
+}

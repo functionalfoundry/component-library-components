@@ -43,7 +43,7 @@ const Header = ({
     {...theme.header}
   >
     <View
-      {...theme.row}
+      {...theme.titleRow}
     >
       <View
         {...theme.leftBlock}
@@ -178,6 +178,11 @@ const defaultTheme = {
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: Spacing.micro,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   subHeaderContainer: {
     flexDirection: 'row',
@@ -212,6 +217,7 @@ const defaultTheme = {
   },
   title: {
     ...Fonts.large,
+    fontSize: 26, // TODO: FIXX
     color: Colors.grey300,
     justifyContent: 'flex-start',
     marginBottom: 0,
