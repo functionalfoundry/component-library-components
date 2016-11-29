@@ -5,12 +5,6 @@
   "ComponentStateList",
   "SignIn",
   "App",
-  "Code",
-  "Data",
   "Header",
-  "LiveEditor",
-  "LivePreview",
-  "LiveView",
-  "Properties",
-  "SubHeader"
+  "LiveView"
 ]
