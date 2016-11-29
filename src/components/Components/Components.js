@@ -1,5 +1,5 @@
 import React from 'react'
-import ComponentCard from '../ComponentCard'
+import Component from '../Component'
 import {
   Grid,
   View,
@@ -13,14 +13,14 @@ type Props = {
   onClickComponent: Function,
 }
 
-const ComponentGrid = ({
+const Components = ({
   components,
   onClickComponent,
 }: Props) => (
   <Grid
     size='base'
     data={components}
-    renderer={ComponentCard}
+    renderer={Component}
     onClickItem={(component) => onClickComponent(component.id)}
     theme={{
       item: {
@@ -31,4 +31,4 @@ const ComponentGrid = ({
   />
 )
 
-export default ComponentGrid
+export default Components

@@ -4,7 +4,6 @@ import {
   Card,
   View,
   Icon,
-  Image,
 } from '@workflo/components'
 import {
   Colors,
@@ -28,7 +27,7 @@ const defaultProps = {
   properties: {},
 }
 
-const ComponentStateCard = ({
+const ComponentState = ({
   name,
   onClickEdit,
   theme,
@@ -78,12 +77,7 @@ const Actions = ({
   theme,
 }: ActionsPropsT) => (
   <View>
-    <Icon
-      {...theme.editButton}
-      name='open'
-      onClick={onClickEdit}
-      size='huge'
-    />
+
   </View>
 )
 
@@ -130,6 +124,6 @@ const defaultTheme = {
   },
 }
 
-ComponentStateCard.defaultProps = defaultProps
+ComponentState.defaultProps = defaultProps
 
-export default Theme('ComponentStateCard', defaultTheme)(ComponentStateCard)
+export default Theme('ComponentState', defaultTheme)(ComponentState)

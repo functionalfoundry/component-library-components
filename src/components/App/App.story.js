@@ -9,9 +9,9 @@ import {
   dataCode,
   actionsCode,
 } from '../../../mocks/components'
-import ComponentStateList from '../../ComponentStateList'
+// import ComponentStateList from '../../ComponentStateList'
 import Header from '../Header'
-import ComponentGrid from '../../ComponentGrid'
+// import ComponentGrid from '../../ComponentGrid'
 import SignIn from '../../SignIn'
 import LiveView from '../LiveView'
 import {
@@ -19,12 +19,12 @@ import {
 } from '@workflo/styles'
 
 storiesOf('App', module)
-  .add('Component Grid', () => (
-    <ComponentsScreen />
-  ))
-  .add('Component State List', () => (
-    <StatesScreen />
-  ))
+  // .add('Component Grid', () => (
+  //   <ComponentsScreen />
+  // ))
+  // .add('Component State List', () => (
+  //   <StatesScreen />
+  // ))
   .add('Live View', () => (
     <LiveScreen />
   ))
@@ -58,43 +58,43 @@ const actions = {
   }
 }
 
-const Grid = () => (
-  <ComponentGrid
-    components={components}
-    onClickComponent={action('clicked component')}
-  />
-)
+// const Grid = () => (
+//   <ComponentGrid
+//     components={components}
+//     onClickComponent={action('clicked component')}
+//   />
+// )
+//
+// const GridHeader = ({
+//   search,
+// }) => (
+//   <Header
+//     {...actions}
+//     profile={profile}
+//     title='Workflo Components'
+//     search={search}
+//   />
+// )
 
-const GridHeader = ({
-  search,
-}) => (
-  <Header
-    {...actions}
-    profile={profile}
-    title='Workflo Components'
-    search={search}
-  />
-)
-
-const StateList = () => (
-  <ComponentStateList
-    states={states}
-    onClickState={action('clicked state')}
-  />
-)
-
-const StateListHeader = ({
-  search,
-}) => (
-  <Header
-    {...actions}
-    profile={profile}
-    onClickBack={action('onClickBack')}
-    title='Comment'
-    subtitle='with topics'
-    search={search}
-  />
-)
+// const StateList = () => (
+//   <ComponentStateList
+//     states={states}
+//     onClickState={action('clicked state')}
+//   />
+// )
+//
+// const StateListHeader = ({
+//   search,
+// }) => (
+//   <Header
+//     {...actions}
+//     profile={profile}
+//     onClickBack={action('onClickBack')}
+//     title='Comment'
+//     subtitle='with topics'
+//     search={search}
+//   />
+// )
 
 const Live = () => (
   <LiveView
@@ -152,44 +152,44 @@ class ComponentsScreen extends React.Component {
   }
 }
 
-class StatesScreen extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      search: {
-        text: null,
-      }
-    }
-    this.handleSearch = this.handleSearch.bind(this)
-  }
-
-  handleSearch (text) {
-    this.setState({
-      search: {
-        text,
-      }
-    })
-  }
-
-  render () {
-    const {
-      search,
-    } = this.state
-    return (
-      <App
-        profile={profile}
-        layout={{
-          content: <StateList />,
-          header: <StateListHeader search={{
-            show: true,
-            onSearch: this.handleSearch,
-            text: search.text,
-          }} />,
-        }}
-      />
-    )
-  }
-}
+// class StatesScreen extends React.Component {
+//   constructor (props) {
+//     super(props)
+//     this.state = {
+//       search: {
+//         text: null,
+//       }
+//     }
+//     this.handleSearch = this.handleSearch.bind(this)
+//   }
+//
+//   handleSearch (text) {
+//     this.setState({
+//       search: {
+//         text,
+//       }
+//     })
+//   }
+//
+//   render () {
+//     const {
+//       search,
+//     } = this.state
+//     return (
+//       <App
+//         profile={profile}
+//         layout={{
+//           content: <StateList />,
+//           header: <StateListHeader search={{
+//             show: true,
+//             onSearch: this.handleSearch,
+//             text: search.text,
+//           }} />,
+//         }}
+//       />
+//     )
+//   }
+// }
 
 class LiveScreen extends React.Component {
   constructor (props) {

@@ -2,9 +2,9 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
-import ComponentCard from './ComponentCard'
+import Component from './Component'
 
-storiesOf('Component Card', module)
+storiesOf('Component', module)
   .add('Regular', () => (
     <PreviewContainer>
       <Preview
@@ -15,7 +15,7 @@ storiesOf('Component Card', module)
           },
         }}
       >
-        <ComponentCard
+        <Component
           name='Listing Card'
           owner='Yaniv Tal'
           profilePhoto='http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg'

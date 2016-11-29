@@ -1,8 +1,15 @@
 [
-  "ComponentGrid",
-  "ComponentStateList",
-  "SignIn",
-  "components",
-  "types",
-  "utils"
+  "App",
+  "Code",
+  "Component",
+  "ComponentState",
+  "ComponentStates",
+  "Components",
+  "Data",
+  "Header",
+  "LiveEditor",
+  "LivePreview",
+  "LiveView",
+  "Properties",
+  "SubHeader"
 ]

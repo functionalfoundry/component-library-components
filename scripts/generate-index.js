@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 var files =
-  fs.readdirSync(path.join(__dirname, '..', 'src'))
+  fs.readdirSync(path.join(__dirname, '..', 'src', 'components'))
   .filter(function (file) {
     return file.indexOf('.') === -1;
   });

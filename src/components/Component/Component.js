@@ -24,7 +24,7 @@ type Props = {
   profilePhoto: string,
 }
 
-const ComponentCard = ({
+const Component = ({
   name,
   owner,
   profilePhoto,
@@ -111,4 +111,4 @@ const defaultTheme = {
   },
 }
 
-export default Theme('ComponentCard', defaultTheme)(ComponentCard)
+export default Theme('Component', defaultTheme)(Component)
