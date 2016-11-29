@@ -32,8 +32,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader: 'json',
-        include: path.join(__dirname, 'node_modules', 'globals')
+        loader: 'json'
       }
     ]
   }
