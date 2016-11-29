@@ -19,10 +19,6 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.json$/,
-        loader: 'json-loader'
-      },
-      {
         test: /\.js$/,
         loaders: ['babel'],
         exclude: /node_modules/,
@@ -34,6 +30,11 @@ module.exports = {
         exclude: /node_modules/,
         include: __dirname
       },
+      {
+        test: /\.json$/,
+        loader: 'json',
+        include: path.join(__dirname, 'node_modules', 'globals')
+      }
     ]
   }
 }

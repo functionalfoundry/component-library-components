@@ -1,11 +1,13 @@
 export const liveViewState = {
   component: {
+    id: 2425,
+    name: 'Comment',
     owner: {
-      name: '',
+      firstName: '',
+      lastName: '',
       profilePhoto: '',
     },
-    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/v1469299730/comment-regular_yexhv7.png',
-    props: [
+    properties: [
       {
         name: 'title',
         type: 'String',
@@ -33,11 +35,14 @@ export const liveViewState = {
     ],
   },
   componentState: {
-    code: "<Comment\n  comment={comment}\n  description={description}\n  size=\'medium\'\n  likeCount={21}\n/>",
+    id: 2535,
+    name: 'Regular',
     propKeyValues: [
       {
-        prop: 'auto',
-        value: true,
+        key: 'description',
+        options: ['description1', 'description2'],
+        value: 'description1',
+        inputType: 'Radio',
       }
     ],
   },
