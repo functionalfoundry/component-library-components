@@ -1,11 +1,11 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import Header from './Header'
 import {
   Preview,
   PreviewContainer,
 } from '@workflo/components'
-import { profile } from '../mocks/profile'
+import { profile } from '../../../mocks/profile'
 
 storiesOf('Header', module)
   .add('Regular', () => (
@@ -16,6 +16,7 @@ storiesOf('Header', module)
         label='Regular'
       >
         <Header
+          {...actions}
           profile={profile}
           title='Drawer'
           subtitle='Collapsed'
@@ -65,3 +66,22 @@ storiesOf('Header', module)
       </Preview>
     </PreviewContainer>
   ))
+
+const actions = {
+  quickActions: [
+    {
+      icon: 'card-like',
+      onClick: action('onLike'),
+    },
+  ],
+  secondaryActions: [
+    {
+      label: 'Cancel',
+      onClick: action('onCancel'),
+    },
+  ],
+  primaryAction: {
+    label: 'Save',
+    onClick: action('onSave'),
+  }
+}

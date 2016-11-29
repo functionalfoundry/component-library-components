@@ -4,9 +4,9 @@
   "Code",
   "ComponentGrid",
   "ComponentStateList",
-  "Header",
   "Search",
   "SignIn",
   "components",
+  "types",
   "utils"
 ]

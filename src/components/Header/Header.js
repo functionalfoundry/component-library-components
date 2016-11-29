@@ -1,7 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
-import { ActionsT } from '../types/Action'
-import { SearchT } from '../types/Search'
+import { ActionT } from '../../types/Action'
+import { SearchT } from '../../types/Search'
 import {
   View,
   Icon,
@@ -13,16 +13,17 @@ import {
   Fonts,
   Spacing,
 } from '@workflo/styles'
-import Search from './Search'
-import SubHeader from './SubHeader'
+import Search from '../../Search'
+import SubHeader from '../SubHeader'
 
 type Props = {
   profile: Object,
   onClickBack: Function,
   title: string,
   subtitle: string,
-  actions: ActionsT,
-  subHeaderActions: ActionsT,
+  primaryAction: ActionT,
+  secondaryActions: Array<ActionT>,
+  quickActions: Array<ActionT>,
   search: SearchT,
   theme: Object,
 }
@@ -32,8 +33,9 @@ const Header = ({
   title,
   subtitle,
   onClickBack,
-  actions,
-  subHeaderActions,
+  primaryAction,
+  secondaryActions,
+  quickActions,
   search,
   theme,
 }: Props) => (
@@ -41,7 +43,7 @@ const Header = ({
     {...theme.header}
   >
     <View
-      {...theme.topRow}
+      {...theme.row}
     >
       <View
         {...theme.leftBlock}
@@ -66,14 +68,13 @@ const Header = ({
       >
         <Actions
           profile={profile}
-          actions={actions}
           search={search}
           theme={theme}
         />
       </View>
     </View>
     <View
-      {...theme.bottomRow}
+      {...theme.row}
     >
       <Heading
         size={2}
@@ -81,6 +82,20 @@ const Header = ({
       >
         {subtitle}
       </Heading>
+    </View>
+    <View
+      {...theme.row}
+      {...theme.subHeaderContainer}
+    >
+      <View
+        {...theme.rightBlock}
+      >
+        <SubHeader
+          primaryAction={primaryAction}
+          secondaryActions={secondaryActions}
+          quickActions={quickActions}
+        />
+      </View>
     </View>
   </View>
 )
@@ -132,7 +147,6 @@ const Actions = ({
     <Search
       {...search}
     />
-
     {actions.map((action, index) => (
       <Icon
         key={index}
@@ -160,13 +174,15 @@ const defaultTheme = {
     flex: '0 1 auto',
     flexDirection: 'column',
   },
-  topRow: {
+  row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  bottomRow: {
+  subHeaderContainer: {
     flexDirection: 'row',
-    alignContent: 'space-between',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.grey800,
+    color: Colors.grey300,
   },
   leftBlock: {
     display: 'flex',

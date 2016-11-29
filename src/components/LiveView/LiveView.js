@@ -3,7 +3,7 @@ import Theme from 'js-theme'
 import Properties from '../Properties'
 import LivePreview from '../LivePreview'
 import LiveEditor from '../LiveEditor'
-import LiveHeader, { ActionT } from '../LiveHeader'
+// import LiveHeader, { ActionT } from '../LiveHeader'
 import {
   View,
 } from '@workflo/components'
@@ -18,9 +18,6 @@ type Props = {
   componentState: any,
   dataCode: string,
   actionsCode: string,
-  primaryAction: ActionT,
-  secondaryActions: Array<ActionT>,
-  quickActions: Array<ActionT>,
   theme: Object,
   onUpdatePropKeyValues: Function,
   onAddPropToPropKeyValues: Function,
@@ -62,11 +59,6 @@ const LiveView = ({
   <View
     {...theme.liveView}
   >
-    <LiveHeader
-      primaryAction={primaryAction}
-      secondaryActions={secondaryActions}
-      quickActions={quickActions}
-    />
     <View
       {...theme.previewAndEditor}
     >

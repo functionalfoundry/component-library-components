@@ -29,7 +29,7 @@ const defaultProps = {
   // primaryAction: {},
 }
 
-const LiveHeader = ({
+const SubHeader = ({
   primaryAction,
   secondaryActions,
   quickActions,
@@ -49,7 +49,7 @@ const LiveHeader = ({
   </View>
 )
 
-LiveHeader.defaultProps = defaultProps
+SubHeader.defaultProps = defaultProps
 
 const ActionsPropsT = {
   isEditorDirty: Boolean,
@@ -136,13 +136,14 @@ const primaryStyle = {
 
 const defaultTheme = {
   header: {
-    backgroundColor: '#1C1C1C', // grey850
-    color: Colors.grey200,
+    // backgroundColor: '#1C1C1C', // grey850
+    // color: Colors.grey200,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    flex: '0 0 60px',
+    flex: '0 0 50px',
+    // padding: Spacing.small,
   },
   profileView: {
     display: 'flex',
@@ -179,4 +180,4 @@ const defaultTheme = {
   },
 }
 
-export default Theme('LiveHeader', defaultTheme)(LiveHeader)
+export default Theme('SubHeader', defaultTheme)(SubHeader)

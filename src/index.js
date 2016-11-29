@@ -3,7 +3,7 @@ const ComponentCard = require('./ComponentCard')
 const ComponentGrid = require('./ComponentGrid')
 const ComponentStateCard = require('./ComponentStateCard')
 const ComponentStateList = require('./ComponentStateList')
-const Header = require('./Header').default
+const Header = require('./components/Header')
 const LiveView = require('./components/LiveView')
 const SignIn = require('./SignIn')
 
