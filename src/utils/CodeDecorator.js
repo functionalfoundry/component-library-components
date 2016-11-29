@@ -4,6 +4,9 @@ import {
   Colors,
 } from '@workflo/styles'
 
+import {
+  TextInput,
+} from '@workflo/components'
 import Radio from '@workflo/components/lib/Radio'
 import RadioGroup from '@workflo/components/lib/Radio/RadioGroup'
 import Popover from '@workflo/components/lib/Popover'
@@ -158,7 +161,7 @@ const ValueSpan = ({
   <View
     inline
   >
-    {propKeyValues[index].options &&
+    {propKeyValues[index].input &&
       <Popover
         pointerVertical='Center'
         pointerHorizontal='Left'
@@ -166,16 +169,15 @@ const ValueSpan = ({
         targetHorizontal='Right'
         horizontalOffset={5}
         verticalOffset={2}
-        portal={
-          <Radios
+        portal={(
+          <Input
             propKey={propKeyValues[index].key}
+            input={propKeyValues[index].input}
             options={propKeyValues[index].options}
             value={propKeyValues[index].value}
-            onChange={(key, val) => {
-              onChange(key, val)
-            }}
+            onChange={onChange}
           />
-        }
+        )}
       >
         <span
           {...theme.value}
@@ -184,7 +186,7 @@ const ValueSpan = ({
         </span>
       </Popover>
     }
-    {!propKeyValues[index].options &&
+    {!propKeyValues[index].input &&
       <span
         {...theme.value}
       >
@@ -192,6 +194,39 @@ const ValueSpan = ({
       </span>}
   </View>
 )
+
+const Input = ({
+  input,
+  propKey,
+  options,
+  value,
+  onChange,
+}) => {
+  switch (input.type) {
+    case 'Radio':
+      return (
+        <Radios
+          propKey={propKey}
+          options={options}
+          value={value}
+          onChange={(value) => onChange(propKey, value)}
+        />
+      )
+    case 'TextInput':
+      return (
+        <TextInput
+          value={value}
+          onChange={(value) => onChange(propKey, value)}
+          theme={{
+            textInput: {
+              borderColor: Colors.primary,
+              color: 'white',
+            }
+          }}
+        />
+      )
+  }
+}
 
 const Radios = ({
   propKey,
@@ -201,7 +236,7 @@ const Radios = ({
 }) => (
   <RadioGroup
     value={value}
-    onChange={(value) => onChange(propKey, value)}
+    onChange={onChange}
     theme={{
       radioGroup: {
         marginRight: 20,

@@ -110,13 +110,8 @@ export const propKeyValues = [
   {
     key: 'description',
     value: 'description',
-    options: [
-      'comment',
-      'description',
-      'user',
-    ],
     input: {
-      type: 'Radio',
+      type: 'TextInput',
     },
   },
   {
