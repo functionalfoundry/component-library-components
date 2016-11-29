@@ -6,6 +6,7 @@ import {
   View,
   Icon,
   Heading,
+  Search,
   // ProfilePhoto,
 } from '@workflo/components'
 import {
@@ -13,7 +14,6 @@ import {
   Fonts,
   Spacing,
 } from '@workflo/styles'
-import Search from '../../Search'
 import SubHeader from '../SubHeader'
 
 type Props = {
@@ -173,6 +173,7 @@ const defaultTheme = {
     display: 'flex',
     flex: '0 1 auto',
     flexDirection: 'column',
+    position: 'relative',
   },
   row: {
     flexDirection: 'row',

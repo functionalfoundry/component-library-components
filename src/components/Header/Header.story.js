@@ -37,7 +37,7 @@ storiesOf('Header', module)
       >
         <Header
           profile={profile}
-          title='Drawer'
+          title='Component State'
           subtitle='Collapsed'
           onClickBack={() => {}}
           search={{
