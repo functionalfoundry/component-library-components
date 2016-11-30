@@ -24,7 +24,9 @@ class StoryContainer extends React.Component {
       propKeyValues: [
         {
           key: 'comment',
-          type: 'variable',
+          input: {
+            type: 'Radio',
+          },
           value: 'comment',
           options: [
             'comment',
@@ -34,7 +36,9 @@ class StoryContainer extends React.Component {
         },
         {
           key: 'description',
-          type: 'variable',
+          input: {
+            type: 'Radio',
+          },
           value: 'description',
           options: [
             'comment',
@@ -44,7 +48,9 @@ class StoryContainer extends React.Component {
         },
         {
           key: 'size',
-          type: 'string',
+          input: {
+            type: 'Radio',
+          },
           value: 'Base',
           options: [
             'Tiny',
@@ -56,7 +62,9 @@ class StoryContainer extends React.Component {
         },
         {
           key: 'likeCount',
-          type: 'number',
+          input: {
+            type: 'Slider',
+          },
           value: 21,
         },
       ]

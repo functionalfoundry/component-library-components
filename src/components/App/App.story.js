@@ -12,7 +12,6 @@ import {
 // import ComponentStateList from '../../ComponentStateList'
 import Header from '../Header'
 // import ComponentGrid from '../../ComponentGrid'
-import SignIn from '../../SignIn'
 import LiveView from '../LiveView'
 import {
   Colors,
@@ -27,9 +26,6 @@ storiesOf('App', module)
   // ))
   .add('Live View', () => (
     <LiveScreen />
-  ))
-  .add('Sign In', () => (
-    <SignInScreen />
   ))
 
 const actions = {
@@ -235,44 +231,44 @@ class LiveScreen extends React.Component {
   }
 }
 
-class SignInScreen extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      email: '',
-      password: '',
-    }
-    this.handleChange = this.handleChange.bind(this)
-  }
-
-  handleChange ({
-    email,
-    password,
-  }) {
-    this.setState({
-      email,
-      password,
-    })
-  }
-
-  render () {
-    const {
-      email,
-      password,
-    } = this.state
-    return (
-      <App
-        layout={{
-          content: (
-            <SignIn
-              email={email}
-              password={password}
-              onSignIn={action('Sign in')}
-            />
-          ),
-        }}
-        backgroundColor={Colors.steel2}
-      />
-    )
-  }
-}
+// class SignInScreen extends React.Component {
+//   constructor (props) {
+//     super(props)
+//     this.state = {
+//       email: '',
+//       password: '',
+//     }
+//     this.handleChange = this.handleChange.bind(this)
+//   }
+//
+//   handleChange ({
+//     email,
+//     password,
+//   }) {
+//     this.setState({
+//       email,
+//       password,
+//     })
+//   }
+//
+//   render () {
+//     const {
+//       email,
+//       password,
+//     } = this.state
+//     return (
+//       <App
+//         layout={{
+//           content: (
+//             <SignIn
+//               email={email}
+//               password={password}
+//               onSignIn={action('Sign in')}
+//             />
+//           ),
+//         }}
+//         backgroundColor={Colors.steel2}
+//       />
+//     )
+//   }
+// }
