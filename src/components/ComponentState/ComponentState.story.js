@@ -1,19 +1,18 @@
 import React from 'react'
 import { storiesOf } from '@kadira/storybook'
-import ComponentStateCard from './ComponentStateCard'
+import ComponentState from './ComponentState'
 import {
   Preview,
   PreviewContainer,
-  View,
 } from '@workflo/components'
 
-storiesOf('Component State Card', module)
+storiesOf('Component State', module)
   .add('Regular', () => (
     <PreviewContainer>
       <Preview
         label='Regular'
       >
-        <ComponentStateCard
+        <ComponentState
           name='Listing Card'
           owner='Yaniv Tal'
           thumbnail='http://placehold.it/380x380'

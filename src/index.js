@@ -1,21 +1,31 @@
 const App = require('./components/App')
-const ComponentCard = require('./ComponentCard')
-const ComponentGrid = require('./ComponentGrid')
-const ComponentStateCard = require('./ComponentStateCard')
-const ComponentStateList = require('./ComponentStateList')
+const Code = require('./components/Code')
+const Component = require('./components/Component')
+const Components = require('./components/Components')
+const ComponentState = require('./components/ComponentState')
+const ComponentStates = require('./components/ComponentStates')
+const Data = require('./components/Data')
 const Header = require('./components/Header')
+const LiveEditor = require('./components/LiveEditor')
+const LivePreview = require('./components/LivePreview')
 const LiveView = require('./components/LiveView')
-const SignIn = require('./SignIn')
+const Properties = require('./components/Properties')
+const SubHeader = require('./components/SubHeader')
 
 const WorkfloComponents = {
   App,
-  ComponentCard,
-  ComponentGrid,
-  ComponentStateCard,
-  ComponentStateList,
+  Code,
+  Component,
+  Components,
+  ComponentState,
+  ComponentStates,
+  Data,
   Header,
+  LiveEditor,
+  LivePreview,
   LiveView,
-  SignIn,
+  Properties,
+  SubHeader,
 }
 
 module.exports = WorkfloComponents

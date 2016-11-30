@@ -7,10 +7,8 @@ function loadStories () {
   require('../src/components/LiveEditor/LiveEditor.story.js')
   require('../src/components/LiveView/LiveView.story.js')
   require('../src/components/Header/Header.story.js')
-  // require('../src/ComponentGrid/ComponentGrid.story.js')
-  // require('../src/ComponentStateList/ComponentStateList.story.js')
-  // require('../src/ComponentCard.story.js')
-  // require('../src/ComponentStateCard.story.js')
+  require('../src/components/ComponentState/ComponentState.story.js')
+  require('../src/components/Component/Component.story.js')
 }
 
 configure(loadStories, module)

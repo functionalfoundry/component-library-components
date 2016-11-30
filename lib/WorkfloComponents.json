@@ -1,10 +1,15 @@
 [
-  "ComponentCard",
-  "ComponentGrid",
-  "ComponentStateCard",
-  "ComponentStateList",
-  "SignIn",
   "App",
+  "Code",
+  "Component",
+  "ComponentState",
+  "ComponentStates",
+  "Components",
+  "Data",
   "Header",
-  "LiveView"
+  "LiveEditor",
+  "LivePreview",
+  "LiveView",
+  "Properties",
+  "SubHeader"
 ]

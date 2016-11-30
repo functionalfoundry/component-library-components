@@ -1,5 +1,5 @@
 import React from 'react'
-import ComponentStateCard from '../ComponentStateCard'
+import ComponentState from '../ComponentState'
 import {
   View,
 } from '@workflo/components'
@@ -14,7 +14,7 @@ type Props = {
   onClickState: Function,
 }
 
-const ComponentStateList = ({
+const ComponentStates = ({
   children,
   states,
   onClickState = () => {},
@@ -33,7 +33,7 @@ const ComponentStateList = ({
             key={index}
             style={styles.row}
           >
-            <ComponentStateCard
+            <ComponentState
               {...state}
               onClickEdit={() => onClickState(state.id)}
             />
@@ -47,7 +47,7 @@ const ComponentStateList = ({
   </View>
 )
 
-export default ComponentStateList
+export default ComponentStates
 
 const styles = {
   container: {

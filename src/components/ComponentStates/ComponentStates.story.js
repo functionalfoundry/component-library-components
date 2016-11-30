@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Colors } from '@workflo/styles'
-import ComponentStateList from '.'
+import ComponentStates from '.'
 
 const MockComponent = ({ children }) => (
   <div
@@ -42,10 +42,10 @@ const states = [
   },
 ]
 
-storiesOf('Component State List', module)
+storiesOf('Component States', module)
   .add('Regular', () => (
     <div style={{ backgroundColor: Colors.steel2 }}>
-      <ComponentStateList
+      <ComponentStates
         states={states}
       />
     </div>
