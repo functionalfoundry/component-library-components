@@ -5,12 +5,15 @@ import { codeDecoratorFactory } from '../../utils/CodeDecorator'
 import TextEditor from '@workflo/components/lib/TextEditor'
 
 export type CodePropKeyValueTypeT = 'Radio' | 'Checkbox' | 'Slider' | 'TextInput' | 'Date' | 'Color' | 'Icon'
+type InputT = {
+  type: CodePropKeyValueT,
+}
 
 export type CodePropKeyValueT = {
-  type: CodePropKeyValueTypeT,
   key: string,
   value: string,
   options: Array<string>,
+  input: InputT,
 }
 
 type PropsT = {
@@ -79,13 +82,13 @@ export default class Code extends React.Component {
 const getCodeString = (componentName, propKeyValues) => {
   const props = propKeyValues
     .map((propKeyValue) => {
-      const { key, value, type } = propKeyValue
-      switch (type) {
-        case 'variable':
+      const { key, value, input } = propKeyValue
+      switch (input.type) {
+        case 'Radio':
           return `  ${key}={${value}}`
-        case 'string':
+        case 'TextInput':
           return `  ${key}='${value}'`
-        case 'number':
+        case 'Slider':
           return `  ${key}={${value}}`
         default:
           return `  ${key}={${value}}`
