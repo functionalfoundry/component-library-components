@@ -77,7 +77,12 @@ const Actions = ({
   theme,
 }: ActionsPropsT) => (
   <View>
-
+    <Icon
+      {...theme.editButton}
+      name='open'
+      onClick={onClickEdit}
+      size='huge'
+    />
   </View>
 )
 
