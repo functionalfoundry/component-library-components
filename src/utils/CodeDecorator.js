@@ -174,7 +174,7 @@ const ValueSpan = ({
             propKey={propKeyValues[index].key}
             input={propKeyValues[index].input}
             options={propKeyValues[index].options}
-            value={propKeyValues[index].value}
+            value={propKeyValues[index].value.value}
             onChange={onChange}
           />
         )}
