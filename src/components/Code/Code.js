@@ -9,9 +9,15 @@ type InputT = {
   type: CodePropKeyValueT,
 }
 
+export type ValueTypeT = 'String' | 'Javascript'
+type ValueT = {
+  type: ValueTypeT,
+  value: any,
+}
+
 export type CodePropKeyValueT = {
   key: string,
-  value: string,
+  value: ValueT,
   options: Array<string>,
   input: InputT,
 }
@@ -64,7 +70,7 @@ export default class Code extends React.Component {
       .find((propKeyValue) => propKeyValue.key === key)
     const index = propKeyValues.indexOf(propKeyValue)
     const newPropKeyValues = [...propKeyValues]
-    newPropKeyValues[index].value = value
+    newPropKeyValues[index].value.value = value
     onChange(newPropKeyValues)
   }
 
@@ -82,16 +88,14 @@ export default class Code extends React.Component {
 const getCodeString = (componentName, propKeyValues) => {
   const props = propKeyValues
     .map((propKeyValue) => {
-      const { key, value, input } = propKeyValue
-      switch (input.type) {
-        case 'Radio':
-          return `  ${key}={${value}}`
-        case 'TextInput':
-          return `  ${key}='${value}'`
-        case 'Slider':
-          return `  ${key}={${value}}`
+      const { key, value } = propKeyValue
+      switch (value.type) {
+        case 'JavaScript':
+          return `  ${key}={${value.value}}`
+        case 'String':
+          return `  ${key}='${value.value}'`
         default:
-          return `  ${key}={${value}}`
+          return `  ${key}={${value.value}}`
       }
     })
     .join('\n')

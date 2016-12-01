@@ -33,7 +33,6 @@ const defaultProps = {
 
 const getPropMap = (propKeyValues) => {
   /* TODO: memoize */
-  console.log('get map for: ', propKeyValues)
   return propKeyValues
     .reduce((propKeyValue, acc) => ({
       ...acc,
@@ -50,6 +49,8 @@ const LiveView = ({
   secondaryActions,
   quickActions,
   theme,
+  onUpdateComponent, // ?
+  onUpdateComponentState, // ?
   onUpdatePropKeyValues,
   onAddPropToPropKeyValues,
   onRemovePropFromPropKeyValues,
@@ -66,7 +67,7 @@ const LiveView = ({
         {...theme.livePreviewContainer}
       >
         <LivePreview
-          component={component}
+          Component={component.implementation}
           propMap={getPropMap(componentState.propKeyValues)}
         />
       </View>

@@ -27,7 +27,10 @@ class StoryContainer extends React.Component {
           input: {
             type: 'Radio',
           },
-          value: 'comment',
+          value: {
+            type: 'JavaScript',
+            value: 'comment',
+          },
           options: [
             'comment',
             'description',
@@ -39,7 +42,10 @@ class StoryContainer extends React.Component {
           input: {
             type: 'Radio',
           },
-          value: 'description',
+          value: {
+            type: 'JavaScript',
+            value: 'description',
+          },
           options: [
             'comment',
             'description',
@@ -51,7 +57,10 @@ class StoryContainer extends React.Component {
           input: {
             type: 'Radio',
           },
-          value: 'Base',
+          value: {
+            type: 'String',
+            value: 'Base',
+          },
           options: [
             'Tiny',
             'Small',

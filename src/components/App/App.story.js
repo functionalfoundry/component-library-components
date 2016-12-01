@@ -79,18 +79,18 @@ const actions = {
 //   />
 // )
 //
-// const StateListHeader = ({
-//   search,
-// }) => (
-//   <Header
-//     {...actions}
-//     profile={profile}
-//     onClickBack={action('onClickBack')}
-//     title='Comment'
-//     subtitle='with topics'
-//     search={search}
-//   />
-// )
+const StateListHeader = ({
+  search,
+}) => (
+  <Header
+    {...actions}
+    profile={profile}
+    onClickBack={action('onClickBack')}
+    title='Comment'
+    subtitle='with topics'
+    search={search}
+  />
+)
 
 const Live = () => (
   <LiveView

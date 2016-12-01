@@ -10,7 +10,9 @@ import {
 
 const component = components[0]
 component.implementation = ({children}) => (
-  <Button>{children}</Button>
+  <div style={{ backgroundColor: 'magenta', height: 30 }}>
+    Component
+  </div>
 )
 
 const properties = {

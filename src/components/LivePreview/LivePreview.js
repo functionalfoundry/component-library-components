@@ -1,4 +1,5 @@
 import React from 'react'
+import Theme from 'js-theme'
 import {
   Image,
   View,
@@ -20,53 +21,88 @@ import {
 //   description: string,
 // }
 
-type ComponentT = {
-  id: string,
-  implementation: any,
-  name: string,
-  // owner: OwnerT,
-  // properties: Array<PropertyT>,
-}
+// type ComponentT = {
+//   id: string,
+//   implementation: any,
+//   name: string,
+//   // owner: OwnerT,
+//   // properties: Array<PropertyT>,
+// }
 
 type Props = {
-  component: ComponentT,
+  component: any,
   propMap: any,
+  theme: Object,
+  backgroundColor: string,
+  alignment: 'Left' | 'Center' | 'Right' | 'Stretch',
 }
+
+const defaultProps = {
+  componentState: {propKeyValues: {}},
+  backgroundColor: 'white',
+}
+
 const LivePreview = ({
-  component,
+  Component,
   propMap,
+  theme,
 }: Props) => (
   <View
-    style={styles.card}
+    {...theme.livePreview}
   >
-    {component.implementation &&
-     <component.implementation
-       {...propMap}
-     />}
+    <View
+      {...theme.previewContainer}
+    >
+      {Component &&
+       <Component
+         {...propMap}
+       />}
+    </View>
   </View>
 )
 
-LivePreview.defaultProps = {
-  componentState: {propKeyValues: {}}
-}
+LivePreview.defaultProps = defaultProps
 
-const styles = {
-  card: {
-    backgroundColor: 'white',
-    borderRight: `1px solid ${Colors.grey200}`,
+const defaultTheme = ({
+  backgroundColor,
+  alignment,
+}) => ({
+  livePreview: {
+    backgroundColor,
+    // borderRight: `1px solid ${Colors.grey200}`,
     display: 'flex',
     flexDirection: 'row',
-    flex: '0 1 auto',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+    // flex: '0 1 auto',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+
     position: 'relative',
   },
-  image: {
-    width: '100%',
-    maxHeight: '100%',
-    height: 'auto',
-    objectFit: 'contain',
+  previewContainer: {
+    ...getHorizontalAlignment(alignment.horizontal),
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
+  // image: {
+  //   width: '100%',
+  //   maxHeight: '100%',
+  //   height: 'auto',
+  //   objectFit: 'contain',
+  // },
+})
+
+const getHorizontalAlignment = (horizontalAlignment) => {
+  switch (horizontalAlignment) {
+    case 'Left':
+      return { justifyContent: 'flex-start' }
+    case 'Right':
+      return { justifyContent: 'flex-end' }
+    case 'Center':
+      return { justifyContent: 'center' }
+  }
 }
 
-export default LivePreview
+const ThemedLivePreview = Theme('LivePreview', defaultTheme)(LivePreview)
+export default ThemedLivePreview
