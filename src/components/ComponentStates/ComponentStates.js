@@ -1,82 +1,108 @@
 import React from 'react'
+import Theme from 'js-theme'
 import ComponentState from '../ComponentState'
 import {
   View,
 } from '@workflo/components'
+import MultiSizeGrid from '@workflo/components/lib/MultiSizeGrid/MultiSizeGrid'
 import {
   Colors,
   Spacing,
 } from '@workflo/styles'
 
-type Props = {
-  children: any,
-  states: Array<Object>,
-  onClickState: Function,
+type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
+type VerticalAlignmentT = 'Top' | 'Center' | 'Bottom'
+type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
+
+type ComponentStateT = {
+  name: string,
+  propMap: Object,
 }
 
-const ComponentStates = ({
-  children,
-  states,
-  onClickState = () => {},
-}: Props) => (
-  <View
-    style={styles.container}
-  >
-    <View
-      style={styles.section}
-    >
-      <View
-        style={styles.column}
-      >
-        {states.map((state, index) => (
-          <View
-            key={index}
-            style={styles.row}
-          >
-            <ComponentState
-              {...state}
-              onClickEdit={() => onClickState(state.id)}
-            />
-            <View
-              style={styles.separator}
-            />
-          </View>
-        ))}
-      </View>
-    </View>
-  </View>
-)
+type HarnessT = {
+  id: string,
+  state: ComponentStateT,
+  alignment: {
+    horizontal: HorizontalAlignmentT,
+    vertical: VerticalAlignmentT,
+  },
+  size: {
+    horizontal: SizeT,
+    vertical: SizeT,
+  },
+  theme: {
+    id: string,
+    name: string,
+    patterns: {
+      colors: {
+        background: string,
+      },
+    }
+  },
+}
 
-export default ComponentStates
+type HarnessCardT = {
+  harness: HarnessT,
+  isSelected: boolean,
+}
 
-const styles = {
-  container: {
-    display: 'flex',
-    flex: 1,
+type PropsT = {
+  component: {
+    implementation: any,
   },
-  section: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-  },
-  column: {
-    flexGrow: 1,
-    flexShrink: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  row: {
-    backgroundColor: 'white',
-    ':nth-child(even)': {
-      backgroundColor: 'white',
+  harnessCards: Array<HarnessCardT>,
+  onClick: Function,
+  onChange: (card: HarnessCardT) => null,
+  theme: Object,
+}
+
+const ComponentStates = (props: PropsT) => {
+  const {
+    onChange,
+    theme,
+  } = props
+  return (
+    <MultiSizeGrid
+      {...theme.componentStates}
+      data={getData(props)} // TODO: Memoize
+      renderer={ComponentState}
+      onChangeDatum={(datum) => onChange({
+        ...datum.value.harnessCard,
+        isSelected: datum.descriptor.isSelected,
+      })}
+    />
+  )
+}
+
+// TODO: Memoize
+const getData = ({
+  component,
+  harnessCards,
+  onClick,
+  onChange,
+}) => {
+  return harnessCards.map((stateCard) => ({
+    value: {
+      component,
+      harnessCard: stateCard,
+      onClickTitle: () => onClick(stateCard.harness.id),
+      onChangeIsSelected: (isSelected) => onChange({
+        ...stateCard,
+        isSelected,
+      }),
     },
-    flexDirection: 'column',
-    justifyContent: 'stretch',
-  },
-  separator: {
-    borderBottom: `1px solid ${Colors.grey200}`,
-    flex: '0 1',
-    marginLeft: Spacing.base,
-    marginRight: Spacing.base,
+    descriptor: {
+      isSelected: stateCard.isSelected,
+      size: stateCard.harness.size,
+    },
+  }))
+}
+
+const defaultTheme = {
+  componentStates: {
+    display: 'flex',
+    flex: 1,
   },
 }
+
+export default Theme('ComponentStates', defaultTheme)(ComponentStates)

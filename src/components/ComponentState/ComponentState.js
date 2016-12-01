@@ -1,9 +1,9 @@
+/* @flow */
 import React from 'react'
 import Theme from 'js-theme'
 import {
   Card,
   View,
-  Icon,
 } from '@workflo/components'
 import {
   Colors,
@@ -11,31 +11,89 @@ import {
   Spacing,
 } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
+import LivePreview from '../LivePreview'
 
-type Props = {
+type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
+type VerticalAlignmentT = 'Top' | 'Center' | 'Right'
+type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
+
+type ComponentStateT = {
   name: string,
-  Component: any, // Component Implementation
-  properties: Object, // Props as a map that can be spread
-  onClickEdit: Function,
+  propMap: Object,
+}
+
+type HarnessT = {
+  componentState: ComponentStateT,
+  alignment: {
+    horizontal: HorizontalAlignmentT,
+    vertical: VerticalAlignmentT,
+  },
+  size: {
+    horizontal: SizeT,
+    vertical: SizeT,
+  },
+  theme: {
+    id: string,
+    name: string,
+    patterns: {
+      colors: {
+        background: string,
+      },
+    },
+  },
+}
+
+type PropsT = {
+  component: {
+    implementation: any,
+  },
+  harnessCard: {
+    harness: HarnessT,
+    isSelected: boolean,
+  },
+  onClickTitle: Function,
+  onChangeIsSelected: Function,
   theme: Object,
 }
 
-const defaultComponent = () => (<div />)
+const defaultComponent = () => <div />
 
 const defaultProps = {
-  Component: defaultComponent,
-  properties: {},
+  component: {
+    implementation: defaultComponent,
+  },
+  harnessCard: {
+    harness: {
+      componentState: {
+        name: '',
+        propMap: {},
+      },
+      alignment: {
+        horizontal: 'Center',
+        vertical: 'Center',
+      },
+      theme: {
+        patterns: {
+          colors: {},
+        },
+      },
+    },
+    isSelected: false,
+  },
+  onClickTitle: () => {},
+  onChangeIsSelected: () => {},
 }
 
 const ComponentState = ({
-  name,
-  onClickEdit,
+  component,
+  harnessCard,
+  onChangeIsSelected,
+  onClickTitle,
   theme,
-  Component,
-  properties,
-}: Props) => (
+}: PropsT) => (
   <Card
-    {...theme.componentStateCard}
+    {...theme.harnessCard}
+    flush
   >
     <View
       {...theme.section}
@@ -46,20 +104,25 @@ const ComponentState = ({
         <Heading
           {...theme.title}
           size={2}
+          onPress={() => onClickTitle()}
         >
-          {name}
+          {harnessCard.harness.componentState.name}
         </Heading>
       </View>
       <View
-        {...theme.thumbnail}
+        {...theme.preview}
       >
-        <Component {...properties} />
+        <LivePreview
+          Component={component.implementation}
+          propMap={harnessCard.harness.componentState.propMap}
+          backgroundColor={harnessCard.harness.theme.patterns.colors.background}
+          alignment={harnessCard.harness.alignment}
+        />
       </View>
       <View
         {...theme.actions}
       >
         <Actions
-          onClickEdit={onClickEdit}
           theme={theme}
         />
       </View>
@@ -68,26 +131,22 @@ const ComponentState = ({
 )
 
 type ActionsPropsT = {
-  onClickEdit: Function,
   theme: Object,
 }
 
 const Actions = ({
-  onClickEdit,
   theme,
 }: ActionsPropsT) => (
   <View>
-    <Icon
-      {...theme.editButton}
-      name='open'
-      onClick={onClickEdit}
-      size='huge'
-    />
   </View>
 )
 
-const defaultTheme = {
-  componentStateCard: {
+const defaultTheme = ({
+  isSelected,
+}) => ({
+  harnessCard: {
+    ...getScaledStyle(isSelected),
+    transition: 'all .2s ease',
     position: 'relative',
     overflow: 'hidden',
     width: 'inherit', // FIX
@@ -96,13 +155,18 @@ const defaultTheme = {
   },
   titleContainer: {
     position: 'absolute',
-    top: Spacing.tiny,
-    left: Spacing.tiny,
+    display: 'flex',
+    flexDirection: 'row',
+    top: Spacing.small,
+    left: Spacing.tiny + Spacing.base, // Scoot over for the checkbox
+    zIndex: 10,
   },
   title: {
     ...Fonts.title,
     ...Fonts.base,
     color: Colors.grey800,
+    display: 'inline',
+    cursor: 'pointer',
   },
   actions: {
     position: 'absolute',
@@ -115,18 +179,35 @@ const defaultTheme = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  thumbnail: {
-    height: 200,
-    maxWidth: '100%',
+  preview: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     display: 'flex',
+    flex: 1,
     flexDirection: 'row',
-    flex: '0 1 auto;',
-    justifyContent: 'center',
-    alignItems: 'center',
+    zIndex: -0,
+    // height: 200,
+    // maxWidth: '100%',
+    // display: 'flex',
+    // flexDirection: 'row',
+    // flex: '0 1 auto;',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   editButton: {
     cursor: 'pointer',
   },
+})
+
+const getScaledStyle = (isSelected) => {
+  if (isSelected) {
+    return {
+      transform: 'scale(.9)',
+    }
+  }
 }
 
 ComponentState.defaultProps = defaultProps
