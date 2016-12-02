@@ -81,19 +81,19 @@ const getData = ({
   onClick,
   onChange,
 }) => {
-  return harnessCards.map((stateCard) => ({
+  return harnessCards.map((harnessCard) => ({
     value: {
       component,
-      harnessCard: stateCard,
-      onClickTitle: () => onClick(stateCard.harness.id),
+      harnessCard,
+      onClickTitle: () => onClick(harnessCard.harness.id),
       onChangeIsSelected: (isSelected) => onChange({
-        ...stateCard,
+        ...harnessCard,
         isSelected,
       }),
     },
     descriptor: {
-      isSelected: stateCard.isSelected,
-      size: stateCard.harness.size,
+      isSelected: harnessCard.isSelected,
+      size: harnessCard.harness.size,
     },
   }))
 }
