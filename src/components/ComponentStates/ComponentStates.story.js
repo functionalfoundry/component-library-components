@@ -15,7 +15,7 @@ const MockComponent = ({ children }) => (
   </div>
 )
 
-const getCard = ({ name, alignment, color }) => ({
+const getCard = ({ name, alignment, color, size = 'Base' }) => ({
   harness: {
     id: Math.random(),
     componentState: {
@@ -28,7 +28,7 @@ const getCard = ({ name, alignment, color }) => ({
       horizontal: alignment,
     },
     size: {
-      horizontal: 'Base',
+      horizontal: size,
     },
     theme: {
       patterns: {
@@ -51,6 +51,18 @@ const stateCards = [
     name: 'Another one',
     alignment: 'Left',
     color: 'cyan',
+  }),
+  getCard({
+    name: 'Full width align left',
+    alignment: 'Left',
+    color: 'cyan',
+    size: 'Large',
+  }),
+  getCard({
+    name: 'Full width align right',
+    alignment: 'Right',
+    color: 'yellow',
+    size: 'Large',
   }),
 ]
 
