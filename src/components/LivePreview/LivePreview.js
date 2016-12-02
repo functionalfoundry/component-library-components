@@ -34,12 +34,19 @@ type Props = {
   propMap: any,
   theme: Object,
   backgroundColor: string,
-  alignment: 'Left' | 'Center' | 'Right' | 'Stretch',
+  alignment: {
+    horizontal: 'Left' | 'Center' | 'Right',
+    vertical: 'Top' | 'Center' | 'Bottom',
+  },
 }
 
 const defaultProps = {
   componentState: {propKeyValues: {}},
   backgroundColor: 'white',
+  alignment: {
+    horizontal: 'Center',
+    vertical: 'Center',
+  },
 }
 
 const LivePreview = ({

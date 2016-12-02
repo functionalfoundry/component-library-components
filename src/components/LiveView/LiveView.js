@@ -7,17 +7,36 @@ import LiveEditor from '../LiveEditor'
 import {
   View,
 } from '@workflo/components'
-import TextEditor from '@workflo/components/lib/TextEditor'
 import {
   Spacing,
   Colors,
 } from '@workflo/styles'
 
+type DataT = {
+  /* Passed in on initial load to seed the editor state */
+  text: string,
+  /* Stored by caller and passed back in on every change */
+  editorState: Object,
+}
+
+type PropertyT = {
+  name: string,
+  type: string,
+  default: string,
+  description: string,
+}
+
 type Props = {
-  component: any,
-  componentState: any,
-  dataCode: string,
-  actionsCode: string,
+  component: {
+    name: string,
+    implementation: any,
+    properties: Array<PropertyT>,
+  },
+  componentState: {
+    propMap: Object,
+  },
+  data: DataT,
+  actions: DataT,
   theme: Object,
   onUpdatePropKeyValues: Function,
   onAddPropToPropKeyValues: Function,
@@ -27,8 +46,12 @@ type Props = {
 }
 
 const defaultProps = {
-  dataCode: '',
-  actionsCode: '',
+  data: {
+    text: '',
+  },
+  actions: {
+    text: '',
+  },
 }
 
 const getPropMap = (propKeyValues) => {
@@ -43,8 +66,8 @@ const getPropMap = (propKeyValues) => {
 const LiveView = ({
   component,
   componentState,
-  dataCode,
-  actionsCode,
+  data,
+  actions,
   primaryAction,
   secondaryActions,
   quickActions,
@@ -81,8 +104,8 @@ const LiveView = ({
           onChangeData={onChangeData}
           onChangeActions={onChangeActions}
           onRemoveProp={onRemovePropFromPropKeyValues}
-          dataCode={dataCode}
-          actionsCode={actionsCode}
+          data={data}
+          actions={actions}
         />
       </View>
     </View>

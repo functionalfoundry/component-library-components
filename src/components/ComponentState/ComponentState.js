@@ -146,13 +146,14 @@ const defaultTheme = ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
-    top: Spacing.base,
-    left: Spacing.tiny + Spacing.base, // Scoot over for the checkbox
+    top: Spacing.base - Spacing.micro,
+    left: Spacing.base + Spacing.small, // Scoot over for the checkbox
     zIndex: 10,
   },
   title: {
     ...Fonts.title,
     ...Fonts.large,
+    fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
     cursor: 'pointer',

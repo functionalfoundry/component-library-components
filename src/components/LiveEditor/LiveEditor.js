@@ -14,20 +14,33 @@ import {
 import Code from '../Code'
 import Data from '../Data'
 
+type DataT = {
+  /* Passed in on initial load to seed the editor state */
+  text: string,
+  /* Stored by caller and passed back in on every change */
+  editorState: Object,
+}
+
 type PropsT = {
   onChangeCode: Function,
   onChangeData: Function,
   onChangeActions: Function,
   componentName: string,
   propKeyValues: any,
-  dataCode: string,
-  actionsCode: string,
+  data: DataT,
+  actions: DataT,
 }
 
 const defaultProps = {
   onChangeCode: () => {},
   onChangeData: () => {},
   onChangeActions: () => {},
+  data: {
+    text: '',
+  },
+  actions: {
+    text: '',
+  },
 }
 
 class LiveEditor extends React.Component {
@@ -49,8 +62,8 @@ class LiveEditor extends React.Component {
       onChangeData,
       onChangeActions,
       onRemoveProp,
-      actionsCode,
-      dataCode,
+      actions,
+      data,
       theme,
     } = this.props
     return (
@@ -77,15 +90,17 @@ class LiveEditor extends React.Component {
           </TabPanel>
           <TabPanel>
             <Data
-              text={dataCode}
+              text={data.text}
+              editorState={data.editorState}
               onChange={onChangeData}
             />
           </TabPanel>
           <TabPanel>
-          <Data
-            text={actionsCode}
-            onChange={onChangeActions}
-          />
+            <Data
+              text={actions.text}
+              editorState={actions.editorState}
+              onChange={onChangeActions}
+            />
           </TabPanel>
         </Tabs>
       </View>

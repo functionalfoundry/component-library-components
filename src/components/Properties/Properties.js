@@ -8,12 +8,20 @@ import {
   Spacing,
 } from '@workflo/styles'
 
-type Props = {
-  properties: Array<Object>,
+type PropertyT = {
+  name: string,
+  type: string,
+  default: string,
+  description: string,
+}
+
+type PropsT = {
+  properties: Array<PropertyT>,
   onClickPlus: Function,
 }
 
 class Properties extends React.Component {
+  props: PropsT
   getHandleClickPlus = (index) => {
     return () => {
       const { onClickPlus, properties } = this.props

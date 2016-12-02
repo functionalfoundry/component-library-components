@@ -2,8 +2,6 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import LiveView from './LiveView'
 import { components, componentStates, dataCode, actionsCode } from '../../../mocks/components'
-import { profile } from '../../../mocks/profile'
-import { Button } from '@workflo/components'
 import {
   Colors,
 } from '@workflo/styles'
@@ -25,23 +23,11 @@ storiesOf('Live View', module)
       <LiveView
         component={component}
         componentState={componentStates[0]}
-        dataCode={dataCode}
-        actionsCode={actionsCode}
-        quickActions={[
-          {
-            icon: 'card-like',
-            onClick: action('onLike'),
-          },
-        ]}
-        secondaryActions={[
-          {
-            label: 'Cancel',
-            onClick: action('onCancel'),
-          },
-        ]}
-        primaryAction={{
-          label: 'Save',
-          onClick: action('onSave'),
+        data={{
+          text: dataCode,
+        }}
+        actions={{
+          text: actionsCode
         }}
         onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
         onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}

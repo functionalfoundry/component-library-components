@@ -2,6 +2,7 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Colors } from '@workflo/styles'
 import ComponentStates from './ComponentStates'
+import QuickAction from '../QuickAction'
 
 const MockComponent = ({ children }) => (
   <div
@@ -15,7 +16,35 @@ const MockComponent = ({ children }) => (
   </div>
 )
 
+const actions = [
+  <QuickAction
+    icon='card-like'
+    input={{
+      options: [
+        'Left',
+        'Center',
+        'Right',
+      ],
+      value: 'Center',
+    }}
+    onChange={action('Alignment')}
+  />,
+  <QuickAction
+    icon='card-like-hover'
+    input={{
+      options: [
+        'Small',
+        'Base',
+        'Large',
+      ],
+      value: 'Base',
+    }}
+    onChange={action('Size')}
+  />,
+]
+
 const getCard = ({ name, alignment, color, size = 'Base' }) => ({
+  actions,
   harness: {
     id: Math.random(),
     componentState: {

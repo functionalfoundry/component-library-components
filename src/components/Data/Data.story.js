@@ -1,5 +1,5 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import Data from './Data'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import Preview from '@workflo/components/lib/Preview'
@@ -25,16 +25,19 @@ class DataContainer extends React.Component {
     }
   }
 
-  handleChange = (text) => {
+  handleChange = (data) => {
     this.setState({
-      text,
+      text: data.text,
+      editorState: data.editorState,
     })
+    action('onChange')(data)
   }
 
   render () {
     return (
       <Data
         text={this.state.text}
+        editorState={this.state.editorState}
         onChange={this.handleChange}
       />
     )
