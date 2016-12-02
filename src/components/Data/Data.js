@@ -29,14 +29,15 @@ export default class Data extends React.Component {
     Babel.registerPlugin('DataBabelPlugin', dataBabelPlugin)
   }
 
-  onChange = (text) => {
+  handleChange = ({ text, editorState }) => {
     try {
       const es5Ast = Babel.transform(text, babelOptions)
       eval(es5Ast.code)
-      if(this.props.onChange) {
+      if (this.props.onChange) {
         this.props.onChange({
           data: window.workflo.liveView.data,
           text,
+          editorState,
         })
       }
     } catch (err) {
@@ -49,7 +50,7 @@ export default class Data extends React.Component {
       <TextEditor
         text={this.props.text}
         decorator={DataDecorator}
-        onChange={this.onChange}
+        onChange={this.handleChange}
       />
     )
   }

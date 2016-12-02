@@ -97,7 +97,10 @@ export const actionsCode =
 export const propKeyValues = [
   {
     key: 'comment',
-    value: 'comment',
+    value: {
+      type: 'JavaScript',
+      value: 'comment',
+    },
     options: [
       'comment',
       'description',
@@ -109,14 +112,20 @@ export const propKeyValues = [
   },
   {
     key: 'description',
-    value: 'description',
+    value: {
+      type: 'JavaScript',
+      value: 'description',
+    },
     input: {
       type: 'TextInput',
     },
   },
   {
     key: 'size',
-    value: 'Base',
+    value: {
+      type: 'JavaScript',
+      value: 'Base',
+    },
     options: [
       'Tiny',
       'Small',
@@ -130,7 +139,10 @@ export const propKeyValues = [
   },
   {
     key: 'likeCount',
-    value: 21,
+    value: {
+      type: 'JavaScript',
+      value: 2,
+    },
     input: {
       type: 'Slider',
       start: 0,
@@ -145,20 +157,40 @@ export const componentStates = [
     id: 23,
     name: 'Regular',
     propKeyValues,
+    propMap: {
+      comment: 'comment',
+      description: 'description',
+      size: 'base',
+    },
   },
   {
     id: 24,
     name: 'With Publisher',
     propKeyValues,
+    propMap: {
+      comment: 'comment',
+      description: 'description',
+      size: 'base',
+    },
   },
   {
     id: 25,
     name: 'With Attachment',
     propKeyValues,
+    propMap: {
+      comment: 'comment',
+      description: 'description',
+      size: 'base',
+    },
   },
   {
     id: 26,
     name: 'With Replies',
     propKeyValues,
+    propMap: {
+      comment: 'comment',
+      description: 'description',
+      size: 'base',
+    },
   },
 ]

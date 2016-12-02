@@ -10,6 +10,7 @@ const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
 const LiveView = require('./components/LiveView')
 const Properties = require('./components/Properties')
+const QuickAction = require('./components/QuickAction')
 const SubHeader = require('./components/SubHeader')
 
 const WorkfloComponents = {
@@ -25,6 +26,7 @@ const WorkfloComponents = {
   LivePreview,
   LiveView,
   Properties,
+  QuickAction,
   SubHeader,
 }
 

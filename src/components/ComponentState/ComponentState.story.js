@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import ComponentState from './ComponentState'
+import QuickAction from '../QuickAction'
 import {
   Preview,
   PreviewContainer,
@@ -12,17 +13,50 @@ const MyComponent = ({children}) => (
   </div>
 )
 
+const actions = [
+  <QuickAction
+    icon='card-like'
+    input={{
+      options: [
+        'Left',
+        'Center',
+        'Right',
+      ],
+      value: 'Center',
+    }}
+    onChange={action('Alignment')}
+  />,
+  <QuickAction
+    icon='card-like-hover'
+    input={{
+      options: [
+        'Small',
+        'Base',
+        'Large',
+      ],
+      value: 'Base',
+    }}
+    onChange={action('Size')}
+  />,
+]
+
 storiesOf('Component State', module)
   .add('Regular', () => (
     <PreviewContainer>
       <Preview
         label='Regular'
+        theme={{
+          content: {
+            margin: 60,
+          },
+        }}
       >
         <ComponentState
           component={{
             implementation: MyComponent,
           }}
           harnessCard={{
+            actions,
             harness: {
               componentState: {
                 name: 'With title',

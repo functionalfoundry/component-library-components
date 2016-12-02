@@ -49,6 +49,7 @@ type PropsT = {
   },
   harnessCard: {
     harness: HarnessT,
+    actions: Array<React.Element>,
     isSelected: boolean,
   },
   onClickTitle: Function,
@@ -78,6 +79,7 @@ const defaultProps = {
         },
       },
     },
+    actions: [],
     isSelected: false,
   },
   onClickTitle: () => {},
@@ -103,11 +105,16 @@ const ComponentState = ({
       >
         <Heading
           {...theme.title}
-          size={2}
+          size={'base'}
           onPress={() => onClickTitle()}
         >
           {harnessCard.harness.componentState.name}
         </Heading>
+      </View>
+      <View
+        {...theme.actions}
+      >
+        {harnessCard.actions}
       </View>
       <View
         {...theme.preview}
@@ -119,26 +126,8 @@ const ComponentState = ({
           alignment={harnessCard.harness.alignment}
         />
       </View>
-      <View
-        {...theme.actions}
-      >
-        <Actions
-          theme={theme}
-        />
-      </View>
     </View>
   </Card>
-)
-
-type ActionsPropsT = {
-  theme: Object,
-}
-
-const Actions = ({
-  theme,
-}: ActionsPropsT) => (
-  <View>
-  </View>
 )
 
 const defaultTheme = ({
@@ -157,21 +146,26 @@ const defaultTheme = ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
-    top: Spacing.small,
-    left: Spacing.tiny + Spacing.base, // Scoot over for the checkbox
+    top: Spacing.base - Spacing.micro,
+    left: Spacing.base + Spacing.small, // Scoot over for the checkbox
     zIndex: 10,
   },
   title: {
     ...Fonts.title,
-    ...Fonts.base,
+    ...Fonts.large,
+    fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
     cursor: 'pointer',
   },
   actions: {
+    display: 'flex',
+    flexDirection: 'row',
     position: 'absolute',
-    top: Spacing.tiny,
-    right: Spacing.tiny,
+    top: Spacing.base,
+    right: Spacing.base,
+    zIndex: 100,
+    color: Colors.grey800,
   },
   section: {
     display: 'flex',

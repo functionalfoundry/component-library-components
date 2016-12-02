@@ -2,6 +2,7 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Colors } from '@workflo/styles'
 import ComponentStates from './ComponentStates'
+import QuickAction from '../QuickAction'
 
 const MockComponent = ({ children }) => (
   <div
@@ -15,7 +16,35 @@ const MockComponent = ({ children }) => (
   </div>
 )
 
-const getCard = ({ name, alignment, color }) => ({
+const actions = [
+  <QuickAction
+    icon='card-like'
+    input={{
+      options: [
+        'Left',
+        'Center',
+        'Right',
+      ],
+      value: 'Center',
+    }}
+    onChange={action('Alignment')}
+  />,
+  <QuickAction
+    icon='card-like-hover'
+    input={{
+      options: [
+        'Small',
+        'Base',
+        'Large',
+      ],
+      value: 'Base',
+    }}
+    onChange={action('Size')}
+  />,
+]
+
+const getCard = ({ name, alignment, color, size = 'Base' }) => ({
+  actions,
   harness: {
     id: Math.random(),
     componentState: {
@@ -28,7 +57,7 @@ const getCard = ({ name, alignment, color }) => ({
       horizontal: alignment,
     },
     size: {
-      horizontal: 'Base',
+      horizontal: size,
     },
     theme: {
       patterns: {
@@ -51,6 +80,18 @@ const stateCards = [
     name: 'Another one',
     alignment: 'Left',
     color: 'cyan',
+  }),
+  getCard({
+    name: 'Full width align left',
+    alignment: 'Left',
+    color: 'cyan',
+    size: 'Large',
+  }),
+  getCard({
+    name: 'Full width align right',
+    alignment: 'Right',
+    color: 'yellow',
+    size: 'Large',
   }),
 ]
 
