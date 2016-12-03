@@ -132,6 +132,7 @@ const ComponentState = ({
 
 const defaultTheme = ({
   isSelected,
+  harnessCard,
 }) => ({
   harnessCard: {
     ...getScaledStyle(isSelected),
@@ -146,8 +147,8 @@ const defaultTheme = ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
-    top: Spacing.base - Spacing.micro,
-    left: Spacing.base + Spacing.small, // Scoot over for the checkbox
+    top: Spacing.small - 2,
+    left: Spacing.base + 24, // Scoot over for the checkbox
     zIndex: 10,
   },
   title: {
@@ -159,11 +160,13 @@ const defaultTheme = ({
     cursor: 'pointer',
   },
   actions: {
+    backgroundColor: harnessCard.harness.theme.patterns.colors.background,
     display: 'flex',
     flexDirection: 'row',
     position: 'absolute',
-    top: Spacing.base,
-    right: Spacing.base,
+    top: Spacing.small + 4,
+    right: 0,
+    paddingRight: Spacing.base,
     zIndex: 100,
     color: Colors.grey800,
   },
