@@ -7,6 +7,7 @@ import dataBabelPlugin from '../../utils/DataBabelPlugin'
 
 type PropsT = {
   text: string,
+  editorState: Object,
   onChange: Function,
 }
 
@@ -49,6 +50,7 @@ export default class Data extends React.Component {
     return (
       <TextEditor
         text={this.props.text}
+        editorState={this.props.editorState}
         decorator={DataDecorator}
         onChange={this.handleChange}
       />
