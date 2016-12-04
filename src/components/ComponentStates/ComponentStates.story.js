@@ -43,7 +43,7 @@ const actions = [
   />,
 ]
 
-const getCard = ({ name, alignment, color, size = 'Base' }) => ({
+const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) => ({
   actions,
   harness: {
     id: Math.random(),
@@ -67,7 +67,7 @@ const getCard = ({ name, alignment, color, size = 'Base' }) => ({
       },
     },
   },
-  isSelected: true,
+  isSelected,
 })
 
 const stateCards = [
@@ -80,6 +80,7 @@ const stateCards = [
     name: 'Another one',
     alignment: 'Left',
     color: 'cyan',
+    isSelected: true,
   }),
   getCard({
     name: 'Full width align left',
