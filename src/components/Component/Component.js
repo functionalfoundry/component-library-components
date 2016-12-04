@@ -51,7 +51,7 @@ const Component = ({
     >
       <Heading
         {...theme.name}
-        size='base'
+        size='Base'
       >
         {name}
       </Heading>
