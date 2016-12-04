@@ -3,6 +3,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import {
   Card,
+  Checkbox,
   View,
 } from '@workflo/components'
 import {
@@ -86,89 +87,147 @@ const defaultProps = {
   onChangeIsSelected: () => {},
 }
 
-const ComponentState = ({
-  component,
-  harnessCard,
-  onChangeIsSelected,
-  onClickTitle,
-  theme,
-}: PropsT) => (
-  <Card
-    {...theme.harnessCard}
-    flush
-  >
-    <View
-      {...theme.section}
-    >
-      <View
-        {...theme.titleContainer}
+class ComponentState extends React.Component {
+  props: PropsT
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      isHovering: false,
+    }
+  }
+
+  handleMouseEnter = () => {
+    this.setState({ isHovering: true })
+  }
+
+  handleMouseLeave = () => {
+    this.setState({ isHovering: false })
+  }
+
+  render () {
+    const {
+      component,
+      harnessCard,
+      onChangeIsSelected,
+      onClickTitle,
+      theme,
+    } = this.props
+
+    return (
+      <Card
+        {...theme.harnessCard}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+        flush
       >
-        <Heading
-          {...theme.title}
-          size={'base'}
-          onPress={() => onClickTitle()}
+        <View
+          {...theme.section}
         >
-          {harnessCard.harness.componentState.name}
-        </Heading>
-      </View>
-      <View
-        {...theme.actions}
+          <TopBar
+            harnessCard={harnessCard}
+            onClickTitle={onClickTitle}
+            actions={harnessCard.actions}
+            patterns={harnessCard.harness.theme.patterns}
+            isHovering={this.state.isHovering}
+            isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
+          />
+          <View
+            {...theme.preview}
+          >
+            <LivePreview
+              Component={component.implementation}
+              propMap={harnessCard.harness.componentState.propMap}
+              backgroundColor={harnessCard.harness.theme.patterns.colors.background}
+              alignment={harnessCard.harness.alignment}
+            />
+          </View>
+        </View>
+      </Card>
+    )
+  }
+}
+
+const Actions = ({
+  harnessCard,
+  onClickTitle,
+  actions,
+  isShowingCheckbox,
+  theme,
+}) => (
+  <div style={{ display: 'flex' }}>
+    <View
+      {...theme.titleContainer}
+    >
+      {isShowingCheckbox && <Checkbox
+        checked={harnessCard.isSelected}
+      />}
+      <Heading
+        {...theme.title}
+        size={'base'}
+        onPress={() => onClickTitle()}
       >
-        {harnessCard.actions}
-      </View>
-      <View
-        {...theme.preview}
-      >
-        <LivePreview
-          Component={component.implementation}
-          propMap={harnessCard.harness.componentState.propMap}
-          backgroundColor={harnessCard.harness.theme.patterns.colors.background}
-          alignment={harnessCard.harness.alignment}
-        />
-      </View>
+        {harnessCard.harness.componentState.name}
+      </Heading>
     </View>
-  </Card>
+    <View
+      {...theme.actions}
+    >
+      {actions}
+    </View>
+  </div>
 )
 
-const defaultTheme = ({
-  isSelected,
-  harnessCard,
+const shouldShowCheckbox = (isHovering, isSelected) =>
+  isHovering || isSelected
+
+const defaultActionsTheme = ({
+  patterns,
+  isShowingCheckbox,
 }) => ({
-  harnessCard: {
-    ...getScaledStyle(isSelected),
-    transition: 'all .2s ease',
-    position: 'relative',
-    overflow: 'hidden',
-    width: 'inherit', // FIX
-    height: 320, // FIX
-    flex: '1',
+  actions: {
+    backgroundColor: patterns.colors.background,
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'absolute',
+    top: Spacing.small + 2,
+    right: 0,
+    paddingRight: Spacing.small,
+    zIndex: 100,
+    color: Colors.grey800,
   },
   titleContainer: {
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
     top: Spacing.small - 2,
-    left: Spacing.base + 24, // Scoot over for the checkbox
+    left: Spacing.small,
     zIndex: 10,
   },
   title: {
     ...Fonts.title,
     ...Fonts.large,
+    marginLeft: isShowingCheckbox ? Spacing.tiny + Spacing.micro : 0,
     fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
     cursor: 'pointer',
   },
-  actions: {
-    backgroundColor: harnessCard.harness.theme.patterns.colors.background,
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'absolute',
-    top: Spacing.small + 4,
-    right: 0,
-    paddingRight: Spacing.base,
-    zIndex: 100,
-    color: Colors.grey800,
+})
+
+const TopBar = Theme('ComponentStateActions', defaultActionsTheme)(Actions)
+
+const defaultTheme = ({
+  harnessCard,
+}) => ({
+  harnessCard: {
+    ...getScaledStyle(harnessCard.isSelected),
+    transition: 'all .2s ease',
+    position: 'relative',
+    overflow: 'hidden',
+    width: 'inherit', // FIX
+    height: 320, // FIX
+    flex: '1',
   },
   section: {
     display: 'flex',
@@ -193,9 +252,6 @@ const defaultTheme = ({
     // flex: '0 1 auto;',
     // justifyContent: 'center',
     // alignItems: 'center',
-  },
-  editButton: {
-    cursor: 'pointer',
   },
 })
 
