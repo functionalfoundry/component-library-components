@@ -70,15 +70,11 @@ const QuickActions = ({
     >
       {quickActions.map((action, index) => (
         <div
+          key={index}
           onClick={action.onClick}
           {...theme.quickAction}
         >
-          <Icon
-            key={index}
-            name={action.icon}
-            fill={Colors.grey100}
-            size='base'
-          />
+          {action}
         </div>
       ))}
     </div>
@@ -196,11 +192,8 @@ const defaultTheme = {
     alignSelf: 'stretch',
   },
   actions: {
-    ...Fonts.title,
-    ...Fonts.base,
     color: Colors.grey300,
     display: 'flex',
-    padding: Spacing.small,
     justifyContent: 'flex-end',
   },
   quickAction: {

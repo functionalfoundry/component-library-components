@@ -155,13 +155,7 @@ const Actions = ({
     <Search
       {...search}
     />
-    {actions.map((action, index) => (
-      <Icon
-        key={index}
-        name={action.icon}
-        onClick={action.onClick}
-      />
-    ))}
+    {actions}
     {/* <ProfilePhoto
       size='medium'
       image={profile.image}
