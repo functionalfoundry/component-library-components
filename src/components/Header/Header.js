@@ -6,6 +6,7 @@ import {
   View,
   Icon,
   Heading,
+  EditableText,
   Search,
   // ProfilePhoto,
 } from '@workflo/components'
@@ -16,11 +17,20 @@ import {
 } from '@workflo/styles'
 import SubHeader from '../SubHeader'
 
+type EditableTextPropsT = {
+  value: string,
+  isEditing: boolean,
+  disabled: boolean,
+  onChange: Function,
+  onStartEdit: Function,
+  onStopEdit: Function,
+}
+
 type Props = {
   profile: Object,
   onClickBack: Function,
-  title: string,
-  subtitle: string,
+  title: EditableTextPropsT,
+  subtitle: EditableTextPropsT,
   primaryAction: ActionT,
   secondaryActions: Array<ActionT>,
   quickActions: Array<ActionT>,
@@ -56,12 +66,11 @@ const Header = ({
           {...theme.separator}
           inline
         />
-        <Heading
-          size='huge'
+        <EditableText
+          {...title}
           {...theme.title}
-        >
-          {title}
-        </Heading>
+          size='Huge'
+        />
       </View>
       <View
         {...theme.rightBlock}
@@ -76,12 +85,11 @@ const Header = ({
     <View
       {...theme.row}
     >
-      <Heading
-        size={2}
+      <EditableText
+        {...subtitle}
         {...theme.subtitle}
-      >
-        {subtitle}
-      </Heading>
+        size='Large'
+      />
     </View>
     <View
       {...theme.row}
@@ -169,7 +177,6 @@ const SEPARATOR_WIDTH = SEPARATOR_MARGIN + 1
 
 const defaultTheme = {
   header: {
-    color: Colors.aluminum5,
     display: 'flex',
     flex: '0 1 auto',
     flexDirection: 'column',
