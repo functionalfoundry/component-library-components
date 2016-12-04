@@ -20,7 +20,20 @@ storiesOf('Quick Action', module)
               'Right',
             ],
             value: 'Center',
+            type: 'Radio',
           }}
+        />
+      </Preview>
+      <Preview
+        theme={previewTheme}
+        label='Button'
+      >
+        <QuickAction
+          icon='close'
+          input={{
+            type: 'Button',
+          }}
+          onClick={action('onClick')}
         />
       </Preview>
     </PreviewContainer>
