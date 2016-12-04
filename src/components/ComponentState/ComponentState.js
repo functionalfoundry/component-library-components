@@ -127,6 +127,7 @@ class ComponentState extends React.Component {
           <TopBar
             harnessCard={harnessCard}
             onClickTitle={onClickTitle}
+            onChangeIsSelected={onChangeIsSelected}
             actions={harnessCard.actions}
             patterns={harnessCard.harness.theme.patterns}
             isHovering={this.state.isHovering}
@@ -153,15 +154,18 @@ const Actions = ({
   onClickTitle,
   actions,
   isShowingCheckbox,
+  onChangeIsSelected,
   theme,
 }) => (
   <div style={{ display: 'flex' }}>
     <View
       {...theme.titleContainer}
     >
-      {isShowingCheckbox && <Checkbox
-        checked={harnessCard.isSelected}
-      />}
+      {isShowingCheckbox &&
+        <Checkbox
+          checked={harnessCard.isSelected}
+          onChange={() => onChangeIsSelected(!harnessCard.isSelected)}
+        />}
       <Heading
         {...theme.title}
         size={'base'}
