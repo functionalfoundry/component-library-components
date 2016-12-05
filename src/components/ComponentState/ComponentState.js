@@ -97,6 +97,7 @@ class ComponentState extends React.Component {
     super(props)
     this.state = {
       isHovering: false,
+      forceShowActions: false,
     }
   }
 
@@ -135,8 +136,10 @@ class ComponentState extends React.Component {
             patterns={harnessCard.harness.theme.patterns}
             isHovering={this.state.isHovering}
             isSelected={harnessCard.isSelected}
-            forceShowActions={harnessCard.forceShowActions}
+            forceShowActions={this.state.forceShowActions}
             isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
+            onOpenPopup={() => this.setState({ forceShowActions: true })}
+            onClosePopup={() => this.setState({ forceShowActions: false })}
           />
           <View
             {...theme.preview}
@@ -164,6 +167,8 @@ const Actions = ({
   onChangeIsSelected,
   forceShowActions,
   theme,
+  onOpenPopup,
+  onClosePopup,
 }) => (
   <div style={{ display: 'flex' }}>
     <View
@@ -186,7 +191,7 @@ const Actions = ({
       {...theme.actions}
     >
       {((isHovering && !isSelected) || forceShowActions) &&
-        actions}
+        transformActions(actions, onOpenPopup, onClosePopup)}
       {(!isHovering && !isSelected && !forceShowActions) &&
         <Icon
           name='more-horizontal'
@@ -197,6 +202,14 @@ const Actions = ({
     </View>
   </div>
 )
+
+const transformActions = (actions, onOpenPopup, onClosePopup) => {
+  return actions.map((action) => React.cloneElement(action, {
+    ...action.props,
+    onOpen: onOpenPopup,
+    onClose: onClosePopup,
+  }))
+}
 
 const shouldShowCheckbox = (isHovering, isSelected) =>
   isHovering || isSelected
