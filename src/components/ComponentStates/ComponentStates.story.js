@@ -20,6 +20,7 @@ const actions = [
   <QuickAction
     icon='card-like'
     input={{
+      type: 'Radio',
       options: [
         'Left',
         'Center',
@@ -32,6 +33,7 @@ const actions = [
   <QuickAction
     icon='card-like-hover'
     input={{
+      type: 'Radio',
       options: [
         'Small',
         'Base',

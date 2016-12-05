@@ -4,9 +4,9 @@ import Components from '.'
 import { components } from '../../../mocks/components'
 import { Colors } from '@workflo/styles'
 
-storiesOf('Component Grid', module)
+storiesOf('Components', module)
   .add('Regular', () => (
-    <div style={{ backgroundColor: Colors.aluminum6 }}>
+    <div style={{ backgroundColor: Colors.grey100 }}>
       <Components
         components={components}
       />

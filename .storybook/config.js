@@ -10,6 +10,7 @@ function loadStories () {
   require('../src/components/Header/Header.story.js')
   require('../src/components/ComponentState/ComponentState.story.js')
   require('../src/components/Component/Component.story.js')
+  require('../src/components/Components/Components.story.js')
   require('../src/components/ComponentStates/ComponentStates.story.js')
   require('../src/components/QuickAction/QuickAction.story.js')
 }
