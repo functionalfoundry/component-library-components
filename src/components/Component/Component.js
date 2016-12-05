@@ -44,7 +44,7 @@ const Component = ({
     >
       <Image
         {...theme.image}
-        src={thumbnail}
+        src={'http://placehold.it/250x250'}
       />
     </View>
     <View
@@ -93,7 +93,7 @@ const defaultTheme = {
   },
   imageContainer: {
     flex: 1,
-    // height: 230,
+    height: 250,
     position: 'relative',
   },
   footer: {
