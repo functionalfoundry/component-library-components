@@ -3,6 +3,9 @@ import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import QuickAction from './QuickAction'
+import {
+  Colors,
+} from '@workflo/styles'
 
 storiesOf('Quick Action', module)
   .add('Regular', () => (
@@ -12,7 +15,7 @@ storiesOf('Quick Action', module)
         label='Regular'
       >
         <QuickAction
-          icon='close'
+          icon='alignment'
           input={{
             options: [
               'Left',
@@ -44,6 +47,6 @@ const previewTheme = {
     height: 200,
     paddingTop: 100,
     paddingLeft: 100,
-    backgroundColor: '#444',
+    backgroundColor: Colors.grey900,
   }
 }
