@@ -77,7 +77,7 @@ storiesOf('Component State', module)
                 },
               },
             },
-            isSelected: true,
+            isSelected: false,
           }}
           onClickTitle={action('Click title')}
           onChangeIsSelected={action('Change is selected')}
