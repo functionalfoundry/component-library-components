@@ -33,7 +33,9 @@ type Props = {
     properties: Array<PropertyT>,
   },
   componentState: {
+    name: string,
     propMap: Object,
+    propKeyValues: Object,
   },
   data: DataT,
   actions: DataT,
@@ -52,15 +54,6 @@ const defaultProps = {
   actions: {
     text: '',
   },
-}
-
-const getPropMap = (propKeyValues) => {
-  /* TODO: memoize */
-  return propKeyValues
-    .reduce((propKeyValue, acc) => ({
-      ...acc,
-      [propKeyValue.key]: propKeyValue.value,
-    }), {})
 }
 
 const LiveView = ({
@@ -91,7 +84,7 @@ const LiveView = ({
       >
         <LivePreview
           Component={component.implementation}
-          propMap={getPropMap(componentState.propKeyValues)}
+          propMap={componentState.propMap}
         />
       </View>
       <View
