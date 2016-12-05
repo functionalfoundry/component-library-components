@@ -15,7 +15,7 @@ storiesOf('Quick Action', module)
         label='Regular'
       >
         <QuickAction
-          icon='alignment'
+          icon='delete'
           input={{
             options: [
               'Left',
@@ -32,7 +32,7 @@ storiesOf('Quick Action', module)
         label='Button'
       >
         <QuickAction
-          icon='close'
+          icon='delete'
           input={{
             type: 'Button',
           }}

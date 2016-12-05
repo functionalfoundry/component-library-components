@@ -76,8 +76,8 @@ const Content = ({
           <Icon
             name={icon}
             size='large'
-            stroke={Colors.grey500}
-            fill={Colors.grey500}
+            stroke={Colors.grey600}
+            fill={Colors.grey600}
           />
         </Popover>
       )
@@ -85,7 +85,9 @@ const Content = ({
       return (
         <Icon
           name={icon}
-          size='base'
+          size='large'
+          stroke={Colors.grey600}
+          fill={Colors.grey600}
           onClick={onClick}
         />
       )
