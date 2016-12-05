@@ -26,6 +26,24 @@ type PropertyT = {
   description: string,
 }
 
+type HarnessT = {
+  alignment: {
+    horizontal: 'Left' | 'Center' | 'Right',
+  },
+  size: {
+    horizontal: 'Small' | 'Base' | 'Large',
+  },
+  theme: {
+    id: string,
+    name: string,
+    patterns: {
+      colors: {
+        background: string,
+      },
+    },
+  },
+}
+
 type Props = {
   component: {
     name: string,
@@ -37,6 +55,7 @@ type Props = {
     propMap: Object,
     propKeyValues: Object,
   },
+  harness: HarnessT,
   data: DataT,
   actions: DataT,
   theme: Object,
@@ -72,6 +91,7 @@ const LiveView = ({
   onRemovePropFromPropKeyValues,
   onChangeData,
   onChangeActions,
+  harness,
 }: Props) => (
   <View
     {...theme.liveView}
@@ -85,6 +105,8 @@ const LiveView = ({
         <LivePreview
           Component={component.implementation}
           propMap={componentState.propMap}
+          backgroundColor={harness.theme.patterns.colors.background}
+          alignment={harness.alignment}
         />
       </View>
       <View
@@ -136,7 +158,7 @@ const defaultTheme = {
     display: 'flex',
     flex: '1 1 60%',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
     alignContent: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',

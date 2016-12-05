@@ -21,6 +21,7 @@ type PropsT = {
     options: Array<string>,
     value: string,
   },
+  shade: 'Dark' | 'Light',
   onChange: Function,
   onClick: Function,
 }
@@ -29,7 +30,8 @@ class QuickAction extends React.Component {
   props: PropsT
   static defaultProps = {
     input: {},
-    onChange: () => {}
+    onChange: () => {},
+    shade: 'Dark',
   }
 
   render () {
@@ -53,6 +55,7 @@ class QuickAction extends React.Component {
 const Content = ({
   input,
   icon,
+  shade,
   onChange,
   onClick,
 }) => {
@@ -76,8 +79,8 @@ const Content = ({
           <Icon
             name={icon}
             size='large'
-            stroke={Colors.grey600}
-            fill={Colors.grey600}
+            stroke={getColor(shade)}
+            fill={getColor(shade)}
           />
         </Popover>
       )
@@ -86,8 +89,8 @@ const Content = ({
         <Icon
           name={icon}
           size='large'
-          stroke={Colors.grey600}
-          fill={Colors.grey600}
+          stroke={getColor(shade)}
+          fill={getColor(shade)}
           onClick={onClick}
         />
       )
@@ -119,5 +122,8 @@ const Radios = ({
     ))}
   </RadioGroup>
 )
+
+const getColor = (shade) =>
+  shade === 'Dark' ? Colors.grey900 : Colors.grey400
 
 export default QuickAction
