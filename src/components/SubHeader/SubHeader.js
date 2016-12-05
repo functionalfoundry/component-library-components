@@ -88,7 +88,7 @@ const ActionButton = ({
   kind = 'secondary',
   theme,
 }) => {
-  if (!arguments[0]) return null
+  if (!label) return null
   return (
     <div
       {...theme.primaryAction}
