@@ -4,6 +4,7 @@ import Theme from 'js-theme'
 import {
   Card,
   Checkbox,
+  Icon,
   View,
 } from '@workflo/components'
 import {
@@ -131,6 +132,7 @@ class ComponentState extends React.Component {
             actions={harnessCard.actions}
             patterns={harnessCard.harness.theme.patterns}
             isHovering={this.state.isHovering}
+            isSelected={harnessCard.isSelected}
             isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
           />
           <View
@@ -153,6 +155,8 @@ const Actions = ({
   harnessCard,
   onClickTitle,
   actions,
+  isHovering,
+  isSelected,
   isShowingCheckbox,
   onChangeIsSelected,
   theme,
@@ -177,7 +181,15 @@ const Actions = ({
     <View
       {...theme.actions}
     >
-      {actions}
+      {isHovering && !isSelected &&
+        actions}
+      {!isHovering && !isSelected &&
+        <Icon
+          name='more-horizontal'
+          size='large'
+          fill={Colors.grey700}
+          stroke={Colors.grey700}
+        />}
     </View>
   </div>
 )
@@ -194,7 +206,7 @@ const defaultActionsTheme = ({
     display: 'flex',
     flexDirection: 'row',
     position: 'absolute',
-    top: Spacing.small + 2,
+    top: Spacing.small - 4,
     right: 0,
     paddingRight: Spacing.small,
     zIndex: 100,

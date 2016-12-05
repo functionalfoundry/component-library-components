@@ -15,7 +15,7 @@ const MyComponent = ({children}) => (
 
 const actions = [
   <QuickAction
-    icon='card-like'
+    icon='delete'
     input={{
       type: 'Radio',
       options: [
@@ -28,7 +28,7 @@ const actions = [
     onChange={action('Alignment')}
   />,
   <QuickAction
-    icon='card-like-hover'
+    icon='duplicate'
     input={{
       type: 'Radio',
       options: [

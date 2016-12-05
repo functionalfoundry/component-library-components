@@ -29,6 +29,19 @@ storiesOf('Live View', module)
         actions={{
           text: actionsCode
         }}
+        harness={{
+          alignment: {
+            horizontal: 'Center',
+            vertical: 'Center',
+          },
+          theme: {
+            patterns: {
+              colors: {
+                background: 'yellow',
+              }
+            }
+          }
+        }}
         onUpdatePropKeyValues={action('onUpdatePropKeyValues')}
         onAddPropToPropKeyValues={action('onAddPropToPropKeyValues')}
         onRemovePropFromPropKeyValues={action('onRemovePropFromPropKeyValues')}

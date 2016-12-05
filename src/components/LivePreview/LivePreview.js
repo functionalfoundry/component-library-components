@@ -5,7 +5,8 @@ import {
   View,
 } from '@workflo/components'
 import {
-  Colors
+  Colors,
+  Spacing,
 } from '@workflo/styles'
 
 // type OwnerT = {
@@ -76,6 +77,7 @@ const defaultTheme = ({
 }) => ({
   livePreview: {
     backgroundColor,
+    padding: Spacing.small,
     // borderRight: `1px solid ${Colors.grey200}`,
     display: 'flex',
     flexDirection: 'row',
