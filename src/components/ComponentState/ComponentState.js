@@ -53,6 +53,7 @@ type PropsT = {
     harness: HarnessT,
     actions: Array<React.Element>,
     isSelected: boolean,
+    forceShowActions: boolean,
   },
   onClickTitle: Function,
   onChangeIsSelected: Function,
@@ -83,6 +84,7 @@ const defaultProps = {
     },
     actions: [],
     isSelected: false,
+    forceShowActions: false,
   },
   onClickTitle: () => {},
   onChangeIsSelected: () => {},
@@ -133,6 +135,7 @@ class ComponentState extends React.Component {
             patterns={harnessCard.harness.theme.patterns}
             isHovering={this.state.isHovering}
             isSelected={harnessCard.isSelected}
+            forceShowActions={harnessCard.forceShowActions}
             isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
           />
           <View
@@ -159,6 +162,7 @@ const Actions = ({
   isSelected,
   isShowingCheckbox,
   onChangeIsSelected,
+  forceShowActions,
   theme,
 }) => (
   <div style={{ display: 'flex' }}>
@@ -181,9 +185,9 @@ const Actions = ({
     <View
       {...theme.actions}
     >
-      {isHovering && !isSelected &&
+      {((isHovering && !isSelected) || forceShowActions) &&
         actions}
-      {!isHovering && !isSelected &&
+      {(!isHovering && !isSelected && !forceShowActions) &&
         <Icon
           name='more-horizontal'
           size='large'
