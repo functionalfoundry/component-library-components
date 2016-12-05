@@ -226,7 +226,7 @@ const defaultTheme = ({
 }) => ({
   harnessCard: {
     ...getScaledStyle(harnessCard.isSelected),
-    transition: 'all .2s ease',
+    transition: 'all .4s ease',
     position: 'relative',
     overflow: 'hidden',
     width: 'inherit', // FIX
@@ -262,7 +262,7 @@ const defaultTheme = ({
 const getScaledStyle = (isSelected) => {
   if (isSelected) {
     return {
-      transform: 'scale(.9)',
+      transform: 'scale(.93)',
     }
   }
 }

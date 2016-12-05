@@ -5,6 +5,7 @@ import {
   Preview,
   PreviewContainer,
 } from '@workflo/components'
+import QuickAction from '../QuickAction'
 import { profile } from '../../../mocks/profile'
 
 storiesOf('Header', module)
@@ -76,10 +77,32 @@ storiesOf('Header', module)
 
 const actions = {
   quickActions: [
-    {
-      icon: 'card-like',
-      onClick: action('onLike'),
-    },
+    <QuickAction
+      icon='card-like'
+      input={{
+        type: 'Radio',
+        options: [
+          'Left',
+          'Center',
+          'Right',
+        ],
+        value: 'Center',
+      }}
+      onChange={action('onChange alignment')}
+    />,
+    <QuickAction
+      icon='card-like-hover'
+      input={{
+        type: 'Radio',
+        options: [
+          'Small',
+          'Base',
+          'Large',
+        ],
+        value: 'Base',
+      }}
+      onChange={action('onChange size')}
+    />,
   ],
   secondaryActions: [
     {
