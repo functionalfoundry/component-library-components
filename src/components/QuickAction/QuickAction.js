@@ -24,6 +24,8 @@ type PropsT = {
   shade: 'Dark' | 'Light',
   onChange: Function,
   onClick: Function,
+  onOpen: Function,
+  onClose: Function,
 }
 
 class QuickAction extends React.Component {
@@ -58,6 +60,8 @@ const Content = ({
   shade,
   onChange,
   onClick,
+  onOpen,
+  onClose,
 }) => {
   if (!input && !input.type) return null
   switch (input.type) {
@@ -68,6 +72,8 @@ const Content = ({
           pointerHorizontal='Center'
           targetVertical='Top'
           targetHorizontal='Center'
+          onOpen={onOpen}
+          onClose={onClose}
           portal={(
             <Radios
               options={input.options}
@@ -79,8 +85,14 @@ const Content = ({
           <Icon
             name={icon}
             size='large'
+            onClick={onClick}
             stroke={getColor(shade)}
             fill={getColor(shade)}
+            theme={{
+              icon: {
+                cursor: 'pointer',
+              }
+            }}
           />
         </Popover>
       )
@@ -92,6 +104,11 @@ const Content = ({
           stroke={getColor(shade)}
           fill={getColor(shade)}
           onClick={onClick}
+          theme={{
+            icon: {
+              cursor: 'pointer',
+            }
+          }}
         />
       )
     default:

@@ -20,7 +20,7 @@ const Components = ({
   <Grid
     size='base'
     data={components}
-    renderer={Component}
+    renderer={renderer}
     onClickItem={(component) => onClickComponent(component.id)}
     theme={{
       item: {
@@ -29,6 +29,19 @@ const Components = ({
       }
     }}
   />
+)
+
+const renderer = (props) => (
+  <View
+    theme={{
+      view: {
+        display: 'flex',
+        flex: 1,
+      }
+    }}
+  >
+    <Component {...props} />
+  </View>
 )
 
 export default Components

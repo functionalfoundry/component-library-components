@@ -70,6 +70,7 @@ const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) 
     },
   },
   isSelected,
+  forceShowActions: false,
 })
 
 const stateCards = [

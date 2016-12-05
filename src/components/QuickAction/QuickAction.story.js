@@ -16,6 +16,7 @@ storiesOf('Quick Action', module)
       >
         <QuickAction
           icon='delete'
+          shade='Light'
           input={{
             options: [
               'Left',
@@ -25,6 +26,7 @@ storiesOf('Quick Action', module)
             value: 'Center',
             type: 'Radio',
           }}
+          onClick={action('onClick')}
         />
       </Preview>
       <Preview
@@ -33,6 +35,7 @@ storiesOf('Quick Action', module)
       >
         <QuickAction
           icon='delete'
+          shade='Light'
           input={{
             type: 'Button',
           }}

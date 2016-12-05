@@ -14,6 +14,7 @@ import {
   Corners,
   Fonts,
   Spacing,
+  Shadows,
 } from '@workflo/styles'
 
 type Props = {
@@ -43,11 +44,11 @@ const Component = ({
     >
       <Image
         {...theme.image}
-        src={thumbnail}
+        src={'http://placehold.it/250x250'}
       />
     </View>
     <View
-      {...mergeProps(theme.footer, { className: 'component-footer' })}
+      {...theme.footer}
     >
       <Heading
         {...theme.name}
@@ -70,14 +71,14 @@ const Component = ({
 const defaultTheme = {
   componentCard: {
     ...Corners.round,
+    ...Shadows.small,
     display: 'flex',
     flexDirection: 'column',
     flex: '1 0 auto',
     justifyContent: 'flex-start',
     cursor: 'pointer',
-    ':hover .component-footer': {
-      backgroundColor: Colors.grey100,
-      borderRadius: `0px 0px ${Corners.round.borderRadius}px ${Corners.round.borderRadius}px`,
+    ':hover': {
+      ...Shadows.large,
     },
   },
   thumbnail: {
@@ -92,7 +93,7 @@ const defaultTheme = {
   },
   imageContainer: {
     flex: 1,
-    height: 230,
+    height: 250,
     position: 'relative',
   },
   footer: {
