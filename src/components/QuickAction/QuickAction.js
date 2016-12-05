@@ -7,6 +7,7 @@ import {
   View,
 } from '@workflo/components'
 import {
+  Colors,
   Spacing,
 } from '@workflo/styles'
 
@@ -74,7 +75,9 @@ const Content = ({
         >
           <Icon
             name={icon}
-            size='base'
+            size='large'
+            stroke={Colors.grey500}
+            fill={Colors.grey500}
           />
         </Popover>
       )
