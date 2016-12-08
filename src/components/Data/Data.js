@@ -42,7 +42,7 @@ export default class Data extends React.Component {
         })
       }
     } catch (err) {
-      console.error(err.message)
+      // console.error(err.message)
     }
   }
 

@@ -44,22 +44,4 @@ class DataContainer extends React.Component {
   }
 }
 
-const initialText = `const user = {
-  firstName: 'Brenda',
-  lastName: 'Jenner',
-}
-
-const comment = {
-  description: 'Something good',
-}
-
-const responders = [
-  {
-    firstName: 'Brenda',
-    lastName: 'Jenner',
-  },
-  {
-    firstName: 'Jenna',
-    lastName: 'Doe',
-  },
-]`
+const initialText = ``
