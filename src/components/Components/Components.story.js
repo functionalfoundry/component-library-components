@@ -6,7 +6,7 @@ import { Colors } from '@workflo/styles'
 
 storiesOf('Components', module)
   .add('Regular', () => (
-    <div style={{ backgroundColor: Colors.grey100 }}>
+    <div style={{ backgroundColor: Colors.grey100, padding: 15 }}>
       <Components
         components={components}
       />

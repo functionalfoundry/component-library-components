@@ -32,7 +32,7 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "0.8.16",
+    "@workflo/components": "0.8.17",
     "@workflo/styles": "0.7.4",
     "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
@@ -87,7 +87,7 @@
     "redbox-react": "1.2.10",
     "redux": "^3.5.2",
     "style-loader": "^0.13.1",
-    "webpack": "^1.12.9",
+    "webpack": "^1.14.0",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.9.1"
   }
