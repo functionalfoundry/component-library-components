@@ -1,5 +1,6 @@
 const App = require('./components/App')
 const Code = require('./components/Code')
+const Configuration = require('./components/Configuration')
 const Component = require('./components/Component')
 const Components = require('./components/Components')
 const ComponentState = require('./components/ComponentState')
@@ -16,6 +17,7 @@ const SubHeader = require('./components/SubHeader')
 const WorkfloComponents = {
   App,
   Code,
+  Configuration,
   Component,
   Components,
   ComponentState,

@@ -13,6 +13,7 @@ function loadStories () {
   require('../src/components/Components/Components.story.js')
   require('../src/components/ComponentStates/ComponentStates.story.js')
   require('../src/components/QuickAction/QuickAction.story.js')
+  require('../src/components/Configuration/Configuration.story.js')
 }
 
 configure(loadStories, module)
