@@ -26,41 +26,63 @@ const defaultProps = {
   },
 }
 
-const Configuration = ({
-  onChange,
-  theme,
-  configuration,
-  ...props,
-}: PropsT) => (
-  <View
-    {...theme.configuration}
-  >
-    <TextInput
-      value={configuration.componentsSrcPath}
-      onChange={(value) => onChange({ componentsSrcPath: value })}
-      placeholder='Components Source Path'
-      theme={{
-        textInput: {
-          borderColor: Colors.primary,
-          color: 'white',
-          marginBottom: Spacing.small,
-        }
-      }}
-    />
-    <TextInput
-      value={configuration.theme}
-      onChange={(value) => onChange({ theme: value })}
-      placeholder='Dark Theme Color'
-      theme={{
-        textInput: {
-          borderColor: Colors.primary,
-          color: 'white',
-          marginBottom: Spacing.small,
-        }
-      }}
-    />
-  </View>
-)
+class Configuration extends React.Component {
+  props: PropsT
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      componentsSrcPath: '',
+      darkThemeColor: '',
+    }
+  }
+
+  render() {
+    const {
+      onChange,
+      theme,
+      configuration,
+      ...props,
+    } = this.props
+    const {
+      componentsSrcPath,
+      darkThemeColor,
+    } = this.state
+
+    return (
+      <View
+        {...theme.configuration}
+      >
+        <TextInput
+          value={componentsSrcPath}
+          onChange={(value) => this.setState({ componentsSrcPath: value })}
+          onBlur={() => onChange({ componentsSrcPath: this.state.componentsSrcPath })}
+          placeholder='Components Source Path'
+          theme={{
+            textInput: {
+              borderColor: Colors.primary,
+              color: 'white',
+              marginBottom: Spacing.small,
+            }
+          }}
+        />
+        <TextInput
+          value={darkThemeColor}
+          onChange={(value) => this.setState({ darkThemeColor: value })}
+          onBlur={() => onChange({ darkThemeColor: this.state.darkThemeColor })}
+          placeholder='Dark Theme Color'
+          theme={{
+            textInput: {
+              borderColor: Colors.primary,
+              color: 'white',
+              marginBottom: Spacing.small,
+            }
+          }}
+        />
+      </View>
+    )
+  }
+}
 
 Configuration.defaultProps = defaultProps
 
