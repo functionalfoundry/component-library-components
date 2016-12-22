@@ -14,6 +14,9 @@ const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const SubHeader = require('./components/SubHeader')
 
+import actionsPlugin from './utils/ActionsBabelPlugin'
+import dataPlugin from './utils/DataBabelPlugin'
+
 const WorkfloComponents = {
   App,
   Code,
@@ -33,3 +36,11 @@ const WorkfloComponents = {
 }
 
 module.exports = WorkfloComponents
+
+window.workflo = window.workflo || {}
+window.workflo.componentLibrary = window.workflo.componentLibrary || {}
+window.workflo.componentLibrary.liveView = window.workflo.componentLibrary.liveView || {}
+window.workflo.componentLibrary.liveView.babelPlugins = {
+  actionsPlugin,
+  dataPlugin,
+}
