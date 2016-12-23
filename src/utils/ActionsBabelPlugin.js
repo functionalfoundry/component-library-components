@@ -41,8 +41,8 @@ const buildInit = template(`
   window.workflo.componentLibrary.liveView = window.workflo.componentLibrary.liveView || {};
   window.workflo.componentLibrary.liveView.actions = window.workflo.componentLibrary.liveView.actions || {};
 
-  var state = window.workflo.componentLibrary.liveView.actions.state;
-  var setState = window.workflo.componentLibrary.liveView.actions.setState;
+  var state = window.workflo.componentLibrary.liveView.state;
+  var setState = window.workflo.componentLibrary.liveView.setState;
 `)
 
 export default actionsBabelPlugin
