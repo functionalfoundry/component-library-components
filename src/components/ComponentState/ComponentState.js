@@ -245,6 +245,10 @@ const defaultActionsTheme = ({
     color: Colors.grey800,
     display: 'inline',
     cursor: 'pointer',
+    ':hover': {
+      textDecoration: 'underline',
+      color: Colors.grey600,
+    },
   },
 })
 
