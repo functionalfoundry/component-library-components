@@ -29,6 +29,27 @@ storiesOf('LivePreview', module)
     </PreviewContainer>
   ))
 
+const MyFailingComponent = () => {
+  throw Error("Error in failing component")
+}
+
+storiesOf('LivePreview', module)
+  .add('Failing component', () => (
+    <PreviewContainer>
+      <div
+        style={previewStyle}
+        label='Failing component'
+      >
+        <LivePreview
+          Component={MyFailingComponent}
+          propMap={{}}
+          alignment='Center'
+          backgroundColor='cyan'
+        />
+      </div>
+    </PreviewContainer>
+  ))
+
 const previewStyle = {
   height: 300,
   backgroundColor: 'cyan',

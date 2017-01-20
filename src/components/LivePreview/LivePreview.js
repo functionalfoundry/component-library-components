@@ -50,31 +50,62 @@ const defaultProps = {
   },
 }
 
-const LivePreview = ({
-  Component,
-  propMap,
-  theme,
-}: Props) => (
-  <View
-    {...theme.livePreview}
-  >
-    <View
-      {...theme.previewContainer}
-    >
-      {Component &&
-       <Component
-         {...propMap}
-       />}
-    </View>
-  </View>
-)
+class LivePreview extends React.Component {
+  static defaultProps = defaultProps
 
-LivePreview.defaultProps = defaultProps
+  state = {
+    error: null
+  }
+
+  unstable_handleError (error) {
+    this.setState({error})
+  }
+
+  render () {
+    const {
+      Component,
+      propMap,
+      theme,
+    } = this.props
+
+    if (this.state.error) {
+      return (
+        <View
+          {...theme.errorView}
+        >
+          <h3>{this.state.error.message}</h3>
+          <View {...theme.errorStacktrace}>{this.state.error.stack}</View>
+        </View>
+      )
+    } else {
+      return (
+        <View
+          {...theme.livePreview}
+        >
+          <View
+            {...theme.previewContainer}
+          >
+            {Component && <Component props={propMap} />}
+          </View>
+        </View>
+      )
+    }
+  }
+}
 
 const defaultTheme = ({
   backgroundColor,
   alignment,
 }) => ({
+  errorView: {
+    backgroundColor: 'darkRed',
+    color: 'white',
+    fontFamily: 'monospace',
+    padding: '10px'
+  },
+  errorStacktrace: {
+    whiteSpace: 'pre-wrap',
+  },
   livePreview: {
     backgroundColor,
     padding: Spacing.small,
