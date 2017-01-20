@@ -45,16 +45,20 @@ type HarnessT = {
   },
 }
 
+type ComponentT = {
+  implementation: any
+}
+
+type HarnessCardT = {
+  harness: HarnessT,
+  actions: Array<React.Element>,
+  isSelected: boolean,
+  forceShowActions: boolean
+}
+
 type PropsT = {
-  component: {
-    implementation: any,
-  },
-  harnessCard: {
-    harness: HarnessT,
-    actions: Array<React.Element>,
-    isSelected: boolean,
-    forceShowActions: boolean,
-  },
+  component: ComponentT,
+  harnessCard: HarnessCardT,
   onClickTitle: Function,
   onChangeIsSelected: Function,
   theme: Object,
