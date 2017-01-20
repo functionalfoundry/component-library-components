@@ -302,4 +302,5 @@ const getScaledStyle = (isSelected) => {
 
 ComponentState.defaultProps = defaultProps
 
-export default Theme('ComponentState', defaultTheme)(ComponentState)
+const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)
+export default ThemedComponentState
