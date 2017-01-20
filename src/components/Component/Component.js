@@ -112,4 +112,5 @@ const defaultTheme = {
   },
 }
 
-export default Theme('Component', defaultTheme)(Component)
+const ThemedComponent = Theme('Component', defaultTheme)(Component)
+export default ThemedComponent

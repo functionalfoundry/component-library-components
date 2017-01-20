@@ -202,4 +202,5 @@ const defaultTheme = {
   },
 }
 
-export default Theme('SubHeader', defaultTheme)(SubHeader)
+const ThemedSubHeader = Theme('SubHeader', defaultTheme)(SubHeader)
+export default ThemedSubHeader

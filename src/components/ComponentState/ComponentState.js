@@ -95,9 +95,14 @@ class ComponentState extends React.Component {
 
   constructor (props) {
     super(props)
+    // We're using a number instead of a boolean to track
+    // whether to force show quick actions while a quickaction popover is open
+    // since sliding to an adjacent icon will open the next popover before
+    // the previous popover is closed. Therefore we add one on open and decrement
+    // on close and compare against 0
+    this.numOpenPopups = 0
     this.state = {
       isHovering: false,
-      forceShowActions: false,
     }
   }
 
@@ -136,10 +141,16 @@ class ComponentState extends React.Component {
             patterns={harnessCard.harness.theme.patterns}
             isHovering={this.state.isHovering}
             isSelected={harnessCard.isSelected}
-            forceShowActions={this.state.forceShowActions}
+            forceShowActions={this.numOpenPopups > 0}
             isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
-            onOpenPopup={() => this.setState({ forceShowActions: true })}
-            onClosePopup={() => this.setState({ forceShowActions: false })}
+            onOpenPopup={() => {
+              this.numOpenPopups = this.numOpenPopups + 1
+              this.setState({ numOpenPopups: this.state.numOpenPopups + 1 })}
+            }
+            onClosePopup={() => {
+              this.numOpenPopups = this.numOpenPopups - 1
+              this.setState({ numOpenPopups: this.state.numOpenPopups - 1 })
+            }}
           />
           <View
             {...theme.preview}
@@ -302,4 +313,5 @@ const getScaledStyle = (isSelected) => {
 
 ComponentState.defaultProps = defaultProps
 
-export default Theme('ComponentState', defaultTheme)(ComponentState)
+const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)
+export default ThemedComponentState

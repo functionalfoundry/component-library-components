@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Icon,
-  Popover,
   RadioGroup,
   Radio,
   View,
@@ -10,6 +9,7 @@ import {
   Colors,
   Spacing,
 } from '@workflo/styles'
+import AlignedPointer from '@workflo/components/lib/AlignedPointer'
 
 type InputTypeT = 'Radio' | 'Button'
 
@@ -67,11 +67,13 @@ const Content = ({
   switch (input.type) {
     case 'Radio':
       return (
-        <Popover
+        <AlignedPointer
           pointerVertical='Bottom'
           pointerHorizontal='Center'
           targetVertical='Top'
           targetHorizontal='Center'
+          targetTriggers={['Hover']}
+          portalTriggers={['Mouse leave']}
           onOpen={onOpen}
           onClose={onClose}
           portal={(
@@ -94,7 +96,7 @@ const Content = ({
               }
             }}
           />
-        </Popover>
+        </AlignedPointer>
       )
     case 'Button':
       return (
@@ -130,9 +132,9 @@ const Radios = ({
       },
     }}
   >
-    {options.map((option) => (
+    {options.map((option, index) => (
       <Radio
-        key={option}
+        key={index}
         label={option}
         value={option}
       />

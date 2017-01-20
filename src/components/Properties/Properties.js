@@ -127,4 +127,5 @@ const defaultTheme = {
   },
 }
 
-export default Theme('Properties', defaultTheme)(Properties)
+const ThemedProperties = Theme('Properties', defaultTheme)(Properties)
+export default ThemedProperties
