@@ -149,7 +149,7 @@ class ComponentState extends React.Component {
             {...theme.preview}
           >
             <LivePreview
-              Component={component.implementation}
+              Component={component && component.implementation}
               propMap={harnessCard.harness.componentState.propMap}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
               alignment={harnessCard.harness.alignment}
