@@ -163,10 +163,7 @@ const ValueSpan = ({
   >
     {propKeyValues[index].input &&
       <Popover
-        pointerVertical='Center'
-        pointerHorizontal='Left'
-        targetVertical='Center'
-        targetHorizontal='Right'
+        position='Right'
         horizontalOffset={5}
         verticalOffset={2}
         portal={(

@@ -112,9 +112,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@0.8.21":
-  version "0.8.21"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.21.tgz#2efa33190d9c9f5f55e40516da637b800b754b9d"
+"@workflo/components@0.8.25":
+  version "0.8.25"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.25.tgz#8e6c68dfb21e72bfb6d17d43891ba68a1d9c1477"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "0.7.5"
@@ -132,7 +132,7 @@
     escodegen "^1.8.1"
     fbjs "^0.8.4"
     immutable "^3.8.1"
-    js-theme "0.7.2"
+    js-theme "0.7.3"
     rc-animate "^2.3.1"
     rc-util "^4.0.0"
     react-timeout "^1.0.0"
@@ -1052,7 +1052,7 @@ babel-preset-es2015@^6.14.0, babel-preset-es2015@^6.6.0:
     babel-plugin-transform-es2015-unicode-regex "^6.3.13"
     babel-plugin-transform-regenerator "^6.16.0"
 
-babel-preset-es2016@^6.11.3:
+babel-preset-es2016@^6.11.3, babel-preset-es2016@^6.6.0:
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/babel-preset-es2016/-/babel-preset-es2016-6.16.0.tgz#c7daf5feedeee99c867813bdf0d573d94ca12812"
   dependencies:
@@ -3222,9 +3222,9 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
-js-theme@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.7.2.tgz#6d4a9a7cbcb54a137121227ca85863efaa0fc4fb"
+js-theme@0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.7.3.tgz#387cc3e8bb717160aee9db6a4f19403306324299"
   dependencies:
     "@workflo/aphrodite" "0.7.4"
     invariant "^2.2.1"
@@ -4406,17 +4406,13 @@ react-addons-transition-group@^15.3.0:
   version "15.3.2"
   resolved "https://registry.yarnpkg.com/react-addons-transition-group/-/react-addons-transition-group-15.3.2.tgz#64f758d18bd1e59128726b1c9a4db79127c4f1ed"
 
-react-dom@15.4.2:
+react-dom@15.4.2, "react-dom@^0.14.0 || ^15.0.0", react-dom@^15.3.0:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.2.tgz#015363f05b0a1fd52ae9efdd3a0060d90695208f"
   dependencies:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
-
-"react-dom@^0.14.0 || ^15.0.0", react-dom@^15.3.0:
-  version "15.3.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.3.1.tgz#6d42cd2b64c8c5e0b693f3ffaec301e6e627e24e"
 
 react-fuzzy@^0.3.3:
   version "0.3.3"
@@ -4491,17 +4487,9 @@ react-timeout@^1.0.0:
   dependencies:
     object-assign "^4.0.1"
 
-react@15.4.2:
+react@15.4.2, react@^15.3.0:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
-  dependencies:
-    fbjs "^0.8.4"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-
-react@^15.3.0:
-  version "15.3.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.3.1.tgz#f78501ed8c2ec6e6e31c3223652e97f1369d2bd6"
   dependencies:
     fbjs "^0.8.4"
     loose-envify "^1.1.0"

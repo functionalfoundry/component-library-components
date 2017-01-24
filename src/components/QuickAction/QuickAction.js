@@ -68,12 +68,9 @@ const Content = ({
     case 'Radio':
       return (
         <AlignedPointer
-          pointerVertical='Bottom'
-          pointerHorizontal='Center'
-          targetVertical='Top'
-          targetHorizontal='Center'
+          position='Top'
           targetTriggers={['Hover']}
-          portalTriggers={['Mouse leave']}
+          portalTriggers={['Mouse leave', 'Click outside']}
           onOpen={onOpen}
           onClose={onClose}
           portal={(
@@ -93,6 +90,7 @@ const Content = ({
             theme={{
               icon: {
                 cursor: 'pointer',
+                display: 'inline-block',
               }
             }}
           />
@@ -109,6 +107,7 @@ const Content = ({
           theme={{
             icon: {
               cursor: 'pointer',
+              display: 'inline-block',
             }
           }}
         />
