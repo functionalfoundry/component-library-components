@@ -8,6 +8,7 @@ import {
   Colors,
   Spacing,
 } from '@workflo/styles'
+import ErrorView from '../ErrorView'
 
 // type OwnerT = {
 //   firstName: string,
@@ -31,7 +32,7 @@ import {
 // }
 
 type Props = {
-  component: any,
+  Component: any,
   propMap: any,
   theme: Object,
   backgroundColor: string,
@@ -39,10 +40,10 @@ type Props = {
     horizontal: 'Left' | 'Center' | 'Right',
     vertical: 'Top' | 'Center' | 'Bottom',
   },
-}
+};
 
 const defaultProps = {
-  componentState: {propKeyValues: {}},
+  propMap: {},
   backgroundColor: 'white',
   alignment: {
     horizontal: 'Center',
@@ -50,24 +51,56 @@ const defaultProps = {
   },
 }
 
-const LivePreview = ({
-  Component,
-  propMap,
-  theme,
-}: Props) => (
-  <View
-    {...theme.livePreview}
-  >
-    <View
-      {...theme.previewContainer}
-    >
-      {Component &&
-       <Component
-         {...propMap}
-       />}
-    </View>
-  </View>
-)
+class LivePreview extends React.Component {
+  props: Props
+  static defaultProps = defaultProps
+
+  state = {
+    error: null,
+  }
+
+  unstable_handleError (error) {
+    this.setState({error})
+  }
+
+  render () {
+    const { Component, propMap, theme } = this.props;
+
+    if (this.state.error) {
+      return (
+        <View {...theme.livePreview}>
+          <View {...theme.errorContainer}>
+            <ErrorView
+              message={this.state.error.message}
+              stacktrace={this.state.error.stack}
+            />
+          </View>
+        </View>
+      )
+    } else {
+      try {
+        return (
+          <View {...theme.livePreview}>
+            <View {...theme.previewContainer}>
+              {Component && <Component {...propMap} />}
+            </View>
+          </View>
+        )
+      } catch (error) {
+        return (
+          <View {...theme.livePreview}>
+            <View {...theme.errorContainer}>
+              <ErrorView
+                message={error.message}
+                stacktrace={error.stack}
+              />
+            </View>
+          </View>
+        )
+      }
+    }
+  }
+}
 
 LivePreview.defaultProps = defaultProps
 
@@ -93,6 +126,10 @@ const defaultTheme = ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  errorContainer: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   // image: {
   //   width: '100%',
