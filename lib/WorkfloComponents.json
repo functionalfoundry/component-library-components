@@ -7,6 +7,7 @@
   "Components",
   "Configuration",
   "Data",
+  "ErrorView",
   "Header",
   "LiveEditor",
   "LivePreview",
