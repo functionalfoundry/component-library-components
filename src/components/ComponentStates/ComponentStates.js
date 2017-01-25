@@ -105,4 +105,5 @@ const defaultTheme = {
   },
 }
 
-export default Theme('ComponentStates', defaultTheme)(ComponentStates)
+const ThemedComponentStates = Theme('ComponentStates', defaultTheme)(ComponentStates)
+export default ThemedComponentStates
