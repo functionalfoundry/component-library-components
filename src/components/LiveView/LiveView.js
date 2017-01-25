@@ -187,4 +187,5 @@ const defaultTheme = {
   },
 }
 
-export default Theme('LiveView', defaultTheme)(LiveView)
+const ThemedLiveView = Theme('LiveView', defaultTheme)(LiveView)
+export default ThemedLiveView
