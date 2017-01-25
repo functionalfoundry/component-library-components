@@ -30,6 +30,8 @@ type PropsT = {
 }
 
 const defaultProps = {
+  componentName: 'Unknown',
+  propKeyValues: [],
   onChange: () => {},
 }
 
