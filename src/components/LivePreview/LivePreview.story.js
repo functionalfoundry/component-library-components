@@ -12,6 +12,12 @@ const MyComponent = () => (
   </div>
 )
 
+class MyFailingComponent extends React.Component {
+  render () {
+    throw Error('This failed')
+  }
+}
+
 storiesOf('LivePreview', module)
   .add('Regular', () => (
     <PreviewContainer>
@@ -25,6 +31,31 @@ storiesOf('LivePreview', module)
           alignment='Center'
           backgroundColor='cyan'
         />
+      </div>
+    </PreviewContainer>
+  ))
+  .add('Failing component', () => (
+    <PreviewContainer>
+      <div
+        style={previewStyle}
+        label='Failing component'
+      >
+        <LivePreview
+          Component={MyFailingComponent}
+          propMap={{}}
+          alignment='Center'
+          backgroundColor='cyan'
+        />
+      </div>
+    </PreviewContainer>
+  ))
+  .add('No props', () => (
+    <PreviewContainer>
+      <div
+        style={previewStyle}
+        label='Failing component'
+      >
+        <LivePreview />
       </div>
     </PreviewContainer>
   ))
