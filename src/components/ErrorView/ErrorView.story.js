@@ -5,15 +5,19 @@ import { Preview, PreviewContainer } from '@workflo/components'
 
 storiesOf('ErrorView', module)
   .add('Regular', () => (
-    <PreviewContainer flush>
+    <PreviewContainer>
       <Preview label='Regular'>
-        <ErrorView
-          message='Error message'
-          stacktrace='Stacktrace'
-        />
+        <div style={{display: 'flex'}}>
+          <ErrorView
+            message='Error message'
+            stacktrace='Stacktrace'
+          />
+        </div>
       </Preview>
       <Preview label='Without props'>
-        <ErrorView />
+        <div style={{display: 'flex'}}>
+          <ErrorView />
+        </div>
       </Preview>
     </PreviewContainer>
   ))
