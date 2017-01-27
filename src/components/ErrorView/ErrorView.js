@@ -38,6 +38,8 @@ const defaultTheme = {
     width: 0,
   },
   errorMessage: {
+    fontWeight: 'bold',
+    marginBottom: Spacing.small,
   },
   errorStacktrace: {
     whiteSpace: 'pre-wrap',
