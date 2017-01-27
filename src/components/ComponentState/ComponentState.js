@@ -192,7 +192,7 @@ const Actions = ({
         />}
       <Heading
         {...theme.title}
-        size={'base'}
+        size={'Base'}
         onPress={() => onClickTitle()}
       >
         {harnessCard.harness.componentState.name}
