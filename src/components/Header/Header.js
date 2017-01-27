@@ -193,7 +193,7 @@ const defaultTheme = {
   },
   subHeaderContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     backgroundColor: Colors.grey800,
     color: Colors.grey300,
   },
@@ -202,12 +202,12 @@ const defaultTheme = {
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    flexShrink: 1,
+    flex: '3 1 auto',
   },
   rightBlock: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    flexShrink: 1
+    flex: '0 auto',
   },
   back: {
     padding: Spacing.tiny,
@@ -224,6 +224,7 @@ const defaultTheme = {
   },
   title: {
     ...Fonts.large,
+    flex: '0 auto',
     fontSize: 26, // TODO: FIXX
     color: Colors.grey300,
     justifyContent: 'flex-start',
@@ -231,11 +232,9 @@ const defaultTheme = {
   },
   subtitle: {
     ...Fonts.huge,
+    flex: '0 auto',
     color: 'white',
-    justifyContent: 'flex-start',
-    width: 500,
     marginLeft: LOGO_WIDTH + SEPARATOR_WIDTH,
-    marginTop: -12,
   },
   actions: {
     flex: 1,
