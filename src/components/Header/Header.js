@@ -66,11 +66,14 @@ const Header = ({
           {...theme.separator}
           inline
         />
-        <EditableText
-          {...title}
+        <View
           {...theme.title}
-          size='Huge'
-        />
+        >
+          <EditableText
+            {...title}
+            size='Huge'
+          />
+        </View>
       </View>
       <View
         {...theme.rightBlock}
@@ -85,11 +88,14 @@ const Header = ({
     <View
       {...theme.row}
     >
-      <EditableText
-        {...subtitle}
+      <View
         {...theme.subtitle}
-        size='Large'
-      />
+      >
+        <EditableText
+          {...subtitle}
+          size='Large'
+        />
+      </View>
     </View>
     <View
       {...theme.row}
