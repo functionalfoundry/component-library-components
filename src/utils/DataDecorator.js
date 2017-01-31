@@ -80,7 +80,7 @@ const defaultTheme = {
     }
   },
   keywordSpan: {
-    color: 'black',
+    color: '#00719e',
   },
   identifierSpan: {
     color: '#009e71',
