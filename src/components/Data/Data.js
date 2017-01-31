@@ -6,7 +6,6 @@ import DataDecorator from '../../utils/DataDecorator'
 
 type PropsT = {
   text: string,
-  editorState: Object,
   onChange: Function,
 }
 

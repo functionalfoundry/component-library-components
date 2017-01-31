@@ -17,8 +17,6 @@ import Data from '../Data'
 type DataT = {
   /* Passed in on initial load to seed the editor state */
   text: string,
-  /* Stored by caller and passed back in on every change */
-  editorState: Object,
 }
 
 type PropsT = {
@@ -91,14 +89,12 @@ class LiveEditor extends React.Component {
           <TabPanel>
             <Data
               text={data.text}
-              editorState={data.editorState}
               onChange={onChangeData}
             />
           </TabPanel>
           <TabPanel>
             <Data
               text={actions.text}
-              editorState={actions.editorState}
               onChange={onChangeActions}
             />
           </TabPanel>
