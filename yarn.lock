@@ -112,9 +112,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.27":
-  version "0.8.27"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.27.tgz#5e6ad7da92ad527004e4071e6b3524942f94b5c6"
+"@workflo/components@^0.8.28":
+  version "0.8.28"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.28.tgz#66e5ab0761b5be851f98fe000199cfc673ca0e57"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "0.7.5"
@@ -127,7 +127,7 @@
     babel-types "^6.18.0"
     babylon "^6.13.1"
     dom-helpers "^3.0.0"
-    draft-js "^0.9.1"
+    draft-js "^0.10.0"
     draft-js-code "^0.2.0"
     escodegen "^1.8.1"
     fbjs "^0.8.4"
@@ -1942,14 +1942,6 @@ draft-js@^0.7.0:
     fbjs "^0.8.1"
     immutable "^3.7.4"
 
-draft-js@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.9.1.tgz#940a51a0ad1fede0411676b6404f4050495f54f9"
-  dependencies:
-    fbjs "^0.8.3"
-    immutable "~3.7.4"
-    object-assign "^4.1.0"
-
 duplexer2@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -2325,7 +2317,7 @@ fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
-fbjs@^0.8.1, fbjs@^0.8.3, fbjs@^0.8.4, fbjs@^0.8.7:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.7:
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.8.tgz#02f1b6e0ea0d46c24e0b51a2d24df069563a5ad6"
   dependencies:
