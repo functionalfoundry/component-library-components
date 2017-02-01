@@ -52,7 +52,8 @@
     "js-theme": "0.7.3",
     "lodash": "^4.13.1",
     "react": "15.4.2",
-    "react-dom": "15.4.2"
+    "react-dom": "15.4.2",
+    "slate": "^0.16.11"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.6.1",
