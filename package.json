@@ -32,7 +32,7 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "@workflo/components": "^0.8.32",
+    "@workflo/components": "^0.8.33",
     "@workflo/styles": "0.7.5",
     "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
