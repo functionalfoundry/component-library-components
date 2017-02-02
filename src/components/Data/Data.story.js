@@ -32,13 +32,10 @@ class DataContainer extends React.Component {
     }
   }
 
-  handleChange = (data) => {
-    // this.setState({
-    //   text: data.text,
-    // })
-    action('onChange')(data)
+  handleChange = (text) => {
+    action('onChange')(text)
     try {
-      const es5Ast = Babel.transform(data.text, babelOptions)
+      const es5Ast = Babel.transform(text, babelOptions)
       console.log('code: ', es5Ast.code)
       // eval(es5Ast.code)
     } catch (err) {
