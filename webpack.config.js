@@ -33,7 +33,12 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json',
-        include: path.join(__dirname, 'node_modules', 'globals')
+        include: [
+          path.join(__dirname, 'node_modules', 'globals'),
+          path.join(__dirname, 'node_modules', 'cheerio'),
+          path.join(__dirname, 'node_modules', 'css-select', 'lib'),
+          path.join(__dirname, 'node_modules', 'entities', 'maps')
+        ]
       }
     ]
   }
