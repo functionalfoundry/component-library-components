@@ -1,48 +1,47 @@
 /* @flow */
 import React from 'react'
-
-import { codeDecoratorFactory } from '../../utils/CodeDecorator'
 import TextEditor from '@workflo/components/lib/TextEditor'
+import PropKeyValuePlugin from '../../utils/EditorPlugins/PropKeyValuePlugin'
 
-export type CodePropKeyValueTypeT = 'Radio' | 'Checkbox' | 'Slider' | 'TextInput' | 'Date' | 'Color' | 'Icon'
-type InputT = {
-  type: CodePropKeyValueT,
-}
+import type PropKeyValueT from '../../types/PropKeyValueT'
 
-export type ValueTypeT = 'String' | 'Javascript'
-type ValueT = {
-  type: ValueTypeT,
-  value: any,
-}
-
-export type CodePropKeyValueT = {
-  key: string,
-  value: ValueT,
-  options: Array<string>,
-  input: InputT,
+type PropsT = {
+  componentName: string,
+  propKeyValues: Array<PropKeyValueT>,
+  onChange: Function,
+  onRemoveProp: Function,
 }
 
 type PropsT = {
   componentName: string,
-  propKeyValues: Array<CodePropKeyValueT>,
+  propKeyValues: Array<PropKeyValueT>,
   onChange: Function,
   onRemoveProp: Function,
+}
+
+type StateT = {
+  text: string,
+  plugins: Array<Object>,
 }
 
 const defaultProps = {
   componentName: 'Unknown',
   propKeyValues: [],
   onChange: () => {},
+  onRemoveProp: () => {},
 }
 
 export default class Code extends React.Component {
+  props: PropsT
+  state: StateT
+
   static defaultProps = defaultProps
 
   constructor(props: PropsT) {
     super(props)
     this.state = {
       text: this.getText(props),
-      decorator: this.getDecorator(props),
+      plugins: this.getPlugins(props),
     }
   }
 
@@ -50,7 +49,7 @@ export default class Code extends React.Component {
     if (nextProps.propKeyValues !== this.props.propKeyValues) {
       this.setState({
         text: this.getText(nextProps),
-        decorator: this.getDecorator(nextProps),
+        plugins: this.getPlugins(nextProps),
       })
     }
   }
@@ -58,18 +57,20 @@ export default class Code extends React.Component {
   getText = ({ componentName, propKeyValues }: PropsT) =>
     getCodeString(componentName, propKeyValues)
 
-  getDecorator = ({ propKeyValues, onRemoveProp }: PropsT) => {
-    return codeDecoratorFactory(propKeyValues, onRemoveProp, this.handleChange)
-  }
+  getPlugins = ({ onRemoveProp, propKeyValues }: PropsT) => ([
+    PropKeyValuePlugin({
+      onChange: this.handleChange,
+      onRemoveProp,
+      propKeyValues
+    }),
+  ])
 
-  handleChange = (key, value) => {
+  handleChange = (key: string, value: any) => {
     const {
       onChange,
       propKeyValues,
     } = this.props
-    // this.setState({})
-    const propKeyValue = propKeyValues
-      .find((propKeyValue) => propKeyValue.key === key)
+    const propKeyValue = propKeyValues.find((propKeyValue) => propKeyValue.key === key)
     const index = propKeyValues.indexOf(propKeyValue)
     const newPropKeyValues = [...propKeyValues]
     newPropKeyValues[index].value.value = value
@@ -80,8 +81,8 @@ export default class Code extends React.Component {
     return (
       <TextEditor
         text={this.state.text}
-        decorator={this.state.decorator}
-        readOnly
+        plugins={this.state.plugins}
+        readOnly={true}
       />
     )
   }
