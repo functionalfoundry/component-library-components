@@ -1,8 +1,7 @@
 /* @flow */
 import React from 'react'
 import TextEditor from '@workflo/components/lib/TextEditor'
-
-import DataDecorator from '../../utils/DataDecorator'
+import JSEditorPlugin from '../../utils/EditorPlugins/JSEditorPlugin'
 
 type PropsT = {
   text: string,
@@ -19,7 +18,9 @@ const Data = ({
 }: PropsT) => (
   <TextEditor
     text={text}
-    decorator={DataDecorator}
+    plugins={[
+      JSEditorPlugin({}),
+    ]}
     onChange={onChange}
   />
 )
