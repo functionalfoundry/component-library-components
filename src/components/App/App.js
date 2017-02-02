@@ -76,6 +76,7 @@ const defaultTheme = {
     display: 'flex',
     flex: '1 1 auto',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   maxWidth: {
     display: 'flex',
