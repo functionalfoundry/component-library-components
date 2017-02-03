@@ -33,14 +33,12 @@ const getPropKeyValueByName = (propKeyValues, name) => {
 
 const defaultTheme = {
   component: {
-    color: 'orange',
   },
   propName: {
     position: 'relative',
-    color: 'blue',
+    color: '#009e71',
   },
   propValue: {
-    color: 'green',
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,

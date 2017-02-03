@@ -12,10 +12,10 @@ const acorn = require('acorn/dist/acorn_loose')
 
 const defaultTheme = {
   identifier: {
-    color: 'blue',
+    color: '#009e71',
   },
   keyword: {
-    color: 'green'
+    color: '#00719e',
   }
 }
 
