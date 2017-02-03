@@ -44,7 +44,7 @@ const Component = ({
     >
       <Image
         {...theme.image}
-        src={'http://placehold.it/250x250'}
+        src={thumbnail || 'http://placehold.it/250x250'}
       />
     </View>
     <View
