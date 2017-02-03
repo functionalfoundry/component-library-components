@@ -12,23 +12,30 @@ import {
   Spacing,
   Shadows,
 } from '@workflo/styles'
+import Theme from 'js-theme'
 
 type Props = {
+  theme: Object,
 }
 
 const AnimationDemo = ({
+  theme,
   ...props,
 }: Props) => (
   <Card
-    style={styles.card}
+    {...theme.card}
     size='medium'
   >
-    <Icons />
+    <Icons theme={theme} />
   </Card>
 )
 
-const Icons = () => (
-  <View style={styles.icons}>
+type IconsPropsT = {
+  theme: Object,
+}
+
+const Icons = ({ theme }: IconsPropsT) => (
+  <View {...theme.icons}>
     <Icon
       name='alignment'
       size='large'
@@ -47,7 +54,7 @@ const Icons = () => (
   </View>
 )
 
-const styles = {
+const defaultTheme = {
   card: {
     color: 'black',
     height: 80,
@@ -58,4 +65,5 @@ const styles = {
   },
 }
 
-export default AnimationDemo
+const ThemedAnimationDemo = Theme('AnimationDemo', defaultTheme)(AnimationDemo)
+export default ThemedAnimationDemo
