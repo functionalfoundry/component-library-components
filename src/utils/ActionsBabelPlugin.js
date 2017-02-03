@@ -10,14 +10,25 @@ function actionsBabelPlugin({ types: t }) {
       },
       VariableDeclaration (path) {
         if (isStateOrSetState(path.node)) return
-        const variableI = t.identifier(path.node.declarations[0].id.name)
-        const lVal = t.memberExpression(getBaseObject(t), variableI)
-        const rexpression = !path.node.declarations[0].init.id
-          ? path.node.declarations[0].init
-          : path.node.declarations[0].init.id.name
-        path.insertAfter(
-          t.expressionStatement(t.assignmentExpression('=', lVal, rexpression))
-        )
+
+        const name = path.node.declarations[0].id.name
+        const parentType = path.parent.type
+
+        // only create window.workflo.componentLibrary.liveView.actions.<name>
+        // declarations for global variables
+        if (name && parentType === 'Program') {
+          const variableI = t.identifier(path.node.declarations[0].id.name)
+          const lVal = t.memberExpression(getBaseObject(t), variableI)
+          const rexpression = !path.node.declarations[0].init.id
+            ? path.node.declarations[0].init
+            : path.node.declarations[0].init.id.name
+          path.insertAfter(
+            t.expressionStatement(t.assignmentExpression('=', lVal, rexpression))
+          )
+
+          // don't traverse children of this variable declaration
+          path.skip()
+        }
       },
     }
   }
