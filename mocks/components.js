@@ -27,12 +27,13 @@ export const components = [
   },
   {
     id: 2,
-    name: 'Discussion Feed',
+    name: 'Discussion Feed (w/ thumbnail)',
     owner: {
       firstName: 'Jannis',
       lastName: 'Pohlman',
       profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
+    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     properties,
   },
   {
