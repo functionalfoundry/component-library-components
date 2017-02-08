@@ -5,6 +5,7 @@ const Component = require('./components/Component')
 const Components = require('./components/Components')
 const ComponentState = require('./components/ComponentState')
 const ComponentStates = require('./components/ComponentStates')
+const ComponentTreeEditor = require('./components/ComponentTreeEditor')
 const Data = require('./components/Data')
 const ErrorView = require('./components/ErrorView')
 const Header = require('./components/Header')
@@ -26,6 +27,7 @@ const WorkfloComponents = {
   Components,
   ComponentState,
   ComponentStates,
+  ComponentTreeEditor,
   Data,
   ErrorView,
   Header,
