@@ -6,23 +6,12 @@ import { List, OrderedMap, Record } from 'immutable'
  * Flow types
  */
 
-type TypeT =
-  'component'
-  | 'component-name'
-  | 'prop'
-  | 'prop-name'
-  | 'prop-value'
-
-
 type LocationT = {
   start: number,
   end: number,
 }
 
 type PropNameT = {
-  type: TypeT,
-  location: ?LocationT,
-  parent: PropT,
   name: ?string,
 }
 
@@ -30,40 +19,33 @@ type PropValueValueT = any
 type PropValueTypeT = any
 
 type PropValueT = {
-  type: TypeT,
-  location: ?LocationT,
-  parent: PropT,
   value: ?PropValueValueT,
   valueType: ?PropValueTypeT,
 }
 
 type PropT = {
-  type: TypeT,
-  location: ?LocationT,
-  parent: ComponentT,
   name: PropNameT,
   value: PropValueT,
 }
 
 type ComponentNameT = {
-  type: TypeT,
-  locations: ?Array<LocationT>,
-  parent: ComponentT,
   name: string,
 }
 
 type ComponentT = {
-  type: TypeT,
-  location: ?LocationT,
-  parent: ?ComponentT,
   name: ?ComponentNameT,
   props: ?List<PropT>,
   children: ?List<ComponentT>,
+  text: ?TextT,
+  isSelfClosing: ?boolean,
+}
+
+type TextT = {
+  text: ?string,
 }
 
 type CursorPathSegmentT =
-  ComponentT
-  | PropT
+  NodeT
   | '::value'
   | '::before'
   | '::after'
@@ -73,9 +55,39 @@ type CursorT = {
   offset: number,
 }
 
+type NodeTypeT =
+  'component'
+  | 'component-name-open'
+  | 'component-name-close'
+  | 'prop'
+  | 'prop-name'
+  | 'prop-value'
+
+type NodeElementT =
+  ComponentT
+  | ComponentNameT
+  | PropT
+  | PropNameT
+  | PropValueT
+  | TextT
+
+type NodePathSegmentT = {
+  type: NodeTypeT,
+  index: number,
+}
+
+type NodePathT = List<NodePathSegmentT>
+
+type NodeT = {
+  type: NodeTypeT,
+  element: NodeElementT,
+  parent: ?NodePathT,
+  children: List<?NodeT>,
+}
+
 type ComponentTreeT = {
   cursor: ?CursorT,
-  root: ?ComponentT,
+  root: ?NodeT,
 }
 
 /**
@@ -102,9 +114,6 @@ export { Location }
 // PropName
 
 const defaultPropName: PropNameT = {
-  type: 'prop-name',
-  location: null,
-  parent: null,
   name: null,
 }
 
@@ -114,22 +123,16 @@ export { PropName }
 // PropValue
 
 const defaultPropValue: PropValueT = {
-  type: 'prop-value',
-  location: null,
-  parent: null,
   value: null,
   valueType: null,
 }
 
-const PropValue = Record(defaultPropName)
+const PropValue = Record(defaultPropValue)
 export { PropValue }
 
 // Prop
 
 const defaultProp: PropT = {
-  type: 'prop',
-  location: null,
-  parent: null,
   name: null,
   value: null,
 }
@@ -140,9 +143,6 @@ export { Prop }
 // ComponentName
 
 const defaultComponentName: ComponentNameT = {
-  type: 'component-name',
-  locations: List(),
-  parent: null,
   name: null,
 }
 
@@ -152,16 +152,24 @@ export { ComponentName }
 // Component
 
 const defaultComponent: ComponentT = {
-  type: 'component',
-  location: null,
-  parent: null,
   name: null,
   props: List(),
   children: List(),
+  text: null,
+  isSelfClosing: false,
 }
 
 const Component = Record(defaultComponent)
 export { Component }
+
+// Text
+
+const defaultText: TextT = {
+  text: '',
+}
+
+const Text = Record(defaultText)
+export { Text }
 
 // Cursor
 
@@ -172,6 +180,34 @@ const defaultCursor: CursorT = {
 
 const Cursor = Record(defaultCursor)
 export { Cursor }
+
+// NodePathSegment
+
+const defaultNodePathSegment: NodePathSegmentT = {
+  type: null,
+  index: 0,
+}
+
+const NodePathSegment = Record(defaultNodePathSegment)
+export { NodePathSegment }
+
+// NodePath
+
+const NodePath = List
+export { NodePath }
+
+// Node
+
+const defaultNode: NodeT = {
+  type: null,
+  parent: NodePath(),
+  location: null,
+  element: null,
+  children: List(),
+}
+
+const Node = Record(defaultNode)
+export { Node }
 
 // ComponentTree
 
