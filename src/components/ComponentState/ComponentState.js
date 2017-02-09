@@ -251,10 +251,13 @@ const defaultActionsTheme = ({
   title: {
     ...Fonts.title,
     ...Fonts.large,
-    marginLeft: isShowingCheckbox ? Spacing.tiny + Spacing.micro : 0,
+    //marginLeft: isShowingCheckbox ? Spacing.tiny + Spacing.micro : 0,
+    transform: isShowingCheckbox ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
+    WebkitTransform: isShowingCheckbox ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
     fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
+    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
     cursor: 'pointer',
     ':hover': {
       textDecoration: 'underline',
