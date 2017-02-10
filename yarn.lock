@@ -112,12 +112,12 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.38":
-  version "0.8.38"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.38.tgz#fb73657323de6cb9daac6a24d931e8235ac6ee24"
+"@workflo/components@^0.8.39":
+  version "0.8.39"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.39.tgz#8cf84c56033d78f687c4600b01e6d5912f4f7dfe"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
-    "@workflo/styles" "^0.7.8"
+    "@workflo/styles" "^0.7.9"
     babel-core "^6.18.2"
     babel-generator "^6.18.0"
     babel-polyfill "^6.16.0"
@@ -137,9 +137,9 @@
     react-timeout "^1.0.0"
     slate "^0.16.11"
 
-"@workflo/styles@^0.7.8":
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.8.tgz#200008619374231e6b1d629b9e8298ff81b166a9"
+"@workflo/styles@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.9.tgz#c524de74695b54fcc2878c372af7a4a222e622b0"
 
 abbrev@1:
   version "1.0.9"
