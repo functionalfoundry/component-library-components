@@ -102,7 +102,9 @@ const cellBorder = {
 
 const defaultTheme = {
   properties: {
-    ...Fonts.monospace,
+    ...(Object.assign({}, Fonts.monospace, {
+      fontSize: 14,
+    })),
     width: '100%',
     maxWidth: '100%',
   },
