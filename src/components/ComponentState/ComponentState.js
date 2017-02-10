@@ -114,6 +114,8 @@ class ComponentState extends React.Component {
     this.setState({ isHovering: false })
   }
 
+  storeRef = (name, c) => this[name] = c
+
   render () {
     const {
       component,
@@ -133,7 +135,7 @@ class ComponentState extends React.Component {
         <View
           {...theme.section}
         >
-          <TopBar
+          <ThemedActions
             harnessCard={harnessCard}
             onClickTitle={onClickTitle}
             onChangeIsSelected={onChangeIsSelected}
@@ -142,6 +144,7 @@ class ComponentState extends React.Component {
             isHovering={this.state.isHovering}
             isSelected={harnessCard.isSelected}
             forceShowActions={this.numOpenPopups > 0}
+            storeRef={this.storeRef}
             isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
             onOpenPopup={() => {
               this.numOpenPopups = this.numOpenPopups + 1
@@ -180,6 +183,7 @@ const Actions = ({
   theme,
   onOpenPopup,
   onClosePopup,
+  storeRef,
 }) => (
   <div style={{ display: 'flex' }}>
     <View
@@ -202,24 +206,32 @@ const Actions = ({
       {...theme.actions}
     >
       {((isHovering && !isSelected) || forceShowActions) &&
-        transformActions(actions, onOpenPopup, onClosePopup)}
+        transformActions(actions, onOpenPopup, onClosePopup, storeRef)}
       {(!isHovering && !isSelected && !forceShowActions) &&
-        <Icon
-          name='more-horizontal'
-          size='large'
-          fill={Colors.grey700}
-          stroke={Colors.grey700}
-        />}
+        <div ref={(c) => storeRef('more', c)}>
+          <Icon
+            name='more-horizontal'
+            size='large'
+            fill={Colors.grey700}
+            stroke={Colors.grey700}
+          />
+        </div>}
     </View>
   </div>
 )
 
-const transformActions = (actions, onOpenPopup, onClosePopup) => {
-  return actions.map((action) => React.cloneElement(action, {
-    ...action.props,
-    onOpen: onOpenPopup,
-    onClose: onClosePopup,
-  }))
+const transformActions = (actions, onOpenPopup, onClosePopup, storeRef) => {
+  return actions.map((action, index) => {
+    return (
+      <div key={index} ref={(c) => storeRef(`icon${index}`, c)}>
+        {React.cloneElement(action, {
+          ...action.props,
+          onOpen: onOpenPopup,
+          onClose: onClosePopup,
+        })}
+      </div>
+    )
+  })
 }
 
 const shouldShowCheckbox = (isHovering, isSelected) =>
@@ -266,7 +278,7 @@ const defaultActionsTheme = ({
   },
 })
 
-const TopBar = Theme('ComponentStateActions', defaultActionsTheme)(Actions)
+const ThemedActions = Theme('ComponentStateActions', defaultActionsTheme)(Actions)
 
 const defaultTheme = ({
   harnessCard,
