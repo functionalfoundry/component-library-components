@@ -5,6 +5,7 @@ import {
 } from '@workflo/components'
 import {
   Colors,
+  Fonts,
   Spacing,
 } from '@workflo/styles'
 
@@ -101,7 +102,7 @@ const cellBorder = {
 
 const defaultTheme = {
   properties: {
-    fontFamily: '"Roboto Mono"',
+    ...Fonts.monospace,
     width: '100%',
     maxWidth: '100%',
   },
