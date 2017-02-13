@@ -6,6 +6,7 @@ import { List, OrderedMap, Record } from 'immutable'
  * Flow types
  */
 
+// TODO Rename to MarkupLocationT
 type LocationT = {
   start: number,
   end: number,
@@ -37,7 +38,6 @@ type ComponentT = {
   props: ?List<PropT>,
   children: ?List<ComponentT>,
   text: ?TextT,
-  isSelfClosing: ?boolean,
 }
 
 type TextT = {
@@ -81,6 +81,10 @@ type NodePathT = List<NodePathSegmentT>
 type NodeT = {
   type: NodeTypeT,
   element: NodeElementT,
+  // We use a node path because the immutable nodes and elements
+  // cannot store bidirectional references between each other
+  // due their immutable nature (one would always have an outdated
+  // copy of the other node/element)
   parent: ?NodePathT,
   children: List<?NodeT>,
 }
@@ -101,14 +105,7 @@ const defaultLocation: LocationT = {
   end: 0,
 }
 
-class Location extends Record(defaultLocation) {
-  isWithin (other: LocationT) {
-    return this.start >= other.start
-      && this.start <= other.end
-      && this.end >= other.start
-      && this.end <= other.end
-  }
-}
+const Location = Record(defaultLocation)
 export { Location }
 
 // PropName
@@ -156,7 +153,6 @@ const defaultComponent: ComponentT = {
   props: List(),
   children: List(),
   text: null,
-  isSelfClosing: false,
 }
 
 const Component = Record(defaultComponent)
