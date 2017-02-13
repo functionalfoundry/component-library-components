@@ -3,12 +3,14 @@
 import {
   List,
   Record,
+  Set,
 } from 'immutable'
 
 import {
   Component,
   ComponentName,
   ComponentTree,
+  Location,
   Node,
   NodePath,
   NodePathSegment,
@@ -138,53 +140,85 @@ const TraverseContext = Record({
 })
 
 const traverseNode: TraverseContext = (context: TraverseContext, visitor: Function) => {
-  context = visitor(context, 'start')
+  context = visitor(context, 'before')
+  if (context.stop) {
+    return context
+  }
+
+  context = visitor(context, 'at')
   if (context.stop) {
     return context
   }
 
   if (context.node.children && !context.node.children.isEmpty()) {
-    let subContext = {
+    let acc = {
       context: context,
       children: List(),
-      phase: 'startProps',
     }
 
-    subContext = context.node.children.reduce((context, child) => {
-      if (context.context.stop) {
-        context.children = context.children.push(child)
-        return context
+    const traverseChild = (acc, child) => {
+      if (acc.context.stop) {
+        acc.children = acc.children.push(child)
+        return acc
       } else {
-        if (context.phase == 'startProps' && child.type == 'prop') {
-          context.context = visitor(context.context, 'startProps')
-          context.phase = 'props'
-        } else if (context.phase == 'props' && child.type == 'component') {
-          context.context = visitor(context.context, 'endProps')
-          context.context = visitor(context.context, 'startComponents')
-          context.phase = 'components'
-        } else if (context.phase == 'components' && child.type !== 'component') {
-          context.context = visitor(context.context, 'endComponents')
-          context.phase = 'endComponents'
-        }
-        const output = traverseNode(context.context.set('node', child), visitor)
-        context.context = output
-        context.children = context.children.push(output.node)
-        return context
+        let output = traverseNode(acc.context.set('node', child), visitor)
+        acc.context = output.set('node', context.get('node'))
+        acc.children = acc.children.push(output.node)
+        return acc
       }
-    }, subContext)
+    }
 
-    context = context.withMutations(ctx => {
-      ctx.setIn(['node', 'children'], subContext.children)
-      ctx.set('stop', subContext.stop)
-      ctx.set('data', subContext.context.data)
-    })
+    const mergeAccumulator = (context, acc) => (
+      context.withMutations(context => {
+        context.setIn(['node', 'children'], acc.children)
+        context.set('stop', acc.context.stop)
+        context.set('data', acc.context.data)
+      })
+    )
+
+    const traverseChildGroup = (acc, groupName, group) => {
+      if (!group.isEmpty()) {
+        acc.context = visitor(acc.context, `before${groupName}`)
+        acc = group.reduce(traverseChild, acc)
+        acc.context = visitor(acc.context, `after${groupName}`)
+        return acc
+      } else {
+        return acc
+      }
+    }
+
+    acc = context.node.children
+      .filter(child => child.type == 'component-name-open')
+      .reduce(traverseChild, acc)
+
+    acc = traverseChildGroup(acc, 'Props', context.node.children.filter(
+      child => child.type == 'prop'
+    ))
+
+    acc = context.node.children
+      .filter(child => child.type == 'prop-name')
+      .reduce(traverseChild, acc)
+
+    acc = context.node.children
+      .filter(child => child.type == 'prop-value')
+      .reduce(traverseChild, acc)
+
+    acc = traverseChildGroup(acc, 'Components', context.node.children.filter(
+      child => child.type == 'component' || child.type == 'text'
+    ))
+
+    acc = context.node.children
+      .filter(child => child.type == 'component-name-close')
+      .reduce(traverseChild, acc)
+
+    context = mergeAccumulator(context, acc)
   }
 
   if (context.stop) {
     return context
   }
 
-  context = visitor(context, 'end')
+  context = visitor(context, 'after')
 
   return context
 }
@@ -197,7 +231,7 @@ const traverse: TraverseContext = (tree: ComponentTree, data: any, visitor: Func
 
   if (tree && tree.root) {
     context = traverseNode(context.set('node', tree.root), visitor)
-    context.setIn(['tree', 'root'], context.node)
+    context = context.setIn(['tree', 'root'], context.node)
   }
 
   return context
@@ -207,7 +241,7 @@ const traverse: TraverseContext = (tree: ComponentTree, data: any, visitor: Func
  * Visitor for traversals
  */
 
-const makeVisitor = (handlers: object) => (context: TraverseContext, phase: string) => {
+const getTraversalHandlerNameForNodeType = (type: string) => {
   const handlerNames = {
     'component': 'component',
     'component-name-open': 'componentNameOpen',
@@ -217,7 +251,11 @@ const makeVisitor = (handlers: object) => (context: TraverseContext, phase: stri
     'prop-value': 'propValue',
     'text': 'text',
   }
-  const handlerName = handlerNames[context.node.type]
+  return handlerNames[type]
+}
+
+const makeVisitor = (handlers: object) => (context: TraverseContext, phase: string) => {
+  const handlerName = getTraversalHandlerNameForNodeType(context.node.type)
   const handler = handlers[handlerName]
   if (handler && handler[phase]) {
     return handler[phase](context, phase) || context
@@ -242,95 +280,221 @@ const Layout = Record({
   markup: null,
 })
 
+type LayoutContextT = {
+  tree: ComponentTree,
+  markup: string,
+  indent: string,
+}
+
+const LayoutContext = Record({
+  tree: null,
+  markup: null,
+  indent: '',
+})
+
 const layout: LayoutT = (tree: ComponentTree) => {
-  let data = Layout({
+  let data = LayoutContext({
     tree: tree,
     markup: '',
+    indent: '',
   })
+
+  const INDENT = '  '
 
   const traversal = traverse(tree, data, makeVisitor({
     component: {
-      start: context => context.updateIn(['data', 'markup'], markup => (
-        markup + '<'
+      before: context => (
+        context
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length
+          }))
+      ),
+
+      after: context => (
+        context
+          .setIn(['node', 'location', 'end'], context.data.markup.length - 1)
+          .updateIn(['data', 'markup'], s => s + '\n')
+      ),
+
+      beforeProps: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + '\n')
+          .updateIn(['data', 'indent'], s => s + INDENT)
+      ),
+
+      afterProps: context => context.update('data', data => {
+        const indent = data.indent.slice(0, -INDENT.length)
+        return data
+          .update('indent', s => indent)
+          .update('markup', s => s + indent + '>\n')
+      }),
+
+      beforeComponents: context => context.update('data', data => (
+        data.update('indent', s => s + INDENT)
       )),
-      end: context => context.updateIn(['data', 'markup'], markup => (
-        markup + '>'
+
+      afterComponents: context => context.update('data', data => (
+        data
+          .update('markup', s => s)
+          .update('indent', s => s.slice(0, -INDENT.length))
       )),
-      endProps: context => context.updateIn(['data', 'markup'], markup => (
-        markup + '>'
-      ))
     },
 
     componentNameOpen: {
-      start: context => context.updateIn(['data', 'markup'], markup => (
-        markup + context.node.element.name
-      ))
+      before: context => (
+        context.updateIn(['data', 'markup'], s => s + context.data.indent + '<')
+      ),
+
+      at: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + context.node.element.name)
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+            end: context.data.markup.length + context.node.element.name.length - 1,
+          }))
+      ),
+    },
+
+    componentNameClose: {
+      before: context => (
+        context.updateIn(['data', 'markup'], s =>
+          s + context.data.indent + '</'
+        )
+      ),
+
+      at: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + context.node.element.name)
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+            end: context.data.markup.length + context.node.element.name.length - 1,
+          }))
+      ),
+
+      after: context => (
+        context.updateIn(['data', 'markup'], s => s + '>')
+      ),
     },
 
     prop: {
-      start: context => context.updateIn(['data', 'markup'], markup => (
-        markup + '\n'
-      )),
+      before: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + context.data.indent)
+      ),
+
+      at: context => (
+        context
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+          }))
+      ),
+
+      after: context => (
+        context
+          .setIn(['node', 'location', 'end'], context.data.markup.length - 1)
+          .updateIn(['data', 'markup'], s => s + '\n')
+      ),
     },
 
     propName: {
-      start: context => context.updateIn(['data', 'markup'], markup => (
-        markup + context.node.element.name
-      )),
-      end: context => context.updateIn(['data', 'markup'], markup => (
-        markup + '='
-      ))
+      at: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + context.node.element.name))
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+            end: context.data.markup.length + context.node.element.name.length - 1,
+          })
+      ),
     },
 
     propValue: {
-      start: context => context.updateIn(['data', 'markup'], markup => (
-        markup + context.node.element.value
-      )),
+      before: context => (
+        context.updateIn(['data', 'markup'], s => s + '=')
+      ),
+
+      at: context => (
+        context
+          .updateIn(['data', 'markup'], s =>
+            s + context.node.element.value.toString()
+          )
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+            end: context.data.markup.length +
+                 context.node.element.value.toString().length - 1,
+          }))
+      ),
     },
 
-    //componentNameOpen: (context, phase) => (
-    //  phase == 'start' && context.updateIn(['data', 'markup'], markup => (
-    //    markup + context.node.element.name + '\n'
-    //  ))
-    //),
+    text: {
+      before: context => (
+        context.updateIn(['data', 'markup'], s => s + context.data.indent)
+      ),
+
+      at: context => (
+        context
+          .updateIn(['data', 'markup'], s => s + context.node.element.text)
+          .setIn(['node', 'location'], Location({
+            start: context.data.markup.length,
+            end: context.data.markup.length + context.node.element.text.length,
+          }))
+      ),
+
+      after: context => (
+        context.updateIn(['data', 'markup'], s => s + '\n')
+      )
+    },
   }))
 
-  console.log('TRAVERSAL RESULT', traversal)
-
-  return traversal.data
+  return Layout({
+    tree: traversal.tree,
+    markup: traversal.data.markup,
+  })
 }
 
 const printTree = (tree: ComponentTree) => {
   const traversal = traverse(tree, null, makeVisitor({
     component: {
       all: (context, phase) =>
-        console.warn(phase, 'component', context.node.element.name.name),
+        console.log(phase, 'component', context.node.element.name.name),
     },
     componentNameOpen: {
       all: (context, phase) =>
-        console.warn(phase, 'componentNameOpen', context.node.element.name),
+        console.log(phase, 'componentNameOpen', context.node.element.name),
     },
     componentNameClose: {
       all: (context, phase) =>
-        console.warn(phase, 'componentNameClose', context.node.element.name),
+        console.log(phase, 'componentNameClose', context.node.element.name),
     },
     prop: {
       all: (context, phase) =>
-        console.warn(phase, 'prop', context.node.element.name.name),
+        console.log(phase, 'prop', context.node.element.name.name),
     },
     propName: {
       all: (context, phase) =>
-        console.warn(phase, 'propName', context.node.element.name),
+        console.log(phase, 'propName', context.node.element.name),
     },
     propValue: {
       all: (context, phase) =>
-        console.warn(phase, 'propValue', context.node.element.value),
+        console.log(phase, 'propValue', context.node.element.value),
     },
     text: {
       all: (context, phase) =>
-        console.warn(phase, 'text', context.node.element.text)
+        console.log(phase, 'text', context.node.element.text)
     },
   }))
+}
+
+const getNodesForType = (tree: ComponentTree, type: string) => {
+  const handlerName = getTraversalHandlerNameForNodeType(type)
+  const handlers = {}
+  handlers[handlerName] = {
+    at: context => {
+      return context.update('data', nodes => (
+        nodes.add(context.node)
+      ))
+    }
+  }
+  return traverse(tree, Set(), makeVisitor(handlers)).data
 }
 
 const ComponentTreeUtils = {
@@ -338,6 +502,7 @@ const ComponentTreeUtils = {
   traverse,
   layout,
   printTree,
+  getNodesForType,
 }
 
 export default ComponentTreeUtils
