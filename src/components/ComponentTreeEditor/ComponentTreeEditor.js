@@ -6,6 +6,7 @@ import { Editor, Raw, State } from 'slate'
 
 import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeUtils from '../../utils/CompositeComponents/ComponentTreeUtils'
+import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 
 /**
  * Props
@@ -24,6 +25,7 @@ const defaultProps = {
 
 type StateT = {
   tree: ComponentTree,
+  plugins: Array<Object>,
   markup: string,
   editorState: State,
 }
@@ -47,6 +49,10 @@ const getEditorStateFromMarkup = (markup: string) => (
   })
 )
 
+const getPluginsForTree = (tree: ComponentTree) => ([
+  ComponentTreeSyntaxPlugin({ tree }),
+])
+
 /**
  * ComponentTree component
  */
@@ -66,6 +72,7 @@ class ComponentTreeEditor extends React.Component {
     this.state = {
       tree: tree,
       markup: markup,
+      plugins: getPluginsForTree(tree),
       editorState: editorState,
     }
   }
@@ -75,6 +82,10 @@ class ComponentTreeEditor extends React.Component {
     return (
       <Editor
         state={this.state.editorState}
+        plugins={this.state.plugins}
+        style={{
+          fontFamily: 'Monaco',
+        }}
         onChange={this.handleChange}
       />
     )
