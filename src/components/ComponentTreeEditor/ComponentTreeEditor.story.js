@@ -64,18 +64,6 @@ const regularTree = ComponentTreeUtils.createTree(
   })
 )
 
-console.log('Regular tree:', regularTree)
-console.log('Regular tree before layout:')
-ComponentTreeUtils.printTree(regularTree)
-
-const layout = ComponentTreeUtils.layout(regularTree)
-console.log('Regular tree after layout:')
-console.log(layout.tree)
-ComponentTreeUtils.printTree(layout.tree)
-
-console.log('Component nodes:', ComponentTreeUtils.getNodesForType(layout.tree, 'component'))
-console.log('Prop name nodes:', ComponentTreeUtils.getNodesForType(layout.tree, 'prop-name'))
-
 storiesOf('Component Tree Editor', module)
   .add('Regular', () => (
     <PreviewContainer>
