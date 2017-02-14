@@ -6,6 +6,7 @@ import { Editor, Raw, State } from 'slate'
 
 import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeUtils from '../../utils/CompositeComponents/ComponentTreeUtils'
+import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
 import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 
 /**
@@ -50,6 +51,7 @@ const getEditorStateFromMarkup = (markup: string) => (
 )
 
 const getPluginsForTree = (tree: ComponentTree) => ([
+  ComponentTreeEditorPlugin({ tree }),
   ComponentTreeSyntaxPlugin({ tree }),
 ])
 
