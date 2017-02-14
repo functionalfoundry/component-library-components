@@ -150,6 +150,7 @@ class ComponentState extends React.Component {
 
   handleMouseEnter = () => {
     this.props.onMouseEnter()
+    console.log('show the icons :)')
   }
 
   handleMouseLeave = () => {
