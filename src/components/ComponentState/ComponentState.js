@@ -90,17 +90,9 @@ const defaultProps = {
   onChangeIsSelected: () => {},
 }
 
-class ComponentState extends React.Component {
-  props: PropsT
-
+export default class ComponentStateContainer extends React.Component {
   constructor (props) {
     super(props)
-    // We're using a number instead of a boolean to track
-    // whether to force show quick actions while a quickaction popover is open
-    // since sliding to an adjacent icon will open the next popover before
-    // the previous popover is closed. Therefore we add one on open and decrement
-    // on close and compare against 0
-    this.numOpenPopups = 0
     this.state = {
       isHovering: false,
     }
@@ -114,7 +106,60 @@ class ComponentState extends React.Component {
     this.setState({ isHovering: false })
   }
 
+  render() {
+    return (
+      <ThemedComponentState
+        {...this.props}
+        isHovering={this.state.isHovering}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      />
+    )
+  }
+}
+
+class ComponentState extends React.Component {
+  props: PropsT
+  numOpenPopups: number
+  iconRefs: Array<any>
+
+  constructor () {
+    super()
+    // We're using a number instead of a boolean to track
+    // whether to force show quick actions while a quickaction popover is open
+    // since sliding to an adjacent icon will open the next popover before
+    // the previous popover is closed. Therefore we add one on open and decrement
+    // on close and compare against 0
+    // We're not using state for numOpenPopups because we need it to update
+    // faster than a render cycle
+    this.numOpenPopups = 0
+    this.iconRefs = []
+  }
+
   storeRef = (name, c) => this[name] = c
+
+  handleOpenPopup = () => {
+    this.numOpenPopups = this.numOpenPopups + 1
+    this.forceUpdate()
+  }
+
+  handleClosePopup = () => {
+    this.numOpenPopups = this.numOpenPopups - 1
+    this.forceUpdate()
+  }
+
+  handleMouseEnter = () => {
+    this.props.onMouseEnter()
+  }
+
+  handleMouseLeave = () => {
+    if(!this.getForceShowActions()) {
+      console.log('hide these icons: ', this.iconRefs)
+    }
+    this.props.onMouseLeave()
+  }
+
+  getForceShowActions = () => this.numOpenPopups > 0
 
   render () {
     const {
@@ -122,8 +167,11 @@ class ComponentState extends React.Component {
       harnessCard,
       onChangeIsSelected,
       onClickTitle,
+      isHovering,
       theme,
     } = this.props
+
+    const forceShowActions = this.getForceShowActions()
 
     return (
       <Card
@@ -135,26 +183,47 @@ class ComponentState extends React.Component {
         <View
           {...theme.section}
         >
-          <ThemedActions
-            harnessCard={harnessCard}
-            onClickTitle={onClickTitle}
-            onChangeIsSelected={onChangeIsSelected}
-            actions={harnessCard.actions}
-            patterns={harnessCard.harness.theme.patterns}
-            isHovering={this.state.isHovering}
-            isSelected={harnessCard.isSelected}
-            forceShowActions={this.numOpenPopups > 0}
-            storeRef={this.storeRef}
-            isShowingCheckbox={shouldShowCheckbox(this.state.isHovering, harnessCard.isSelected)}
-            onOpenPopup={() => {
-              this.numOpenPopups = this.numOpenPopups + 1
-              this.setState({ numOpenPopups: this.state.numOpenPopups + 1 })}
-            }
-            onClosePopup={() => {
-              this.numOpenPopups = this.numOpenPopups - 1
-              this.setState({ numOpenPopups: this.state.numOpenPopups - 1 })
-            }}
-          />
+          <div style={{ display: 'flex' }}>
+            <View
+              {...theme.titleContainer}
+            >
+              {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
+                <Checkbox
+                  checked={harnessCard.isSelected}
+                  onChange={() => onChangeIsSelected(!harnessCard.isSelected)}
+                />}
+              <Heading
+                {...theme.title}
+                size={'Base'}
+                onPress={() => onClickTitle()}
+              >
+                {harnessCard.harness.componentState.name}
+              </Heading>
+            </View>
+            <View
+              {...theme.actions}
+            >
+              {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
+                harnessCard.actions.map((action, index) => (
+                  <div key={index} ref={(c) => this.iconRefs[index] = c}>
+                    {React.cloneElement(action, {
+                      ...action.props,
+                      onOpen: this.handleOpenPopup,
+                      onClose: this.handleClosePopup,
+                    })}
+                  </div>
+                ))}
+              {(!isHovering && !harnessCard.isSelected && !forceShowActions) &&
+                <div ref={(c) => this.storeRef('more', c)}>
+                  <Icon
+                    name='more-horizontal'
+                    size='large'
+                    fill={Colors.grey700}
+                    stroke={Colors.grey700}
+                  />
+                </div>}
+            </View>
+          </div>
           <View
             {...theme.preview}
           >
@@ -171,117 +240,12 @@ class ComponentState extends React.Component {
   }
 }
 
-const Actions = ({
-  harnessCard,
-  onClickTitle,
-  actions,
-  isHovering,
-  isSelected,
-  isShowingCheckbox,
-  onChangeIsSelected,
-  forceShowActions,
-  theme,
-  onOpenPopup,
-  onClosePopup,
-  storeRef,
-}) => (
-  <div style={{ display: 'flex' }}>
-    <View
-      {...theme.titleContainer}
-    >
-      {isShowingCheckbox &&
-        <Checkbox
-          checked={harnessCard.isSelected}
-          onChange={() => onChangeIsSelected(!harnessCard.isSelected)}
-        />}
-      <Heading
-        {...theme.title}
-        size={'Base'}
-        onPress={() => onClickTitle()}
-      >
-        {harnessCard.harness.componentState.name}
-      </Heading>
-    </View>
-    <View
-      {...theme.actions}
-    >
-      {((isHovering && !isSelected) || forceShowActions) &&
-        transformActions(actions, onOpenPopup, onClosePopup, storeRef)}
-      {(!isHovering && !isSelected && !forceShowActions) &&
-        <div ref={(c) => storeRef('more', c)}>
-          <Icon
-            name='more-horizontal'
-            size='large'
-            fill={Colors.grey700}
-            stroke={Colors.grey700}
-          />
-        </div>}
-    </View>
-  </div>
-)
-
-const transformActions = (actions, onOpenPopup, onClosePopup, storeRef) => {
-  return actions.map((action, index) => {
-    return (
-      <div key={index} ref={(c) => storeRef(`icon${index}`, c)}>
-        {React.cloneElement(action, {
-          ...action.props,
-          onOpen: onOpenPopup,
-          onClose: onClosePopup,
-        })}
-      </div>
-    )
-  })
-}
-
 const shouldShowCheckbox = (isHovering, isSelected) =>
   isHovering || isSelected
 
-const defaultActionsTheme = ({
-  patterns,
-  isShowingCheckbox,
-}) => ({
-  actions: {
-    backgroundColor: patterns.colors.background,
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'absolute',
-    top: Spacing.small - 4,
-    right: 0,
-    paddingRight: Spacing.small,
-    zIndex: 100,
-    color: Colors.grey800,
-  },
-  titleContainer: {
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'row',
-    top: Spacing.small - 2,
-    left: Spacing.small,
-    zIndex: 10,
-  },
-  title: {
-    ...Fonts.title,
-    ...Fonts.large,
-    //marginLeft: isShowingCheckbox ? Spacing.tiny + Spacing.micro : 0,
-    transform: isShowingCheckbox ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
-    WebkitTransform: isShowingCheckbox ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
-    fontSize: 24, // BIG HACK. HEADING BASE?
-    color: Colors.grey800,
-    display: 'inline',
-    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
-    cursor: 'pointer',
-    ':hover': {
-      textDecoration: 'underline',
-      color: Colors.grey600,
-    },
-  },
-})
-
-const ThemedActions = Theme('ComponentStateActions', defaultActionsTheme)(Actions)
-
 const defaultTheme = ({
   harnessCard,
+  isHovering,
 }) => ({
   harnessCard: {
     ...getScaledStyle(harnessCard.isSelected),
@@ -308,13 +272,40 @@ const defaultTheme = ({
     flex: 1,
     flexDirection: 'row',
     zIndex: -0,
-    // height: 200,
-    // maxWidth: '100%',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // flex: '0 1 auto;',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+  },
+  actions: {
+    backgroundColor: harnessCard.harness.theme.patterns.colors.background,
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'absolute',
+    top: Spacing.small - 4,
+    right: 0,
+    paddingRight: Spacing.small,
+    zIndex: 100,
+    color: Colors.grey800,
+  },
+  titleContainer: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
+    top: Spacing.small - 2,
+    left: Spacing.small,
+    zIndex: 10,
+  },
+  title: {
+    ...Fonts.title,
+    ...Fonts.large,
+    transform: shouldShowCheckbox(isHovering, harnessCard.isSelected) ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
+    WebkitTransform: shouldShowCheckbox(isHovering, harnessCard.isSelected) ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
+    fontSize: 24, // BIG HACK. HEADING BASE?
+    color: Colors.grey800,
+    display: 'inline',
+    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
+    cursor: 'pointer',
+    ':hover': {
+      textDecoration: 'underline',
+      color: Colors.grey600,
+    },
   },
 })
 
@@ -329,4 +320,3 @@ const getScaledStyle = (isSelected) => {
 ComponentState.defaultProps = defaultProps
 
 const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)
-export default ThemedComponentState
