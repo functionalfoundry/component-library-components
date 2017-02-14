@@ -78,7 +78,6 @@ class ComponentTreeEditor extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     return (
       <Editor
         state={this.state.editorState}
