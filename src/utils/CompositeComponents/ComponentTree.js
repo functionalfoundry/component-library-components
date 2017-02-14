@@ -6,8 +6,7 @@ import { List, OrderedMap, Record } from 'immutable'
  * Flow types
  */
 
-// TODO Rename to MarkupLocationT
-type LocationT = {
+type MarkupLocationT = {
   start: number,
   end: number,
 }
@@ -44,24 +43,13 @@ type TextT = {
   text: ?string,
 }
 
-type CursorPathSegmentT =
-  NodeT
-  | '::value'
-  | '::before'
-  | '::after'
-
-type CursorT = {
-  path: List<CursorPathSegmentT>,
-  offset: number,
-}
-
 type NodeTypeT =
   'component'
-  | 'component-name-open'
-  | 'component-name-close'
+  | 'component-name'
   | 'prop'
   | 'prop-name'
   | 'prop-value'
+  | 'text'
 
 type NodeElementT =
   ComponentT
@@ -87,10 +75,10 @@ type NodeT = {
   // copy of the other node/element)
   parent: ?NodePathT,
   children: List<?NodeT>,
+  markupLocations: List<?MarkupLocationT>,
 }
 
 type ComponentTreeT = {
-  cursor: ?CursorT,
   root: ?NodeT,
 }
 
@@ -98,15 +86,15 @@ type ComponentTreeT = {
  * ComponentTree implementation
  */
 
-// Location
+// MarkupLocation
 
-const defaultLocation: LocationT = {
+const defaultMarkupLocation: MarkupLocationT = {
   start: 0,
   end: 0,
 }
 
-const Location = Record(defaultLocation)
-export { Location }
+const MarkupLocation = Record(defaultMarkupLocation)
+export { MarkupLocation }
 
 // PropName
 
@@ -197,9 +185,9 @@ export { NodePath }
 const defaultNode: NodeT = {
   type: null,
   parent: NodePath(),
-  location: null,
   element: null,
   children: List(),
+  markupLocations: List(),
 }
 
 const Node = Record(defaultNode)
