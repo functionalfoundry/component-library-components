@@ -34,7 +34,7 @@ const defaultTheme = {
     color: 'purple'
   },
   text: {
-    background: '#555',
+    color: 'yellow',
   }
 }
 
@@ -88,21 +88,24 @@ const makeNodeDecorator = (
   options: PluginOptionsT
 ) => {
   const nodes = ComponentTreeUtils.getNodesForType(options.tree, type)
+  const indexMatchesNode = (index, node) => (
+    node.markupLocations.some(location => (
+      index >= location.start &&
+      index < location.end
+    ))
+  )
   return (characters, options) => (
     characters.map((char, index) => (
       nodes.reduce((char, node) => {
-        if (node.location
-            && index >= node.location.start
-            && index <= node.location.end)
-        {
-            return char.merge({
-              marks: char.marks.add(Slate.Mark.create({
-                type: mark,
-                data: {
-                  node: node,
-                }
-              }))
-            })
+        if (indexMatchesNode(index, node)) {
+          return char.merge({
+            marks: char.marks.add(Slate.Mark.create({
+              type: mark,
+              data: {
+                node: node,
+              }
+            }))
+          })
         } else {
           return char
         }
@@ -116,7 +119,6 @@ const combineDecorators = (
   options: PluginOptionsT
 ) => {
   return (text: Slate.Text, block: Slate.Block) => {
-    console.log('decorate', text)
     try {
       return decorators.reduce((characters, decorator) => {
         return decorator(characters, options)
@@ -138,8 +140,7 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
       code: {
         decorate: combineDecorators([
           makeNodeDecorator('component', 'component', options),
-          makeNodeDecorator('component-name-open', 'component-name', options),
-          makeNodeDecorator('component-name-close', 'component-name', options),
+          makeNodeDecorator('component-name', 'component-name', options),
           makeNodeDecorator('prop-value', 'prop-value', options),
           makeNodeDecorator('prop-name', 'prop-name', options),
           makeNodeDecorator('text', 'text', options),
