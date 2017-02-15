@@ -25,7 +25,7 @@ const App = ({
   profile,
   layout = {},
   navigation = {},
-  backgroundColor = Colors.steel2,
+  backgroundColor,
   actions,
   search,
   theme,
@@ -64,7 +64,7 @@ const App = ({
   </View>
 )
 
-const defaultTheme = {
+const defaultTheme = (props: Props) => ({
   container: {
     backgroundColor: Colors.grey900,
     color: Colors.grey200,
@@ -102,7 +102,7 @@ const defaultTheme = {
     display: 'flex',
     alignItems: 'stretch',
     paddingBottom: Spacing.huge,
-    backgroundColor: Colors.aluminum6,
+    backgroundColor: props.backgroundColor || Colors.aluminum6,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
     '@media (max-width: 800px)': {
@@ -110,6 +110,6 @@ const defaultTheme = {
       marginRight: Spacing.small,
     },
   },
-}
+})
 
 export default Theme('App', defaultTheme)(App)
