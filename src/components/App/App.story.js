@@ -18,12 +18,6 @@ import {
 } from '@workflo/styles'
 
 storiesOf('App', module)
-  // .add('Component Grid', () => (
-  //   <ComponentsScreen />
-  // ))
-  // .add('Component State List', () => (
-  //   <StatesScreen />
-  // ))
   .add('Live View', () => (
     <LiveScreen />
   ))
@@ -142,7 +136,7 @@ class ComponentsScreen extends React.Component {
             ...actions
           }} />,
         }}
-        backgroundColor={Colors.steel2}
+        backgroundColor={Colors.grey200}
       />
     )
   }
@@ -214,16 +208,11 @@ class LiveScreen extends React.Component {
       <App
         profile={profile}
         layout={{
-          content: <Live />,
+          content: (
+            <div style={{ backgroundColor: 'magenta', height: 400 }}>Content</div>
+          ),
           header: (
-            <StateListHeader
-              {...actions}
-              search={{
-                show: true,
-                onSearch: this.handleSearch,
-                text: search.text,
-              }}
-            />
+            <div style={{ backgroundColor: 'cyan', height: 100 }}>Header</div>
           ),
         }}
       />

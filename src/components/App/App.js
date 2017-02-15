@@ -11,11 +11,21 @@ import {
   Spacing,
 } from '@workflo/styles'
 
+type SectionT = {
+  element: React.Element,
+  appearAnimation: AnimationT,
+  leaveAnimation: AnimationT,
+}
+
+type LayoutT = {
+  header?: React.Element | SectionT,
+  content?: React.Element | SectionT,
+}
+
 type Props = {
   profile: Object,
-  content: any,
+  layout: LayoutT,
   backgroundColor: String,
-  layout: Object,
   navigation: Object,
   actions: ActionsT,
   search: SearchT,
@@ -91,7 +101,6 @@ const defaultTheme = (props: Props) => ({
     marginRight: Spacing.large,
     marginTop: Spacing.small,
     boxSizing: 'border-box',
-    backgroundColor: Colors.steel2,
     '@media (max-width: 800px)': {
       marginLeft: Spacing.small,
       marginRight: Spacing.small,
@@ -102,7 +111,7 @@ const defaultTheme = (props: Props) => ({
     display: 'flex',
     alignItems: 'stretch',
     paddingBottom: Spacing.huge,
-    backgroundColor: props.backgroundColor || Colors.aluminum6,
+    backgroundColor: props.backgroundColor,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
     '@media (max-width: 800px)': {
