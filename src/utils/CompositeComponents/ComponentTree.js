@@ -1,6 +1,6 @@
 /* @flow */
 
-import { List, OrderedMap, Record } from 'immutable'
+import { List, OrderedMap, Record, Set } from 'immutable'
 
 /**
  * Flow types
@@ -9,6 +9,7 @@ import { List, OrderedMap, Record } from 'immutable'
 type MarkupLocationT = {
   start: number,
   end: number,
+  tags: Set<?string>,
 }
 
 type PropNameT = {
@@ -91,6 +92,7 @@ type ComponentTreeT = {
 const defaultMarkupLocation: MarkupLocationT = {
   start: 0,
   end: 0,
+  tags: Set(),
 }
 
 const MarkupLocation = Record(defaultMarkupLocation)
