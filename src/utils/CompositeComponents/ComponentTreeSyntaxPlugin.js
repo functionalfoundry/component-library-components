@@ -6,7 +6,8 @@ import Theme from 'js-theme'
 const Slate = require('slate')
 
 import { ComponentTree } from './ComponentTree'
-import ComponentTreeUtils from './ComponentTreeUtils'
+import { ComponentTreeLayout } from './ComponentTreeLayout'
+import { combineDecorators } from './DecoratorUtils'
 
 /**
  * Plugin options
@@ -14,6 +15,7 @@ import ComponentTreeUtils from './ComponentTreeUtils'
 
 type PluginOptionsT = {
   tree: ComponentTree,
+  layout: ComponentTreeLayout,
 }
 
 /**
@@ -82,27 +84,22 @@ const ThemedText = Theme('Text', defaultTheme)(Text)
  * Decorators
  */
 
-const makeNodeDecorator = (
-  type: string,
-  mark: string,
-  options: PluginOptionsT
-) => {
-  const nodes = ComponentTreeUtils.getNodesForType(options.tree, type)
-  const indexMatchesNode = (index, node) => (
-    node.markupLocations.some(location => (
-      index >= location.start &&
-      index < location.end
-    ))
-  )
-  return (characters, options) => (
-    characters.map((char, index) => (
-      nodes.reduce((char, node) => {
-        if (indexMatchesNode(index, node)) {
+const makeLayoutTagDecorator =
+  (tag: string, mark: string) =>
+  (characters, options) => {
+    const elements = options.layout.elements.filter(
+      element => element.tags.includes(tag)
+    )
+    return characters.map((char, index) => (
+      elements.reduce((char, element) => {
+        if (index >= element.start && index < element.end) {
           return char.merge({
             marks: char.marks.add(Slate.Mark.create({
               type: mark,
               data: {
-                node: node,
+                tree: options.tree,
+                layout: options.layout,
+                element: element,
               }
             }))
           })
@@ -111,24 +108,7 @@ const makeNodeDecorator = (
         }
       }, char)
     ))
-  )
-}
-
-const combineDecorators = (
-  decorators: Array<Function>,
-  options: PluginOptionsT
-) => {
-  return (text: Slate.Text, block: Slate.Block) => {
-    try {
-      return decorators.reduce((characters, decorator) => {
-        return decorator(characters, options)
-      }, text.characters)
-    } catch (error) {
-      console.error(error)
-      return text.characters
-    }
   }
-}
 
 /**
  * ComponentTreeSyntaxPlugin implementation
@@ -139,11 +119,14 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
     nodes: {
       code: {
         decorate: combineDecorators([
-          makeNodeDecorator('component', 'component', options),
-          makeNodeDecorator('component-name', 'component-name', options),
-          makeNodeDecorator('prop-value', 'prop-value', options),
-          makeNodeDecorator('prop-name', 'prop-name', options),
-          makeNodeDecorator('text', 'text', options),
+          makeLayoutTagDecorator('component', 'component'),
+          makeLayoutTagDecorator('component-name', 'component-name'),
+          makeLayoutTagDecorator('component-start', 'component-start'),
+          makeLayoutTagDecorator('component-end', 'component-end'),
+          makeLayoutTagDecorator('prop-name', 'prop-name'),
+          makeLayoutTagDecorator('prop-equals', 'prop-equals'),
+          makeLayoutTagDecorator('prop-value', 'prop-value'),
+          makeLayoutTagDecorator('text', 'text'),
         ], options),
       }
     },
