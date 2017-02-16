@@ -82,13 +82,6 @@ const App = ({
                 <View
                   {...theme.livePreviewContainer}
                 >
-                  {
-                    // The date-based React key here is a hack to always force a
-                    // new LivePreview on render; this is necessary because the
-                    // error boundary imnplemented by LivePreview doesn't catch
-                    // errors in all parts of the component lifecycle
-                    // TODO: Clone and add key={Date.now()}
-                  }
                   {layout.centerLeft}
                 </View>
                 <View
