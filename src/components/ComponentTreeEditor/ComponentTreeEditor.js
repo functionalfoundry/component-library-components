@@ -5,8 +5,8 @@ import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
 
 import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
-//import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
-//import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
+import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
+import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 import {
   ComponentTreeLayout,
   generateTreeLayout,
@@ -61,8 +61,8 @@ const getComponentTreeEditorPlugins = (
   tree: ComponentTree,
   layout: ComponentTreeLayout
 ) => ([
-//  ComponentTreeEditorPlugin({ tree }),
-//  ComponentTreeSyntaxPlugin({ tree }),
+  ComponentTreeEditorPlugin({ tree, layout }),
+  ComponentTreeSyntaxPlugin({ tree, layout }),
 ])
 
 /**
