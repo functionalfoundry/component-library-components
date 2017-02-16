@@ -11,6 +11,8 @@ import {
   Spacing,
 } from '@workflo/styles'
 
+type AnimationT = Object
+
 type SectionT = {
   element: React.Element,
   appearAnimation: AnimationT,
@@ -20,6 +22,9 @@ type SectionT = {
 type LayoutT = {
   header?: React.Element | SectionT,
   content?: React.Element | SectionT,
+  centerLeft?: React.Element | SectionT,
+  centerRight?: React.Element | SectionT,
+  bottom?: React.Element | SectionT,
 }
 
 type Props = {
@@ -67,10 +72,50 @@ const App = ({
         <View
           {...theme.maxWidth}
         >
+          {(layout.centerLeft || layout.centerRight) &&
+            <View
+              {...theme.liveView}
+            >
+              <View
+                {...theme.previewAndEditor}
+              >
+                <View
+                  {...theme.livePreviewContainer}
+                >
+                  {
+                    // The date-based React key here is a hack to always force a
+                    // new LivePreview on render; this is necessary because the
+                    // error boundary imnplemented by LivePreview doesn't catch
+                    // errors in all parts of the component lifecycle
+                    // TODO: Clone and add key={Date.now()}
+                  }
+                  {layout.centerLeft}
+                </View>
+                <View
+                  {...theme.liveEditorContainer}
+                >
+                  {layout.centerRight}
+                </View>
+              </View>
+            </View>}
           {layout.content}
         </View>
       </View>
     </View>
+    {layout.bottom &&
+      <View
+        {...theme.center}
+      >
+        <View
+          {...theme.maxWidth}
+        >
+          <View
+            {...theme.bottom}
+          >
+            {layout.bottom}
+          </View>
+        </View>
+      </View>}
   </View>
 )
 
@@ -81,6 +126,7 @@ const defaultTheme = (props: Props) => ({
     display: 'flex',
     flex: '1 1',
     flexDirection: 'column',
+    paddingBottom: Spacing.huge,
   },
   center: {
     display: 'flex',
@@ -110,15 +156,51 @@ const defaultTheme = (props: Props) => ({
     flex: 1,
     display: 'flex',
     alignItems: 'stretch',
-    paddingBottom: Spacing.huge,
     backgroundColor: props.backgroundColor,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
+    ...mediumBreakpoint,
+  },
+  bottom: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1',
+    color: Colors.grey700,
+    marginBottom: Spacing.large,
+    ...mediumBreakpoint,
+  },
+  liveView: {
+    paddingTop: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1',
+  },
+  previewAndEditor: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: '1 0 400px',
+  },
+  livePreviewContainer: {
+    display: 'flex',
+    flex: '0 1 60%',
+    alignItems: 'stretch',
+    // alignContent: 'center',
+    // justifyContent: 'center',
+  },
+  liveEditorContainer: {
+    display: 'flex',
+    flex: '0 1 40%',
     '@media (max-width: 800px)': {
-      marginLeft: Spacing.small,
-      marginRight: Spacing.small,
+      display: 'none',
     },
   },
 })
+
+const mediumBreakpoint = {
+  '@media (max-width: 800px)': {
+    marginLeft: Spacing.small,
+    marginRight: Spacing.small,
+  },
+}
 
 export default Theme('App', defaultTheme)(App)
