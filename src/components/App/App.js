@@ -74,18 +74,18 @@ const App = ({
         >
           {(layout.centerLeft || layout.centerRight) &&
             <View
-              {...theme.liveView}
+              {...theme.centerContainerWrapper}
             >
               <View
-                {...theme.previewAndEditor}
+                {...theme.centerContainer}
               >
                 <View
-                  {...theme.livePreviewContainer}
+                  {...theme.centerLeftContainer}
                 >
                   {layout.centerLeft}
                 </View>
                 <View
-                  {...theme.liveEditorContainer}
+                  {...theme.centerRightContainer}
                 >
                   {layout.centerRight}
                 </View>
@@ -97,15 +97,15 @@ const App = ({
     </View>
     {layout.bottom &&
       <View
-        {...theme.center}
+        {...theme.bottom}
       >
         <View
-          {...theme.maxWidth}
+          {...theme.center}
         >
           <View
-            {...theme.bottom}
+            {...theme.maxWidth}
           >
-            {layout.bottom}
+              {layout.bottom}
           </View>
         </View>
       </View>}
@@ -140,10 +140,7 @@ const defaultTheme = (props: Props) => ({
     marginRight: Spacing.large,
     marginTop: Spacing.small,
     boxSizing: 'border-box',
-    '@media (max-width: 800px)': {
-      marginLeft: Spacing.small,
-      marginRight: Spacing.small,
-    },
+    ...mediumBreakpoint,
   },
   content: {
     flex: 1,
@@ -160,27 +157,30 @@ const defaultTheme = (props: Props) => ({
     flex: '1',
     color: Colors.grey700,
     marginBottom: Spacing.large,
+    marginLeft: Spacing.large,
+    marginRight: Spacing.large,
     ...mediumBreakpoint,
   },
-  liveView: {
+  centerContainerWrapper: {
     paddingTop: 0,
     display: 'flex',
     flexDirection: 'column',
     flex: '1',
   },
-  previewAndEditor: {
+  centerContainer: {
     display: 'flex',
     flexDirection: 'row',
     flex: '1 0 400px',
   },
-  livePreviewContainer: {
+  centerLeftContainer: {
     display: 'flex',
     flex: '0 1 60%',
     alignItems: 'stretch',
-    // alignContent: 'center',
-    // justifyContent: 'center',
+    '@media (max-width: 800px)': {
+      flex: 1,
+    },
   },
-  liveEditorContainer: {
+  centerRightContainer: {
     display: 'flex',
     flex: '0 1 40%',
     '@media (max-width: 800px)': {
