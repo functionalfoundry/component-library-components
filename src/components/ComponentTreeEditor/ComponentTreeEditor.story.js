@@ -59,7 +59,20 @@ const regularTree = ComponentTreeUtils.createTree(
         text: Text({
           text: 'Second list item'
         }),
-      })
+      }),
+      Component({
+        name: ComponentName({
+          name: 'ListItem',
+        }),
+        text: Text({
+          text: 'Third list item'
+        }),
+      }),
+      Component({
+        name: ComponentName({
+          name: 'ListItem'
+        }),
+      }),
     ])
   })
 )
