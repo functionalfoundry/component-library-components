@@ -7,7 +7,6 @@ import { Colors } from '@workflo/styles'
 const Slate = require('slate')
 
 import { ComponentTree } from './ComponentTree'
-import ComponentTreeUtils from './ComponentTreeUtils'
 
 /**
  * Plugin options
