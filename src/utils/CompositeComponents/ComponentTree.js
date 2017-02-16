@@ -25,12 +25,12 @@ type PropValueT = {
 }
 
 type PropT = {
-  name: PropNameT,
-  value: PropValueT,
+  name: ?PropNameT,
+  value: ?PropValueT,
 }
 
 type ComponentNameT = {
-  name: string,
+  name: ?string,
 }
 
 type ComponentT = {
