@@ -16,8 +16,8 @@ import {
 import ComponentTreeUtils from '../../utils/CompositeComponents/ComponentTreeUtils'
 import ComponentTreeEditor from './ComponentTreeEditor'
 
-const regularTree = ComponentTreeUtils.createTree(
-  Component({
+const regularTree = ComponentTree({
+  root: Component({
     name: ComponentName({
       name: 'List',
     }),
@@ -75,7 +75,7 @@ const regularTree = ComponentTreeUtils.createTree(
       }),
     ])
   })
-)
+})
 
 storiesOf('Component Tree Editor', module)
   .add('Regular', () => (
