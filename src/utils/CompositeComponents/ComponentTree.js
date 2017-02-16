@@ -6,53 +6,50 @@ import { List, OrderedMap, Record, Set } from 'immutable'
  * Flow types
  */
 
-type MarkupLocationT = {
-  start: number,
-  end: number,
-  tags: Set<?string>,
-}
-
+type PropNameNodeTypeT = 'prop-name'
 type PropNameT = {
+  nodeType: PropNameNodeTypeT,
   name: ?string,
 }
 
+type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
 type PropValueTypeT = any
-
 type PropValueT = {
+  nodeType: PropValueNodeTypeT,
   value: ?PropValueValueT,
   valueType: ?PropValueTypeT,
 }
 
+type PropNodeTypeT = 'prop'
 type PropT = {
+  nodeType: PropNodeTypeT,
   name: ?PropNameT,
   value: ?PropValueT,
 }
 
+type ComponentNameNodeTypeT = 'component-name'
 type ComponentNameT = {
+  nodeType: ComponentNameNodeTypeT,
   name: ?string,
 }
 
+type ComponentNodeTypeT = 'component'
 type ComponentT = {
+  nodeType: ComponentNodeTypeT,
   name: ?ComponentNameT,
   props: ?List<PropT>,
   children: ?List<ComponentT>,
   text: ?TextT,
 }
 
+type TextNodeTypeT = 'text'
 type TextT = {
+  nodeType: TextNodeTypeT,
   text: ?string,
 }
 
-type NodeTypeT =
-  'component'
-  | 'component-name'
-  | 'prop'
-  | 'prop-name'
-  | 'prop-value'
-  | 'text'
-
-type NodeElementT =
+export type ComponentTreeNodeT =
   ComponentT
   | ComponentNameT
   | PropT
@@ -60,47 +57,18 @@ type NodeElementT =
   | PropValueT
   | TextT
 
-type NodePathSegmentT = {
-  type: NodeTypeT,
-  index: number,
-}
-
-type NodePathT = List<NodePathSegmentT>
-
-type NodeT = {
-  type: NodeTypeT,
-  element: NodeElementT,
-  // We use a node path because the immutable nodes and elements
-  // cannot store bidirectional references between each other
-  // due their immutable nature (one would always have an outdated
-  // copy of the other node/element)
-  parent: ?NodePathT,
-  children: List<?NodeT>,
-  markupLocations: List<?MarkupLocationT>,
-}
-
 type ComponentTreeT = {
-  root: ?NodeT,
+  root: ?ComponentT,
 }
 
 /**
  * ComponentTree implementation
  */
 
-// MarkupLocation
-
-const defaultMarkupLocation: MarkupLocationT = {
-  start: 0,
-  end: 0,
-  tags: Set(),
-}
-
-const MarkupLocation = Record(defaultMarkupLocation)
-export { MarkupLocation }
-
 // PropName
 
 const defaultPropName: PropNameT = {
+  nodeType: 'prop-name',
   name: null,
 }
 
@@ -110,6 +78,7 @@ export { PropName }
 // PropValue
 
 const defaultPropValue: PropValueT = {
+  nodeType: 'prop-value',
   value: null,
   valueType: null,
 }
@@ -120,6 +89,7 @@ export { PropValue }
 // Prop
 
 const defaultProp: PropT = {
+  nodeType: 'prop',
   name: null,
   value: null,
 }
@@ -130,6 +100,7 @@ export { Prop }
 // ComponentName
 
 const defaultComponentName: ComponentNameT = {
+  nodeType: 'component-name',
   name: null,
 }
 
@@ -139,6 +110,7 @@ export { ComponentName }
 // Component
 
 const defaultComponent: ComponentT = {
+  nodeType: 'component',
   name: null,
   props: List(),
   children: List(),
@@ -151,54 +123,16 @@ export { Component }
 // Text
 
 const defaultText: TextT = {
+  nodeType: 'text',
   text: '',
 }
 
 const Text = Record(defaultText)
 export { Text }
 
-// Cursor
-
-const defaultCursor: CursorT = {
-  path: List(),
-  offset: 0,
-}
-
-const Cursor = Record(defaultCursor)
-export { Cursor }
-
-// NodePathSegment
-
-const defaultNodePathSegment: NodePathSegmentT = {
-  type: null,
-  index: 0,
-}
-
-const NodePathSegment = Record(defaultNodePathSegment)
-export { NodePathSegment }
-
-// NodePath
-
-const NodePath = List
-export { NodePath }
-
-// Node
-
-const defaultNode: NodeT = {
-  type: null,
-  parent: NodePath(),
-  element: null,
-  children: List(),
-  markupLocations: List(),
-}
-
-const Node = Record(defaultNode)
-export { Node }
-
 // ComponentTree
 
 const defaultComponentTree: ComponentTreeT = {
-  cursor: null,
   root: null,
 }
 
