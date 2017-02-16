@@ -13,7 +13,6 @@ import {
   PropValue,
   Text,
 } from '../../utils/CompositeComponents/ComponentTree'
-import ComponentTreeUtils from '../../utils/CompositeComponents/ComponentTreeUtils'
 import ComponentTreeEditor from './ComponentTreeEditor'
 
 const regularTree = ComponentTree({
