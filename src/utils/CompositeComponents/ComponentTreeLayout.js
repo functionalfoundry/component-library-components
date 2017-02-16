@@ -74,38 +74,36 @@ const generateTreeLayout = (tree: ComponentTree) => {
   ) => {
     // Add whitespace element for the indentation before the component
     if (ctx.indent.length > 0) {
-      ctx = ctx
-        .updateIn(['layout', 'elements'], elements => (
-          elements.push(ComponentTreeLayoutElement({
-            text: ctx.indent,
-            start: getCurrentPosition(ctx),
-            end: getCurrentPosition(ctx) + ctx.indent.length,
-            node: component,
-            tags: Set([
-              'whitespace',
-              'whitespace-indentation',
-              'whitespace-before-component',
-            ]).union(tags),
-          }))
-        ))
-    }
-
-    // Add opening <
-    ctx = ctx
-      .updateIn(['layout', 'elements'], elements => (
+      ctx = ctx.updateIn(['layout', 'elements'], elements => (
         elements.push(ComponentTreeLayoutElement({
-          text: '<',
+          text: ctx.indent,
           start: getCurrentPosition(ctx),
-          end: getCurrentPosition(ctx) + '<'.length,
+          end: getCurrentPosition(ctx) + ctx.indent.length,
           node: component,
           tags: Set([
-            'component',
-            'component-start',
-            'component-open-tag',
-            'component-open-tag-start',
+            'whitespace',
+            'whitespace-indentation',
+            'whitespace-before-component',
           ]).union(tags),
         }))
       ))
+    }
+
+    // Add opening <
+    ctx = ctx.updateIn(['layout', 'elements'], elements => (
+      elements.push(ComponentTreeLayoutElement({
+        text: '<',
+        start: getCurrentPosition(ctx),
+        end: getCurrentPosition(ctx) + '<'.length,
+        node: component,
+        tags: Set([
+          'component',
+          'component-start',
+          'component-open-tag',
+          'component-open-tag-start',
+        ]).union(tags),
+      }))
+    ))
 
     // Add component name
     if (component.name) {
