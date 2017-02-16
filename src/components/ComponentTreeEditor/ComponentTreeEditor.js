@@ -5,9 +5,13 @@ import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
 
 import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
-import ComponentTreeUtils from '../../utils/CompositeComponents/ComponentTreeUtils'
-import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
-import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
+//import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
+//import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
+import {
+  ComponentTreeLayout,
+  generateTreeLayout,
+  generateTreeLayoutMarkup
+} from '../../utils/CompositeComponents/ComponentTreeLayout'
 
 /**
  * Props
@@ -26,12 +30,15 @@ const defaultProps = {
 
 type StateT = {
   tree: ComponentTree,
+  layout: ComponentTreeLayout,
   plugins: Array<Object>,
-  markup: string,
   editorState: State,
 }
 
-const getEditorStateFromMarkup = (markup: string) => (
+const getComponentTreeEditorState = (
+  tree: ComponentTree,
+  layout: ComponentTreeLayout
+) => (
   Raw.deserialize({
     nodes: [
       {
@@ -40,7 +47,7 @@ const getEditorStateFromMarkup = (markup: string) => (
         nodes: [
           {
             kind: 'text',
-            text: markup,
+            text: generateTreeLayoutMarkup(layout),
           }
         ]
       }
@@ -50,9 +57,12 @@ const getEditorStateFromMarkup = (markup: string) => (
   })
 )
 
-const getPluginsForTree = (tree: ComponentTree) => ([
-  ComponentTreeEditorPlugin({ tree }),
-  ComponentTreeSyntaxPlugin({ tree }),
+const getComponentTreeEditorPlugins = (
+  tree: ComponentTree,
+  layout: ComponentTreeLayout
+) => ([
+//  ComponentTreeEditorPlugin({ tree }),
+//  ComponentTreeSyntaxPlugin({ tree }),
 ])
 
 /**
@@ -68,13 +78,14 @@ class ComponentTreeEditor extends React.Component {
   constructor (props) {
     super(props)
 
-    const { tree, markup } = ComponentTreeUtils.layout(props.tree)
-    const editorState = getEditorStateFromMarkup(markup)
+    const layout = generateTreeLayout(props.tree)
+    const editorState = getComponentTreeEditorState(props.tree, layout)
+    const plugins = getComponentTreeEditorPlugins(props.tree, layout)
 
     this.state = {
-      tree: tree,
-      markup: markup,
-      plugins: getPluginsForTree(tree),
+      tree: props.tree,
+      layout: layout,
+      plugins: plugins,
       editorState: editorState,
     }
   }
