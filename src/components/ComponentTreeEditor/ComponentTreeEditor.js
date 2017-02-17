@@ -90,6 +90,19 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    const layout = generateTreeLayout(nextProps.tree)
+    const editorState = getComponentTreeEditorState(nextProps.tree, layout)
+    const plugins = getComponentTreeEditorPlugins(nextProps.tree, layout)
+
+    this.setState({
+      tree: nextProps.tree,
+      layout: layout,
+      plugins: plugins,
+      editorState: editorState,
+    })
+  }
+
   render () {
     return (
       <Editor
