@@ -3,6 +3,8 @@ const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
 const Component = require('./components/Component')
 const Components = require('./components/Components')
+const ComponentEntrance = require('./components/ComponentEntrance')
+const ComponentExit = require('./components/ComponentExit')
 const ComponentState = require('./components/ComponentState')
 const ComponentStates = require('./components/ComponentStates')
 const ComponentTreeEditor = require('./components/ComponentTreeEditor')
@@ -14,6 +16,8 @@ const LivePreview = require('./components/LivePreview')
 const LiveView = require('./components/LiveView')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
+const RotateFade = require('./components/RotateFade')
+const StaggerIcons = require('./components/StaggerIcons')
 const SubHeader = require('./components/SubHeader')
 
 import actionsPlugin from './utils/ActionsBabelPlugin'
@@ -25,6 +29,8 @@ const WorkfloComponents = {
   Configuration,
   Component,
   Components,
+  ComponentEntrance,
+  ComponentExit,
   ComponentState,
   ComponentStates,
   ComponentTreeEditor,
@@ -33,9 +39,11 @@ const WorkfloComponents = {
   Header,
   LiveEditor,
   LivePreview,
+  RotateFade,
   LiveView,
   Properties,
   QuickAction,
+  StaggerIcons,
   SubHeader,
 }
 
