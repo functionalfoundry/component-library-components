@@ -14,6 +14,8 @@ import {
 } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
 import LivePreview from '../LivePreview'
+import StaggerIcons from '../StaggerIcons'
+import RotateFade from '../RotateFade'
 
 type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
 type VerticalAlignmentT = 'Top' | 'Center' | 'Right'
@@ -205,23 +207,31 @@ class ComponentState extends React.Component {
               {...theme.actions}
             >
               {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
-                harnessCard.actions.map((action, index) => (
-                  <div key={index} ref={(c) => this.iconRefs[index] = c}>
-                    {React.cloneElement(action, {
-                      ...action.props,
-                      onOpen: this.handleOpenPopup,
-                      onClose: this.handleClosePopup,
-                    })}
-                  </div>
-                ))}
+                <StaggerIcons>
+                  {harnessCard.actions.map((action, index) => (
+                    <div 
+                      {...theme.iconGroup}
+                      key={index} 
+                      ref={(c) => this.iconRefs[index] = c}
+                    >
+                      {React.cloneElement(action, {
+                        ...action.props,
+                        onOpen: this.handleOpenPopup,
+                        onClose: this.handleClosePopup,
+                      })}
+                    </div>
+                  ))}
+                </StaggerIcons>}
               {(!isHovering && !harnessCard.isSelected && !forceShowActions) &&
                 <div ref={(c) => this.storeRef('more', c)}>
-                  <Icon
-                    name='more-horizontal'
-                    size='large'
-                    fill={Colors.grey700}
-                    stroke={Colors.grey700}
-                  />
+                  <RotateFade >
+                    <Icon
+                      name='more-horizontal'
+                      size='large'
+                      fill={Colors.grey700}
+                      stroke={Colors.grey700}
+                    />
+                  </RotateFade>
                 </div>}
             </View>
           </div>
