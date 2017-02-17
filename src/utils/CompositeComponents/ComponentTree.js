@@ -65,6 +65,8 @@ export type ComponentTreeNodeT =
   | PropValueT
   | TextT
 
+export type ComponentTreePathT = List<any>
+
 type ComponentTreeT = {
   root: ?ComponentT,
 }
