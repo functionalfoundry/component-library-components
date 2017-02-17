@@ -37,7 +37,7 @@ type IconsPropsT = {
 
 class Icons extends React.Component {
   componentDidMount (callback) {
-    const elChild = [this.icon1, this.icon2, this.icon3];
+    const elChild = this.icons.childNodes;
     TweenMax.staggerFromTo(elChild, 0.5, {
       x: 10, 
       opacity: 0
@@ -51,30 +51,26 @@ class Icons extends React.Component {
 
   render () {
     return (
-     <div {...this.props.theme.icons}>
-      <div ref={c => this.icon1 = c}>
-        <Icon
-          name='alignment'
-          size='large'
-          stroke='black'
-        />
-      </div>
-      <div ref={c => this.icon2 = c}>
-        <Icon
-          ref="icon2"
-          name='theme'
-          size='large'
-          stroke='black'
-        />
-      </div>
-      <div ref={c => this.icon3 = c}>
-        <Icon
-          ref="icon2"
-          name='size'
-          size='large'
-          stroke='black'
-        />
-      </div>
+     <div {...this.props.theme.icons}
+      ref={c => this.icons = c}
+     >
+     <Icon
+        name='alignment'
+        size='large'
+        stroke='black'
+      />
+      <Icon
+        ref="icon2"
+        name='theme'
+        size='large'
+        stroke='black'
+      />
+      <Icon
+        ref="icon2"
+        name='size'
+        size='large'
+        stroke='black'
+      /> 
     </div>
     )
   }
