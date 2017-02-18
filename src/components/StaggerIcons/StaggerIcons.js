@@ -6,13 +6,12 @@ import TweenMax from 'gsap'
 class StaggerIcons extends React.Component {
   componentDidMount (callback) {
     const elChild = this.icons.childNodes;
-    console.log(elChild);
     TweenMax.staggerFromTo(elChild, 0.5, {
-      x: 10, 
+      x: 10,
       opacity: 0
     }, {
-      x: 0, 
-      opacity: 1, 
+      x: 0,
+      opacity: 1,
       ease: Power2.easeOut,
       onComplete: callback
     }, 0.08);
@@ -21,7 +20,7 @@ class StaggerIcons extends React.Component {
   componentWillUnmount (callback) {
     const elChild = this.icons.childNodes;
     TweenMax.staggerTo(elChild, 0.5, {
-      x: 10, 
+      x: 10,
       opacity: 0,
       ease: Power3.easeIn,
       onComplete: callback
@@ -29,13 +28,23 @@ class StaggerIcons extends React.Component {
   }
 
   render () {
+    const { theme } = this.props
     return (
-      <div ref={c => this.icons = c}>
+      <div
+        {...theme.staggerIcons}
+        ref={c => this.icons = c}
+      >
         {this.props.children}
       </div>
     )
   }
 }
 
-const ThemedStaggerIcons = Theme('StaggerIcons')(StaggerIcons)
+const defaultTheme = {
+  staggerIcons: {
+    display: 'flex',
+  }
+}
+
+const ThemedStaggerIcons = Theme('StaggerIcons', defaultTheme)(StaggerIcons)
 export default ThemedStaggerIcons
