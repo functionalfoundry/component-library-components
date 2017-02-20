@@ -17,12 +17,29 @@ type PropNameT = {
 
 type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
-type PropValueTypeT = any
+export type PropValueTypeT =
+  'any'
+  | 'array'
+  | 'boolean'
+  | 'custom'
+  | 'element'
+  | 'enum'
+  | 'function'
+  | 'literal'
+  | 'node'
+  | 'number'
+  | 'object'
+  | 'string'
+  | 'symbol'
+  | 'tuple'
+  | 'union'
+  | 'unknown'
+  | 'void'
 type PropValueT = {
   id: ?NodeIdentifierT,
   nodeType: PropValueNodeTypeT,
   value: ?PropValueValueT,
-  valueType: ?PropValueTypeT,
+  type: ?PropValueTypeT,
 }
 
 type PropNodeTypeT = 'prop'
@@ -92,7 +109,7 @@ const defaultPropValue: PropValueT = {
   id: null,
   nodeType: 'prop-value',
   value: null,
-  valueType: null,
+  type: null,
 }
 
 const PropValue = Record(defaultPropValue)
