@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Theme from 'js-theme'
+import { Colors, Fonts } from '@workflo/styles'
 
 const Slate = require('slate')
 
@@ -23,22 +24,41 @@ type PluginOptionsT = {
  */
 
 const defaultTheme = {
+  codeContainer: {
+  },
+  code: {
+    ...Fonts.code,
+  },
   component: {
-    backgroundColor: '#333'
   },
   componentName: {
-    color: 'orange',
+    color: '#00719e',
   },
   propName: {
-    color: 'turquoise',
+    color: '#009e71',
   },
   propValue: {
-    color: 'purple'
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: Colors.grey200,
+    }
   },
   text: {
-    color: 'yellow',
   }
 }
+
+const Code = ({ attributes, children, theme }) => (
+  <div
+    {...theme.codeContainer}
+    {...attributes}
+  >
+    <code {...theme.code}>
+      {children}
+    </code>
+  </div>
+)
+
+const ThemedCode = Theme('Code', defaultTheme)(Code)
 
 const Component = ({ children, theme }) => (
   <span {...theme.component}>
@@ -118,6 +138,7 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
   schema: {
     nodes: {
       code: {
+        render: ThemedCode,
         decorate: combineDecorators([
           makeLayoutTagDecorator('component', 'component'),
           makeLayoutTagDecorator('component-name', 'component-name'),
