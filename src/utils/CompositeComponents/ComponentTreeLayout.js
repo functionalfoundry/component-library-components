@@ -10,7 +10,11 @@ import {
   PropValue,
   Text,
 } from './ComponentTree'
-import type { ComponentTreeNodeT } from './ComponentTree'
+
+import type {
+  ComponentTreeNodeT,
+  PropValueTypeT,
+} from './ComponentTree'
 
 type ComponentTreeLayoutTagsT = Set<?string>
 type ComponentTreeLayoutDataT = Map<string, any>
@@ -71,6 +75,19 @@ export { ComponentTreeLayout }
    tags?: ComponentTreeLayoutTagsT,
    data?: ComponentTreeLayoutDataT,
  }
+
+const typeValueBoundaries = {
+  'any': '{}',
+  'string': '\'\'',
+}
+
+const getPropValueTypeBoundaries = (value: PropValue) => {
+  const text = typeValueBoundaries[value.type || 'any']
+  return {
+    open: text[0],
+    close: text[1],
+  }
+}
 
 const generateTreeLayout = (tree: ComponentTree) => {
   const getCurrentPosition = (ctx: LayoutContext) => (
@@ -422,9 +439,22 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processPropValue = (
     propValue: PropValue,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT
-  ) => (
-    addElement(ctx, {
+    tags: ComponentTreeLayoutTagsT
+  ) => {
+    // Get opening and closing markup depending on property type
+    const { open, close } = getPropValueTypeBoundaries(propValue)
+
+    if (open) {
+      ctx = addElement(ctx, {
+        text: open,
+        node: propValue,
+        tags: Set([
+          'prop-open',
+        ]).union(tags)
+      })
+    }
+
+    ctx = addElement(ctx, {
       text: propValue.value.toString(),
       node: propValue,
       tags: Set([
@@ -432,7 +462,19 @@ const generateTreeLayout = (tree: ComponentTree) => {
         'prop-value',
       ]).union(tags),
     })
-  )
+
+    if (close) {
+      ctx = addElement(ctx, {
+        text: close,
+        node: propValue,
+        tags: Set([
+          'prop-close',
+        ]).union(tags)
+      })
+    }
+
+    return ctx
+  }
 
   const processText = (
     text: Text,
