@@ -338,6 +338,38 @@ const setPropValue = (
   }
 }
 
+const createTree = (data: Object): ComponentTree => {
+  const createComponent = (data: Object): Component => (
+    Component({
+      id: data.id,
+      name: data.name,
+      props: List((data.props || []).map(createProp)),
+      children: List((data.children || []).map(createComponent)),
+      text: data.text,
+    })
+  )
+
+  const createProp = (data: Object): Prop => (
+    Prop({
+      id: data.id,
+      name: data.name,
+      value: data.value ? createPropValue(data.value) : null,
+    })
+  )
+
+  const createPropValue = (data: Object): PropValue => (
+    PropValue({
+      id: data.id,
+      value: data.value,
+      type: data.type,
+    })
+  )
+
+  return ComponentTree({
+    root: createComponent(data),
+  })
+}
+
 export {
   // Generic tree operations
   traverse,
@@ -354,4 +386,7 @@ export {
   removeProp,
   setPropName,
   setPropValue,
+
+  // Tree construction from raw data
+  createTree,
 }
