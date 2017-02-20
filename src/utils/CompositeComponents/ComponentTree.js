@@ -8,13 +8,6 @@ import { List, OrderedMap, Record, Set } from 'immutable'
 
 export type NodeIdentifierT = string
 
-type PropNameNodeTypeT = 'prop-name'
-type PropNameT = {
-  id: ?NodeIdentifierT,
-  nodeType: PropNameNodeTypeT,
-  name: ?string,
-}
-
 type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
 export type PropValueTypeT =
@@ -46,41 +39,24 @@ type PropNodeTypeT = 'prop'
 type PropT = {
   id: ?NodeIdentifierT,
   nodeType: PropNodeTypeT,
-  name: ?PropNameT,
-  value: ?PropValueT,
-}
-
-type ComponentNameNodeTypeT = 'component-name'
-type ComponentNameT = {
-  id: ?NodeIdentifierT,
-  nodeType: ComponentNameNodeTypeT,
   name: ?string,
+  value: ?PropValueT,
 }
 
 type ComponentNodeTypeT = 'component'
 type ComponentT = {
   id: ?NodeIdentifierT,
   nodeType: ComponentNodeTypeT,
-  name: ?ComponentNameT,
+  name: ?string,
   props: ?List<PropT>,
   children: ?List<ComponentT>,
-  text: ?TextT,
-}
-
-type TextNodeTypeT = 'text'
-type TextT = {
-  id: ?NodeIdentifierT,
-  nodeType: TextNodeTypeT,
   text: ?string,
 }
 
 export type ComponentTreeNodeT =
   ComponentT
-  | ComponentNameT
   | PropT
-  | PropNameT
   | PropValueT
-  | TextT
 
 export type ComponentTreePathT = List<any>
 
@@ -91,17 +67,6 @@ type ComponentTreeT = {
 /**
  * ComponentTree implementation
  */
-
-// PropName
-
-const defaultPropName: PropNameT = {
-  id: null,
-  nodeType: 'prop-name',
-  name: null,
-}
-
-const PropName = Record(defaultPropName)
-export { PropName }
 
 // PropValue
 
@@ -127,17 +92,6 @@ const defaultProp: PropT = {
 const Prop = Record(defaultProp)
 export { Prop }
 
-// ComponentName
-
-const defaultComponentName: ComponentNameT = {
-  id: null,
-  nodeType: 'component-name',
-  name: null,
-}
-
-const ComponentName = Record(defaultComponentName)
-export { ComponentName }
-
 // Component
 
 const defaultComponent: ComponentT = {
@@ -151,17 +105,6 @@ const defaultComponent: ComponentT = {
 
 const Component = Record(defaultComponent)
 export { Component }
-
-// Text
-
-const defaultText: TextT = {
-  id: null,
-  nodeType: 'text',
-  text: '',
-}
-
-const Text = Record(defaultText)
-export { Text }
 
 // ComponentTree
 
