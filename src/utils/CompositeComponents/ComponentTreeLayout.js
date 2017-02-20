@@ -96,7 +96,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processComponent = (
     component: Component,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT
+    tags: ComponentTreeLayoutTagsT
   ) => {
     // Add whitespace element for the indentation before the component
     if (ctx.indent.length > 0) {
@@ -335,7 +335,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processComponentName = (
     name: ComponentName,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT
+    tags: ComponentTreeLayoutTagsT
   ) => (
     addElement(ctx, {
       text: name.name,
@@ -350,8 +350,8 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processProp = (
     prop: Prop,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT,
-    data: ComponentLayoutDataT
+    tags: ComponentTreeLayoutTagsT,
+    data: ComponentTreeLayoutDataT
   ) => {
     // Add whitespace before prop
     if (ctx.indent.length > 0) {
@@ -407,7 +407,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processPropName = (
     propName: PropName,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT
+    tags: ComponentTreeLayoutTagsT
   ) => (
     addElement(ctx, {
       text: propName.name,
@@ -437,7 +437,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processText = (
     text: Text,
     ctx: LayoutContext,
-    tags: ComponentLayoutTagsT
+    tags: ComponentTreeLayoutTagsT
   ) => {
     // Add indentation before text
     if (ctx.indent.length > 0) {
