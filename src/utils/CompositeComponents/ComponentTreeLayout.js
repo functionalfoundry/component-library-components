@@ -3,12 +3,9 @@
 import { List, Map, Record, Set } from 'immutable'
 import {
   Component,
-  ComponentName,
   ComponentTree,
   Prop,
-  PropName,
   PropValue,
-  Text,
 } from './ComponentTree'
 
 import type {
@@ -82,7 +79,7 @@ const typeValueBoundaries = {
 }
 
 const getPropValueTypeBoundaries = (value: PropValue) => {
-  const text = typeValueBoundaries[value.type || 'any']
+  const text = typeValueBoundaries[value.type] || typeValueBoundaries['any']
   return {
     open: text[0],
     close: text[1],
@@ -142,11 +139,16 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     // Add component name
     if (component.name) {
-      ctx = processComponentName(component.name, ctx, Set([
-        'component',
-        'component-open-tag',
-        'component-open-tag-name',
-      ]).union(tags))
+      ctx = addElement(ctx, {
+        text: component.name,
+        node: component,
+        tags: Set([
+          'component',
+          'component-open-tag',
+          'component-open-tag-name',
+          'component-name',
+        ]).union(tags),
+      })
     }
 
     if (!component.props.isEmpty()) {
@@ -280,7 +282,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ), ctx)
       } else {
         // Add text
-        ctx = processText(component.text, ctx, Set([
+        ctx = processComponentText(component, ctx, Set([
           'component',
           'component-children',
         ]).union(tags))
@@ -316,11 +318,16 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
       // Add component name
       if (component.name) {
-        ctx = processComponentName(component.name, ctx, Set([
-          'component',
-          'component-close-tag',
-          'component-close-tag-name',
-        ]))
+        ctx = addElement(ctx, {
+          text: component.name,
+          node: component,
+          tags: Set([
+            'component',
+            'component-close-tag',
+            'component-close-tag-name',
+            'component-name',
+          ]).union(tags)
+        })
       }
 
       // Add > of the closing tag
@@ -349,21 +356,6 @@ const generateTreeLayout = (tree: ComponentTree) => {
     return ctx
   }
 
-  const processComponentName = (
-    name: ComponentName,
-    ctx: LayoutContext,
-    tags: ComponentTreeLayoutTagsT
-  ) => (
-    addElement(ctx, {
-      text: name.name,
-      node: name,
-      tags: Set([
-        'component',
-        'component-name',
-      ]).union(tags),
-    })
-  )
-
   const processProp = (
     prop: Prop,
     ctx: LayoutContext,
@@ -386,9 +378,15 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     // Add prop name
     if (prop.name) {
-      ctx = processPropName(prop.name, ctx, tags, data.merge({
-        prop: prop
-      }))
+      ctx = addElement(ctx, {
+        text: prop.name,
+        node: prop,
+        tags: Set([
+          'prop',
+          'prop-name',
+          'prop-equals',
+        ]).union(tags),
+      })
     }
 
     // Add = between prop name and prop value
@@ -420,21 +418,6 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     return ctx
   }
-
-  const processPropName = (
-    propName: PropName,
-    ctx: LayoutContext,
-    tags: ComponentTreeLayoutTagsT
-  ) => (
-    addElement(ctx, {
-      text: propName.name,
-      node: propName,
-      tags: Set([
-        'prop',
-        'prop-name',
-      ]).union(tags),
-    })
-  )
 
   const processPropValue = (
     propValue: PropValue,
@@ -476,8 +459,8 @@ const generateTreeLayout = (tree: ComponentTree) => {
     return ctx
   }
 
-  const processText = (
-    text: Text,
+  const processComponentText = (
+    component: Component,
     ctx: LayoutContext,
     tags: ComponentTreeLayoutTagsT
   ) => {
@@ -485,7 +468,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     if (ctx.indent.length > 0) {
       ctx = addElement(ctx, {
         text: ctx.indent,
-        node: text,
+        node: component,
         tags: Set([
           'whitespace',
           'whitespace-before-child',
@@ -497,18 +480,19 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     // Add text
     ctx = addElement(ctx, {
-      text: text.text,
-      node: text,
+      text: component.text,
+      node: component,
       tags: Set([
         'child',
         'text',
+        'component-text',
       ]).union(tags),
     })
 
     // Add newline after text
     ctx = addElement(ctx, {
       text: '\n',
-      node: text,
+      node: component,
       tags: Set([
         'whitespace',
         'whitespace-after-child',
