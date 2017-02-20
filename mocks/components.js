@@ -95,69 +95,44 @@ export const actionsCode =
   setState({ clicked: true })
 }`
 
-export const propKeyValues = [
-  {
-    key: 'comment',
-    value: {
-      type: 'JavaScript',
-      value: 'comment',
+export const componentTree = {
+  id: 'example-component',
+  name: 'ExampleComponent',
+  props: [
+    {
+      name: 'comment',
+      value: {
+        value: 'comment',
+      },
     },
-    options: [
-      'comment',
-      'description',
-      'user',
-    ],
-    input: {
-      type: 'Radio',
+    {
+      name: 'description',
+      value: {
+        value: 'description',
+      },
     },
-  },
-  {
-    key: 'description',
-    value: {
-      type: 'JavaScript',
-      value: 'description',
+    {
+      name: 'size',
+      value: {
+        value: 'Base',
+        type: 'string',
+      }
     },
-    input: {
-      type: 'TextInput',
+    {
+      name: 'likeCount',
+      value: {
+        value: 2,
+        type: 'number',
+      },
     },
-  },
-  {
-    key: 'size',
-    value: {
-      type: 'JavaScript',
-      value: 'Base',
-    },
-    options: [
-      'Tiny',
-      'Small',
-      'Base',
-      'Large',
-      'Huge',
-    ],
-    input: {
-      type: 'Radio',
-    },
-  },
-  {
-    key: 'likeCount',
-    value: {
-      type: 'JavaScript',
-      value: 2,
-    },
-    input: {
-      type: 'Slider',
-      start: 0,
-      end: 100,
-      step: 10,
-    },
-  },
-]
+  ]
+}
 
 export const componentStates = [
   {
     id: 23,
     name: 'Regular',
-    propKeyValues,
+    componentTree,
     propMap: {
       comment: 'comment',
       description: 'description',
@@ -167,7 +142,7 @@ export const componentStates = [
   {
     id: 24,
     name: 'With Publisher',
-    propKeyValues,
+    componentTree,
     propMap: {
       comment: 'comment',
       description: 'description',
@@ -177,7 +152,7 @@ export const componentStates = [
   {
     id: 25,
     name: 'With Attachment',
-    propKeyValues,
+    componentTree,
     propMap: {
       comment: 'comment',
       description: 'description',
@@ -187,7 +162,7 @@ export const componentStates = [
   {
     id: 26,
     name: 'With Replies',
-    propKeyValues,
+    componentTree,
     propMap: {
       comment: 'comment',
       description: 'description',

@@ -3,7 +3,7 @@ import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import LiveEditor from './LiveEditor'
-import { propKeyValues, dataCode, actionsCode } from '../../../mocks/components'
+import { componentTree, dataCode, actionsCode } from '../../../mocks/components'
 
 storiesOf('LiveEditor', module)
   .add('Regular', () => (
@@ -12,9 +12,7 @@ storiesOf('LiveEditor', module)
         label='Regular'
       >
         <LiveEditor
-          componentName='Comment'
-          propKeyValues={propKeyValues}
-          onChangeCode={() => {}}
+          componentTree={componentTree}
           data={{text: dataCode}}
           actions={{text: actionsCode}}
         />
