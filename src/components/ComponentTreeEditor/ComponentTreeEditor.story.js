@@ -26,7 +26,10 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-title-prop',
         name: PropName({ name: 'title' }),
-        value: PropValue({ value: 'Users' })
+        value: PropValue({
+          value: 'Users',
+          type: 'string',
+        })
       }),
       Prop({
         id: 'list-width-prop',
