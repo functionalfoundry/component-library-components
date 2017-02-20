@@ -3,6 +3,7 @@
 import { List, Record } from 'immutable'
 
 import type {
+  ComponentTreeNodeT,
   ComponentTreePathT,
   NodeIdentifierT,
 } from './ComponentTree'
@@ -25,7 +26,7 @@ type TraverseResultT = {
   data: ?any,
 }
 
-const TraverseResult: TraverseResultT = Record({
+const TraverseResult = Record({
   tree: null,
   data: null,
 })
@@ -38,7 +39,7 @@ type TraverseContextT = {
   visitor: ?Function,
 }
 
-const TraverseContext: TraverseContextT = Record({
+const TraverseContext = Record({
   tree: null,
   node: null,
   path: List(),
@@ -61,20 +62,20 @@ const TraverseContext: TraverseContextT = Record({
  * traverse result. This means any traversal may mutate a tree
  * and its nodes in flexible ways.
  */
-const traverse: TraverseResult = (
+const traverse = (
   tree: ComponentTree,
   data: any,
   visitor: Function
-) => {
+): TraverseResultT => {
   /**
    * Traverses a child node and merges the result into parent context.
    */
-  const traverseChildNode: TraverseContext = (
+  const traverseChildNode = (
     ctx: TraverseContext,
-    relativePath: ComponentTreePathT,
+    relativePath: Array<string>,
     node: ComponentTreeNodeT,
     traverseFunction: Function,
-  ) => {
+  ): TraverseContext  => {
     const childCtx = traverseFunction(
       ctx
         .set('node', node)
@@ -90,7 +91,7 @@ const traverse: TraverseResult = (
    * Traverses a component node, its name, its props and its children
    * and merges the result into the parent context.
    */
-  const traverseComponent: TraverseContext = (ctx: TraverseContext) => {
+  const traverseComponent = (ctx: TraverseContext): TraverseContext => {
     ctx = ctx.visitor(ctx, 'pre')
 
     // Traverse the component name
@@ -127,14 +128,14 @@ const traverse: TraverseResult = (
    * Traverses a component name node and merges the result into
    * the parent context.
    */
-  const traverseComponentName: TraverseContext = (ctx: TraverseContext) => (
+  const traverseComponentName = (ctx: TraverseContext): TraverseContext => (
     ctx.visitor(ctx)
   )
 
   /**
    * Traverses a prop node and merges the result into the parent context.
    */
-  const traverseProp: TraverseContext = (ctx: TraverseContext) => {
+  const traverseProp = (ctx: TraverseContext): TraverseContext => {
     ctx = ctx.visitor(ctx, 'pre')
     if (ctx.node.name) {
       ctx = traverseChildNode(ctx, ['name'], ctx.node.name, traversePropName)
@@ -150,7 +151,7 @@ const traverse: TraverseResult = (
    * Traverses a prop name node and merges the result into the
    * parent context.
    */
-  const traversePropName: TraverseContext = (ctx: TraverseContext) => (
+  const traversePropName = (ctx: TraverseContext): TraverseContext => (
     ctx.visitor(ctx)
   )
 
@@ -158,14 +159,14 @@ const traverse: TraverseResult = (
    * Traverses a prop value node and merges the result into the
    * parent context.
    */
-  const traversePropValue = (ctx: TraverseContext) => (
+  const traversePropValue = (ctx: TraverseContext): TraverseContext => (
     ctx.visitor(ctx)
   )
 
   /**
    * Traverses a text node and merges the result into the parent context.
    */
-  const traverseText = (ctx: TraverseContext) => (
+  const traverseText = (ctx: TraverseContext): TraverseContext => (
     ctx.visitor(ctx)
   )
 
@@ -199,10 +200,10 @@ const traverse: TraverseResult = (
  * Node lookup
  */
 
-const findNodeById: ComponentTreePathT = (
+const findNodeById = (
   tree: ComponentTree,
   id: NodeIdentifierT
-) => {
+): ComponentTreePathT => {
   const result = traverse(tree, null, (ctx: TraverseContext) => {
     if (ctx.node.id == id) {
       return ctx.set('data', ctx.path)
@@ -217,10 +218,10 @@ const findNodeById: ComponentTreePathT = (
  * Node removal
  */
 
-const removeNodeById: ComponentTree = (
+const removeNodeById = (
   tree: ComponentTree,
   nodeId: NodeIdentifierT
-) => {
+): ComponentTree => {
   const path = findNodeById(tree, nodeId)
   if (path) {
     return tree.deleteIn(path)
@@ -232,11 +233,11 @@ const removeNodeById: ComponentTree = (
 /**
  * Batch node updates
  */
-const updateNodesAtPath: ComponentTree = (
+const updateNodesAtPath = (
   tree: ComponentTree,
   path: ComponentTreePathT,
   updater: Function
-) => (
+): ComponentTree => (
   tree.updateIn(path, updater)
 )
 
@@ -244,12 +245,12 @@ const updateNodesAtPath: ComponentTree = (
  * Component insertion
  */
 
-const insertComponent: ComponentTree = (
+const insertComponent = (
   tree: ComponentTree,
   parentId: NodeIdentifierT,
   index: number,
   component: Component
-) => {
+): ComponentTree => {
   const parentPath = findNodeById(tree, parentId)
   if (parentPath) {
     return updateNodesAtPath(tree, parentPath.push('children'), children =>
@@ -267,10 +268,10 @@ const insertComponent: ComponentTree = (
  * Component removal
  */
 
-const removeComponent: ComponentTree = (
+const removeComponent = (
   tree: ComponentTree,
   componentId: NodeIdentifierT
-) => {
+): ComponentTree => {
   const path = findNodeById(tree, componentId)
   return path ? tree.deleteIn(path) : tree
 }
@@ -279,11 +280,11 @@ const removeComponent: ComponentTree = (
  * Component name modification
  */
 
-const setComponentName: ComponentTree = (
+const setComponentName = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
   name: ComponentName
-) => {
+): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
     return tree.setIn(componentPath.push('name'), name)
@@ -299,11 +300,11 @@ const setComponentName: ComponentTree = (
  * Component text modification
  */
 
-const setComponentText: ComponentTree = (
+const setComponentText = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
   text: Text
-) => {
+): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
     return tree.setIn(componentPath.push('text'), text)
@@ -319,11 +320,11 @@ const setComponentText: ComponentTree = (
  * Prop insertion
  */
 
-const insertProp: ComponentTree = (
+const insertProp = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
   prop: Prop
-) => {
+): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
     return updateNodesAtPath(
@@ -338,19 +339,19 @@ const insertProp: ComponentTree = (
   }
 }
 
-const removeProp: ComponentTree = (
+const removeProp = (
   tree: ComponentTree,
   propId: NodeIdentifierT
-) => {
+): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   return propPath ? tree.deleteIn(propPath) : tree
 }
 
-const setPropName: ComponentTree = (
+const setPropName = (
   tree: ComponentTree,
   propId: NodeIdentifierT,
   name: PropName
-) => {
+): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   if (propPath) {
     return tree.setIn(propPath.push('name'), name)
@@ -362,11 +363,11 @@ const setPropName: ComponentTree = (
   }
 }
 
-const setPropValue: ComponentTree = (
+const setPropValue = (
   tree: ComponentTree,
   propId: NodeIdentifierT,
   value: PropValue
-) => {
+): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   if (propPath) {
     return tree.setIn(propPath.push('value'), value)
