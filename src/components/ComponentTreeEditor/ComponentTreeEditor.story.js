@@ -70,6 +70,37 @@ const regularTree = ComponentTree({
   })
 })
 
+const treeFromRaw = Utils.createTree({
+  id: 'list',
+  name: 'List',
+  props: [
+    {
+      id: 'list-title-prop',
+      name: 'title',
+      value: {
+        value: 'Users',
+        type: 'string',
+      }
+    }
+  ],
+  children: [
+    {
+      id: 'list-item-1',
+      name: 'ListItem',
+      props: [
+        {
+          name: 'key',
+          value: {
+            value: 1,
+            type: 'number'
+          },
+        }
+      ],
+      text: 'Hello',
+    }
+  ]
+})
+
 type TreeEditorContainerPropsT = {
   tree: ComponentTree,
 }
@@ -248,6 +279,13 @@ storiesOf('Component Tree Editor', module)
     <PreviewContainer shade='light'>
       <Preview label='Regular'>
         <TreeEditorContainer tree={regularTree} />
+      </Preview>
+    </PreviewContainer>
+  ))
+  .add('Tree from raw data', () => (
+    <PreviewContainer shade='light'>
+      <Preview label='Regular'>
+        <TreeEditorContainer tree={treeFromRaw} />
       </Preview>
     </PreviewContainer>
   ))
