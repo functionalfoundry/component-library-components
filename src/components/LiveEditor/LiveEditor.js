@@ -11,8 +11,10 @@ import {
   Colors,
   Spacing,
 } from '@workflo/styles'
-import Code from '../Code'
+import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
+
+const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 type DataT = {
   /* Passed in on initial load to seed the editor state */
@@ -23,8 +25,7 @@ type PropsT = {
   onChangeCode: Function,
   onChangeData: Function,
   onChangeActions: Function,
-  componentName: string,
-  propKeyValues: any,
+  componentTree: Object,
   data: DataT,
   actions: DataT,
 }
@@ -42,7 +43,10 @@ const defaultProps = {
 }
 
 class LiveEditor extends React.Component {
+  props: PropsT
+
   static defaultProps = defaultProps
+
   constructor(props) {
     super(props)
     this.state = {
@@ -54,8 +58,7 @@ class LiveEditor extends React.Component {
 
   render () {
     const {
-      componentName,
-      propKeyValues,
+      componentTree,
       onChangeCode,
       onChangeData,
       onChangeActions,
@@ -79,11 +82,8 @@ class LiveEditor extends React.Component {
             <Tab>Actions</Tab>
           </TabList>
           <TabPanel>
-            <Code
-              componentName={componentName}
-              propKeyValues={propKeyValues}
-              onChange={onChangeCode}
-              onRemoveProp={onRemoveProp}
+            <ComponentTreeEditor
+              tree={TreeUtils.createTree(componentTree)}
             />
           </TabPanel>
           <TabPanel>
