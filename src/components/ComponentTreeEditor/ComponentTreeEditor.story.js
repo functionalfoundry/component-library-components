@@ -6,12 +6,9 @@ import { Preview, PreviewContainer } from '@workflo/components'
 import { List } from 'immutable'
 import {
   Component,
-  ComponentName,
   ComponentTree,
   Prop,
-  PropName,
   PropValue,
-  Text,
 } from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
 const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
@@ -19,13 +16,11 @@ const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 const regularTree = ComponentTree({
   root: Component({
     id: 'list',
-    name: ComponentName({
-      name: 'List',
-    }),
+    name: 'List',
     props: List([
       Prop({
         id: 'list-title-prop',
-        name: PropName({ name: 'title' }),
+        name: 'title',
         value: PropValue({
           value: 'Users',
           type: 'string',
@@ -33,84 +28,75 @@ const regularTree = ComponentTree({
       }),
       Prop({
         id: 'list-width-prop',
-        name: PropName({ name: 'listWidth' }),
+        name: 'listWidth',
         value: PropValue({ value: '10' })
       })
     ]),
     children: List([
       Component({
         id: 'list-item-1',
-        name: ComponentName({
-          name: 'ListItem'
-        }),
+        name: 'ListItem',
         props: List([
           Prop({
             id: 'list-item-1-key-prop',
-            name: PropName({ name: 'key' }),
+            name: 'key',
             value: PropValue({ value: '0' }),
           })
         ]),
-        text: Text({
-          text: 'First list item'
-        }),
+        text: 'First list item',
       }),
       Component({
         id: 'list-item-2',
-        name: ComponentName({
-          name: 'ListItem'
-        }),
+        name: 'ListItem',
         props: List([
           Prop({
             id: 'list-item-2-key-prop',
-            name: PropName({ name: 'key' }),
+            name: 'key',
             value: PropValue({ value: '1' }),
           })
         ]),
-        text: Text({
-          text: 'Second list item'
-        }),
+        text: 'Second list item',
       }),
       Component({
         id: 'list-item-3',
-        name: ComponentName({
-          name: 'ListItem',
-        }),
-        text: Text({
-          text: 'Third list item'
-        }),
+        name: 'ListItem',
+        text: 'Third list item',
       }),
       Component({
         id: 'list-item-4',
-        name: ComponentName({
-          name: 'ListItem'
-        }),
+        name: 'ListItem',
       }),
     ])
   })
 })
+
+type TreeEditorContainerPropsT = {
+  tree: ComponentTree,
+}
 
 type TreeEditorContainerStateT = {
   tree: ComponentTree,
 }
 
 class TreeEditorContainer extends React.Component {
+  props: TreeEditorContainerPropsT
   state: TreeEditorContainerStateT
 
   constructor (props) {
     super(props)
     this.state = {
-      tree: regularTree,
+      tree: this.props.tree,
     }
   }
 
   createAction = (name, handler) => (
-    <button onClick={handler}>{name}</button>
+    <button key={name} onClick={handler}>{name}</button>
   )
 
   insertProp = () => {
     const prop = Prop({
       id: 'new-prop',
-      name: PropName({ name: 'newProp' }),
+      name: 'newProp',
       value: PropValue({ value: 'new prop value' }),
     })
     this.setState({
@@ -127,10 +113,7 @@ class TreeEditorContainer extends React.Component {
   setPropName = () => {
     this.setState({
       tree: Utils.setPropName(
-        this.state.tree, 'list-title-prop',
-        PropName({
-          name: 'newNameOfTitleProp'
-        })
+        this.state.tree, 'list-title-prop', 'newNameOfTitleProp'
       )
     })
   }
@@ -141,6 +124,7 @@ class TreeEditorContainer extends React.Component {
         this.state.tree, 'list-title-prop',
         PropValue({
           value: 'New list title',
+          type: 'string',
         })
       )
     })
@@ -152,9 +136,7 @@ class TreeEditorContainer extends React.Component {
         this.state.tree, 'list', 0,
         Component({
           id: 'new-component-as-first',
-          name: ComponentName({
-            name: 'NewComponent'
-          })
+          name: 'NewComponent',
         })
       ),
     })
@@ -166,9 +148,7 @@ class TreeEditorContainer extends React.Component {
         this.state.tree, 'list', 2,
         Component({
           id: 'new-component-as-third',
-          name: ComponentName({
-            name: 'AnotherNewComponent'
-          })
+          name: 'AnotherNewComponent',
         })
       ),
     })
@@ -180,9 +160,7 @@ class TreeEditorContainer extends React.Component {
         this.state.tree, 'new-component-as-third', 0,
         Component({
           id: 'new-component-in-third',
-          name: ComponentName({
-            name: 'YetAnotherNewComponent'
-          })
+          name: 'YetAnotherNewComponent',
         })
       ),
     })
@@ -197,21 +175,15 @@ class TreeEditorContainer extends React.Component {
   setComponentName = () => {
     this.setState({
       tree: Utils.setComponentName(
-        this.state.tree, 'list-item-3',
-        ComponentName({
-          name: 'NewListItem',
-        })
-      )
+        this.state.tree, 'list-item-3', 'NewListItem'
+      ),
     })
   }
 
   setComponentText = () => {
     this.setState({
       tree: Utils.setComponentText(
-        this.state.tree, 'list-item-3',
-        Text({
-          text: 'New text',
-        })
+        this.state.tree, 'list-item-3', 'New text'
       )
     })
   }
@@ -275,7 +247,7 @@ storiesOf('Component Tree Editor', module)
   .add('Regular', () => (
     <PreviewContainer shade='light'>
       <Preview label='Regular'>
-        <TreeEditorContainer />
+        <TreeEditorContainer tree={regularTree} />
       </Preview>
     </PreviewContainer>
   ))
