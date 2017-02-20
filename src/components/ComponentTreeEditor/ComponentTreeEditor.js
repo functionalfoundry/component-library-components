@@ -108,9 +108,6 @@ class ComponentTreeEditor extends React.Component {
       <Editor
         state={this.state.editorState}
         plugins={this.state.plugins}
-        style={{
-          fontFamily: 'Monaco',
-        }}
         onChange={this.handleChange}
       />
     )
