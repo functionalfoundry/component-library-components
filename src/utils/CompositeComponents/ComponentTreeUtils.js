@@ -9,12 +9,9 @@ import type {
 } from './ComponentTree'
 import {
   Component,
-  ComponentName,
   ComponentTree,
   Prop,
-  PropName,
   PropValue,
-  Text,
 } from './ComponentTree'
 
 /**
@@ -94,13 +91,6 @@ const traverse = (
   const traverseComponent = (ctx: TraverseContext): TraverseContext => {
     ctx = ctx.visitor(ctx, 'pre')
 
-    // Traverse the component name
-    if (ctx.node.name) {
-      ctx = traverseChildNode(
-        ctx, ['name'], ctx.node.name, traverseComponentName
-      )
-    }
-
     // Traverse the component props
     if (!ctx.node.props.isEmpty()) {
       ctx = ctx.node.props.reduce((ctx, prop, index) => (
@@ -115,31 +105,15 @@ const traverse = (
       ), ctx)
     }
 
-    // Traverse the component's text
-    if (ctx.node.text) {
-      ctx = traverseChildNode(ctx, ['text'], ctx.node.text, traverseText)
-    }
-
     ctx = ctx.visitor(ctx, 'post')
     return ctx
   }
-
-  /**
-   * Traverses a component name node and merges the result into
-   * the parent context.
-   */
-  const traverseComponentName = (ctx: TraverseContext): TraverseContext => (
-    ctx.visitor(ctx)
-  )
 
   /**
    * Traverses a prop node and merges the result into the parent context.
    */
   const traverseProp = (ctx: TraverseContext): TraverseContext => {
     ctx = ctx.visitor(ctx, 'pre')
-    if (ctx.node.name) {
-      ctx = traverseChildNode(ctx, ['name'], ctx.node.name, traversePropName)
-    }
     if (ctx.node.value) {
       ctx = traverseChildNode(ctx, ['value'], ctx.node.value, traversePropValue)
     }
@@ -148,25 +122,10 @@ const traverse = (
   }
 
   /**
-   * Traverses a prop name node and merges the result into the
-   * parent context.
-   */
-  const traversePropName = (ctx: TraverseContext): TraverseContext => (
-    ctx.visitor(ctx)
-  )
-
-  /**
    * Traverses a prop value node and merges the result into the
    * parent context.
    */
   const traversePropValue = (ctx: TraverseContext): TraverseContext => (
-    ctx.visitor(ctx)
-  )
-
-  /**
-   * Traverses a text node and merges the result into the parent context.
-   */
-  const traverseText = (ctx: TraverseContext): TraverseContext => (
     ctx.visitor(ctx)
   )
 
@@ -283,7 +242,7 @@ const removeComponent = (
 const setComponentName = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
-  name: ComponentName
+  name: ?string
 ): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
@@ -303,7 +262,7 @@ const setComponentName = (
 const setComponentText = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
-  text: Text
+  text: ?string
 ): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
@@ -350,7 +309,7 @@ const removeProp = (
 const setPropName = (
   tree: ComponentTree,
   propId: NodeIdentifierT,
-  name: PropName
+  name: string
 ): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   if (propPath) {
