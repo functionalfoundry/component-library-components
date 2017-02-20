@@ -273,7 +273,7 @@ class TreeEditorContainer extends React.Component {
 
 storiesOf('Component Tree Editor', module)
   .add('Regular', () => (
-    <PreviewContainer>
+    <PreviewContainer shade='light'>
       <Preview label='Regular'>
         <TreeEditorContainer />
       </Preview>
