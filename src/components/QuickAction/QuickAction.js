@@ -69,7 +69,7 @@ const Content = ({
       return (
         <AlignedPointer
           position='Top'
-          targetTriggers={['Hover']}
+          targetTriggers={['Hover', 'Mouse leave']}
           portalTriggers={['Mouse leave', 'Click outside']}
           onOpen={onOpen}
           onClose={onClose}
