@@ -53,7 +53,7 @@ type Props = {
   componentState: {
     name: string,
     propMap: Object,
-    propKeyValues: Object,
+    componentTree: Object,
   },
   harness: HarnessT,
   data: DataT,
@@ -121,7 +121,7 @@ const LiveView = ({
       >
         <LiveEditor
           componentName={component.name}
-          propKeyValues={componentState.propKeyValues}
+          componentTree={componentState.componentTree}
           onChangeCode={onUpdatePropKeyValues}
           onChangeData={onChangeData}
           onChangeActions={onChangeActions}
