@@ -6,7 +6,7 @@ import { List, OrderedMap, Record, Set } from 'immutable'
  * Flow types
  */
 
-type NodeIdentifierT = string
+export type NodeIdentifierT = string
 
 type PropNameNodeTypeT = 'prop-name'
 type PropNameT = {
