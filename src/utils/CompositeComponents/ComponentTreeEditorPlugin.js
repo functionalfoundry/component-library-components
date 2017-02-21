@@ -82,7 +82,7 @@ type MarkRendererPropsT = {
 }
 
 /**
- * Property remover
+ * Property renderer
  */
 
 type PropNameRendererStateT = {
@@ -141,7 +141,7 @@ const ThemedPropNameRenderer =
   Theme('PropNameRenderer', defaultTheme)(PropNameRenderer)
 
 /**
- * Property value chooser
+ * Property value renderer
  */
 
 const propValueChooserImplementations = {
@@ -228,7 +228,7 @@ const ThemedPropValueRenderer =
   Theme('PropValueRenderer', defaultTheme)(PropValueRenderer)
 
 /**
- * Component text editor
+ * Component text renderer
  */
 
 type TextRendererStateT = {
