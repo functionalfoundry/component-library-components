@@ -13,6 +13,34 @@ import {
 import ComponentTreeEditor from './ComponentTreeEditor'
 const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
+const completionData = {
+  components: ['List', 'ListItem'],
+  props: {
+    'List': {
+      'title': {
+        type: 'string',
+      },
+      'listWidth': {
+        type: 'number',
+        options: [10, 20, 30],
+      },
+    },
+    'ListItem': {
+      'key': {
+        type: 'string',
+      }
+    }
+  },
+  globalOptions: {
+    'state.title': {
+      name: 'state.title',
+      value: 'state.title',
+      type: 'string',
+      source: 'state'
+    },
+  }
+}
+
 const regularTree = ComponentTree({
   root: Component({
     id: 'list',
@@ -224,6 +252,7 @@ class TreeEditorContainer extends React.Component {
       <div>
         <ComponentTreeEditor
           tree={this.state.tree}
+          completionData={completionData}
         />
         <div>
           {[
