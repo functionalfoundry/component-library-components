@@ -26,7 +26,7 @@ type ComponentTreeLayoutElementT = {
 }
 
 type ComponentTreeLayoutT = {
-  elements: List<?ComponentTreeLayoutElementT>,
+  elements: List<ComponentTreeLayoutElementT>,
 }
 
 /**
@@ -55,7 +55,7 @@ export { ComponentTreeLayout }
  */
 
  type LayoutContextT = {
-   layout: ComponentTreeLayout,
+   layout: ComponentTreeLayoutT,
    indent: string,
    position: number,
  }
@@ -422,7 +422,8 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processPropValue = (
     propValue: PropValue,
     ctx: LayoutContext,
-    tags: ComponentTreeLayoutTagsT
+    tags: ComponentTreeLayoutTagsT,
+    data: ComponentTreeLayoutDataT
   ) => {
     // Get opening and closing markup depending on property type
     const { open, close } = getPropValueTypeBoundaries(propValue)
@@ -518,7 +519,7 @@ export { generateTreeLayout }
  * Markup generation
  */
 
-const generateTreeLayoutMarkup = (layout: ComponentTreeLayout) => (
+const generateTreeLayoutMarkup = (layout: ComponentTreeLayoutT) => (
   layout.elements.reduce((markup, element) => markup + element.text, '')
 )
 
