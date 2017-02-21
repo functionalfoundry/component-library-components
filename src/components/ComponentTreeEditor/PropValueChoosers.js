@@ -26,15 +26,19 @@ const unifyOptions = (
 
   if (completionData && completionData.options) {
     completionData.options.map(option => (
-      result.push({ name: option, value: option, source: null })
+      result.push({
+        name: option,
+        value: option,
+        source: null
+      })
     ))
   }
 
   if (options && Object.keys(options)) {
     Object.keys(options).map(key => (
       result.push({
-        name: key,
-        value: key,
+        name: options && options[key] && options[key].name,
+        value: options && options[key] && options[key].value,
         source: options && options[key] && options[key].source
       })
     ))
