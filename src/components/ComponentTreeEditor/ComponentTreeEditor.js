@@ -128,6 +128,7 @@ class ComponentTreeEditor extends React.Component {
 
   handleTreeChange = (tree: ComponentTree) => {
     this.setState(this.getStateFromTreeAndProps(tree, this.props))
+    this.props.onChange && this.props.onChange(tree)
   }
 }
 
