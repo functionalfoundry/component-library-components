@@ -367,7 +367,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: ctx.indent,
         node: prop,
-        data: data,
+        data: data.set('prop', prop),
         tags: Set([
           'whitespace',
           'whitespace-indentation',
@@ -381,6 +381,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: prop.name,
         node: prop,
+        data: data.set('prop', prop),
         tags: Set([
           'prop',
           'prop-name',
@@ -393,6 +394,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     ctx = addElement(ctx, {
       text: '=',
       node: prop,
+      data: data.set('prop', prop),
       tags: Set([
         'prop',
         'prop-equals',
@@ -401,15 +403,14 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     // Add prop value
     if (prop.value) {
-      ctx = processPropValue(prop.value, ctx, tags, data.merge({
-        prop: prop,
-      }))
+      ctx = processPropValue(prop.value, ctx, tags, data.set('prop', prop))
     }
 
     // Add newline after prop
     ctx = addElement(ctx, {
       text: '\n',
       node: prop,
+      data: data.set('prop', prop),
       tags: Set([
         'whitespace',
         'whitespace-after-prop',
@@ -432,6 +433,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: open,
         node: propValue,
+        data: data,
         tags: Set([
           'prop-open',
         ]).union(tags)
@@ -441,6 +443,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     ctx = addElement(ctx, {
       text: propValue.value.toString(),
       node: propValue,
+      data: data,
       tags: Set([
         'prop',
         'prop-value',
@@ -451,6 +454,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: close,
         node: propValue,
+        data: data,
         tags: Set([
           'prop-close',
         ]).union(tags)
