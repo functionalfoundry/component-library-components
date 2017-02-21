@@ -253,6 +253,7 @@ class TreeEditorContainer extends React.Component {
         <ComponentTreeEditor
           tree={this.state.tree}
           completionData={completionData}
+          onChange={action('onChange')}
         />
         <div>
           {[
