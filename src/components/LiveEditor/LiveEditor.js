@@ -61,7 +61,7 @@ class LiveEditor extends React.Component {
   render () {
     const {
       componentTree,
-      competionData,
+      completionData,
       onChangeComponentTree,
       onChangeData,
       onChangeActions,
