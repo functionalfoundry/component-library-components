@@ -12,6 +12,7 @@ import {
   generateTreeLayout,
   generateTreeLayoutMarkup
 } from '../../utils/CompositeComponents/ComponentTreeLayout'
+import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
 /**
  * Props
@@ -19,6 +20,8 @@ import {
 
 type PropsT = {
   tree: ComponentTree,
+  completionData: CompletionDataT,
+  onChange?: Function,
 }
 
 const defaultProps = {
@@ -58,11 +61,21 @@ const getComponentTreeEditorState = (
 )
 
 const getComponentTreeEditorPlugins = (
+  editor: ComponentTreeEditor,
   tree: ComponentTree,
-  layout: ComponentTreeLayout
+  layout: ComponentTreeLayout,
+  completionData: CompletionDataT,
 ) => ([
-  ComponentTreeEditorPlugin({ tree, layout }),
-  ComponentTreeSyntaxPlugin({ tree, layout }),
+  ComponentTreeEditorPlugin({
+    tree,
+    layout,
+    completionData,
+    onChange: editor.handleTreeChange,
+  }),
+  ComponentTreeSyntaxPlugin({
+    tree,
+    layout
+  }),
 ])
 
 /**
@@ -77,30 +90,11 @@ class ComponentTreeEditor extends React.Component {
 
   constructor (props) {
     super(props)
-
-    const layout = generateTreeLayout(props.tree)
-    const editorState = getComponentTreeEditorState(props.tree, layout)
-    const plugins = getComponentTreeEditorPlugins(props.tree, layout)
-
-    this.state = {
-      tree: props.tree,
-      layout: layout,
-      plugins: plugins,
-      editorState: editorState,
-    }
+    this.state = this.getStateFromTreeAndProps(props.tree, props)
   }
 
   componentWillReceiveProps (nextProps) {
-    const layout = generateTreeLayout(nextProps.tree)
-    const editorState = getComponentTreeEditorState(nextProps.tree, layout)
-    const plugins = getComponentTreeEditorPlugins(nextProps.tree, layout)
-
-    this.setState({
-      tree: nextProps.tree,
-      layout: layout,
-      plugins: plugins,
-      editorState: editorState,
-    })
+    this.setState(this.getStateFromTreeAndProps(nextProps.tree, nextProps))
   }
 
   render () {
@@ -109,13 +103,32 @@ class ComponentTreeEditor extends React.Component {
         state={this.state.editorState}
         plugins={this.state.plugins}
         onChange={this.handleChange}
+        readOnly
       />
     )
+  }
+
+  getStateFromTreeAndProps = (tree: ComponentTree, props: PropsT) => {
+    const layout = generateTreeLayout(tree)
+    const editorState = getComponentTreeEditorState(tree, layout)
+    const plugins = getComponentTreeEditorPlugins(
+      this, tree, layout, props.completionData
+    )
+    return {
+      tree: tree,
+      layout: layout,
+      plugins: plugins,
+      editorState: editorState,
+    }
   }
 
   handleChange = (editorState: State) => (
     this.setState({ editorState })
   )
+
+  handleTreeChange = (tree: ComponentTree) => {
+    this.setState(this.getStateFromTreeAndProps(tree, this.props))
+  }
 }
 
 /**
