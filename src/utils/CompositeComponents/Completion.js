@@ -18,6 +18,8 @@ export type PropsCompletionDataT = {
 export type OptionSourceT = 'state' | 'data' | 'actions'
 
 export type GlobalOptionDataT = {
+  name: string,
+  value: any,
   type: PropValueTypeT,
   source: OptionSourceT,
 }
