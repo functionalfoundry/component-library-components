@@ -59,9 +59,8 @@ type Props = {
   data: DataT,
   actions: DataT,
   theme: Object,
-  onUpdatePropKeyValues: Function,
+  onChangeComponentTree: Function,
   onAddPropToPropKeyValues: Function,
-  onRemovePropFromPropKeyValues: Function,
   onChangeActions: Function,
   onChangeData: Function,
 }
@@ -86,9 +85,8 @@ const LiveView = ({
   theme,
   onUpdateComponent, // ?
   onUpdateComponentState, // ?
-  onUpdatePropKeyValues,
+  onChangeComponentTree,
   onAddPropToPropKeyValues,
-  onRemovePropFromPropKeyValues,
   onChangeData,
   onChangeActions,
   harness,
@@ -122,10 +120,9 @@ const LiveView = ({
         <LiveEditor
           componentName={component.name}
           componentTree={componentState.componentTree}
-          onChangeCode={onUpdatePropKeyValues}
+          onChangeComponentTree={onChangeComponentTree}
           onChangeData={onChangeData}
           onChangeActions={onChangeActions}
-          onRemoveProp={onRemovePropFromPropKeyValues}
           data={data}
           actions={actions}
         />
