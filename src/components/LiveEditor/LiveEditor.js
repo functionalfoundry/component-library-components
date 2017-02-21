@@ -13,6 +13,7 @@ import {
 } from '@workflo/styles'
 import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
+import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
 const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
@@ -26,6 +27,7 @@ type PropsT = {
   onChangeData: Function,
   onChangeActions: Function,
   componentTree: Object,
+  completionData?: CompletionDataT,
   data: DataT,
   actions: DataT,
 }
@@ -59,6 +61,7 @@ class LiveEditor extends React.Component {
   render () {
     const {
       componentTree,
+      competionData,
       onChangeComponentTree,
       onChangeData,
       onChangeActions,
@@ -84,6 +87,7 @@ class LiveEditor extends React.Component {
           <TabPanel>
             <ComponentTreeEditor
               tree={TreeUtils.createTree(componentTree)}
+              completionData={completionData}
               onChange={onChangeComponentTree}
             />
           </TabPanel>
