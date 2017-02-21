@@ -22,7 +22,7 @@ type DataT = {
 }
 
 type PropsT = {
-  onChangeCode: Function,
+  onChangeComponentTree: Function,
   onChangeData: Function,
   onChangeActions: Function,
   componentTree: Object,
@@ -31,7 +31,7 @@ type PropsT = {
 }
 
 const defaultProps = {
-  onChangeCode: () => {},
+  onChangeComponentTree: () => {},
   onChangeData: () => {},
   onChangeActions: () => {},
   data: {
@@ -59,7 +59,7 @@ class LiveEditor extends React.Component {
   render () {
     const {
       componentTree,
-      onChangeCode,
+      onChangeComponentTree,
       onChangeData,
       onChangeActions,
       onRemoveProp,
@@ -84,6 +84,7 @@ class LiveEditor extends React.Component {
           <TabPanel>
             <ComponentTreeEditor
               tree={TreeUtils.createTree(componentTree)}
+              onChange={onChangeComponentTree}
             />
           </TabPanel>
           <TabPanel>
