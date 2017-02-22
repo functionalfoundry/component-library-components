@@ -32,7 +32,12 @@ const completionData = {
     }
   },
   globalOptions: {
-    'state.title': { type: 'string', source: 'state' },
+    'state.title': {
+      name: 'state.title',
+      value: 'state.title',
+      type: 'string',
+      source: 'state'
+    },
   }
 }
 
