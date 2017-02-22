@@ -58,6 +58,10 @@ class LiveEditor extends React.Component {
 
   handleSelect = (index) => this.setState({ selectedIndex: index })
 
+  handleChangeComponentTree = (tree) => {
+    this.props.onChange && this.props.onChange(TreeUtils.getRawTreeData(tree))
+  }
+
   render () {
     const {
       componentTree,
@@ -88,7 +92,7 @@ class LiveEditor extends React.Component {
             <ComponentTreeEditor
               tree={TreeUtils.createTree(componentTree)}
               completionData={completionData}
-              onChange={onChangeComponentTree}
+              onChange={this.handleChangeComponentTree}
             />
           </TabPanel>
           <TabPanel>

@@ -370,6 +370,10 @@ const createTree = (data: Object): ComponentTree => {
   })
 }
 
+const getRawTreeData = (tree: ComponentTree) => (
+  tree.toJS()
+)
+
 export {
   // Generic tree operations
   traverse,
@@ -389,4 +393,5 @@ export {
 
   // Tree construction from raw data
   createTree,
+  getRawTreeData,
 }
