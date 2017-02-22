@@ -61,7 +61,7 @@ class LiveEditor extends React.Component {
   handleChangeComponentTree = (tree) => {
     const { onChangeComponentTree } = this.props
     const rawTreeData = TreeUtils.getRawTreeData(tree)
-    onChangeComponentTree && onChangeComponentTree(tree)
+    onChangeComponentTree && onChangeComponentTree(rawTreeData)
   }
 
   render () {
