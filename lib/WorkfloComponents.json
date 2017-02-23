@@ -3,6 +3,8 @@
   "App",
   "Code",
   "Component",
+  "ComponentEntrance",
+  "ComponentExit",
   "ComponentState",
   "ComponentStates",
   "ComponentTreeEditor",
@@ -16,5 +18,7 @@
   "LiveView",
   "Properties",
   "QuickAction",
+  "RotateFade",
+  "StaggerIcons",
   "SubHeader"
 ]
