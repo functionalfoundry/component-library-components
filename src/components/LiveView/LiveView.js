@@ -47,12 +47,11 @@ type HarnessT = {
 type Props = {
   component: {
     name: string,
-    implementation: any,
+    element: any,
     properties: Array<PropertyT>,
   },
   componentState: {
     name: string,
-    propMap: Object,
     componentTree: Object,
   },
   harness: HarnessT,
@@ -110,8 +109,7 @@ const LiveView = ({
         }
         <LivePreview
           key={Date.now()}
-          Component={component.implementation}
-          propMap={componentState.propMap}
+          element={component.element}
           backgroundColor={harness.theme.patterns.colors.background}
           alignment={harness.alignment}
         />

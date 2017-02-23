@@ -7,7 +7,7 @@ import {
 } from '@workflo/styles'
 
 const component = components[0]
-component.implementation = ({children}) => (
+component.element = (
   <div style={{ backgroundColor: 'magenta', height: 30 }}>
     Component
   </div>

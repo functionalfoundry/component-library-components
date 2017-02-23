@@ -18,6 +18,19 @@ class MyFailingComponent extends React.Component {
   }
 }
 
+const exampleElement = (
+  <div style={{
+    background: 'white',
+    border: 'thin solid grey',
+    padding: '2em',
+    color: 'black',
+  }}>
+    Some element
+  </div>
+)
+
+const failingElement = <MyFailingComponent />
+
 storiesOf('LivePreview', module)
   .add('Regular', () => (
     <PreviewContainer>
@@ -26,8 +39,7 @@ storiesOf('LivePreview', module)
         label='Regular'
       >
         <LivePreview
-          Component={MyComponent}
-          propMap={{}}
+          element={exampleElement}
           alignment='Center'
           backgroundColor='cyan'
         />
@@ -41,8 +53,7 @@ storiesOf('LivePreview', module)
         label='Failing component'
       >
         <LivePreview
-          Component={MyFailingComponent}
-          propMap={{}}
+          element={failingElement}
           alignment='Center'
           backgroundColor='cyan'
         />

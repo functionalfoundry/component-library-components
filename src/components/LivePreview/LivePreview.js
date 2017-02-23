@@ -10,30 +10,8 @@ import {
 } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 
-// type OwnerT = {
-//   firstName: string,
-//   lastName: string,
-//   profilePhoto: string,
-// }
-
-// type PropertyT = {
-//   name: string,
-//   type: string,
-//   default: string,
-//   description: string,
-// }
-
-// type ComponentT = {
-//   id: string,
-//   implementation: any,
-//   name: string,
-//   // owner: OwnerT,
-//   // properties: Array<PropertyT>,
-// }
-
 type Props = {
-  Component: any,
-  propMap: any,
+  element: React.Element,
   theme: Object,
   backgroundColor: string,
   alignment: {
@@ -43,7 +21,6 @@ type Props = {
 };
 
 const defaultProps = {
-  propMap: {},
   backgroundColor: 'white',
   alignment: {
     horizontal: 'Center',
@@ -64,7 +41,7 @@ class LivePreview extends React.Component {
   }
 
   render () {
-    const { Component, propMap, theme } = this.props;
+    const { element, theme } = this.props;
 
     if (this.state.error) {
       return (
@@ -82,7 +59,7 @@ class LivePreview extends React.Component {
         return (
           <View {...theme.livePreview}>
             <View {...theme.previewContainer}>
-              {Component && <Component {...propMap} />}
+              {element}
             </View>
           </View>
         )
