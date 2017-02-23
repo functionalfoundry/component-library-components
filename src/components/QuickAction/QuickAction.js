@@ -69,10 +69,8 @@ const Content = ({
       return (
         <AlignedPointer
           position='Top'
-          targetTriggers={['Hover', 'Mouse leave']}
-          portalTriggers={['Mouse leave', 'Click outside']}
-          onOpen={onOpen}
-          onClose={onClose}
+          targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
+          portalTriggers={['Click outside', 'Mouse leave']}
           portal={(
             <Radios
               options={input.options}
