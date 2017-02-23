@@ -70,6 +70,9 @@ const defaultTheme = {
     backgroundColor: 'white',
     padding: Spacing.tiny,
     minWidth: 350,
+    display: 'flex',
+    overflow: 'auto',
+    height: '100%',
   },
   errorMessage: {
     fontWeight: 'bold',

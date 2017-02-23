@@ -118,25 +118,19 @@ const defaultTheme = ({
     // flex: '0 1 auto',
     // justifyContent: 'center',
     // alignItems: 'center',
-
     position: 'relative',
   },
-  previewContainer: {
-    ...getHorizontalAlignment(alignment.horizontal),
+  previewContainer: Object.assign({}, {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-  },
+  }, getHorizontalAlignment(alignment)),
   errorContainer: {
     display: 'flex',
+    flex: '1 1 auto',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
-  // image: {
-  //   width: '100%',
-  //   maxHeight: '100%',
-  //   height: 'auto',
-  //   objectFit: 'contain',
-  // },
 })
 
 const getHorizontalAlignment = (horizontalAlignment) => {
