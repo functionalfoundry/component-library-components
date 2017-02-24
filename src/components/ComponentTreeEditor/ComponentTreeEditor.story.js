@@ -38,6 +38,12 @@ const completionData = {
       type: 'string',
       source: 'state'
     },
+    'handleSelect': {
+      name: 'handleSelect',
+      value: 'handleSelect' ,
+      type: 'function',
+      source: 'actions',
+    }
   }
 }
 
@@ -58,6 +64,14 @@ const regularTree = ComponentTree({
         id: 'list-width-prop',
         name: 'listWidth',
         value: PropValue({ value: '10' })
+      }),
+      Prop({
+        id: 'list-on-select-prop',
+        name: 'onSelect',
+        value: PropValue({
+          value: 'handleSelect',
+          type: 'function',
+        })
       })
     ]),
     children: List([

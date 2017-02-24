@@ -4,7 +4,8 @@ import React from 'react'
 import Theme from 'js-theme'
 import { RadioGroup, Radio, View } from '@workflo/components'
 import {
-  PropValue
+  Prop,
+  PropValue,
 } from '../../utils/CompositeComponents/ComponentTree'
 import type {
   GlobalOptionsDataT,
@@ -12,6 +13,7 @@ import type {
 } from '../../utils/CompositeComponents/Completion'
 
 export type PropValueChooserPropsT = {
+  prop: Prop,
   value: PropValue,
   completionData: ?PropCompletionDataT,
   options: ?GlobalOptionsDataT,
@@ -47,7 +49,19 @@ const unifyOptions = (
   return result
 }
 
+const isOptionAppropriateForProp = (option, prop: Prop, value: PropValue) => {
+  if (prop.value.type == 'function') {
+    return option.source == 'actions'
+        && option.name !== 'setState'
+        && option.name !== 'state'
+  } else {
+    return option.source !== 'actions'
+        && option.name !== 'initialState'
+  }
+}
+
 const RadioPropValueChooser = ({
+  prop,
   value,
   completionData,
   options,
@@ -62,13 +76,15 @@ const RadioPropValueChooser = ({
     }}
     onChange={onChange}
   >
-    {unifyOptions(completionData, options).map(option => (
-      <Radio
-        key={option.name}
-        label={option.name}
-        value={option.value}
-      />
-    ))}
+    {unifyOptions(completionData, options)
+      .filter(option => isOptionAppropriateForProp(option, prop, value))
+      .map(option => (
+        <Radio
+          key={option.name}
+          label={option.name}
+          value={option.value}
+        />
+      ))}
   </RadioGroup>
 )
 

@@ -198,6 +198,7 @@ class PropValueRenderer extends React.Component {
           verticalOffset={2}
           portal={(
             <Chooser
+              prop={prop}
               value={value}
               completionData={propCompletionData}
               options={globalOptions}
