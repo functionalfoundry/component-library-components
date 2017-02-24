@@ -16,7 +16,6 @@ type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
 
 type ComponentStateT = {
   name: string,
-  propMap: Object,
 }
 
 type HarnessT = {
@@ -42,14 +41,12 @@ type HarnessT = {
 }
 
 type HarnessCardT = {
+  element: React.Element,
   harness: HarnessT,
   isSelected: boolean,
 }
 
 type PropsT = {
-  component: {
-    implementation: any,
-  },
   harnessCards: Array<HarnessCardT>,
   onClick: Function,
   onChange: (card: HarnessCardT) => null,
@@ -84,14 +81,12 @@ const ComponentStates = (props: PropsT) => {
 
 // TODO: Memoize
 const getData = ({
-  component,
   harnessCards,
   onClick,
   onChange,
 }) => {
   return harnessCards.map((harnessCard) => ({
     value: {
-      component,
       harnessCard,
       onClickTitle: () => onClick(harnessCard.harness.id),
       onChangeIsSelected: (isSelected) => onChange({

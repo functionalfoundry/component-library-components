@@ -16,6 +16,12 @@ const MockComponent = ({ children }) => (
   </div>
 )
 
+const element = (
+  <MockComponent>
+    <div>Inner Text</div>
+  </MockComponent>
+)
+
 const actions = [
   <QuickAction
     icon='delete'
@@ -47,13 +53,11 @@ const actions = [
 
 const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) => ({
   actions,
+  element,
   harness: {
     id: Math.random(),
     componentState: {
       name,
-      propMap: {
-        children: <div>Inner Text</div>,
-      },
     },
     alignment: {
       horizontal: alignment,
@@ -103,9 +107,6 @@ storiesOf('Component States', module)
   .add('Regular', () => (
     <div style={{ backgroundColor: Colors.grey900 }}>
       <ComponentStates
-        component={{
-          implementation: MockComponent,
-        }}
         harnessCards={stateCards}
         onClick={action('onClick')}
         onChange={action('onChange')}
