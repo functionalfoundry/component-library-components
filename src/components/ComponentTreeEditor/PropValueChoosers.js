@@ -65,11 +65,7 @@ const RadioPropValueChooser = ({
     {unifyOptions(completionData, options).map(option => (
       <Radio
         key={option.name}
-        label={
-          option.source
-          ? `${option.name} (${option.source})`
-          : option.name
-        }
+        label={option.name}
         value={option.value}
       />
     ))}
