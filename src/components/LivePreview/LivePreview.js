@@ -124,7 +124,7 @@ const defaultTheme = ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-  }, getHorizontalAlignment(alignment)),
+  }, getHorizontalAlignment(alignment.horizontal)),
   errorContainer: {
     display: 'flex',
     flex: '1 1 auto',
