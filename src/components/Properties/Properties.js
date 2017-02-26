@@ -204,6 +204,7 @@ const headerCellBase = Object.assign({}, cellBorder, {
   fontWeight: 100,
   textAlign: 'left',
   color: Colors.grey200,
+  userSelect: 'none',
 })
 
 const selectedStyle = {
