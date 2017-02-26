@@ -194,6 +194,7 @@ class ComponentState extends React.Component {
                 <Checkbox
                   checked={harnessCard.isSelected}
                   onChange={() => onChangeIsSelected(!harnessCard.isSelected)}
+                  theme={{ checkbox: { marginTop: 2 } }}
                 />}
               <Heading
                 {...theme.title}
