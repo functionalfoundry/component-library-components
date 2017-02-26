@@ -86,7 +86,8 @@ class LiveEditor extends React.Component {
           {...theme.liveEditorTabs}
         >
           <TabList>
-            <Tab>Code</Tab>
+            { /* TODO: Rename Code -> Markup in code */ }
+            <Tab>Markup</Tab>
             <Tab>Data</Tab>
             <Tab>Actions</Tab>
           </TabList>

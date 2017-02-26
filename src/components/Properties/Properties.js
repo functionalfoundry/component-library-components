@@ -21,22 +21,75 @@ type PropsT = {
   onClickPlus: Function,
 }
 
+class PropertiesContainer extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      sortAsc: true,
+      hoveredIndex: null,
+    }
+  }
+
+  handleSortChange = () => {
+    this.setState({ sortAsc: !this.state.sortAsc })
+  }
+
+  handleHoverChange = (hoveredIndex) => {
+    this.setState({ hoveredIndex })
+  }
+
+  render () {
+    return (
+      <Properties
+        {...this.props}
+        sortAsc={this.state.sortAsc}
+        hoveredIndex={this.state.hoveredIndex}
+        onSortChange={this.handleSortChange}
+        onHoverChange={this.handleHoverChange}
+      />
+    )
+  }
+}
+
 class Properties extends React.Component {
   props: PropsT
-  getHandleClickPlus = (index) => {
+
+  getHandleClickPlus = (property) => {
     return () => {
-      const { onClickPlus, properties } = this.props
+      const { onClickPlus } = this.props
       if (onClickPlus) {
-        onClickPlus(properties[index].name)
+        onClickPlus(property.name)
       }
     }
+  }
+
+  sort = (arr) => {
+    const clonedProperties = this.props.properties.concat()
+    const sortedProperties = clonedProperties.sort()
+    if (this.props.sortAsc) {
+      return sortedProperties.reverse()
+    }
+    return sortedProperties
+  }
+
+  // Takes a property row and returns the hover handler for that row
+  getHandleMouseEnter = (index) => {
+    return () => {
+      this.props.onHoverChange(index)
+    }
+  }
+
+  handleMouseLeave = () => {
+    this.props.onHoverChange(null)
   }
 
   render() {
     const {
       properties = [],
       onClickPlus,
+      onSortChange,
       theme,
+      sortAsc,
     } = this.props
 
     return (
@@ -44,48 +97,95 @@ class Properties extends React.Component {
         {...theme.properties}
         cellSpacing='0'
       >
-        <tbody>
-          {properties.map((property, index) => (
-            <tr
-              {...theme.row}
-              key={index}
-            >
-              <td
-                {...theme.name}
+        <tr>
+          <th
+            {...theme.firstHeader}
+          >
+            Prop
+            <Icon
+              name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
+              theme={{
+                icon: {
+                  marginTop: 2,
+                  marginLeft: 6,
+                  cursor: 'pointer',
+                },
+              }}
+              onClick={onSortChange}
+            />
+          </th>
+          <th
+            {...theme.headerCell}
+          >
+            Type
+          </th>
+          <th
+            {...theme.headerCell}
+          >
+            Default
+          </th>
+          <th
+            {...theme.lastHeader}
+          >
+            Description
+          </th>
+        </tr>
+        <tbody
+          onMouseLeave={this.handleMouseLeave}
+        >
+          {this.sort(properties).map((property, index) => {
+            const isHovering = this.props.hoveredIndex === index
+            const nameSpanStyle = isHovering ? theme.hoveredProp : theme.nonHoveredProp
+
+            return (
+              <tr
+                {...theme.row}
+                style={index === this.props.hoveredIndex ? selectedStyle : {}}
+                onMouseEnter={this.getHandleMouseEnter(index)}
+                key={index}
               >
-                {property.name}
-              </td>
-              <td
-                {...theme.column}
-              >
-                {property.type}
-              </td>
-              <td
-                {...theme.column}
-              >
-                {property.default}
-              </td>
-              <td
-                {...theme.description}
-              >
-                {property.description}
-              </td>
-              <td
-                {...theme.plus}
-              >
-                <Icon
-                  name='add'
-                  size='tiny'
-                  onClick={this.getHandleClickPlus(index)}
-                  theme={{
-                    icon: {
-                      cursor: 'pointer',
-                    }
-                  }}
-                />
-              </td>
-            </tr>
-          ))}
+                <td
+                  {...theme.name}
+                >
+                  {(this.props.hoveredIndex === index) && (
+                    <Icon
+                      name='primary-plus'
+                      onClick={this.getHandleClickPlus(property)}
+                      theme={{
+                        icon: {
+                          cursor: 'pointer',
+                          position: 'absolute',
+                        },
+                        svg: {
+                          width: 22,
+                          height: 22,
+                        },
+                      }}
+                    />)}
+                    <span
+                      {...nameSpanStyle}
+                    >
+                      {property.name}
+                    </span>
+                </td>
+                <td
+                  {...theme.column}
+                >
+                  {property.type}
+                </td>
+                <td
+                  {...theme.column}
+                >
+                  {property.default}
+                </td>
+                <td
+                  {...theme.description}
+                >
+                  {property.description}
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     )
@@ -100,6 +200,16 @@ const cellBorder = {
   paddingBottom: Spacing.tiny,
 }
 
+const headerCellBase = Object.assign({}, cellBorder, {
+  fontWeight: 100,
+  textAlign: 'left',
+  color: Colors.grey200,
+})
+
+const selectedStyle = {
+  backgroundColor: 'rgba(73,79,82, .2)',
+}
+
 const defaultTheme = {
   properties: {
     ...(Object.assign({}, Fonts.monospace, {
@@ -108,9 +218,23 @@ const defaultTheme = {
     width: '100%',
     maxWidth: '100%',
   },
+  headerCell: Object.assign({}, headerCellBase, {
+    paddingLeft: Spacing.small,
+  }),
+  firstHeader: Object.assign({}, headerCellBase, {
+    paddingLeft: Spacing.small,
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+  }),
+  lastHeader: Object.assign({}, headerCellBase, {
+    paddingLeft: Spacing.tiny,
+  }),
   name: {
     ...cellBorder,
     paddingLeft: Spacing.small,
+    display: 'flex',
+    alignItems: 'center',
     color: '#02c95d',
   },
   description: {
@@ -128,7 +252,16 @@ const defaultTheme = {
   plus: {
     ...cellBorder,
   },
+  hoveredProp: {
+    // Sync with Component State Checkbox animation
+    transform: `translate3d(28px, 0, 0)`,
+    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
+  },
+  nonHoveredProp: {
+    transform: `translate3d(0, 0, 0)`,
+    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
+  },
 }
 
-const ThemedProperties = Theme('Properties', defaultTheme)(Properties)
+const ThemedProperties = Theme('Properties', defaultTheme)(PropertiesContainer)
 export default ThemedProperties
