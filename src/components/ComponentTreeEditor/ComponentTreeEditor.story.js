@@ -268,6 +268,8 @@ class TreeEditorContainer extends React.Component {
           tree={this.state.tree}
           completionData={completionData}
           onChange={action('onChange')}
+          onRemoveProp={action('onRemoveProp')}
+          onChangePropValue={action('onChangePropValue')}
         />
         <div>
           {[

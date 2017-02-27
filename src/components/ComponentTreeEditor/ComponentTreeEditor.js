@@ -4,6 +4,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
 
+import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
 import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
@@ -22,6 +23,8 @@ type PropsT = {
   tree: ComponentTree,
   completionData: CompletionDataT,
   onChange?: Function,
+  onRemoveProp?: Function,
+  onChangePropValue?: Function,
 }
 
 const defaultProps = {
@@ -71,6 +74,8 @@ const getComponentTreeEditorPlugins = (
     layout,
     completionData,
     onChange: editor.handleTreeChange,
+    onRemoveProp: editor.handleRemoveProp,
+    onChangePropValue: editor.handleChangePropValue,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -129,6 +134,14 @@ class ComponentTreeEditor extends React.Component {
   handleTreeChange = (tree: ComponentTree) => {
     this.setState(this.getStateFromTreeAndProps(tree, this.props))
     this.props.onChange && this.props.onChange(tree)
+  }
+
+  handleRemoveProp = (nodeId: NodeIdentifierT) => {
+    this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
+  }
+
+  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
+    this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
   }
 }
 
