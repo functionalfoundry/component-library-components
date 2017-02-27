@@ -4,12 +4,14 @@ import {
   RadioGroup,
   Radio,
   View,
+  Text,
 } from '@workflo/components'
 import {
   Colors,
   Spacing,
 } from '@workflo/styles'
 import AlignedPointer from '@workflo/components/lib/AlignedPointer'
+import IconButtonGroup from '@workflo/components/lib/IconButtonGroup/IconButtonGroup'
 
 type InputTypeT = 'Radio' | 'Button'
 
@@ -26,6 +28,7 @@ type PropsT = {
   onClick: Function,
   onOpen: Function,
   onClose: Function,
+
 }
 
 class QuickAction extends React.Component {
@@ -109,6 +112,53 @@ const Content = ({
             }
           }}
         />
+      )
+    case 'Icon':
+      return (
+        <AlignedPointer
+          position='Top'
+          targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
+          portalTriggers={['Click outside', 'Mouse leave']}
+          portal={(
+            <View
+              theme={{
+                view: {
+                  alignItems: 'center',
+                },
+              }}
+            >
+              <Text
+                theme={{
+                  text: {
+                    textTransform: 'uppercase',
+                    marginBottom: 8,
+                  },
+                }}
+              >
+                Alignment
+              </Text>
+              <IconButtonGroup
+                onChange={(value) => onChange(value)}
+                icons={input.options}
+                selectedIconName={input.value}
+              />
+            </View>
+          )}
+        >
+          <Icon
+            name={icon}
+            size='large'
+            onClick={onClick}
+            stroke={getColor(shade)}
+            fill={getColor(shade)}
+            theme={{
+              icon: {
+                cursor: 'pointer',
+                display: 'inline-block',
+              }
+            }}
+          />
+        </AlignedPointer>
       )
     default:
       console.error('Invalid input type set for QuickAction')

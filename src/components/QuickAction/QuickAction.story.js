@@ -31,6 +31,30 @@ storiesOf('Quick Action', module)
       </Preview>
       <Preview
         theme={previewTheme}
+        label='Icon'
+      >
+        <QuickAction
+          icon='alignment'
+          shade='Light'
+          input={{
+            type: 'Icon',
+            value: 'align-left',
+            options: [{
+              name: 'align-left',
+              hint: 'Left',
+            }, {
+              name: 'align-center',
+              hint: 'Center',
+            }, {
+              name: 'align-right',
+              hint: 'Right',
+            }]
+          }}
+          onClick={action('onClick')}
+        />
+      </Preview>
+      <Preview
+        theme={previewTheme}
         label='Button'
       >
         <QuickAction
