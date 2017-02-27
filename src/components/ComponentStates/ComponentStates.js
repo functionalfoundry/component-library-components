@@ -70,6 +70,14 @@ const ComponentStates = (props: PropsT) => {
         ...datum.value.harnessCard,
         isSelected: datum.descriptor.isSelected,
       })}
+      theme={{
+        multiSizeGrid: {
+          margin: -4,
+        },
+        multiSizeGridItem: {
+          margin: 4,
+        },
+      }}
     />
   )
 }
