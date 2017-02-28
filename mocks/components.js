@@ -10,6 +10,13 @@ const properties = [
     type: 'object',
     default: '{}',
     description: 'The host object with id, name, profilePhoto',
+  },
+  {
+    name: 'showAllPictures',
+    type: 'boolean',
+    default: 'false',
+    description: 'Whether to show all the listed pictures or just the top 3 most popular.',
+    isUsedByTreeEditor: true,
   }
 ]
 

@@ -12,18 +12,19 @@ storiesOf('Quick Action', module)
     <PreviewContainer>
       <Preview
         theme={previewTheme}
-        label='Regular'
+        label='Radio'
       >
         <QuickAction
-          icon='delete'
+          icon='theme'
           shade='Light'
+          label='Theme'
           input={{
             options: [
-              'Left',
-              'Center',
-              'Right',
+              'Light',
+              'Dark',
+              'Grey',
             ],
-            value: 'Center',
+            value: 'Dark',
             type: 'Radio',
           }}
           onClick={action('onClick')}
@@ -35,6 +36,7 @@ storiesOf('Quick Action', module)
       >
         <QuickAction
           icon='alignment'
+          label='Alignment'
           shade='Light'
           input={{
             type: 'Icon',
@@ -60,6 +62,7 @@ storiesOf('Quick Action', module)
         <QuickAction
           icon='delete'
           shade='Light'
+          label='Delete'
           input={{
             type: 'Button',
           }}
