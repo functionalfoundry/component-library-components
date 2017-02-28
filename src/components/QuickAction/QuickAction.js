@@ -23,6 +23,7 @@ type PropsT = {
     options: Array<string>,
     value: string,
   },
+  label: string,
   shade: 'Dark' | 'Light',
   onChange: Function,
   onClick: Function,
@@ -60,6 +61,7 @@ class QuickAction extends React.Component {
 const Content = ({
   input,
   icon,
+  label,
   shade,
   onChange,
   onClick,
@@ -75,11 +77,34 @@ const Content = ({
           targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
           portalTriggers={['Click outside', 'Mouse leave']}
           portal={(
-            <Radios
-              options={input.options}
-              value={input.value}
-              onChange={(value) => onChange(value)}
-            />
+            <View
+              theme={{
+                view: {
+                  alignItems: 'center',
+                },
+              }}
+            >
+              <Text
+                theme={{
+                  text: {
+                    textTransform: 'uppercase',
+                    marginBottom: 6,
+                  },
+                }}
+              >
+                {label}
+              </Text>
+              <Radios
+                options={input.options}
+                value={input.value}
+                onChange={(value) => onChange(value)}
+                theme={{
+                  radios: {
+                    marginRight: 40,
+                  },
+                }}
+              />
+            </View>
           )}
         >
           <Icon
@@ -98,7 +123,7 @@ const Content = ({
         </AlignedPointer>
       )
     case 'Button':
-      return (
+      const iconElement = (
         <Icon
           name={icon}
           size='large'
@@ -113,6 +138,37 @@ const Content = ({
           }}
         />
       )
+      if (label) {
+        return (
+          <AlignedPointer
+            position='Top'
+            targetTriggers={['Mouse enter', 'Mouse leave']}
+            portalTriggers={['Mouse leave']}
+            portal={(
+              <View
+                theme={{
+                  view: {
+                    alignItems: 'center',
+                  },
+                }}
+              >
+                <Text
+                  theme={{
+                    text: {
+                      textTransform: 'uppercase',
+                    },
+                  }}
+                >
+                  {label}
+                </Text>
+              </View>
+            )}
+          >
+            {iconElement}
+          </AlignedPointer>
+        )
+      }
+      return iconElement
     case 'Icon':
       return (
         <AlignedPointer
@@ -135,7 +191,7 @@ const Content = ({
                   },
                 }}
               >
-                Alignment
+                {label}
               </Text>
               <IconButtonGroup
                 onChange={(value) => onChange(value)}

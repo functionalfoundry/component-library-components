@@ -61,6 +61,7 @@ type Props = {
   theme: Object,
   onChangeComponentTree: Function,
   onAddPropToPropKeyValues: Function,
+  onRemovePropFromPropKeyValues: Function,
   onChangeActions: Function,
   onChangeData: Function,
 }
@@ -87,6 +88,7 @@ const LiveView = ({
   onUpdateComponentState, // ?
   onChangeComponentTree,
   onAddPropToPropKeyValues,
+  onRemovePropFromPropKeyValues,
   onChangeData,
   onChangeActions,
   harness,
@@ -134,6 +136,7 @@ const LiveView = ({
       <Properties
         properties={component.properties}
         onClickPlus={onAddPropToPropKeyValues}
+        onClickMinus={onRemovePropFromPropKeyValues}
       />
     </View>
   </View>

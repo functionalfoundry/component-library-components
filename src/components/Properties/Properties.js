@@ -19,6 +19,7 @@ type PropertyT = {
 type PropsT = {
   properties: Array<PropertyT>,
   onClickPlus: Function,
+  onClickMinus: Function,
 }
 
 class PropertiesContainer extends React.Component {
@@ -59,6 +60,15 @@ class Properties extends React.Component {
       const { onClickPlus } = this.props
       if (onClickPlus) {
         onClickPlus(property.name)
+      }
+    }
+  }
+
+  getHandleClickMinus = (property) => {
+    return () => {
+      const { onClickMinus } = this.props
+      if (onClickMinus) {
+        onClickMinus(property.name)
       }
     }
   }
@@ -135,55 +145,16 @@ class Properties extends React.Component {
         >
           {this.sort(properties).map((property, index) => {
             const isHovering = this.props.hoveredIndex === index
-            const nameSpanStyle = isHovering ? theme.hoveredProp : theme.nonHoveredProp
 
             return (
-              <tr
-                {...theme.row}
-                style={index === this.props.hoveredIndex ? selectedStyle : {}}
-                onMouseEnter={this.getHandleMouseEnter(index)}
-                key={index}
-              >
-                <td
-                  {...theme.name}
-                >
-                  {(this.props.hoveredIndex === index) && (
-                    <Icon
-                      name='primary-plus'
-                      onClick={this.getHandleClickPlus(property)}
-                      theme={{
-                        icon: {
-                          cursor: 'pointer',
-                          position: 'absolute',
-                        },
-                        svg: {
-                          width: 22,
-                          height: 22,
-                        },
-                      }}
-                    />)}
-                    <span
-                      {...nameSpanStyle}
-                    >
-                      {property.name}
-                    </span>
-                </td>
-                <td
-                  {...theme.column}
-                >
-                  {property.type}
-                </td>
-                <td
-                  {...theme.column}
-                >
-                  {property.default}
-                </td>
-                <td
-                  {...theme.description}
-                >
-                  {property.description}
-                </td>
-              </tr>
+              <ThemedRow
+                property={property}
+                isHovering={isHovering}
+                getHandleMouseEnter={this.getHandleMouseEnter}
+                getHandleClickPlus={this.getHandleClickPlus}
+                getHandleClickMinus={this.getHandleClickMinus}
+                index={index}
+              />
             )
           })}
         </tbody>
@@ -191,6 +162,81 @@ class Properties extends React.Component {
     )
   }
 }
+
+const Row = ({
+  property,
+  theme,
+  isHovering,
+  getHandleMouseEnter,
+  getHandleClickPlus,
+  getHandleClickMinus,
+  index,
+}) => (
+  <tr
+    {...theme.row}
+    style={isHovering ? selectedStyle : {}}
+    onMouseEnter={getHandleMouseEnter(index)}
+    key={index}
+  >
+    <td
+      {...theme.prop}
+    >
+      {isHovering && !property.isUsedByTreeEditor && (
+        <Icon
+          name='primary-plus'
+          onClick={getHandleClickPlus(property)}
+          theme={{
+            icon: {
+              cursor: 'pointer',
+              position: 'absolute',
+            },
+            svg: {
+              width: 22,
+              height: 22,
+            },
+          }}
+        />
+      )}
+      {property.isUsedByTreeEditor && (
+        <Icon
+          name='delete'
+          stroke={Colors.grey600}
+          onClick={getHandleClickMinus(property)}
+          theme={{
+            icon: {
+              cursor: 'pointer',
+              position: 'absolute',
+            },
+            svg: {
+              width: 22,
+              height: 22,
+            },
+          }}
+        />
+      )}
+      <span
+        {...theme.propName}
+      >
+        {property.name}
+      </span>
+    </td>
+    <td
+      {...theme.column}
+    >
+      {property.type}
+    </td>
+    <td
+      {...theme.column}
+    >
+      {property.default}
+    </td>
+    <td
+      {...theme.description}
+    >
+      {property.description}
+    </td>
+  </tr>
+)
 
 const cellBorder = {
   borderBottom: `1px solid ${Colors.grey800}`,
@@ -211,6 +257,41 @@ const selectedStyle = {
   backgroundColor: 'rgba(73,79,82, .2)',
 }
 
+const defaultRowTheme = ({
+  property,
+  isHovering,
+}) => ({
+  prop: {
+    ...cellBorder,
+    paddingLeft: Spacing.small,
+    display: 'flex',
+    alignItems: 'center',
+    color: !property.isUsedByTreeEditor ? '#02c95d' : Colors.grey600,
+  },
+  propName: {
+    // Sync with Component State Checkbox animation
+    transform: (isHovering || property.isUsedByTreeEditor) ? `translate3d(28px, 0, 0)` : `translate3d(0, 0, 0)`,
+    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
+  },
+  description: {
+    ...cellBorder,
+    color: Colors.grey400,
+    '@media (max-width: 800px)': {
+      display: 'none',
+    },
+  },
+  column: {
+    ...cellBorder,
+    color: !property.isUsedByTreeEditor ? Colors.grey200 : Colors.grey600,
+    paddingLeft: Spacing.small,
+  },
+  plus: {
+    ...cellBorder,
+  },
+})
+
+const ThemedRow = Theme('PropertiesRow', defaultRowTheme)(Row)
+
 const defaultTheme = {
   properties: {
     ...(Object.assign({}, Fonts.monospace, {
@@ -230,38 +311,10 @@ const defaultTheme = {
   }),
   lastHeader: Object.assign({}, headerCellBase, {
     paddingLeft: Spacing.tiny,
-  }),
-  name: {
-    ...cellBorder,
-    paddingLeft: Spacing.small,
-    display: 'flex',
-    alignItems: 'center',
-    color: '#02c95d',
-  },
-  description: {
-    ...cellBorder,
-    color: Colors.grey400,
     '@media (max-width: 800px)': {
       display: 'none',
     },
-  },
-  column: {
-    ...cellBorder,
-    color: Colors.grey200,
-    paddingLeft: Spacing.small,
-  },
-  plus: {
-    ...cellBorder,
-  },
-  hoveredProp: {
-    // Sync with Component State Checkbox animation
-    transform: `translate3d(28px, 0, 0)`,
-    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
-  },
-  nonHoveredProp: {
-    transform: `translate3d(0, 0, 0)`,
-    transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
-  },
+  }),
 }
 
 const ThemedProperties = Theme('Properties', defaultTheme)(PropertiesContainer)
