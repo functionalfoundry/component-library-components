@@ -76,6 +76,8 @@ const Content = ({
           position='Top'
           targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
           portalTriggers={['Click outside', 'Mouse leave']}
+          onOpen={onOpen}
+          onClose={onClose}
           portal={(
             <View
               theme={{
@@ -175,6 +177,8 @@ const Content = ({
           position='Top'
           targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
           portalTriggers={['Click outside', 'Mouse leave']}
+          onOpen={onOpen}
+          onClose={onClose}
           portal={(
             <View
               theme={{
