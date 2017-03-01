@@ -242,7 +242,7 @@ const defaultTheme = {
     flex: 1,
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: Spacing.tiny,
+    paddingLeft: Spacing.tiny,
   },
 }
 
