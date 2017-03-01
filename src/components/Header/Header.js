@@ -5,6 +5,7 @@ import { SearchT } from '../../types/Search'
 import {
   View,
   Icon,
+  HoverIcon,
   Heading,
   EditableText,
   Search,
@@ -127,8 +128,9 @@ const Back = ({
     {...theme.back}
   >
     {onClickBack &&
-      <Icon
+      <HoverIcon
         name='back'
+        hoverName='back-hover'
         size='large'
         {...theme.backButton}
         onClick={onClickBack}
