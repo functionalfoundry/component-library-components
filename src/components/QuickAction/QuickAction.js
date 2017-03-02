@@ -74,8 +74,8 @@ const Content = ({
       return (
         <AlignedPointer
           position='Top'
-          targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
-          portalTriggers={['Click outside', 'Mouse leave']}
+          openTriggers={['Mouse enter']}
+          closeTriggers={['Mouse leave']}
           onOpen={onOpen}
           onClose={onClose}
           portal={(
@@ -144,8 +144,8 @@ const Content = ({
         return (
           <AlignedPointer
             position='Top'
-            targetTriggers={['Mouse enter', 'Mouse leave']}
-            portalTriggers={['Mouse leave']}
+            openTriggers={['Mouse enter']}
+            closeTriggers={['Mouse leave']}
             portal={(
               <View
                 theme={{
@@ -175,8 +175,8 @@ const Content = ({
       return (
         <AlignedPointer
           position='Top'
-          targetTriggers={['Click inside', 'Mouse enter', 'Mouse leave']}
-          portalTriggers={['Click outside', 'Mouse leave']}
+          openTriggers={['Mouse enter']}
+          closeTriggers={['Mouse leave']}
           onOpen={onOpen}
           onClose={onClose}
           portal={(
