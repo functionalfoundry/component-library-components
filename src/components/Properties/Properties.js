@@ -1,6 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import {
+  HoverIcon,
   Icon,
 } from '@workflo/components'
 import {
@@ -182,8 +183,9 @@ const Row = ({
       {...theme.prop}
     >
       {isHovering && !property.isUsedByTreeEditor && (
-        <Icon
+        <HoverIcon
           name='primary-plus'
+          hoverName='primary-plus-hover'
           onClick={getHandleClickPlus(property)}
           theme={{
             icon: {
@@ -199,13 +201,16 @@ const Row = ({
       )}
       {property.isUsedByTreeEditor && (
         <Icon
-          name='delete'
+          name='minus'
           stroke={Colors.grey600}
           onClick={getHandleClickMinus(property)}
           theme={{
             icon: {
               cursor: 'pointer',
               position: 'absolute',
+              ':hover': {
+                stroke: Colors.grey200,
+              },
             },
             svg: {
               width: 22,
@@ -282,7 +287,7 @@ const defaultRowTheme = ({
   },
   column: {
     ...cellBorder,
-    color: !property.isUsedByTreeEditor ? Colors.grey200 : Colors.grey600,
+    color: Colors.grey200,
     paddingLeft: Spacing.small,
   },
   plus: {
