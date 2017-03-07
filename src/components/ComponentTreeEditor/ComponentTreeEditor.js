@@ -5,7 +5,10 @@ import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
 
 import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
-import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
+import {
+  Component,
+  ComponentTree,
+} from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
 import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 import {
@@ -24,7 +27,10 @@ type PropsT = {
   completionData: CompletionDataT,
   onChange?: Function,
   onRemoveProp?: Function,
+  onRemoveComponent?: Function,
+  onInsertComponent?: Function,
   onChangePropValue?: Function,
+  onChangeComponentName?: Function,
 }
 
 const defaultProps = {
@@ -75,7 +81,10 @@ const getComponentTreeEditorPlugins = (
     completionData,
     onChange: editor.handleTreeChange,
     onRemoveProp: editor.handleRemoveProp,
+    onRemoveComponent: editor.handleRemoveComponent,
+    onInsertComponent: editor.handleInsertComponent,
     onChangePropValue: editor.handleChangePropValue,
+    onChangeComponentName: editor.handleChangeComponentName,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -140,8 +149,28 @@ class ComponentTreeEditor extends React.Component {
     this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
   }
 
+  handleRemoveComponent = (nodeId: NodeIdentifierT) => {
+    this.props.onRemoveComponent && this.props.onRemoveComponent(nodeId)
+  }
+
+  handleInsertComponent = (
+    parentNodeId: NodeIdentifierT,
+    index: number,
+    component: Component
+  ) => {
+    const { onInsertComponent } = this.props
+    onInsertComponent && onInsertComponent(
+      parentNodeId, index, component.toJS()
+    )
+  }
+
   handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
     this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
+  }
+
+  handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
+    const { onChangeComponentName } = this.props
+    onChangeComponentName && onChangeComponentName(nodeId, name)
   }
 }
 
