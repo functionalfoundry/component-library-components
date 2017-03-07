@@ -109,7 +109,7 @@ class PropNameRenderer extends React.Component {
         inline
       >
         <Trigger
-          triggerOn={['Hover', 'Mouse leave']}
+          triggerOn={['Mouse enter', 'Mouse leave']}
           onTrigger={this.handleTrigger}
         >
           <View
@@ -258,7 +258,7 @@ class TextRenderer extends React.Component {
         inline
       >
         <Trigger
-          triggerOn={['Hover', 'Mouse leave']}
+          triggerOn={['Mouse enter', 'Mouse leave']}
           onTrigger={this.handleTrigger}
         >
           <View
