@@ -17,13 +17,16 @@ import LivePreview from '../LivePreview'
 import StaggerIcons from '../StaggerIcons'
 import RotateFade from '../RotateFade'
 
+/**
+ * Prop types
+ */
+
 type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
 type VerticalAlignmentT = 'Top' | 'Center' | 'Right'
 type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
 
 type ComponentStateT = {
   name: string,
-  propMap: Object,
 }
 
 type HarnessT = {
@@ -48,31 +51,31 @@ type HarnessT = {
 }
 
 type PropsT = {
-  component: {
-    implementation: any,
-  },
   harnessCard: {
+    element: ?React.Element<*>,
     harness: HarnessT,
-    actions: Array<React.Element>,
+    actions: Array<React.Element<*>>,
     isSelected: boolean,
     forceShowActions: boolean,
   },
   onClickTitle: Function,
   onChangeIsSelected: Function,
+  onMouseEnter: Function,
+  onMouseLeave: Function,
+  isHovering: ?boolean,
   theme: Object,
 }
 
-const defaultComponent = () => <div />
+/**
+ * Default props
+ */
 
 const defaultProps = {
-  component: {
-    implementation: defaultComponent,
-  },
   harnessCard: {
+    element: null,
     harness: {
       componentState: {
         name: '',
-        propMap: {},
       },
       alignment: {
         horizontal: 'Center',
@@ -90,10 +93,24 @@ const defaultProps = {
   },
   onClickTitle: () => {},
   onChangeIsSelected: () => {},
+  onMouseEnter: () => {},
+  onMouseLeave: () => {},
+  isHovering: false,
+}
+
+/**
+ * ComponentStateContainer implementation
+ */
+
+type StateContainerStateT = {
+  isHovering?: boolean,
 }
 
 export default class ComponentStateContainer extends React.Component {
-  constructor (props) {
+  props: PropsT
+  state: StateContainerStateT
+
+  constructor (props: PropsT) {
     super(props)
     this.state = {
       isHovering: false,
@@ -120,13 +137,19 @@ export default class ComponentStateContainer extends React.Component {
   }
 }
 
+/**
+ * ComponentState implementation
+ */
+
 class ComponentState extends React.Component {
   props: PropsT
   numOpenPopups: number
   iconRefs: Array<any>
 
-  constructor () {
-    super()
+  static defaultProps = defaultProps
+
+  constructor (props: PropsT) {
+    super(props)
     // We're using a number instead of a boolean to track
     // whether to force show quick actions while a quickaction popover is open
     // since sliding to an adjacent icon will open the next popover before
@@ -166,7 +189,6 @@ class ComponentState extends React.Component {
 
   render () {
     const {
-      component,
       harnessCard,
       onChangeIsSelected,
       onClickTitle,
@@ -210,9 +232,9 @@ class ComponentState extends React.Component {
               {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
                 <StaggerIcons>
                   {harnessCard.actions.map((action, index) => (
-                    <div 
+                    <div
                       {...theme.iconGroup}
-                      key={index} 
+                      key={index}
                       ref={(c) => this.iconRefs[index] = c}
                     >
                       {React.cloneElement(action, {
@@ -225,7 +247,7 @@ class ComponentState extends React.Component {
                 </StaggerIcons>}
               {(!isHovering && !harnessCard.isSelected && !forceShowActions) &&
                 <div ref={(c) => this.storeRef('more', c)}>
-                  <RotateFade >
+                  <RotateFade>
                     <Icon
                       name='more-horizontal'
                       size='large'
@@ -240,8 +262,7 @@ class ComponentState extends React.Component {
             {...theme.preview}
           >
             <LivePreview
-              Component={component && component.implementation}
-              propMap={harnessCard.harness.componentState.propMap}
+              element={harnessCard.element}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
               alignment={harnessCard.harness.alignment}
             />
@@ -328,7 +349,5 @@ const getScaledStyle = (isSelected) => {
     }
   }
 }
-
-ComponentState.defaultProps = defaultProps
 
 const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)

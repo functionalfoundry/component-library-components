@@ -8,9 +8,15 @@ import {
 } from '@workflo/components'
 
 const MyComponent = ({children}) => (
-  <div style={{ backgroundColor: 'magenta', width: 100, height: 100 }}>
+  <div style={{ backgroundColor: 'magenta', width: 100, height: 100, }}>
     {children}
   </div>
+)
+
+const element = (
+  <MyComponent>
+    <div>Inner Text</div>
+  </MyComponent>
 )
 
 const actions = [
@@ -54,17 +60,12 @@ storiesOf('Component State', module)
         }}
       >
         <ComponentState
-          component={{
-            implementation: MyComponent,
-          }}
           harnessCard={{
             actions,
+            element,
             harness: {
               componentState: {
                 name: 'With title',
-                propMap: {
-                  children: <div>Inner Text</div>,
-                },
               },
               alignment: {
                 horizontal: 'Right',

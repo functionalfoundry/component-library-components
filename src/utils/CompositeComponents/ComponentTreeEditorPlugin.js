@@ -26,6 +26,8 @@ type PluginOptionsT = {
   tree: ComponentTree,
   completionData?: CompletionDataT,
   onChange?: Function,
+  onRemoveProp?: Function,
+  onChangePropValue?: Function,
 }
 
 /**
@@ -134,6 +136,7 @@ class PropNameRenderer extends React.Component {
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const tree = Utils.removeProp(options.tree, prop.id)
     options.onChange && options.onChange(tree)
+    options.onRemoveProp && options.onRemoveProp(prop.id)
   }
 }
 
@@ -222,6 +225,7 @@ class PropValueRenderer extends React.Component {
       options.tree, prop.id, propValue.set('value', value)
     )
     options.onChange && options.onChange(tree)
+    options.onChangePropValue && options.onChangePropValue(prop.id, value)
   }
 }
 
