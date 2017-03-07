@@ -3,18 +3,25 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Set } from 'immutable'
-import { Popover, Trigger, View } from '@workflo/components'
-import { Colors } from '@workflo/styles'
+import {
+  AlignedTrigger,
+  EditableText,
+  Popover,
+  Trigger,
+  View
+} from '@workflo/components'
+import { Colors, Fonts } from '@workflo/styles'
 import {
   AnyPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
-import { ComponentTree, Prop, PropValue } from './ComponentTree'
+import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 import type {
   CompletionDataT,
   GlobalOptionsDataT,
   PropCompletionDataT,
 } from './Completion'
 
+const Immutable = require('immutable')
 const Slate = require('slate')
 const Utils = require('./ComponentTreeUtils')
 
@@ -27,7 +34,10 @@ type PluginOptionsT = {
   completionData?: CompletionDataT,
   onChange?: Function,
   onRemoveProp?: Function,
+  onRemoveComponent?: Function,
   onChangePropValue?: Function,
+  onInsertComponent?: Function,
+  onChangeComponentName?: Function,
 }
 
 /**
@@ -35,6 +45,25 @@ type PluginOptionsT = {
  */
 
 const defaultTheme = {
+  componentStart: {
+    position: 'relative',
+  },
+  componentRemover: {
+    cursor: 'pointer',
+    top: 0,
+    left: '-35px',
+    width: 35,
+    height: '100%',
+    display: 'inline-block',
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  componentName: {
+    color: '#00719e',
+    ...Fonts.code,
+  },
   propName: {
     position: 'relative',
     color: '#009e71',
@@ -84,7 +113,220 @@ type MarkRendererPropsT = {
 }
 
 /**
- * Property renderer
+ * Component tag renderer
+ */
+
+class ComponentTagRenderer extends React.Component {
+  props: MarkRendererPropsT
+
+  constructor (props) {
+    super(props)
+  }
+
+  render () {
+    const { children, mark, marks, theme } = this.props
+    const node = mark.getIn(['data', 'element', 'node'])
+    const tree = mark.getIn(['data', 'tree'])
+    const markNames = marks.reduce((out, mark) => (
+      out.add(mark.get('type'))
+    ), Set())
+
+    const isRoot = Immutable.is(tree.root, node)
+    const showAddChild = markNames.contains('component-open-tag-end')
+    const showSetText = markNames.contains('component-open-tag-end')
+    const showAddSibling = !isRoot && markNames.contains('component-end')
+
+    return (
+      <AlignedTrigger
+        position='Right'
+        openTriggers={['Mouse enter']}
+        closeTriggers={['Mouse leave']}
+        portal={
+          <View inline>
+            {
+              showAddChild &&
+              <button onClick={this.handleAddChild}>
+                Add child
+              </button>
+            }
+            {
+              showSetText &&
+              <button onClick={this.handleSetText}>
+                Set text
+              </button>
+            }
+            {
+              showAddSibling &&
+              <button onClick={this.handleAddSibling}>
+                Add sibling
+              </button>
+            }
+          </View>
+        }
+      >
+        <View
+          {...theme.componentEnd}
+          inline
+        >
+          <View inline>
+            {children}
+          </View>
+        </View>
+      </AlignedTrigger>
+    )
+  }
+
+  handleAddChild = () => {
+    const { options, mark } = this.props
+    const { onInsertComponent } = options
+    const component = mark.getIn(['data', 'element', 'node'])
+    onInsertComponent && onInsertComponent(component.id, 0, Component({}))
+  }
+
+  handleSetText = () => {
+  }
+
+  handleAddSibling = () => {
+    const { options, mark } = this.props
+    const { onInsertComponent } = options
+    const element = mark.getIn(['data', 'element'])
+    const parent = element.getIn(['data', 'parent'])
+    const index = element.getIn(['data', 'index'])
+    onInsertComponent && onInsertComponent(parent.id, index + 1, Component({}))
+  }
+}
+
+const ThemedComponentTagRenderer =
+  Theme('ComponentTagRenderer', defaultTheme)(ComponentTagRenderer)
+
+/**
+ * Component start renderer
+ */
+
+type ComponentStartRendererStateT = {
+  isShowingMinus: boolean,
+}
+
+class ComponentStartRenderer extends React.Component {
+  props: MarkRendererPropsT
+  state: ComponentStartRendererStateT
+
+  constructor (props) {
+    super(props)
+    this.state = { isShowingMinus: false }
+  }
+
+  render () {
+    const { children, theme, mark } = this.props
+    const { isShowingMinus } = this.state
+    const node = mark.getIn(['data', 'element', 'node'])
+    const tree = mark.getIn(['data', 'tree'])
+    const isRoot = Immutable.is(tree.root, node)
+    return (
+      <View
+        {...theme.componentStart}
+        inline
+      >
+        {!isRoot &&
+          <Trigger
+            triggerOn={['Mouse enter', 'Mouse leave']}
+            onTrigger={this.handleTrigger}
+          >
+            <View
+              {...theme.componentRemover}
+              inline
+            >
+              {isShowingMinus &&
+                <View onClick={this.handleClick} inline>
+                  {'-'}
+                </View>}
+            </View>
+          </Trigger>}
+        {children}
+      </View>
+    )
+  }
+
+  handleTrigger = () => {
+    this.setState({ isShowingMinus: !this.state.isShowingMinus })
+  }
+
+  handleClick = () => {
+    const { mark, options } = this.props
+    const component = mark.getIn(['data', 'element', 'node'])
+    const tree = Utils.removeComponent(options.tree, component.id)
+    options.onChange && options.onChange(tree)
+    options.onRemoveComponent && options.onRemoveComponent(component.id)
+  }
+}
+
+const ThemedComponentStartRenderer =
+  Theme('ComponentStartRenderer', defaultTheme)(ComponentStartRenderer)
+
+/**
+ * Component name renderer
+ */
+
+type ComponentNameRendererStateT = {
+  isEditing: boolean,
+  name?: string,
+}
+
+class ComponentNameRenderer extends React.Component {
+  props: MarkRendererPropsT
+  state: ComponentNameRendererStateT
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      isEditing: false,
+    }
+  }
+
+  render () {
+    const { children, mark, theme } = this.props
+    const component = mark.getIn(['data', 'element', 'node'])
+    return (
+      <View {...theme.componentName} inline>
+        <EditableText
+          isEditing={this.state.isEditing}
+          onStartEdit={this.handleStartEdit}
+          onStopEdit={this.handleStopEdit}
+          onChange={this.handleChange}
+          theme={{
+            text: {
+              ...Fonts.code,
+            },
+          }}
+          value={component.name}
+        />
+      </View>
+    )
+  }
+
+  handleStartEdit = () => {
+    this.setState({ isEditing: true })
+  }
+
+  handleStopEdit = () => {
+    const { mark, options } = this.props
+    const { onChangeComponentName } = options
+    const component = mark.getIn(['data', 'element', 'node'])
+    const { name } = this.state
+    this.setState({ isEditing: false })
+    onChangeComponentName && onChangeComponentName(component.id, name)
+  }
+
+  handleChange = (name) => {
+    this.setState({ name })
+  }
+}
+
+const ThemedComponentNameRenderer =
+  Theme('ComponentNameRenderer', defaultTheme)(ComponentNameRenderer)
+
+/**
+ * Property name renderer
  */
 
 type PropNameRendererStateT = {
@@ -298,6 +540,30 @@ const ThemedTextRenderer =
 const ComponentTreeEditorPlugin = (options: PluginOptionsT) => ({
   schema: {
     marks: {
+      'component-start': (props: Object) => (
+        <ThemedComponentStartRenderer
+          {...props}
+          options={options}
+        />
+      ),
+      'component-open-tag-end': (props: Object) => (
+        <ThemedComponentTagRenderer
+           {...props}
+          options={options}
+        />
+      ),
+      'component-name': (props: Object) => (
+        <ThemedComponentNameRenderer
+          {...props}
+          options={options}
+        />
+      ),
+      'component-end': (props: Object) => (
+        <ThemedComponentTagRenderer
+           {...props}
+          options={options}
+        />
+      ),
       'prop-name': (props: Object) => (
         <ThemedPropNameRenderer
           {...props}
