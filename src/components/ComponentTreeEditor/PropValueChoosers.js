@@ -57,6 +57,7 @@ const isOptionAppropriateForProp = (option, prop: Prop, value: PropValue) => {
   } else {
     return option.source !== 'actions'
         && option.name !== 'initialState'
+        && option.name !== 'state'
   }
 }
 
