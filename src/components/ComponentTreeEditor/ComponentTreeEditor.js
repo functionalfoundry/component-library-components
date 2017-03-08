@@ -160,7 +160,7 @@ class ComponentTreeEditor extends React.Component {
   ) => {
     const { onInsertComponent } = this.props
     onInsertComponent && onInsertComponent(
-      parentNodeId, index, component.toJS()
+      parentNodeId, index, component, component.toJS()
     )
   }
 

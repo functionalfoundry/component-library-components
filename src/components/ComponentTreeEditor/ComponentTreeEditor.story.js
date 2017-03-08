@@ -4,6 +4,9 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import { List } from 'immutable'
+import type {
+  NodeIdentifierT
+} from '../../utils/CompositeComponents/ComponentTree'
 import {
   Component,
   ComponentTree,
@@ -11,6 +14,7 @@ import {
   PropValue,
 } from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
+
 const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 const completionData = {
@@ -261,6 +265,28 @@ class TreeEditorContainer extends React.Component {
     })
   }
 
+  handleInsertComponent = (
+    parentId: NodeIdentifierT,
+    index: number,
+    component: Component
+  ) => {
+    action('onInsertComponent').call(null, parentId, index, component)
+    const tree = Utils.insertComponent(
+      this.state.tree, parentId, index,
+      component.set('id', Date.now().toString())
+    )
+    this.setState({ tree })
+  }
+
+  handleChangeComponentName = (
+    nodeId: NodeIdentifierT,
+    name: string,
+  ) => {
+    action('onChangeComponentName').call(null, nodeId, name)
+    const tree = Utils.setComponentName(this.state.tree, nodeId, name)
+    this.setState({ tree })
+  }
+
   render () {
     return (
       <div>
@@ -270,9 +296,9 @@ class TreeEditorContainer extends React.Component {
           onChange={action('onChange')}
           onRemoveProp={action('onRemoveProp')}
           onRemoveComponent={action('onRemoveComponent')}
-          onInsertComponent={action('onInsertComponent')}
+          onInsertComponent={this.handleInsertComponent}
           onChangePropValue={action('onChangePropValue')}
-          onChangeComponentName={action('onChangeComponentName')}
+          onChangeComponentName={this.handleChangeComponentName}
         />
         <div>
           {[
