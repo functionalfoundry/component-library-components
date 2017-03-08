@@ -8,7 +8,6 @@ import {
   HoverIcon,
   Heading,
   EditableText,
-  Search,
   // ProfilePhoto,
 } from '@workflo/components'
 import {
@@ -35,7 +34,7 @@ type Props = {
   primaryAction: ActionT,
   secondaryActions: Array<ActionT>,
   quickActions: Array<ActionT>,
-  search: SearchT,
+  search?: React.Element,
   theme: Object,
 }
 
@@ -147,22 +146,20 @@ const Back = ({
 type ActionsPropsT = {
   profile: Object,
   actions: ActionsT,
-  search: SearchT,
+  search?: React.Element,
   theme: Object,
 }
 
 const Actions = ({
   profile = {},
   actions = [],
-  search = {},
+  search,
   theme,
 }: ActionsPropsT) => (
   <View
     {...theme.actions}
   >
-    <Search
-      {...search}
-    />
+    {search}
     {actions}
     {/* <ProfilePhoto
       size='medium'
