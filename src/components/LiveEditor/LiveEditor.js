@@ -25,7 +25,10 @@ type DataT = {
 type PropsT = {
   onChangeComponentTree?: Function,
   onRemoveProp?: Function,
+  onRemoveComponent?: Function,
+  onInsertComponent?: Function,
   onChangePropValue?: Function,
+  onChangeComponentName?: Function,
   onChangeData: Function,
   onChangeActions: Function,
   componentTree: Object,
@@ -94,9 +97,12 @@ class LiveEditor extends React.Component {
       componentTree,
       completionData,
       onChangeComponentTree,
+      onChangeComponentName,
       onChangeData,
       onChangeActions,
+      onChangePropValue,
       onRemoveProp,
+      onRemoveComponent,
       actions,
       data,
       theme,
@@ -121,8 +127,10 @@ class LiveEditor extends React.Component {
               tree={TreeUtils.createTree(componentTree)}
               completionData={completionData}
               onChange={this.handleTreeChange}
-              onRemoveProp={this.handleRemoveProp}
-              onChangePropValue={this.handleChangePropValue}
+              onChangeComponentName={onChangeComponentName}
+              onChangePropValue={onChangePropValue}
+              onRemoveProp={onRemoveProp}
+              onRemoveComponent={onRemoveComponent}
             />
           </TabPanel>
           <TabPanel>
