@@ -90,7 +90,7 @@ const Content = ({
                 theme={{
                   text: {
                     textTransform: 'uppercase',
-                    marginBottom: 6,
+                    marginBottom: 4,
                   },
                 }}
               >
@@ -191,7 +191,7 @@ const Content = ({
                 theme={{
                   text: {
                     textTransform: 'uppercase',
-                    marginBottom: 8,
+                    marginBottom: 4,
                   },
                 }}
               >
