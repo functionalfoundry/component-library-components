@@ -7,7 +7,7 @@ const properties = [
   },
   {
     name: 'host',
-    type: 'object',
+    type: 'HostT<name: string, profilePhoto: string, address: AddressT>',
     default: '{}',
     description: 'The host object with id, name, profilePhoto',
   },

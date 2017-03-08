@@ -108,7 +108,9 @@ class Properties extends React.Component {
         {...theme.properties}
         cellSpacing='0'
       >
-        <tr>
+        <tr
+          {...theme.headerRow}
+        >
           <th
             {...theme.firstHeader}
           >
@@ -182,48 +184,52 @@ const Row = ({
     <td
       {...theme.prop}
     >
-      {isHovering && !property.isUsedByTreeEditor && (
-        <HoverIcon
-          name='primary-plus'
-          hoverName='primary-plus-hover'
-          onClick={getHandleClickPlus(property)}
-          theme={{
-            icon: {
-              cursor: 'pointer',
-              position: 'absolute',
-            },
-            svg: {
-              width: 22,
-              height: 22,
-            },
-          }}
-        />
-      )}
-      {property.isUsedByTreeEditor && (
-        <Icon
-          name='minus'
-          stroke={Colors.grey600}
-          onClick={getHandleClickMinus(property)}
-          theme={{
-            icon: {
-              cursor: 'pointer',
-              position: 'absolute',
-              ':hover': {
-                stroke: Colors.grey200,
-              },
-            },
-            svg: {
-              width: 22,
-              height: 22,
-            },
-          }}
-        />
-      )}
-      <span
-        {...theme.propName}
+      <div
+        {...theme.nameCellInner}
       >
-        {property.name}
-      </span>
+        {isHovering && !property.isUsedByTreeEditor && (
+          <HoverIcon
+            name='primary-plus'
+            hoverName='primary-plus-hover'
+            onClick={getHandleClickPlus(property)}
+            theme={{
+              icon: {
+                cursor: 'pointer',
+                position: 'absolute',
+              },
+              svg: {
+                width: 22,
+                height: 22,
+              },
+            }}
+          />
+        )}
+        {property.isUsedByTreeEditor && (
+          <Icon
+            name='minus'
+            stroke={Colors.grey600}
+            onClick={getHandleClickMinus(property)}
+            theme={{
+              icon: {
+                cursor: 'pointer',
+                position: 'absolute',
+                ':hover': {
+                  stroke: Colors.grey200,
+                },
+              },
+              svg: {
+                width: 22,
+                height: 22,
+              },
+            }}
+          />
+        )}
+        <span
+          {...theme.propName}
+        >
+          {property.name}
+        </span>
+      </div>
     </td>
     <td
       {...theme.column}
@@ -244,7 +250,6 @@ const Row = ({
 )
 
 const cellBorder = {
-  borderBottom: `1px solid ${Colors.grey800}`,
   paddingTop: Spacing.tiny,
   paddingLeft: Spacing.tiny,
   paddingRight: Spacing.small,
@@ -266,12 +271,19 @@ const defaultRowTheme = ({
   property,
   isHovering,
 }) => ({
+  row: {
+    borderBottom: `1px solid ${Colors.grey800}`,
+  },
   prop: {
-    ...cellBorder,
-    paddingLeft: Spacing.small,
+    ...Object.assign({}, cellBorder, {
+      paddingLeft: Spacing.small,
+      paddingRight: Spacing.large,
+    }),
+    color: !property.isUsedByTreeEditor ? '#02c95d' : Colors.grey600,
+  },
+  nameCellInner: {
     display: 'flex',
     alignItems: 'center',
-    color: !property.isUsedByTreeEditor ? '#02c95d' : Colors.grey600,
   },
   propName: {
     // Sync with Component State Checkbox animation
@@ -304,6 +316,10 @@ const defaultTheme = {
     })),
     width: '100%',
     maxWidth: '100%',
+    borderCollapse: 'collapse',
+  },
+  headerRow: {
+    borderBottom: `1px solid ${Colors.grey800}`,
   },
   headerCell: Object.assign({}, headerCellBase, {
     paddingLeft: Spacing.small,
