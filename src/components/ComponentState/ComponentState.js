@@ -13,6 +13,7 @@ import {
   Spacing,
 } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
+import TweenMax from 'gsap'
 import LivePreview from '../LivePreview'
 import StaggerIcons from '../StaggerIcons'
 import RotateFade from '../RotateFade'
@@ -175,17 +176,43 @@ class ComponentState extends React.Component {
 
   handleMouseEnter = () => {
     this.props.onMouseEnter()
-    console.log('show the icons :)')
+    // console.log('show the icons :)')
   }
 
   handleMouseLeave = () => {
     if(!this.getForceShowActions()) {
-      console.log('hide these icons: ', this.iconRefs)
+      // console.log('hide these icons: ', this.iconRefs)
     }
     this.props.onMouseLeave()
   }
 
+  handleChangeIsSelected = (isSelected) => {
+    const { clientWidth, clientHeight } = this.harnessCard
+    let to
+
+    if (isSelected) {
+      const margin = 15
+      const desiredWidth = clientWidth - 2*margin
+      const desiredHeight = clientHeight - 2*margin
+      const xFactor = desiredWidth / clientWidth
+      const yFactor = desiredHeight / clientHeight
+      to = {
+        transform: `scaleX(${xFactor}) scaleY(${yFactor})`,
+        ease: Power2.easeIn,
+      }
+    } else {
+      to = {
+        transform: 'scale(1)',
+        ease: Power2.easeIn,
+      }
+    }
+    TweenMax.to(this.harnessCard, 0.13, to)
+    this.props.onChangeIsSelected(isSelected)
+  }
+
   getForceShowActions = () => this.numOpenPopups > 0
+
+  storeHarnessCard = (c) => this.harnessCard = c
 
   render () {
     const {
@@ -199,10 +226,11 @@ class ComponentState extends React.Component {
     const forceShowActions = this.getForceShowActions()
 
     return (
-      <Card
+      <div
         {...theme.harnessCard}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        ref={this.storeHarnessCard}
         flush
       >
         <View
@@ -215,7 +243,7 @@ class ComponentState extends React.Component {
               {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
                 <Checkbox
                   checked={harnessCard.isSelected}
-                  onChange={() => onChangeIsSelected(!harnessCard.isSelected)}
+                  onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
                   theme={{ checkbox: { marginTop: 2 } }}
                 />}
               <Heading
@@ -268,7 +296,7 @@ class ComponentState extends React.Component {
             />
           </View>
         </View>
-      </Card>
+      </div>
     )
   }
 }
@@ -281,8 +309,8 @@ const defaultTheme = ({
   isHovering,
 }) => ({
   harnessCard: {
-    ...getScaledStyle(harnessCard.isSelected),
-    transition: 'all .4s ease',
+    display: 'flex',
+    // transition: 'all .4s ease',
     position: 'relative',
     overflow: 'hidden',
     width: 'inherit', // FIX
@@ -341,13 +369,5 @@ const defaultTheme = ({
     },
   },
 })
-
-const getScaledStyle = (isSelected) => {
-  if (isSelected) {
-    return {
-      transform: 'scale(.93)',
-    }
-  }
-}
 
 const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)

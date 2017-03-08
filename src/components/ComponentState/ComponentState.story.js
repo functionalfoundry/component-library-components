@@ -59,6 +59,21 @@ storiesOf('Component State', module)
           },
         }}
       >
+        <Container />
+      </Preview>
+    </PreviewContainer>
+  ))
+
+  class Container extends React.Component {
+    constructor (props) {
+      super(props)
+      this.state = {
+        isSelected: false,
+      }
+    }
+
+    render () {
+      return (
         <ComponentState
           harnessCard={{
             actions,
@@ -78,11 +93,11 @@ storiesOf('Component State', module)
                 },
               },
             },
-            isSelected: false,
+            isSelected: this.state.isSelected,
           }}
           onClickTitle={action('Click title')}
-          onChangeIsSelected={action('Change is selected')}
+          onChangeIsSelected={(isSelected) => this.setState({ isSelected })}
         />
-      </Preview>
-    </PreviewContainer>
-  ))
+      )
+    }
+  }
