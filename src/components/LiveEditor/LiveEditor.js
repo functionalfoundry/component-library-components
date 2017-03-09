@@ -45,8 +45,14 @@ const defaultProps = {
   },
 }
 
+type StateT = {
+  data: any,
+  actions: any,
+}
+
 class LiveEditor extends React.Component {
   props: PropsT
+  state: StateT
 
   static defaultProps = defaultProps
 
@@ -54,6 +60,8 @@ class LiveEditor extends React.Component {
     super(props)
     this.state = {
       selectedIndex: 0,
+      dataState: null,
+      actionsState: null,
     }
   }
 
@@ -71,6 +79,14 @@ class LiveEditor extends React.Component {
 
   handleChangePropValue = (nodeId, value) => {
     this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
+  }
+
+  handleChangeData = (dataState) => {
+    this.setState({ dataState })
+  }
+
+  handleChangeActions = (actionsState) => {
+    this.setState({ actionsState })
   }
 
   render () {
@@ -111,14 +127,18 @@ class LiveEditor extends React.Component {
           </TabPanel>
           <TabPanel>
             <Data
+              state={this.state.dataState}
               text={data.text}
               onChange={onChangeData}
+              onChangeState={this.handleChangeData}
             />
           </TabPanel>
           <TabPanel>
             <Data
+              state={this.state.actionsState}
               text={actions.text}
               onChange={onChangeActions}
+              onChangeState={this.handleChangeActions}
             />
           </TabPanel>
         </Tabs>

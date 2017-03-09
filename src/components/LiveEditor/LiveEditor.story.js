@@ -15,6 +15,8 @@ storiesOf('LiveEditor', module)
           componentTree={componentTree}
           data={{text: dataCode}}
           actions={{text: actionsCode}}
+          onChangeData={action('onChangeData')}
+          onChangeActions={action('onChangeActions')}
         />
       </Preview>
     </PreviewContainer>
