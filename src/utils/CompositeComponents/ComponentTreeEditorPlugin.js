@@ -133,7 +133,6 @@ class ComponentTagRenderer extends React.Component {
 
     const isRoot = Immutable.is(tree.root, node)
     const showAddChild = markNames.contains('component-open-tag-end')
-    const showSetText = markNames.contains('component-open-tag-end')
     const showAddSibling = !isRoot && markNames.contains('component-end')
 
     return (
@@ -147,12 +146,6 @@ class ComponentTagRenderer extends React.Component {
               showAddChild &&
               <button onClick={this.handleAddChild}>
                 Add child
-              </button>
-            }
-            {
-              showSetText &&
-              <button onClick={this.handleSetText}>
-                Set text
               </button>
             }
             {
