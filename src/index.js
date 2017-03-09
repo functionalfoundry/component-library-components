@@ -17,11 +17,13 @@ const LiveView = require('./components/LiveView')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RotateFade = require('./components/RotateFade')
+const Search = require('./components/Search')
 const StaggerIcons = require('./components/StaggerIcons')
 const SubHeader = require('./components/SubHeader')
 
 import actionsPlugin from './utils/ActionsBabelPlugin'
 import dataPlugin from './utils/DataBabelPlugin'
+
 
 const WorkfloComponents = {
   App,
@@ -43,6 +45,7 @@ const WorkfloComponents = {
   LiveView,
   Properties,
   QuickAction,
+  Search,
   StaggerIcons,
   SubHeader,
 }
