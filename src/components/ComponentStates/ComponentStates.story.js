@@ -55,7 +55,7 @@ const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) 
   actions,
   element,
   harness: {
-    id: Math.random(),
+    id: Math.random().toString(),
     componentState: {
       name,
     },
