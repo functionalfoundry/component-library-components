@@ -31,6 +31,7 @@ type ComponentStateT = {
 }
 
 type HarnessT = {
+  id: string,
   componentState: ComponentStateT,
   alignment: {
     horizontal: HorizontalAlignmentT,
@@ -228,6 +229,7 @@ class ComponentState extends React.Component {
     return (
       <div
         {...theme.harnessCard}
+        key={harnessCard.harness.id}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         ref={this.storeHarnessCard}
