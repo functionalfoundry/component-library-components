@@ -95,6 +95,7 @@ const getData = ({
       }),
     },
     descriptor: {
+      id: harnessCard.harness.id,
       isSelected: harnessCard.isSelected,
       size: harnessCard.harness.size,
     },
