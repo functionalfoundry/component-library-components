@@ -112,9 +112,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.54":
-  version "0.8.54"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.54.tgz#4c13802602ebd88cd86ab1172943c5dffb7c2c9a"
+"@workflo/components@^0.8.55":
+  version "0.8.55"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.55.tgz#e2061f68e62c87f28969231c5d1d74f5f80feb24"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
