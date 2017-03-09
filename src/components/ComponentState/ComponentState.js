@@ -365,7 +365,6 @@ const defaultTheme = ({
     cursor: 'pointer',
     ':hover': {
       textDecoration: 'underline',
-      color: Colors.grey600,
     },
   },
 })

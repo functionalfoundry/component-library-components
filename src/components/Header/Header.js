@@ -228,9 +228,10 @@ const defaultTheme = {
     color: Colors.grey300,
     justifyContent: 'flex-start',
     marginBottom: 0,
+    marginTop: Spacing.tiny,
   },
   subtitle: {
-    ...Fonts.huge,
+    ...Fonts.large,
     flex: '0 auto',
     color: 'white',
     marginLeft: LOGO_WIDTH + SEPARATOR_WIDTH,
