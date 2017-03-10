@@ -16,6 +16,7 @@ import StaggerChildren from '../../components/StaggerChildren'
 import {
   AnyPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
+import type { NodeIdentifierT } from './ComponentTree'
 import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 import type {
   CompletionDataT,
@@ -31,9 +32,14 @@ const Utils = require('./ComponentTreeUtils')
  * Plugin options
  */
 
+type InteractionStateT = {
+  editingComponentId?: NodeIdentifierT,
+}
+
 type PluginOptionsT = {
   tree: ComponentTree,
   completionData?: CompletionDataT,
+  interactionState: InteractionStateT,
   onChange?: Function,
   onRemoveProp?: Function,
   onRemoveComponent?: Function,
@@ -113,7 +119,7 @@ const defaultTheme = {
   componentTagActions: {
     display: 'flex',
     flexDirection: 'row',
-    padding: Spacing.tiny / 2
+    padding: Spacing.tiny / 2,
   },
   componentTagAction: {
     cursor: 'pointer',
@@ -340,6 +346,7 @@ type ComponentNameRendererStateT = {
 class ComponentNameRenderer extends React.Component {
   props: MarkRendererPropsT
   state: ComponentNameRendererStateT
+  editableText: EditableText
 
   constructor (props) {
     super(props)
@@ -348,12 +355,24 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
-  render () {
-    const { children, mark, theme } = this.props
+  componentDidMount () {
+    const { mark, options } = this.props
     const component = mark.getIn(['data', 'element', 'node'])
+    const interactionState = options.interactionState
+    const focus = component.id == interactionState.editingComponentId
+    if (focus && this.editableText) {
+      this.editableText.getWrappedInstance().focusAndSelect()
+    }
+  }
+
+  render () {
+    const { children, mark, theme, options } = this.props
+    const component = mark.getIn(['data', 'element', 'node'])
+
     return (
       <View {...theme.componentName} inline>
         <EditableText
+          ref={c => this.editableText = c}
           isEditing={this.state.isEditing}
           onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}

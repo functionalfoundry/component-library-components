@@ -26,6 +26,7 @@ import type { CompletionDataT } from '../../utils/CompositeComponents/Completion
 type PropsT = {
   tree: ComponentTree,
   completionData: CompletionDataT,
+  nodeIdGenerator: Function,
   onChange?: Function,
   onRemoveProp?: Function,
   onRemoveComponent?: Function,
@@ -163,6 +164,14 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
+  updateInteractionState = (interactionState: InteractionState) => {
+    this.setState((state, props) => {
+      return this.getStateFromTreeAndProps(
+        props.tree, props, interactionState
+      )
+    })
+  }
+
   handleChange = (editorState: State) => (
     this.setState({ editorState })
   )
@@ -187,6 +196,10 @@ class ComponentTreeEditor extends React.Component {
     index: number,
     component: Component
   ) => {
+    component = component.set('id', this.props.nodeIdGenerator())
+    this.updateInteractionState(this.state.interactionState.set(
+      'editingComponentId', component.get('id')
+    ))
     const { onInsertComponent } = this.props
     onInsertComponent && onInsertComponent(
       parentNodeId, index, component, component.toJS()
@@ -198,6 +211,9 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
+    this.updateInteractionState(this.state.interactionState.set(
+      'editingComponentId', null
+    ))
     const { onChangeComponentName } = this.props
     onChangeComponentName && onChangeComponentName(nodeId, name)
   }
