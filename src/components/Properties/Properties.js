@@ -205,17 +205,14 @@ const Row = ({
           />
         )}
         {property.isUsedByTreeEditor && (
-          <Icon
-            name='minus'
-            stroke={Colors.grey600}
+          <HoverIcon
+            name='primary-minus'
+            hoverName='primary-minus-hover'
             onClick={getHandleClickMinus(property)}
             theme={{
               icon: {
                 cursor: 'pointer',
                 position: 'absolute',
-                ':hover': {
-                  stroke: Colors.grey200,
-                },
               },
               svg: {
                 width: 22,
@@ -279,7 +276,7 @@ const defaultRowTheme = ({
       paddingLeft: Spacing.small,
       paddingRight: Spacing.large,
     }),
-    color: !property.isUsedByTreeEditor ? '#02c95d' : Colors.grey600,
+    color: !property.isUsedByTreeEditor ? 'white' : '#02c95d',
   },
   nameCellInner: {
     display: 'flex',
