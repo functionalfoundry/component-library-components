@@ -18,6 +18,7 @@ function loadStories () {
   require('../src/components/ComponentStates/ComponentStates.story.js')
   require('../src/components/ComponentTreeEditor/ComponentTreeEditor.story.js')
   require('../src/components/QuickAction/QuickAction.story.js')
+  require('../src/components/MultiPropertiesTable/MultiPropertiesTable.story.js')
   require('../src/components/RotateFade/RotateFade.story.js')
   require('../src/components/StaggerIcons/StaggerIcons.story.js')
   require('../src/components/Configuration/Configuration.story.js')

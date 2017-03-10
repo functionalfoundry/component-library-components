@@ -10,7 +10,7 @@ import {
   Spacing,
 } from '@workflo/styles'
 
-type PropertyT = {
+export type PropertyT = {
   name: string,
   type: string,
   default: string,
@@ -108,41 +108,43 @@ class Properties extends React.Component {
         {...theme.properties}
         cellSpacing='0'
       >
-        <tr
-          {...theme.headerRow}
-        >
-          <th
-            {...theme.firstHeader}
+        <thead>
+          <tr
+            {...theme.headerRow}
           >
-            Prop
-            <Icon
-              name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
-              theme={{
-                icon: {
-                  marginTop: 2,
-                  marginLeft: 6,
-                  cursor: 'pointer',
-                },
-              }}
-              onClick={onSortChange}
-            />
-          </th>
-          <th
-            {...theme.headerCell}
-          >
-            Type
-          </th>
-          <th
-            {...theme.headerCell}
-          >
-            Default
-          </th>
-          <th
-            {...theme.lastHeader}
-          >
-            Description
-          </th>
-        </tr>
+            <th
+              {...theme.firstHeader}
+            >
+              Prop
+              <Icon
+                name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
+                theme={{
+                  icon: {
+                    marginTop: 2,
+                    marginLeft: 6,
+                    cursor: 'pointer',
+                  },
+                }}
+                onClick={onSortChange}
+              />
+            </th>
+            <th
+              {...theme.headerCell}
+            >
+              Type
+            </th>
+            <th
+              {...theme.headerCell}
+            >
+              Default
+            </th>
+            <th
+              {...theme.lastHeader}
+            >
+              Description
+            </th>
+          </tr>
+        </thead>
         <tbody
           onMouseLeave={this.handleMouseLeave}
         >
@@ -151,6 +153,7 @@ class Properties extends React.Component {
 
             return (
               <ThemedRow
+                key={property.name}
                 property={property}
                 isHovering={isHovering}
                 getHandleMouseEnter={this.getHandleMouseEnter}
