@@ -46,6 +46,7 @@ type PluginOptionsT = {
   onChangePropValue?: Function,
   onInsertComponent?: Function,
   onChangeComponentName?: Function,
+  onSelectComponent?: Function,
 }
 
 /**
@@ -390,6 +391,9 @@ class ComponentNameRenderer extends React.Component {
 
   handleStartEdit = () => {
     this.setState({ isEditing: true })
+    const { mark, options } = this.props
+    const component = mark.getIn(['data', 'element', 'node'])
+    options.onSelectComponent && options.onSelectComponent(component.id)
   }
 
   handleStopEdit = () => {

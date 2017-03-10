@@ -33,6 +33,7 @@ type PropsT = {
   onInsertComponent?: Function,
   onChangePropValue?: Function,
   onChangeComponentName?: Function,
+  onSelectComponent?: Function,
 }
 
 const defaultProps = {
@@ -102,6 +103,7 @@ const getComponentTreeEditorPlugins = (
     onInsertComponent: editor.handleInsertComponent,
     onChangePropValue: editor.handleChangePropValue,
     onChangeComponentName: editor.handleChangeComponentName,
+    onSelectComponent: editor.handleSelectComponent,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -216,6 +218,10 @@ class ComponentTreeEditor extends React.Component {
     ))
     const { onChangeComponentName } = this.props
     onChangeComponentName && onChangeComponentName(nodeId, name)
+  }
+
+  handleSelectComponent = (nodeId: NodeIdentifierT) => {
+    this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
   }
 }
 
