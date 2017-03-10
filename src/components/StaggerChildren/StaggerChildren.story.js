@@ -2,9 +2,9 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
-import StaggerIcons from './StaggerIcons'
+import StaggerChildren from './StaggerChildren'
 
-storiesOf('StaggerIcons', module)
+storiesOf('StaggerChildren', module)
   .add('Regular', () => (
     <PreviewContainer>
       <Preview
@@ -15,7 +15,7 @@ storiesOf('StaggerIcons', module)
           },
         }}
       >
-        <StaggerIcons
+        <StaggerChildren
         />
       </Preview>
     </PreviewContainer>

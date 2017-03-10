@@ -19,7 +19,7 @@ const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RotateFade = require('./components/RotateFade')
 const Search = require('./components/Search')
-const StaggerIcons = require('./components/StaggerIcons')
+const StaggerChildren = require('./components/StaggerChildren')
 const SubHeader = require('./components/SubHeader')
 
 import actionsPlugin from './utils/ActionsBabelPlugin'
@@ -48,7 +48,7 @@ const WorkfloComponents = {
   Properties,
   QuickAction,
   Search,
-  StaggerIcons,
+  StaggerChildren,
   SubHeader,
 }
 
