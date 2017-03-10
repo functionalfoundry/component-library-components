@@ -6,11 +6,13 @@ import { Set } from 'immutable'
 import {
   AlignedTrigger,
   EditableText,
+  HoverIcon,
   Popover,
   Trigger,
   View
 } from '@workflo/components'
-import { Colors, Fonts } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
+import StaggerChildren from '../../components/StaggerChildren'
 import {
   AnyPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
@@ -102,6 +104,30 @@ const defaultTheme = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  // Component tags
+
+  componentTagEnd: {
+    paddingRight: Spacing.tiny,
+  },
+  componentTagActions: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: Spacing.tiny / 2
+  },
+  componentTagAction: {
+    cursor: 'pointer',
+    backgroundColor: Colors.grey900,
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: Spacing.tiny / 2,
+    marginRight: Spacing.tiny / 2,
+    borderRadius: Spacing.tiny / 2,
+  },
+  componentTagActionLabel: {
+    marginLeft: '24px',
+  },
 }
 
 type MarkRendererPropsT = {
@@ -141,24 +167,70 @@ class ComponentTagRenderer extends React.Component {
         openTriggers={['Mouse enter']}
         closeTriggers={['Mouse leave']}
         portal={
-          <View inline>
-            {
-              showAddChild &&
-              <button onClick={this.handleAddChild}>
-                Add child
-              </button>
-            }
-            {
-              showAddSibling &&
-              <button onClick={this.handleAddSibling}>
-                Add sibling
-              </button>
-            }
+          <View
+            {...theme.componentTagActions}
+          >
+            <StaggerChildren
+              direction='Right'
+            >
+              {
+                showAddChild &&
+                <View
+                  {...theme.componentTagAction}
+                  onClick={this.handleAddChild}
+                >
+                  <HoverIcon
+                    name='primary-plus'
+                    hoverName='primary-plus-hover'
+                    theme={{
+                      icon: {
+                        position: 'absolute',
+                      },
+                      svg: {
+                        width: 22,
+                        height: 22,
+                      },
+                    }}
+                  />
+                  <View
+                    {...theme.componentTagActionLabel}
+                  >
+                    Child
+                  </View>
+                </View>
+              }
+              {
+                showAddSibling &&
+                <View
+                  {...theme.componentTagAction}
+                  onClick={this.handleAddSibling}
+                >
+                  <HoverIcon
+                    name='primary-plus'
+                    hoverName='primary-plus-hover'
+                    theme={{
+                      icon: {
+                        position: 'absolute',
+                      },
+                      svg: {
+                        width: 22,
+                        height: 22,
+                      },
+                    }}
+                  />
+                  <View
+                    {...theme.componentTagActionLabel}
+                  >
+                    Sibling
+                  </View>
+                </View>
+              }
+            </StaggerChildren>
           </View>
         }
       >
         <View
-          {...theme.componentEnd}
+          {...theme.componentTagEnd}
           inline
         >
           <View inline>
