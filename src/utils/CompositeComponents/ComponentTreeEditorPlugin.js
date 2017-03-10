@@ -398,7 +398,9 @@ class ComponentNameRenderer extends React.Component {
     const component = mark.getIn(['data', 'element', 'node'])
     const { name } = this.state
     this.setState({ isEditing: false })
-    onChangeComponentName && onChangeComponentName(component.id, name)
+    if (name !== null && name !== undefined) {
+      onChangeComponentName && onChangeComponentName(component.id, name)
+    }
   }
 
   handleChange = (name) => {
