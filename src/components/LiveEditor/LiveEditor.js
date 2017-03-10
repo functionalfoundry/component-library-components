@@ -30,6 +30,7 @@ type PropsT = {
   onInsertComponent?: Function,
   onChangePropValue?: Function,
   onChangeComponentName?: Function,
+  onSelectComponent?: Function,
   onChangeData: Function,
   onChangeActions: Function,
   componentTree: Object,
@@ -106,6 +107,7 @@ class LiveEditor extends React.Component {
       onInsertComponent,
       onRemoveProp,
       onRemoveComponent,
+      onSelectComponent,
       actions,
       data,
       theme,
@@ -136,6 +138,7 @@ class LiveEditor extends React.Component {
               onInsertComponent={onInsertComponent}
               onRemoveProp={onRemoveProp}
               onRemoveComponent={onRemoveComponent}
+              onSelectComponent={onSelectComponent}
             />
           </TabPanel>
           <TabPanel>
