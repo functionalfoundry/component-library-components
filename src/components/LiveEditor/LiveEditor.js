@@ -103,6 +103,7 @@ class LiveEditor extends React.Component {
       onChangeData,
       onChangeActions,
       onChangePropValue,
+      onInsertComponent,
       onRemoveProp,
       onRemoveComponent,
       actions,
@@ -132,6 +133,7 @@ class LiveEditor extends React.Component {
               onChange={this.handleTreeChange}
               onChangeComponentName={onChangeComponentName}
               onChangePropValue={onChangePropValue}
+              onInsertComponent={onInsertComponent}
               onRemoveProp={onRemoveProp}
               onRemoveComponent={onRemoveComponent}
             />
