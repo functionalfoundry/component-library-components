@@ -146,19 +146,17 @@ const generateTreeLayout = (tree: ComponentTree) => {
     })
 
     // Add component name
-    if (component.name) {
-      ctx = addElement(ctx, {
-        text: component.name,
-        node: component,
-        data: data,
-        tags: Set([
-          'component',
-          'component-open-tag',
-          'component-open-tag-name',
-          'component-name',
-        ]).union(tags),
-      })
-    }
+    ctx = addElement(ctx, {
+      text: component.name || ' ',
+      node: component,
+      data: data,
+      tags: Set([
+        'component',
+        'component-open-tag',
+        'component-open-tag-name',
+        'component-name',
+      ]).union(tags),
+    })
 
     if (!component.props.isEmpty()) {
       // Add newline before props
