@@ -394,11 +394,13 @@ class ComponentNameRenderer extends React.Component {
 
   handleStopEdit = () => {
     const { mark, options } = this.props
-    const { onChangeComponentName } = options
     const component = mark.getIn(['data', 'element', 'node'])
     const { name } = this.state
     this.setState({ isEditing: false })
     if (name !== null && name !== undefined) {
+      const tree = Utils.setComponentName(options.tree, component.id, name)
+      options.onChange && options.onChange(tree)
+      const { onChangeComponentName } = options
       onChangeComponentName && onChangeComponentName(component.id, name)
     }
   }
