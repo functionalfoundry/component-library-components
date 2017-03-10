@@ -23,6 +23,7 @@ type DataT = {
 }
 
 type PropsT = {
+  nodeIdGenerator: Function,
   onChangeComponentTree?: Function,
   onRemoveProp?: Function,
   onRemoveComponent?: Function,
@@ -96,6 +97,7 @@ class LiveEditor extends React.Component {
     const {
       componentTree,
       completionData,
+      nodeIdGenerator,
       onChangeComponentTree,
       onChangeComponentName,
       onChangeData,
@@ -126,6 +128,7 @@ class LiveEditor extends React.Component {
             <ComponentTreeEditor
               tree={TreeUtils.createTree(componentTree)}
               completionData={completionData}
+              nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
               onChangeComponentName={onChangeComponentName}
               onChangePropValue={onChangePropValue}
