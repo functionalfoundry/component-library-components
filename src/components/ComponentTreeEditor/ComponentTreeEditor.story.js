@@ -304,6 +304,7 @@ class TreeEditorContainer extends React.Component {
         <ComponentTreeEditor
           tree={this.state.tree}
           completionData={completionData}
+          nodeIdGenerator={() => Math.random().toString()}
           onChange={action('onChange')}
           onRemoveProp={this.handleRemoveProp}
           onRemoveComponent={this.handleRemoveComponent}
