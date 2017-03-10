@@ -265,6 +265,18 @@ class TreeEditorContainer extends React.Component {
     })
   }
 
+  handleRemoveProp = (nodeId: NodeIdentifierT) => {
+    action('onRemoveProp').call(null, nodeId)
+    const tree = Utils.removeProp(this.state.tree, nodeId)
+    this.setState({ tree })
+  }
+
+  handleRemoveComponent = (nodeId: NodeIdentifierT) => {
+    action('onRemoveComponent').call(null, nodeId)
+    const tree = Utils.removeComponent(this.state.tree, nodeId)
+    this.setState({ tree })
+  }
+
   handleInsertComponent = (
     parentId: NodeIdentifierT,
     index: number,
@@ -272,8 +284,7 @@ class TreeEditorContainer extends React.Component {
   ) => {
     action('onInsertComponent').call(null, parentId, index, component)
     const tree = Utils.insertComponent(
-      this.state.tree, parentId, index,
-      component.set('id', Date.now().toString())
+      this.state.tree, parentId, index, component
     )
     this.setState({ tree })
   }
@@ -294,8 +305,8 @@ class TreeEditorContainer extends React.Component {
           tree={this.state.tree}
           completionData={completionData}
           onChange={action('onChange')}
-          onRemoveProp={action('onRemoveProp')}
-          onRemoveComponent={action('onRemoveComponent')}
+          onRemoveProp={this.handleRemoveProp}
+          onRemoveComponent={this.handleRemoveComponent}
           onInsertComponent={this.handleInsertComponent}
           onChangePropValue={action('onChangePropValue')}
           onChangeComponentName={this.handleChangeComponentName}
