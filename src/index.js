@@ -1,4 +1,5 @@
 const App = require('./components/App')
+const BulkActionButton = require('./components/BulkActionButton')
 const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
 const Component = require('./components/Component')
@@ -25,9 +26,9 @@ const SubHeader = require('./components/SubHeader')
 import actionsPlugin from './utils/ActionsBabelPlugin'
 import dataPlugin from './utils/DataBabelPlugin'
 
-
 const WorkfloComponents = {
   App,
+  BulkActionButton,
   Code,
   Configuration,
   Component,
