@@ -55,6 +55,7 @@ export default class MultiPropertiesTable extends React.Component {
         theme={{
           tabs: {
             marginTop: Spacing.tiny, // Remove when we add padding option to app layout
+            color: 'white',
           },
         }}
       >
