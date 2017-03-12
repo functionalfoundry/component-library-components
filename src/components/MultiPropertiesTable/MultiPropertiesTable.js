@@ -20,15 +20,23 @@ type PropsT = {
   components: Array<ComponentT>,
   onClickPlus: Function,
   onClickMinus: Function,
-  selectedComponentId: string,
+  selectedComponentId?: string,
   onChangeComponent: Function,
+}
+
+const getSelectedComponentIndex = (components, id) => {
+  for (var index = 0; index < components.length; index++) {
+    if (components[index].id == id) {
+      return index
+    }
+  }
+  return 0
 }
 
 const defaultProps = {
   components: [],
   onClickPlus: () => {},
   onClickMinus: () => {},
-  selectedComponentId: 0,
 }
 
 export default class MultiPropertiesTable extends React.Component {
@@ -51,7 +59,7 @@ export default class MultiPropertiesTable extends React.Component {
       <Tabs
         kind='Primary'
         onSelect={this.handleSelect}
-        selectedIndex={selectedComponentId}
+        selectedIndex={getSelectedComponentIndex(components, selectedComponentId)}
         theme={{
           tabs: {
             marginTop: Spacing.tiny, // Remove when we add padding option to app layout

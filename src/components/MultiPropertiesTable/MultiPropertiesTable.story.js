@@ -12,6 +12,7 @@ storiesOf('MultiPropertiesTable', module)
       >
         <MultiPropertiesTable
           components={components}
+          selectedComponentId={'2'}
           onClickPlus={action('onClickPlus')}
           onClickMinus={action('onClickMinus')}
           onChangeComponent={action('onChangeComponent')}
