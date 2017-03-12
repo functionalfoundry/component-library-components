@@ -45,10 +45,12 @@ const defaultProps = {
 
 type InteractionStateT = {
   editingComponentId: ?NodeIdentifierT,
+  selectedComponentId: ?NodeIdentifierT,
 }
 
 const InteractionState = Record({
   editingComponentId: null,
+  selectedComponentId: null,
 })
 
 /**
@@ -221,7 +223,12 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleSelectComponent = (nodeId: NodeIdentifierT) => {
-    this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+    this.updateInteractionState(this.state.interactionState.set(
+      'selectedComponentId', nodeId
+    ))
+    if (nodeId !== this.state.interactionState.selectedComponentId) {
+      this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+    }
   }
 }
 
