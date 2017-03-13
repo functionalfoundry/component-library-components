@@ -112,9 +112,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@0.8.61":
-  version "0.8.61"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.61.tgz#6a9164ed37c0f673f40e08b70d87753bca1818ff"
+"@workflo/components@0.8.62":
+  version "0.8.62"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.62.tgz#6dab8771df2d5e0f41e1f907b12d45135a8a3589"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
@@ -5111,21 +5111,6 @@ signal-exit@^3.0.0:
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
-
-slate@^0.16.11:
-  version "0.16.11"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.16.11.tgz#0014c758c0de9907d61b756eddafb8ea630d2e95"
-  dependencies:
-    cheerio "^0.22.0"
-    debug "^2.3.2"
-    direction "^0.1.5"
-    es6-map "^0.1.4"
-    esrever "^0.2.0"
-    get-window "^1.1.1"
-    immutable "^3.8.1"
-    is-empty "^1.0.0"
-    keycode "^2.1.2"
-    type-of "^2.0.1"
 
 slate@^0.19.3:
   version "0.19.3"
