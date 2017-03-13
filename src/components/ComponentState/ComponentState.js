@@ -15,7 +15,7 @@ import {
 import Heading from '@workflo/components/lib/Heading'
 import TweenMax from 'gsap'
 import LivePreview from '../LivePreview'
-import StaggerIcons from '../StaggerIcons'
+import StaggerChildren from '../StaggerChildren'
 import RotateFade from '../RotateFade'
 
 /**
@@ -260,7 +260,7 @@ class ComponentState extends React.Component {
               {...theme.actions}
             >
               {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
-                <StaggerIcons>
+                <StaggerChildren>
                   {harnessCard.actions.map((action, index) => (
                     <div
                       {...theme.iconGroup}
@@ -274,7 +274,7 @@ class ComponentState extends React.Component {
                       })}
                     </div>
                   ))}
-                </StaggerIcons>}
+                </StaggerChildren>}
               {(!isHovering && !harnessCard.isSelected && !forceShowActions) &&
                 <div ref={(c) => this.storeRef('more', c)}>
                   <RotateFade>

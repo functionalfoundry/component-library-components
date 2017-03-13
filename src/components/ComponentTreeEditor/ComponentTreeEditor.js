@@ -3,9 +3,13 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
+import { Record } from 'immutable'
 
 import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
-import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
+import {
+  Component,
+  ComponentTree,
+} from '../../utils/CompositeComponents/ComponentTree'
 import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
 import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 import {
@@ -22,13 +26,30 @@ import type { CompletionDataT } from '../../utils/CompositeComponents/Completion
 type PropsT = {
   tree: ComponentTree,
   completionData: CompletionDataT,
+  nodeIdGenerator: Function,
   onChange?: Function,
   onRemoveProp?: Function,
+  onRemoveComponent?: Function,
+  onInsertComponent?: Function,
   onChangePropValue?: Function,
+  onChangeComponentName?: Function,
+  onSelectComponent?: Function,
 }
 
 const defaultProps = {
 }
+
+/**
+ * Interaction state
+ */
+
+type InteractionStateT = {
+  editingComponentId: ?NodeIdentifierT,
+}
+
+const InteractionState = Record({
+  editingComponentId: null,
+})
 
 /**
  * State
@@ -39,6 +60,7 @@ type StateT = {
   layout: ComponentTreeLayout,
   plugins: Array<Object>,
   editorState: State,
+  interactionState: InteractionState,
 }
 
 const getComponentTreeEditorState = (
@@ -68,14 +90,20 @@ const getComponentTreeEditorPlugins = (
   tree: ComponentTree,
   layout: ComponentTreeLayout,
   completionData: CompletionDataT,
+  interactionState: InteractionStateT
 ) => ([
   ComponentTreeEditorPlugin({
     tree,
     layout,
     completionData,
+    interactionState,
     onChange: editor.handleTreeChange,
     onRemoveProp: editor.handleRemoveProp,
+    onRemoveComponent: editor.handleRemoveComponent,
+    onInsertComponent: editor.handleInsertComponent,
     onChangePropValue: editor.handleChangePropValue,
+    onChangeComponentName: editor.handleChangeComponentName,
+    onSelectComponent: editor.handleSelectComponent,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -95,11 +123,17 @@ class ComponentTreeEditor extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = this.getStateFromTreeAndProps(props.tree, props)
+    this.state = this.getStateFromTreeAndProps(
+      props.tree, props, InteractionState()
+    )
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState(this.getStateFromTreeAndProps(nextProps.tree, nextProps))
+    this.setState(state => {
+      return this.getStateFromTreeAndProps(
+        nextProps.tree, nextProps, state.interactionState
+      )
+    })
   }
 
   render () {
@@ -113,18 +147,31 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  getStateFromTreeAndProps = (tree: ComponentTree, props: PropsT) => {
+  getStateFromTreeAndProps = (
+    tree: ComponentTree,
+    props: PropsT,
+    interactionState: InteractionState
+  ) => {
     const layout = generateTreeLayout(tree)
     const editorState = getComponentTreeEditorState(tree, layout)
     const plugins = getComponentTreeEditorPlugins(
-      this, tree, layout, props.completionData
+      this, tree, layout, props.completionData, interactionState
     )
     return {
-      tree: tree,
-      layout: layout,
-      plugins: plugins,
-      editorState: editorState,
+      tree,
+      layout,
+      plugins,
+      editorState,
+      interactionState,
     }
+  }
+
+  updateInteractionState = (interactionState: InteractionState) => {
+    this.setState((state, props) => {
+      return this.getStateFromTreeAndProps(
+        props.tree, props, interactionState
+      )
+    })
   }
 
   handleChange = (editorState: State) => (
@@ -132,7 +179,9 @@ class ComponentTreeEditor extends React.Component {
   )
 
   handleTreeChange = (tree: ComponentTree) => {
-    this.setState(this.getStateFromTreeAndProps(tree, this.props))
+    this.setState((state, props) => {
+      return this.getStateFromTreeAndProps(tree, props, state.interactionState)
+    })
     this.props.onChange && this.props.onChange(tree)
   }
 
@@ -140,8 +189,39 @@ class ComponentTreeEditor extends React.Component {
     this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
   }
 
+  handleRemoveComponent = (nodeId: NodeIdentifierT) => {
+    this.props.onRemoveComponent && this.props.onRemoveComponent(nodeId)
+  }
+
+  handleInsertComponent = (
+    parentNodeId: NodeIdentifierT,
+    index: number,
+    component: Component
+  ) => {
+    component = component.set('id', this.props.nodeIdGenerator())
+    this.updateInteractionState(this.state.interactionState.set(
+      'editingComponentId', component.get('id')
+    ))
+    const { onInsertComponent } = this.props
+    onInsertComponent && onInsertComponent(
+      parentNodeId, index, component, component.toJS()
+    )
+  }
+
   handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
     this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
+  }
+
+  handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
+    this.updateInteractionState(this.state.interactionState.set(
+      'editingComponentId', null
+    ))
+    const { onChangeComponentName } = this.props
+    onChangeComponentName && onChangeComponentName(nodeId, name)
+  }
+
+  handleSelectComponent = (nodeId: NodeIdentifierT) => {
+    this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
   }
 }
 

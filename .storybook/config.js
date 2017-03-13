@@ -20,7 +20,7 @@ function loadStories () {
   require('../src/components/QuickAction/QuickAction.story.js')
   require('../src/components/MultiPropertiesTable/MultiPropertiesTable.story.js')
   require('../src/components/RotateFade/RotateFade.story.js')
-  require('../src/components/StaggerIcons/StaggerIcons.story.js')
+  require('../src/components/StaggerChildren/StaggerChildren.story.js')
   require('../src/components/Configuration/Configuration.story.js')
 }
 

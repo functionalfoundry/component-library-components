@@ -110,13 +110,20 @@ const generateTreeLayout = (tree: ComponentTree) => {
   const processComponent = (
     component: Component,
     ctx: LayoutContext,
-    tags: ComponentTreeLayoutTagsT
+    tags: ComponentTreeLayoutTagsT,
+    data: ComponentTreeLayoutDataT,
   ) => {
+    data = data.withMutations(ctx => {
+      ctx.set('parent', data.get('component'))
+      ctx.set('component', component)
+    })
+
     // Add whitespace element for the indentation before the component
     if (ctx.indent.length > 0) {
       ctx = addElement(ctx, {
         text: ctx.indent,
         node: component,
+        data: data,
         tags: Set([
           'whitespace',
           'whitespace-indentation',
@@ -129,6 +136,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     ctx = addElement(ctx, {
       text: '<',
       node: component,
+      data: data,
       tags: Set([
         'component',
         'component-start',
@@ -138,24 +146,24 @@ const generateTreeLayout = (tree: ComponentTree) => {
     })
 
     // Add component name
-    if (component.name) {
-      ctx = addElement(ctx, {
-        text: component.name,
-        node: component,
-        tags: Set([
-          'component',
-          'component-open-tag',
-          'component-open-tag-name',
-          'component-name',
-        ]).union(tags),
-      })
-    }
+    ctx = addElement(ctx, {
+      text: component.name || ' ',
+      node: component,
+      data: data,
+      tags: Set([
+        'component',
+        'component-open-tag',
+        'component-open-tag-name',
+        'component-name',
+      ]).union(tags),
+    })
 
     if (!component.props.isEmpty()) {
       // Add newline before props
       ctx = addElement(ctx, {
         text: '\n',
         node: component,
+        data: data,
         tags: Set([
           'component',
           'component-open-tag',
@@ -185,6 +193,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: '/>',
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -197,6 +206,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: ctx.indent,
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -211,6 +221,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: '/>',
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -224,6 +235,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: '>',
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -235,6 +247,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: ctx.indent,
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -248,6 +261,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: '>',
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-open-tag',
@@ -262,6 +276,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: '\n',
         node: component,
+        data: data,
         tags: Set([
           'component',
           'component-before-children',
@@ -274,11 +289,11 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
       if (!component.children.isEmpty()) {
         // Add children
-        ctx = component.children.reduce((ctx, child) => (
+        ctx = component.children.reduce((ctx, child, index) => (
           processComponent(child, ctx, Set([
             'component',
             'component-children',
-          ]).union(tags))
+          ]).union(tags), data.set('index', index))
         ), ctx)
       } else {
         // Add text
@@ -295,6 +310,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: ctx.indent,
           node: component,
+          data: data,
           tags: Set([
             'component',
             'whitespace',
@@ -309,6 +325,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: '</',
         node: component,
+        data: data,
         tags: Set([
           'component',
           'component-close-tag',
@@ -321,6 +338,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
         ctx = addElement(ctx, {
           text: component.name,
           node: component,
+          data: data,
           tags: Set([
             'component',
             'component-close-tag',
@@ -334,6 +352,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       ctx = addElement(ctx, {
         text: '>',
         node: component,
+        data: data,
         tags: Set([
           'component',
           'component-close-tag',
@@ -347,6 +366,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     ctx = addElement(ctx, {
       text: '\n',
       node: component,
+      data: data,
       tags: Set([
         'whitespace',
         'whitespace-after-component',
@@ -520,7 +540,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
     layout: ComponentTreeLayout(),
   })
   if (tree.root) {
-    ctx = processComponent(tree.root, ctx, Set())
+    ctx = processComponent(tree.root, ctx, Set(), Map())
   }
   return ctx.layout
 }

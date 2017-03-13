@@ -23,9 +23,14 @@ type DataT = {
 }
 
 type PropsT = {
+  nodeIdGenerator: Function,
   onChangeComponentTree?: Function,
   onRemoveProp?: Function,
+  onRemoveComponent?: Function,
+  onInsertComponent?: Function,
   onChangePropValue?: Function,
+  onChangeComponentName?: Function,
+  onSelectComponent?: Function,
   onChangeData: Function,
   onChangeActions: Function,
   componentTree: Object,
@@ -93,10 +98,16 @@ class LiveEditor extends React.Component {
     const {
       componentTree,
       completionData,
+      nodeIdGenerator,
       onChangeComponentTree,
+      onChangeComponentName,
       onChangeData,
       onChangeActions,
+      onChangePropValue,
+      onInsertComponent,
       onRemoveProp,
+      onRemoveComponent,
+      onSelectComponent,
       actions,
       data,
       theme,
@@ -120,9 +131,14 @@ class LiveEditor extends React.Component {
             <ComponentTreeEditor
               tree={TreeUtils.createTree(componentTree)}
               completionData={completionData}
+              nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
-              onRemoveProp={this.handleRemoveProp}
-              onChangePropValue={this.handleChangePropValue}
+              onChangeComponentName={onChangeComponentName}
+              onChangePropValue={onChangePropValue}
+              onInsertComponent={onInsertComponent}
+              onRemoveProp={onRemoveProp}
+              onRemoveComponent={onRemoveComponent}
+              onSelectComponent={onSelectComponent}
             />
           </TabPanel>
           <TabPanel>
