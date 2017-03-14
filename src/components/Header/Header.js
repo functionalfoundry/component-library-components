@@ -16,6 +16,7 @@ import {
   Spacing,
 } from '@workflo/styles'
 import SubHeader from '../SubHeader'
+import BulkActionBar from '../BulkActionBar'
 
 type EditableTextPropsT = {
   value: string,
@@ -35,6 +36,11 @@ type Props = {
   secondaryActions: Array<ActionT>,
   quickActions: Array<ActionT>,
   search?: React.Element,
+  bulkActions?: {
+    quickActions: Array<React.Element>,
+    numberSelected: Number,
+    onClearSelection: Function,
+  },
   theme: Object,
 }
 
@@ -46,6 +52,7 @@ const Header = ({
   primaryAction,
   secondaryActions,
   quickActions,
+  bulkActions,
   search,
   theme,
 }: Props) => (
@@ -101,15 +108,25 @@ const Header = ({
       {...theme.row}
       {...theme.subHeaderContainer}
     >
-      <View
-        {...theme.rightBlock}
-      >
-        <SubHeader
-          primaryAction={primaryAction}
-          secondaryActions={secondaryActions}
-          quickActions={quickActions}
-        />
-      </View>
+      {bulkActions && (
+        <BulkActionBar
+          numberSelected={bulkActions.numberSelected}
+          onClearSelection={bulkActions.onClearSelection}
+        >
+          {bulkActions.quickActions}
+        </BulkActionBar>
+      )}
+      {!bulkActions && (
+        <View
+          {...theme.rightBlock}
+        >
+          <SubHeader
+            primaryAction={primaryAction}
+            secondaryActions={secondaryActions}
+            quickActions={quickActions}
+          />
+        </View>
+      )}
     </View>
   </View>
 )

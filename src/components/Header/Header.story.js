@@ -26,9 +26,7 @@ storiesOf('Header', module)
             value: 'Collapsed',
           }}
           onClickBack={() => {}}
-          search={{
-            show: true,
-          }}
+
         />
       </Preview>
       <Preview
@@ -57,9 +55,6 @@ storiesOf('Header', module)
             value: 'Collapsed',
           }}
           onClickBack={() => {}}
-          search={{
-            show: true,
-          }}
         />
       </Preview>
       <Preview
@@ -69,6 +64,32 @@ storiesOf('Header', module)
           profile={profile}
           title={{
             value: 'Drawer',
+          }}
+        />
+      </Preview>
+      <Preview
+        label='Bulk actions'
+      >
+        <Header
+          profile={profile}
+          title={{
+            value: 'Drawer',
+          }}
+          bulkActions={{
+            numberSelected: 3,
+            onClearSelection: action('onClearSelected'),
+            quickActions: [
+              <QuickAction
+                icon='delete'
+                iconKind='Primary'
+                label='Delete'
+                input={{
+                  type: 'Button',
+                }}
+                onClick={action('onClick')}
+                showLabelInButton
+              />
+            ],
           }}
         />
       </Preview>
