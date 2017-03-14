@@ -15,6 +15,7 @@ import { Colors, Fonts, Spacing } from '@workflo/styles'
 import StaggerChildren from '../../components/StaggerChildren'
 import {
   AnyPropValueChooser,
+  StringPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
 import type { NodeIdentifierT } from './ComponentTree'
 import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
@@ -88,6 +89,10 @@ const defaultTheme = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  propValueEditor: {
+    display: 'inline',
+    ...Fonts.code,
   },
   propValueChooser: {
     display: 'inline',
@@ -483,6 +488,7 @@ const ThemedPropNameRenderer =
 
 const propValueChooserImplementations = {
   'any': AnyPropValueChooser,
+  'string': StringPropValueChooser,
 }
 
 const getPropValueRenderer = (
@@ -524,31 +530,48 @@ class PropValueRenderer extends React.Component {
 
     const Chooser = getPropValueRenderer(prop, propCompletionData)
 
-    return (
-      <View
-        {...theme.propValueChooser}
-        inline
-      >
-        <Popover
-          position='Right'
-          horizontalOffset={5}
-          verticalOffset={2}
-          portal={(
-            <Chooser
-              prop={prop}
-              value={value}
-              completionData={propCompletionData}
-              options={globalOptions}
-              onChange={this.handleChange}
-            />
-          )}
+    if (Chooser == StringPropValueChooser) {
+      return (
+        <View
+          {...theme.propValueEditor}
+          inline
         >
-          <span>
-            {children}
-          </span>
-        </Popover>
-      </View>
-    )
+          <Chooser
+            prop={prop}
+            value={value}
+            completionData={propCompletionData}
+            options={globalOptions}
+            onChange={this.handleChange}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View
+          {...theme.propValueChooser}
+          inline
+        >
+          <Popover
+            position='Right'
+            horizontalOffset={5}
+            verticalOffset={2}
+            portal={(
+              <Chooser
+                prop={prop}
+                value={value}
+                completionData={propCompletionData}
+                options={globalOptions}
+                onChange={this.handleChange}
+              />
+            )}
+          >
+            <span>
+              {children}
+            </span>
+          </Popover>
+        </View>
+      )
+    }
   }
 
   handleChange = (value) => {

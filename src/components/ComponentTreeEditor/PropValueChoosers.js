@@ -2,7 +2,8 @@
 
 import React from 'react'
 import Theme from 'js-theme'
-import { RadioGroup, Radio, View } from '@workflo/components'
+import { EditableText, RadioGroup, Radio, View } from '@workflo/components'
+import { Fonts } from '@workflo/styles'
 import {
   Prop,
   PropValue,
@@ -93,6 +94,55 @@ const AnyPropValueChooser = (props: PropValueChooserPropsT) => (
   <RadioPropValueChooser {...props} />
 )
 
+type StringPropValueChooserStateT = {
+  value: string,
+}
+
+class StringPropValueChooser extends React.Component {
+  props: PropValueChooserPropsT
+  state: StringPropValueChooserStateT
+
+  constructor (props: PropValueChooserPropsT) {
+    super(props)
+    this.state = {
+      value: props.value.value
+    }
+  }
+
+  handleChange = (value: string) => {
+    console.log('handle change', value)
+    this.setState(state => state.value = value)
+  }
+
+  handleStopEdit = () => {
+    console.log('stop edit')
+    this.props.onChange && this.props.onChange(this.state.value)
+  }
+
+  componentWillReceiveProps (nextProps: PropValueChooserPropsT) {
+    console.log('will receive props', nextProps.value)
+    if (this.props.value !== nextProps.value) {
+      this.setState(state => state.value = nextProps.value.value)
+    }
+  }
+
+  render () {
+    return (
+     <EditableText
+       value={this.props.value.value}
+       onChange={this.handleChange}
+       onStopEdit={this.handleStopEdit}
+       theme={{
+         text: {
+           ...Fonts.code,
+         }
+       }}
+     />
+    )
+  }
+}
+
 export {
   AnyPropValueChooser,
+  StringPropValueChooser,
 }

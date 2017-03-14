@@ -38,6 +38,7 @@ const defaultTheme = {
     color: '#009e71',
   },
   propValue: {
+    minWidth: '1em',
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,

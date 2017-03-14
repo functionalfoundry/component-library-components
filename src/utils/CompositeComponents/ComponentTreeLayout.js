@@ -462,7 +462,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
     let displayValue = 'null'
     try {
-      displayValue = propValue.value.toString()
+      displayValue = propValue.value.toString() || ' '
     } catch (error) {
       const name = data.getIn(['prop', 'name'])
       console.warn("Failed to convert value of property '" + name + "'")
