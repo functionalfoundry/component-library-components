@@ -77,7 +77,7 @@ class Properties extends React.Component {
   sort = (arr) => {
     const clonedProperties = this.props.properties.concat()
     const sortedProperties = clonedProperties.sort()
-    if (this.props.sortAsc) {
+    if (!this.props.sortAsc) {
       return sortedProperties.reverse()
     }
     return sortedProperties
