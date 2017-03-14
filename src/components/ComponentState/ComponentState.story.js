@@ -77,7 +77,7 @@ storiesOf('Component State', module)
     }
 
     handleChangeIsSelected = (isSelected) => {
-      console.log('handleChangeIsSelected')
+      action('onChangeIsSelected').call(null, isSelected)
       this.setState(state => state.isSelected = isSelected)
     }
 

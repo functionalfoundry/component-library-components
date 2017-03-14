@@ -194,11 +194,12 @@ class ComponentState extends React.Component {
   }
 
   handleChangeIsSelected = (isSelected) => {
-    this.animateSelectionChange(isSelected)
-    this.props.onChangeIsSelected(isSelected)
+    this.animateSelectionChange(isSelected, () => {
+      this.props.onChangeIsSelected(isSelected)
+    })
   }
 
-  animateSelectionChange = (isSelected) => {
+  animateSelectionChange = (isSelected, onComplete?: Function) => {
     const { clientWidth, clientHeight } = this.harnessCard
     let to
 
@@ -211,11 +212,13 @@ class ComponentState extends React.Component {
       to = {
         transform: `scaleX(${xFactor}) scaleY(${yFactor})`,
         ease: Power2.easeIn,
+        onComplete,
       }
     } else {
       to = {
         transform: 'scale(1)',
         ease: Power2.easeIn,
+        onComplete,
       }
     }
     TweenMax.to(this.harnessCard, 0.13, to)
