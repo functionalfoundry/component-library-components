@@ -46,6 +46,7 @@ export default class BulkActionBar extends React.Component {
           view: {
             flexDirection: 'row',
             alignItems: 'center',
+            marginLeft: Spacing.small - 2,
           },
         }}
       >
@@ -75,7 +76,7 @@ export default class BulkActionBar extends React.Component {
             text: {
               // Currently duplicated with QuickAction
               color: Colors.grey200,
-              marginLeft: 15,
+              marginLeft: 12,
               marginTop: 2,
               marginRight: 8,
               userSelect: 'none',

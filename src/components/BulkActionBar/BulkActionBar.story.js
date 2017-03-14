@@ -3,9 +3,7 @@ import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import BulkActionBar from './BulkActionBar'
-import BulkActionButton from '../BulkActionButton'
 import QuickAction from '../QuickAction'
-import { Colors } from '@workflo/styles'
 
 storiesOf('BulkActionBar', module)
   .add('Regular', () => (
