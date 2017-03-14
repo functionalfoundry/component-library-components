@@ -37,14 +37,19 @@ const components = [
   },
   {
     name: 'Tabs',
-    id: '2',
-    properties: [
-      {
+    id: '2', properties: [{
         name: 'kind',
         type: 'Primary | Secondary',
         default: 'false',
         description: 'The primary kind uses the underline and secondary uses a colored background',
         isUsedByTreeEditor: true,
+      },
+      {
+        name: 'tabPosition',
+        type: "'top' | 'bottom'",
+        default: "'top'",
+        description: 'The position of the tab labels',
+        isUsedByTreeEditor: false,
       }
     ],
   },
