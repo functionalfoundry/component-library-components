@@ -460,7 +460,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
       })
     }
 
-    let displayValue = '<code>'
+    let displayValue = 'null'
     try {
       displayValue = propValue.value.toString()
     } catch (error) {
