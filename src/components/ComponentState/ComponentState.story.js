@@ -72,32 +72,44 @@ storiesOf('Component State', module)
       }
     }
 
+    toggleSelected = () => {
+      this.setState(state => state.isSelected = !state.isSelected)
+    }
+
+    handleChangeIsSelected = (isSelected) => {
+      console.log('handleChangeIsSelected')
+      this.setState(state => state.isSelected = isSelected)
+    }
+
     render () {
       return (
-        <ComponentState
-          harnessCard={{
-            actions,
-            element,
-            harness: {
-              componentState: {
-                name: 'With title',
-              },
-              alignment: {
-                horizontal: 'Right',
-              },
-              theme: {
-                patterns: {
-                  colors: {
-                    background: 'yellow',
-                  }
+        <div>
+          <p><button onClick={this.toggleSelected}>Toggle selected</button></p>
+          <ComponentState
+            harnessCard={{
+              actions,
+              element,
+              harness: {
+                componentState: {
+                  name: 'With title',
+                },
+                alignment: {
+                  horizontal: 'Right',
+                },
+                theme: {
+                  patterns: {
+                    colors: {
+                      background: 'yellow',
+                    }
+                  },
                 },
               },
-            },
-            isSelected: this.state.isSelected,
-          }}
-          onClickTitle={action('Click title')}
-          onChangeIsSelected={(isSelected) => this.setState({ isSelected })}
-        />
+              isSelected: this.state.isSelected,
+            }}
+            onClickTitle={action('Click title')}
+            onChangeIsSelected={this.handleChangeIsSelected}
+          />
+        </div>
       )
     }
   }

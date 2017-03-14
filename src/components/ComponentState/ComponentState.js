@@ -13,7 +13,7 @@ import {
   Spacing,
 } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
-import TweenMax from 'gsap'
+import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
 import StaggerChildren from '../StaggerChildren'
 import RotateFade from '../RotateFade'
@@ -187,7 +187,18 @@ class ComponentState extends React.Component {
     this.props.onMouseLeave()
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (this.props.harnessCard.isSelected != nextProps.harnessCard.isSelected) {
+      this.animateSelectionChange(nextProps.harnessCard.isSelected)
+    }
+  }
+
   handleChangeIsSelected = (isSelected) => {
+    this.animateSelectionChange(isSelected)
+    this.props.onChangeIsSelected(isSelected)
+  }
+
+  animateSelectionChange = (isSelected) => {
     const { clientWidth, clientHeight } = this.harnessCard
     let to
 
@@ -208,7 +219,6 @@ class ComponentState extends React.Component {
       }
     }
     TweenMax.to(this.harnessCard, 0.13, to)
-    this.props.onChangeIsSelected(isSelected)
   }
 
   getForceShowActions = () => this.numOpenPopups > 0
