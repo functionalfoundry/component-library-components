@@ -155,7 +155,7 @@ const defaultTheme = {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    flex: '0 0 50px',
+    flex: '0 0 56px',
     // padding: Spacing.small,
   },
   profileView: {

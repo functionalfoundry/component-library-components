@@ -212,6 +212,7 @@ const defaultTheme = {
     justifyContent: 'flex-end',
     backgroundColor: Colors.grey800,
     color: Colors.grey300,
+    height: 56,
   },
   leftBlock: {
     display: 'flex',
@@ -252,6 +253,7 @@ const defaultTheme = {
     flex: '0 auto',
     color: 'white',
     marginLeft: LOGO_WIDTH + SEPARATOR_WIDTH,
+    height: 45,
   },
   actions: {
     flex: 1,

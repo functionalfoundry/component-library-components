@@ -99,30 +99,38 @@ storiesOf('Header', module)
 const actions = {
   quickActions: [
     <QuickAction
-      icon='card-like'
+      icon='theme'
+      shade='Light'
+      label='Theme'
       input={{
-        type: 'Radio',
         options: [
-          'Left',
-          'Center',
-          'Right',
+          'Light',
+          'Dark',
+          'Grey',
         ],
-        value: 'Center',
+        value: 'Dark',
+        type: 'Radio',
       }}
-      onChange={action('onChange alignment')}
     />,
     <QuickAction
-      icon='card-like-hover'
+      icon='alignment'
+      label='Alignment'
+      shade='Light'
       input={{
-        type: 'Radio',
-        options: [
-          'Small',
-          'Base',
-          'Large',
-        ],
-        value: 'Base',
+        type: 'Icon',
+        value: 'align-left',
+        options: [{
+          name: 'align-left',
+          hint: 'Left',
+        }, {
+          name: 'align-center',
+          hint: 'Center',
+        }, {
+          name: 'align-right',
+          hint: 'Right',
+        }]
       }}
-      onChange={action('onChange size')}
+      onClick={action('onClick')}
     />,
   ],
   secondaryActions: [
