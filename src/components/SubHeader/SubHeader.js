@@ -199,6 +199,8 @@ const defaultTheme = {
   quickAction: {
     marginLeft: Spacing.small,
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
   },
 }
 
