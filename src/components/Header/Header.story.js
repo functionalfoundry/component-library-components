@@ -99,6 +99,20 @@ storiesOf('Header', module)
 const actions = {
   quickActions: [
     <QuickAction
+      icon='size'
+      shade='Light'
+      label='Theme'
+      input={{
+        options: [
+          'Light',
+          'Dark',
+          'Grey',
+        ],
+        value: 'Dark',
+        type: 'Radio',
+      }}
+    />,
+    <QuickAction
       icon='theme'
       shade='Light'
       label='Theme'

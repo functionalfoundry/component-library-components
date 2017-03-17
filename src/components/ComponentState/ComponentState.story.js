@@ -34,6 +34,19 @@ const actions = [
     onChange={action('Alignment')}
   />,
   <QuickAction
+    icon='alignment'
+    label='Theme'
+    input={{
+      options: [
+        'Light',
+        'Dark',
+        'Grey',
+      ],
+      value: 'Dark',
+      type: 'Radio',
+    }}
+  />,
+  <QuickAction
     icon='theme'
     label='Theme'
     input={{
