@@ -213,9 +213,9 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
-    this.updateInteractionState(this.state.interactionState.set(
-      'editingComponentId', null
-    ))
+    //this.updateInteractionState(this.state.interactionState.set(
+    //  'editingComponentId', null
+    //))
     const { onChangeComponentName } = this.props
     onChangeComponentName && onChangeComponentName(nodeId, name)
   }
