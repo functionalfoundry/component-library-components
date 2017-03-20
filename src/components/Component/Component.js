@@ -11,7 +11,6 @@ import {
 } from '@workflo/components'
 import {
   Colors,
-  Corners,
   Fonts,
   Spacing,
   Shadows,
@@ -58,7 +57,6 @@ const Component = ({
 
 const defaultTheme = {
   componentCard: {
-    ...Corners.round,
     ...Shadows.small,
     display: 'flex',
     flexDirection: 'column',
