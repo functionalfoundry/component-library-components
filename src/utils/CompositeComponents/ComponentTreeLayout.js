@@ -175,7 +175,7 @@ const generateTreeLayout = (tree: ComponentTree) => {
 
       // Add props
       ctx = ctx.update('indent', s => s + '  ')
-      ctx = component.props.reduce((ctx, prop) => (
+      ctx = component.props.sortBy(prop => prop.name).reduce((ctx, prop) => (
         processProp(prop, ctx, Set([
           'component',
           'component-open-tag',
