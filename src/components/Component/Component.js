@@ -19,16 +19,12 @@ import {
 
 type Props = {
   name: string,
-  owner: string,
   theme: Object,
   thumbnail: string,
-  profilePhoto: string,
 }
 
 const Component = ({
   name,
-  owner,
-  profilePhoto,
   theme,
   thumbnail,
   ...props,
@@ -56,14 +52,6 @@ const Component = ({
       >
         {name}
       </Heading>
-      <Avatar
-        image={profilePhoto}
-        firstName={'Yaniv'}
-        lastName={'Tal'}
-        size='small'
-        backgroundShade='Light'
-        showName
-      />
     </View>
   </Card>
 )
@@ -105,10 +93,6 @@ const defaultTheme = {
   name: {
     ...Fonts.base,
     color: Colors.grey800,
-  },
-  owner: {
-    ...Fonts.base,
-    // color: Colors.steel3,
   },
 }
 
