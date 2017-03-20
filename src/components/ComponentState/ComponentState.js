@@ -187,6 +187,10 @@ class ComponentState extends React.Component {
     this.props.onMouseLeave()
   }
 
+  componentDidMount () {
+    this.animateSelectionChange(this.props.harnessCard.isSelected)
+  }
+
   componentWillReceiveProps (nextProps) {
     if (this.props.harnessCard.isSelected != nextProps.harnessCard.isSelected) {
       this.animateSelectionChange(nextProps.harnessCard.isSelected)
