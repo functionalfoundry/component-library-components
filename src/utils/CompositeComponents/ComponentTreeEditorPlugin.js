@@ -410,7 +410,9 @@ class ComponentNameRenderer extends React.Component {
       const tree = Utils.setComponentName(options.tree, component.id, name)
       options.onChange && options.onChange(tree)
       const { onChangeComponentName } = options
-      onChangeComponentName && onChangeComponentName(component.id, name)
+      setTimeout(() => {
+        onChangeComponentName && onChangeComponentName(component.id, name)
+      }, 0)
     }
   }
 
