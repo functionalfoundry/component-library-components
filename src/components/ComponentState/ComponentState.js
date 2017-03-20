@@ -199,7 +199,9 @@ class ComponentState extends React.Component {
 
   handleChangeIsSelected = (isSelected) => {
     this.animateSelectionChange(isSelected, () => {
-      this.props.onChangeIsSelected(isSelected)
+      setTimeout(() => {
+        this.props.onChangeIsSelected(isSelected)
+      }, 0)
     })
   }
 
