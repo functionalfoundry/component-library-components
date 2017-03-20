@@ -23,9 +23,12 @@ const Components = ({
     renderer={renderer}
     onClickItem={(component) => onClickComponent(component.id)}
     theme={{
+      grid: {
+        margin: -4,
+      },
       item: {
-        marginLeft: Spacing.tiny,
-        marginRight: Spacing.tiny,
+        marginLeft: 4,
+        marginRight: 4,
       }
     }}
   />
