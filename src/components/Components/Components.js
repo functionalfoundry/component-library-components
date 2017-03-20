@@ -27,6 +27,7 @@ const Components = ({
         margin: -4,
       },
       item: {
+        margin: 4,
         marginLeft: 4,
         marginRight: 4,
       }
