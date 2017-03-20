@@ -154,7 +154,6 @@ const Content = ({
           size='large'
           stroke={getColor(shade, iconKind)}
           fill={getColor(shade, iconKind)}
-          onClick={onClick}
           theme={{
             icon: {
               display: 'inline-block',
@@ -192,6 +191,7 @@ const Content = ({
               theme={{
                 view: getButtonWrapperStyle(),
               }}
+              onClick={onClick}
             >
               {iconElement}
               {showLabelInButton && (
@@ -213,6 +213,7 @@ const Content = ({
           theme={{
             view: getButtonWrapperStyle(true, true)
           }}
+          onClick={onClick}
         >
           {iconElement}
           {showLabelInButton && (
