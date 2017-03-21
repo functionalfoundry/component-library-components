@@ -14,6 +14,48 @@ import {
   Fonts,
 } from '@workflo/styles'
 
+class AppScrollTopContainer extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { screen: 'Initial screen' }
+  }
+
+  handleChangeScreen = () => {
+    this.setState(state => {
+      state.screen = (state.screen == 'Initial screen')
+                   ? 'Second screen'
+                   : 'Initial screen'
+      return state
+    })
+  }
+
+  render () {
+    return (
+      <App
+        profile={profile}
+        screen={this.state.screen}
+        layout={{
+          header: (
+            <div style={{ backgroundColor: Colors.red400, height: 100 }}>
+              {this.state.screen}
+            </div>
+          ),
+          content: (
+            <div style={{ backgroundColor: Colors.red600, height: 1000 }}>
+              Content
+            </div>
+          ),
+          bottom: (
+            <div style={{ backgroundColor: Colors.red700, height: 100 }}>
+              <button onClick={this.handleChangeScreen}>Change screen</button>
+            </div>
+          )
+        }}
+      />
+    )
+  }
+}
+
 storiesOf('App', module)
   .add('LiveView', () => (
     <App
@@ -94,6 +136,9 @@ storiesOf('App', module)
         ),
       }}
     />
+  ))
+  .add('Scroll top animation', () => (
+    <AppScrollTopContainer />
   ))
 
 const actions = {

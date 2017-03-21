@@ -1,5 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
+const ScrollToPlugin = require('gsap/ScrollToPlugin')
+import { Power3, TweenMax } from 'gsap'
 import '../../utils/insertFont'
 import { ActionsT } from '../../types/Action'
 import { SearchT } from '../../types/Search'
@@ -34,83 +36,110 @@ type Props = {
   navigation: Object,
   actions: ActionsT,
   search: SearchT,
+  screen: string,
 }
 
-const App = ({
-  profile,
-  layout = {},
-  navigation = {},
-  backgroundColor,
-  actions,
-  search,
-  theme,
-}: Props) => (
-  <View
-    {...theme.container}
-  >
-    {layout.header && (
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
+  scrollToTop = () => {
+    if (this.container) {
+      TweenMax.to(window, 0.25, {
+        ease: Power3.easeOut,
+        scrollTo: { y: 0 },
+      })
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (this.props.screen !== prevProps.screen) {
+      this.scrollToTop()
+    }
+  }
+
+  render () {
+    const { profile,
+      layout = {},
+      navigation = {},
+      backgroundColor,
+      actions,
+      search,
+      screen,
+      theme,
+    } = this.props
+
+    return (
       <View
-        {...theme.header}
+        ref={ref => this.container = ref}
+        {...theme.container}
       >
-        <View
-          {...theme.center}
-        >
+        {layout.header && (
           <View
-            {...theme.maxWidth}
+            {...theme.header}
           >
-            {layout.header}
-          </View>
-        </View>
-      </View>
-    )}
-    <View
-      {...theme.content}
-    >
-      <View
-        {...theme.center}
-      >
-        <View
-          {...theme.maxWidth}
-        >
-          {(layout.centerLeft || layout.centerRight) &&
             <View
-              {...theme.centerContainerWrapper}
+              {...theme.center}
             >
               <View
-                {...theme.centerContainer}
+                {...theme.maxWidth}
               >
-                <View
-                  {...theme.centerLeftContainer}
-                >
-                  {layout.centerLeft}
-                </View>
-                <View
-                  {...theme.centerRightContainer}
-                >
-                  {layout.centerRight}
-                </View>
+                {layout.header}
               </View>
-            </View>}
-          {layout.content}
-        </View>
-      </View>
-    </View>
-    {layout.bottom &&
-      <View
-        {...theme.bottom}
-      >
+            </View>
+          </View>
+        )}
         <View
-          {...theme.center}
+          {...theme.content}
         >
           <View
-            {...theme.maxWidth}
+            {...theme.center}
           >
-              {layout.bottom}
+            <View
+              {...theme.maxWidth}
+            >
+              {(layout.centerLeft || layout.centerRight) &&
+                <View
+                  {...theme.centerContainerWrapper}
+                >
+                  <View
+                    {...theme.centerContainer}
+                  >
+                    <View
+                      {...theme.centerLeftContainer}
+                    >
+                      {layout.centerLeft}
+                    </View>
+                    <View
+                      {...theme.centerRightContainer}
+                    >
+                      {layout.centerRight}
+                    </View>
+                  </View>
+                </View>}
+              {layout.content}
+            </View>
           </View>
         </View>
-      </View>}
-  </View>
-)
+        {layout.bottom &&
+          <View
+            {...theme.bottom}
+          >
+            <View
+              {...theme.center}
+            >
+              <View
+                {...theme.maxWidth}
+              >
+                  {layout.bottom}
+              </View>
+            </View>
+          </View>}
+      </View>
+    )
+  }
+}
 
 const defaultTheme = (props: Props) => ({
   container: {
