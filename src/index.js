@@ -24,12 +24,16 @@ const Search = require('./components/Search')
 const StaggerChildren = require('./components/StaggerChildren')
 const SubHeader = require('./components/SubHeader')
 
+// Components forwarded from @workflo/components
+const Button = require('./components/Button')
+
 import actionsPlugin from './utils/ActionsBabelPlugin'
 import dataPlugin from './utils/DataBabelPlugin'
 
 const WorkfloComponents = {
   App,
   BulkActionBar,
+  Button,
   Code,
   Configuration,
   Component,
