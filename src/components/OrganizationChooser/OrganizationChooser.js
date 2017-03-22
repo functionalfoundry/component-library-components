@@ -26,6 +26,13 @@ type PropsT = {
   theme: any,
 }
 
+const defaultProps = {
+  onChange: () => {},
+  onContinueAsIndividual: () => {},
+  onContinueWithOrganization: () => {},
+  organizations: [],
+}
+
 const OrganizationChooser = ({
   onChange,
   onContinueAsInvidual,
@@ -78,6 +85,8 @@ const OrganizationChooser = ({
     </View>
   </View>
 )
+
+OrganizationChooser.defaultProps = defaultProps
 
 const defaultTheme = {
   organizationChooser: {
