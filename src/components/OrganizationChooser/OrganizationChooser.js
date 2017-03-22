@@ -4,7 +4,13 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Spacing } from '@workflo/styles'
-import { Heading, Radio, RadioGroup, View } from '@workflo/components'
+import {
+  Button,
+  Heading,
+  Radio,
+  RadioGroup,
+  View
+} from '@workflo/components'
 
 type OrganizationT = {
   id: string,
@@ -13,6 +19,8 @@ type OrganizationT = {
 
 type PropsT = {
   onChange: Function,
+  onContinueAsInvidual: Function,
+  onContinueWithOrganization: Function,
   organizations: Array<OrganizationT>,
   selectedId: any,
   theme: any,
@@ -20,6 +28,8 @@ type PropsT = {
 
 const OrganizationChooser = ({
   onChange,
+  onContinueAsInvidual,
+  onContinueWithOrganization,
   organizations,
   selectedId,
   theme
@@ -45,15 +55,44 @@ const OrganizationChooser = ({
         ))
       }
     </RadioGroup>
+    <View
+      {...theme.buttons}
+    >
+      <Button
+        label='Continue as an individual'
+        kind={'hero'}
+        ghost={true}
+        onClick={onContinueAsInvidual}
+        {...theme.button}
+      />
+      {
+        selectedId && (
+          <Button
+            label='Continue'
+            kind={'hero'}
+            onClick={onContinueWithOrganization}
+            {...theme.button}
+          />
+        )
+      }
+    </View>
   </View>
 )
 
 const defaultTheme = {
-  title: {
-    marginBottom: Spacing.small,
-  },
   organizationChooser: {
-  }
+  },
+  title: {
+    marginBottom: Spacing.base,
+  },
+  buttons: {
+    marginTop: Spacing.large,
+    flexDirection: 'row',
+  },
+  button: {
+    flex: '0 0',
+    marginRight: Spacing.tiny,
+  },
 }
 
 const ThemedOrganizationChooser =
