@@ -23,6 +23,7 @@ function loadStories () {
   require('../src/components/RotateFade/RotateFade.story.js')
   require('../src/components/StaggerChildren/StaggerChildren.story.js')
   require('../src/components/Configuration/Configuration.story.js')
+  require('../src/components/OrganizationChooser/OrganizationChooser.story.js')
 }
 
 configure(loadStories, module)

@@ -16,6 +16,7 @@ const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
 const LiveView = require('./components/LiveView')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
+const OrganizationChooser = require('./components/OrganizationChooser')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RotateFade = require('./components/RotateFade')
@@ -46,6 +47,7 @@ const WorkfloComponents = {
   RotateFade,
   LiveView,
   MultiPropertiesTable,
+  OrganizationChooser,
   Properties,
   QuickAction,
   Search,
