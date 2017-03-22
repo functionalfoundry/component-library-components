@@ -1,2 +1,1 @@
-import Button from '@workflo/components/lib/Button'
-export default Button
+module.exports = require('@workflo/components/lib/Button').default

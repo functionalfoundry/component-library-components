@@ -1,2 +1,1 @@
-import OrganizationChooser from './OrganizationChooser'
-export default OrganizationChooser
+module.exports = require('./OrganizationChooser').default
