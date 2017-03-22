@@ -44,20 +44,9 @@ class App extends React.Component {
     super(props)
   }
 
-  scrollToTop = () => {
-    setTimeout(() => {
-      if (this.container) {
-        TweenMax.to(window, 0.25, {
-          ease: Power3.easeOut,
-          scrollTo: { y: 0 },
-        })
-      }
-    }, 0)
-  }
-
   componentDidUpdate (prevProps) {
     if (this.props.screen !== prevProps.screen) {
-      this.scrollToTop()
+      document.body.scrollTop = 0
     }
   }
 
