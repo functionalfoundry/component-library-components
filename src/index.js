@@ -19,6 +19,7 @@ const MultiPropertiesTable = require('./components/MultiPropertiesTable')
 const OrganizationChooser = require('./components/OrganizationChooser')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
+const RepositoryChooser = require('./components/RepositoryChooser')
 const RotateFade = require('./components/RotateFade')
 const Search = require('./components/Search')
 const StaggerChildren = require('./components/StaggerChildren')
@@ -54,6 +55,7 @@ const WorkfloComponents = {
   OrganizationChooser,
   Properties,
   QuickAction,
+  RepositoryChooser,
   Search,
   StaggerChildren,
   SubHeader,

@@ -24,6 +24,7 @@ function loadStories () {
   require('../src/components/StaggerChildren/StaggerChildren.story.js')
   require('../src/components/Configuration/Configuration.story.js')
   require('../src/components/OrganizationChooser/OrganizationChooser.story.js')
+  require('../src/components/RepositoryChooser/RepositoryChooser.story.js')
 }
 
 configure(loadStories, module)
