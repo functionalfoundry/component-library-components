@@ -55,10 +55,14 @@ const OrganizationChooser = ({
     >
       {
         organizations && organizations.map((organization) => (
-          <Radio
-            label={organization.name}
-            value={organization.id}
-          />
+          <View
+            {...theme.organization}
+          >
+            <Radio
+              label={organization.name}
+              value={organization.id}
+            />
+          </View>
         ))
       }
     </RadioGroup>
@@ -93,6 +97,9 @@ const defaultTheme = {
   },
   title: {
     marginBottom: Spacing.base,
+  },
+  organization: {
+    marginBottom: Spacing.tiny,
   },
   buttons: {
     marginTop: Spacing.large,
