@@ -55,14 +55,15 @@ const OrganizationChooser = ({
     >
       {
         organizations && organizations.map((organization) => (
-          <View
-            {...theme.organization}
-          >
-            <Radio
-              label={organization.name}
-              value={organization.id}
-            />
-          </View>
+          <Radio
+            label={organization.name}
+            value={organization.id}
+            theme={{
+              container: {
+                marginBottom: Spacing.tiny,
+              }
+            }}
+          />
         ))
       }
     </RadioGroup>
