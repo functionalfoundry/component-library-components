@@ -9,15 +9,17 @@ import { PreviewContainer } from '@workflo/components'
 import RepositoryChooser from './RepositoryChooser'
 
 const repositories = [
-  { id: 1, name: 'Repository 1' },
-  { id: 2, name: 'Repository 2' },
+  { id: 1, name: 'Repository 1', description: 'The first example repository' },
+  { id: 2, name: 'Repository 2', description: 'The second example repository' },
 ]
 
 storiesOf('RepositoryChooser', module)
   .add('Regular', () => (
     <PreviewContainer>
       <RepositoryChooser
+        onBack={action('onBack')}
         onChange={action('onChange')}
+        onContinue={action('onContinue')}
         repositories={repositories}
       />
     </PreviewContainer>
@@ -25,6 +27,7 @@ storiesOf('RepositoryChooser', module)
   .add('Repository selected', () => (
     <PreviewContainer>
       <RepositoryChooser
+        onBack={action('onBack')}
         onChange={action('onChange')}
         onContinue={action('onContinue')}
         repositories={repositories}

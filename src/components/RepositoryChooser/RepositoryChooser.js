@@ -56,6 +56,11 @@ const RepositoryChooser = ({
       {...theme.title}
     >
       <Heading size='Large'>Select repositories</Heading>
+      <View
+        {...theme.subtitle}
+      >
+        Only compatible repositories are shown
+      </View>
     </View>
     <View {...theme.repositories}>
       {
@@ -81,8 +86,15 @@ const RepositoryChooser = ({
                 }
               }}
             />
-            <View {...theme.repositoryName}>
-              {repo.name}
+            <View
+              {...theme.repositoryDetails}
+            >
+              <View {...theme.repositoryName}>
+                {repo.name}
+              </View>
+              <View {...theme.repositoryDescription}>
+                {repo.description}
+              </View>
             </View>
           </View>
         ))
@@ -120,22 +132,30 @@ const defaultTheme = {
   title: {
     marginBottom: Spacing.base,
   },
+  subtitle: {
+    ...Fonts.small,
+    color: Colors.grey400,
+  },
   repositories: {
-
   },
   repository: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: Spacing.tiny,
+    alignItems: 'flex-start',
+    marginBottom: Spacing.small,
   },
-  repositoryName: {
+  repositoryDetails: {
     display: 'inline',
     marginLeft: Spacing.tiny,
-    color: Colors.grey200,
+  },
+  repositoryName: {
     ...Fonts.base,
   },
+  repositoryDescription: {
+    ...Fonts.small,
+    color: Colors.grey400,
+  },
   buttons: {
-    marginTop: Spacing.large,
+    marginTop: Spacing.base,
     flexDirection: 'row',
   },
   button: {
