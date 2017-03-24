@@ -36,6 +36,9 @@ const isRepoSelected = (selectedIds, repo) =>
 const selectRepo = (selectedIds, repo) =>
   [...new Set([...(selectedIds || []), repo.id])]
 
+const deselectRepo = (selectedIds, repo) =>
+  [...new Set([...(selectedIds || []).filter(id => id !== repo.id)])]
+
 const RepositoryChooser = ({
   onChange,
   onContinue,
@@ -61,7 +64,10 @@ const RepositoryChooser = ({
             <Checkbox
               checked={isRepoSelected(selectedIds, repo)}
               onChange={() => {
-                onChange(selectRepo(selectedIds, repo))
+                onChange(
+                  isRepoSelected(selectedIds, repo)
+                  ? deselectRepo(selectedIds, repo)
+                  : selectRepo(selectedIds, repo))
               }}
               theme={{
                 inner: {
