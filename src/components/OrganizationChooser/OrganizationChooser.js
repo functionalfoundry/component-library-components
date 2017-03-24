@@ -3,7 +3,7 @@
 
 import React from 'react'
 import Theme from 'js-theme'
-import { Spacing } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import {
   Button,
   Heading,
@@ -48,6 +48,10 @@ const OrganizationChooser = ({
       {...theme.title}
     >
       <Heading size='Large'>Select an organization</Heading>
+      <View
+        {...theme.subtitle}>
+        Only organizations with compatible repositories are shown
+      </View>
     </View>
     <RadioGroup
       onChange={onChange}
@@ -62,6 +66,7 @@ const OrganizationChooser = ({
             theme={{
               container: {
                 marginBottom: Spacing.tiny,
+                color: 'white',
               }
             }}
           />
@@ -100,11 +105,15 @@ const defaultTheme = {
   title: {
     marginBottom: Spacing.base,
   },
+  subtitle: {
+    ...Fonts.small,
+    color: Colors.grey400,
+  },
   organization: {
     marginBottom: Spacing.tiny,
   },
   buttons: {
-    marginTop: Spacing.large,
+    marginTop: Spacing.base,
     flexDirection: 'row',
   },
   button: {
