@@ -19,7 +19,7 @@ type OrganizationT = {
 
 type PropsT = {
   onChange: Function,
-  onContinueAsInvidual: Function,
+  onContinueAsIndividual: Function,
   onContinueWithOrganization: Function,
   organizations: Array<OrganizationT>,
   selectedId: any,
@@ -35,7 +35,7 @@ const defaultProps = {
 
 const OrganizationChooser = ({
   onChange,
-  onContinueAsInvidual,
+  onContinueAsIndividual,
   onContinueWithOrganization,
   organizations,
   selectedId,
@@ -80,7 +80,7 @@ const OrganizationChooser = ({
         label='Continue as an individual'
         kind={'hero'}
         ghost={true}
-        onClick={onContinueAsInvidual}
+        onClick={onContinueAsIndividual}
         {...theme.button}
       />
       {
