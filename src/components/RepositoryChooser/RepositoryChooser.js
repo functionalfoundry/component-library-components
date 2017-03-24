@@ -130,7 +130,7 @@ const defaultTheme = {
   repositoryChooser: {
   },
   title: {
-    marginBottom: Spacing.base,
+    marginBottom: Spacing.large,
   },
   subtitle: {
     ...Fonts.small,
@@ -155,7 +155,7 @@ const defaultTheme = {
     color: Colors.grey400,
   },
   buttons: {
-    marginTop: Spacing.base,
+    marginTop: Spacing.large,
     flexDirection: 'row',
   },
   button: {

@@ -103,7 +103,7 @@ const defaultTheme = {
   organizationChooser: {
   },
   title: {
-    marginBottom: Spacing.base,
+    marginBottom: Spacing.large,
   },
   subtitle: {
     ...Fonts.small,
@@ -113,7 +113,7 @@ const defaultTheme = {
     marginBottom: Spacing.tiny,
   },
   buttons: {
-    marginTop: Spacing.base,
+    marginTop: Spacing.large,
     flexDirection: 'row',
   },
   button: {
