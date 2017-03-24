@@ -30,6 +30,12 @@ const defaultProps = {
   repositories: [],
 }
 
+const isRepoSelected = (selectedIds, repo) =>
+  selectedIds && selectedIds.indexOf(repo.id) >= 0
+
+const selectRepo = (selectedIds, repo) =>
+  [...new Set([...(selectedIds || []), repo.id])]
+
 const RepositoryChooser = ({
   onChange,
   onContinue,
@@ -48,12 +54,21 @@ const RepositoryChooser = ({
     <View {...theme.repositories}>
       {
         repositories && repositories.map(repo => (
-          <View {...theme.repository}>
+          <View
+            {...theme.repository}
+            key={repo.id}
+          >
             <Checkbox
-              key={repo.id}
-              checked={selectedIds && selectedIds.indexOf(repo.id) >= 0}
+              checked={isRepoSelected(selectedIds, repo)}
               onChange={() => {
-                onChange([...new Set([...selectedIds, repo.id])])
+                onChange(selectRepo(selectedIds, repo))
+              }}
+              theme={{
+                inner: {
+                  backgroundColor: isRepoSelected(selectedIds, repo)
+                    ? Colors.grey800
+                    : 'white'
+                }
               }}
             />
             <View {...theme.repositoryName}>
