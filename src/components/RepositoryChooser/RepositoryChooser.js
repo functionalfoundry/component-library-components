@@ -17,6 +17,7 @@ type RepositoryT = {
 }
 
 type PropsT = {
+  onBack: Function,
   onChange: Function,
   onContinue: Function,
   repositories: Array<RepositoryT>,
@@ -25,6 +26,7 @@ type PropsT = {
 }
 
 const defaultProps = {
+  onBack: () => {},
   onChange: () => {},
   onContinue: () => {},
   repositories: [],
@@ -40,6 +42,7 @@ const deselectRepo = (selectedIds, repo) =>
   [...new Set([...(selectedIds || []).filter(id => id !== repo.id)])]
 
 const RepositoryChooser = ({
+  onBack,
   onChange,
   onContinue,
   repositories,
@@ -67,7 +70,8 @@ const RepositoryChooser = ({
                 onChange(
                   isRepoSelected(selectedIds, repo)
                   ? deselectRepo(selectedIds, repo)
-                  : selectRepo(selectedIds, repo))
+                  : selectRepo(selectedIds, repo)
+                )
               }}
               theme={{
                 inner: {
@@ -87,11 +91,18 @@ const RepositoryChooser = ({
     <View
       {...theme.buttons}
     >
+      <Button
+        label='Back to organizations'
+        kind='hero'
+        ghost={true}
+        onClick={onBack}
+        {...theme.button}
+      />
       {
         selectedIds && selectedIds.length > 0 && (
           <Button
             label='Continue'
-            kind={'hero'}
+            kind='hero'
             onClick={onContinue}
             {...theme.button}
           />
