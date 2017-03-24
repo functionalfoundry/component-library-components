@@ -88,6 +88,13 @@ const RepositoryChooser = ({
             />
             <View
               {...theme.repositoryDetails}
+              onClick={() => {
+                onChange(
+                  isRepoSelected(selectedIds, repo)
+                  ? deselectRepo(selectedIds, repo)
+                  : selectRepo(selectedIds, repo)
+                )
+              }}
             >
               <View {...theme.repositoryName}>
                 {repo.name}
@@ -144,6 +151,7 @@ const defaultTheme = {
     marginBottom: Spacing.small,
   },
   repositoryDetails: {
+    cursor: 'pointer',
     display: 'inline',
     marginLeft: Spacing.tiny,
   },
