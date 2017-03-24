@@ -56,6 +56,7 @@ const OrganizationChooser = ({
       {
         organizations && organizations.map((organization) => (
           <Radio
+            key={organization.id}
             label={organization.name}
             value={organization.id}
             theme={{
