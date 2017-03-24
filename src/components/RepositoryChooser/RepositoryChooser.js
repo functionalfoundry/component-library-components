@@ -113,7 +113,7 @@ const RepositoryChooser = ({
       {
         selectedIds && selectedIds.length > 0 && (
           <Button
-            label='Continue'
+            label='Get started'
             kind='hero'
             onClick={onContinue}
             {...theme.button}
