@@ -11,6 +11,7 @@ import {
   RadioGroup,
   View
 } from '@workflo/components'
+import StaggerChildren from '../StaggerChildren'
 
 type OrganizationT = {
   id: string,
@@ -54,6 +55,18 @@ const OrganizationChooser = ({
       </View>
     </View>
     <RadioGroup
+      innerContainer={
+        <StaggerChildren
+          duration={0.5}
+          distance={50}
+          stagger={0.05}
+          theme={{
+            staggerChildren: {
+              flexDirection: 'column',
+            }
+          }}
+        />
+      }
       onChange={onChange}
       value={selectedId}
     >
