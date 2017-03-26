@@ -4,6 +4,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
+import StaggerChildren from '../StaggerChildren'
 import {
   Button,
   Heading,
@@ -63,49 +64,57 @@ const RepositoryChooser = ({
       </View>
     </View>
     <View {...theme.repositories}>
-      {
-        repositories && repositories.map(repo => (
-          <View
-            {...theme.repository}
-            key={repo.id}
-          >
-            <Checkbox
-              checked={isRepoSelected(selectedIds, repo)}
-              onChange={() => {
-                onChange(
-                  isRepoSelected(selectedIds, repo)
-                  ? deselectRepo(selectedIds, repo)
-                  : selectRepo(selectedIds, repo)
-                )
-              }}
-              theme={{
-                inner: {
-                  backgroundColor: isRepoSelected(selectedIds, repo)
-                    ? Colors.grey800
-                    : 'white'
-                }
-              }}
-            />
+      <StaggerChildren
+        theme={{
+          staggerChildren: {
+            flexDirection: 'column',
+          }
+        }}
+      >
+        {
+          repositories && repositories.map(repo => (
             <View
-              {...theme.repositoryDetails}
-              onClick={() => {
-                onChange(
-                  isRepoSelected(selectedIds, repo)
-                  ? deselectRepo(selectedIds, repo)
-                  : selectRepo(selectedIds, repo)
-                )
-              }}
+              {...theme.repository}
+              key={repo.id}
             >
-              <View {...theme.repositoryName}>
-                {repo.name}
-              </View>
-              <View {...theme.repositoryDescription}>
-                {repo.description}
+              <Checkbox
+                checked={isRepoSelected(selectedIds, repo)}
+                onChange={() => {
+                  onChange(
+                    isRepoSelected(selectedIds, repo)
+                    ? deselectRepo(selectedIds, repo)
+                    : selectRepo(selectedIds, repo)
+                  )
+                }}
+                theme={{
+                  inner: {
+                    backgroundColor: isRepoSelected(selectedIds, repo)
+                      ? Colors.grey800
+                      : 'white'
+                  }
+                }}
+              />
+              <View
+                {...theme.repositoryDetails}
+                onClick={() => {
+                  onChange(
+                    isRepoSelected(selectedIds, repo)
+                    ? deselectRepo(selectedIds, repo)
+                    : selectRepo(selectedIds, repo)
+                  )
+                }}
+              >
+                <View {...theme.repositoryName}>
+                  {repo.name}
+                </View>
+                <View {...theme.repositoryDescription}>
+                  {repo.description}
+                </View>
               </View>
             </View>
-          </View>
-        ))
-      }
+          ))
+        }
+      </StaggerChildren>
     </View>
     <View
       {...theme.buttons}

@@ -66,7 +66,7 @@ class StaggerChildren extends React.Component {
     const { theme } = this.props
     return (
       <div
-        {...theme.StaggerChildren}
+        {...theme.staggerChildren}
         ref={c => this.childrenContainer = c}
       >
         {this.props.children}
@@ -76,7 +76,7 @@ class StaggerChildren extends React.Component {
 }
 
 const defaultTheme = {
-  StaggerChildren: {
+  staggerChildren: {
     display: 'flex',
   }
 }
