@@ -65,6 +65,9 @@ const RepositoryChooser = ({
     </View>
     <View {...theme.repositories}>
       <StaggerChildren
+        duration={0.5}
+        distance={50}
+        stagger={0.05}
         theme={{
           staggerChildren: {
             flexDirection: 'column',
