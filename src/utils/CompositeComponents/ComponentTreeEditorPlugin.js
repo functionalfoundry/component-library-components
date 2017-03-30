@@ -5,6 +5,7 @@ import Theme from 'js-theme'
 import {Set} from 'immutable'
 import {
   AlignedTrigger,
+  AutoSuggest,
   EditableText,
   HoverIcon,
   Popover,
@@ -343,6 +344,8 @@ class ComponentNameRenderer extends React.Component {
     super(props)
     this.state = {
       isEditing: false,
+      filteredComponentNames: props.options,
+      value: '',
     }
   }
 
@@ -356,27 +359,78 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
+  getOptions = () =>
+    this.props.options && this.props.options.completionData.components
+
+  getSuggestions = value => {
+    // const escapedValue = escapeRegexCharacters(value.trim())
+    const escapedValue = value.trim()
+
+    if (escapedValue === '') {
+      return []
+    }
+
+    const regex = new RegExp('^' + escapedValue, 'i')
+    return this.getOptions().filter(item => regex.test(item))
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      filteredComponentNames: this.getSuggestions(value),
+    })
+  }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      filteredComponentNames: [],
+    })
+  }
+
+  handleChangeComponentName = (event, data) => {
+    const { mark, options } = this.props
+    const component = mark.getIn(['data', 'element', 'node'])
+    options && options.onChangeComponentName(component.id, data.suggestionValue)
+  }
+
   render () {
-    const {children, mark, theme, options} = this.props
+    const { children, mark, theme, options } = this.props
+    const { filteredComponentNames } = this.state
     const component = mark.getIn(['data', 'element', 'node'])
 
     return (
       <View {...theme.componentName} inline>
-        <EditableText
-          ref={c => this.editableText = c}
-          isEditing={this.state.isEditing}
-          onStartEdit={this.handleStartEdit}
-          onStopEdit={this.handleStopEdit}
-          onChange={this.handleChange}
-          theme={{
-            text: {
-              ...Fonts.code,
+        <AutoSuggest
+          suggestions={filteredComponentNames}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          renderInputComponent={renderInputComponent}
+          inputProps={{
+            value: component.name,
+            onChange: (e, some) => {
             },
           }}
-          value={component.name}
+          onSuggestionSelected={this.handleChangeComponentName}
+          focusInputOnSuggestionClick
+          id='basic-example'
         />
       </View>
     )
+
+    // <EditableText
+    //   ref={c => this.editableText = c}
+    //   isEditing={this.state.isEditing}
+    //   onStartEdit={this.handleStartEdit}
+    //   onStopEdit={this.handleStopEdit}
+    //   onChange={this.handleChange}
+    //   theme={{
+    //     text: {
+    //       ...Fonts.code,
+    //     },
+    //   }}
+    //   value={component.name}
+    // />
   }
 
   handleStartEdit = () => {
@@ -404,10 +458,26 @@ class ComponentNameRenderer extends React.Component {
   };
 }
 
-const ThemedComponentNameRenderer = Theme(
-  'ComponentNameRenderer',
-  defaultTheme,
-)(ComponentNameRenderer)
+const getSuggestionValue = suggestion => suggestion
+
+const renderSuggestion = suggestion => (
+  <span>{suggestion}</span>
+)
+
+// Move all of these
+const renderInputComponent = (props) => (
+  <EditableText
+    {...props}
+    theme={{
+      text: {
+        ...Fonts.code,
+      },
+    }}
+  />
+)
+
+const ThemedComponentNameRenderer =
+  Theme('ComponentNameRenderer', defaultTheme)(ComponentNameRenderer)
 
 /**
  * Property name renderer

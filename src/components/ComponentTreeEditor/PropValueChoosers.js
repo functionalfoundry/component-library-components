@@ -2,7 +2,12 @@
 
 import React from 'react'
 import Theme from 'js-theme'
-import { EditableText, RadioGroup, Radio, View } from '@workflo/components'
+import {
+  EditableText,
+  RadioGroup,
+  Radio,
+  View,
+} from '@workflo/components'
 import { Fonts } from '@workflo/styles'
 import {
   Prop,
@@ -110,17 +115,14 @@ class StringPropValueChooser extends React.Component {
   }
 
   handleChange = (value: string) => {
-    console.log('handle change', value)
     this.setState(state => state.value = value)
   }
 
   handleStopEdit = () => {
-    console.log('stop edit')
     this.props.onChange && this.props.onChange(this.state.value)
   }
 
   componentWillReceiveProps (nextProps: PropValueChooserPropsT) {
-    console.log('will receive props', nextProps.value)
     if (this.props.value !== nextProps.value) {
       this.setState(state => state.value = nextProps.value.value)
     }
@@ -128,16 +130,16 @@ class StringPropValueChooser extends React.Component {
 
   render () {
     return (
-     <EditableText
-       value={this.props.value.value}
-       onChange={this.handleChange}
-       onStopEdit={this.handleStopEdit}
-       theme={{
-         text: {
-           ...Fonts.code,
-         }
-       }}
-     />
+      <EditableText
+        value={this.props.value.value}
+        onChange={this.handleChange}
+        onStopEdit={this.handleStopEdit}
+        theme={{
+          text: {
+            ...Fonts.code,
+          }
+        }}
+      />
     )
   }
 }
