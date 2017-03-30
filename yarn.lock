@@ -112,9 +112,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.64":
-  version "0.8.64"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.64.tgz#f087fb662fc5f7cd121fe6b98d938b36d2abbc82"
+"@workflo/components@0.8.65":
+  version "0.8.65"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.65.tgz#f18390809fe32801609654dd759a6f7ede39ebd2"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
@@ -136,6 +136,7 @@
     rc-animate "^2.3.1"
     rc-util "^4.0.0"
     react-timeout "^1.0.0"
+    shallow-equal "^1.0.0"
     slate "^0.19.3"
 
 "@workflo/styles@^0.7.10":
@@ -5085,6 +5086,10 @@ setprototypeof@1.0.1:
 sha.js@2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.2.6.tgz#17ddeddc5f722fb66501658895461977867315ba"
+
+shallow-equal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.0.0.tgz#508d1838b3de590ab8757b011b25e430900945f7"
 
 shallowequal@0.2.x:
   version "0.2.2"
