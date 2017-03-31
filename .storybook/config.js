@@ -25,6 +25,7 @@ function loadStories () {
   require('../src/components/Configuration/Configuration.story.js')
   require('../src/components/OrganizationChooser/OrganizationChooser.story.js')
   require('../src/components/RepositoryChooser/RepositoryChooser.story.js')
+  require('../src/components/Preferences/Preferences.story.js')
 }
 
 configure(loadStories, module)
