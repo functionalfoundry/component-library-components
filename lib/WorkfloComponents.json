@@ -20,11 +20,14 @@
   "LiveView",
   "MultiPropertiesTable",
   "OrganizationChooser",
+  "Preferences",
   "Properties",
   "QuickAction",
+  "RepoPreferences",
   "RepositoryChooser",
   "RotateFade",
   "Search",
   "StaggerChildren",
-  "SubHeader"
+  "SubHeader",
+  "ThemePreferences"
 ]
