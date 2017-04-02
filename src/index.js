@@ -17,6 +17,9 @@ const LivePreview = require('./components/LivePreview')
 const LiveView = require('./components/LiveView')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
 const OrganizationChooser = require('./components/OrganizationChooser')
+const Preferences = require('./components/Preferences')
+const RepoPreferences = require('./components/RepoPreferences')
+const ThemePreferences = require('./components/ThemePreferences')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RepositoryChooser = require('./components/RepositoryChooser')
@@ -53,6 +56,9 @@ const WorkfloComponents = {
   LiveView,
   MultiPropertiesTable,
   OrganizationChooser,
+  Preferences,
+  RepoPreferences,
+  ThemePreferences,
   Properties,
   QuickAction,
   RepositoryChooser,
