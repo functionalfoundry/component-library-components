@@ -1,11 +1,11 @@
 /* @flow */
 
 import React from 'react'
-import { storiesOf, action } from '@kadira/storybook'
-import { Preview, PreviewContainer } from '@workflo/components'
-import { List } from 'immutable'
+import {storiesOf, action} from '@kadira/storybook'
+import {Preview, PreviewContainer} from '@workflo/components'
+import {List} from 'immutable'
 import type {
-  NodeIdentifierT
+  NodeIdentifierT,
 } from '../../utils/CompositeComponents/ComponentTree'
 import {
   Component,
@@ -20,35 +20,35 @@ const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 const completionData = {
   components: ['List', 'ListItem'],
   props: {
-    'List': {
-      'title': {
+    List: {
+      title: {
         type: 'string',
       },
-      'listWidth': {
+      listWidth: {
         type: 'number',
         options: [10, 20, 30],
       },
     },
-    'ListItem': {
-      'key': {
+    ListItem: {
+      key: {
         type: 'string',
-      }
-    }
+      },
+    },
   },
   globalOptions: {
     'state.title': {
       name: 'state.title',
       value: 'state.title',
       type: 'string',
-      source: 'state'
+      source: 'state',
     },
-    'handleSelect': {
+    handleSelect: {
       name: 'handleSelect',
-      value: 'handleSelect' ,
+      value: 'handleSelect',
       type: 'function',
       source: 'actions',
-    }
-  }
+    },
+  },
 }
 
 const regularTree = ComponentTree({
@@ -62,12 +62,12 @@ const regularTree = ComponentTree({
         value: PropValue({
           value: 'Users',
           type: 'string',
-        })
+        }),
       }),
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({ value: '10' })
+        value: PropValue({value: '10'}),
       }),
       Prop({
         id: 'list-on-select-prop',
@@ -75,8 +75,8 @@ const regularTree = ComponentTree({
         value: PropValue({
           value: 'handleSelect',
           type: 'function',
-        })
-      })
+        }),
+      }),
     ]),
     children: List([
       Component({
@@ -86,8 +86,8 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
-            value: PropValue({ value: '0' }),
-          })
+            value: PropValue({value: '0'}),
+          }),
         ]),
         text: 'First list item',
       }),
@@ -98,8 +98,8 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
-            value: PropValue({ value: '1' }),
-          })
+            value: PropValue({value: '1'}),
+          }),
         ]),
         text: 'Second list item',
       }),
@@ -112,8 +112,8 @@ const regularTree = ComponentTree({
         id: 'list-item-4',
         name: 'ListItem',
       }),
-    ])
-  })
+    ]),
+  }),
 })
 
 const treeFromRaw = Utils.createTree({
@@ -126,8 +126,8 @@ const treeFromRaw = Utils.createTree({
       value: {
         value: 'Users',
         type: 'string',
-      }
-    }
+      },
+    },
   ],
   children: [
     {
@@ -138,26 +138,26 @@ const treeFromRaw = Utils.createTree({
           name: 'key',
           value: {
             value: 1,
-            type: 'number'
+            type: 'number',
           },
-        }
+        },
       ],
       text: 'Hello',
-    }
-  ]
+    },
+  ],
 })
 
 type TreeEditorContainerPropsT = {
   tree: ComponentTree,
-}
+};
 
 type TreeEditorContainerStateT = {
   tree: ComponentTree,
-}
+};
 
 class TreeEditorContainer extends React.Component {
-  props: TreeEditorContainerPropsT
-  state: TreeEditorContainerStateT
+  props: TreeEditorContainerPropsT;
+  state: TreeEditorContainerStateT;
 
   constructor (props) {
     super(props)
@@ -168,135 +168,144 @@ class TreeEditorContainer extends React.Component {
 
   createAction = (name, handler) => (
     <button key={name} onClick={handler}>{name}</button>
-  )
+  );
 
   insertProp = () => {
     const prop = Prop({
       id: 'new-prop',
       name: 'newProp',
-      value: PropValue({ value: 'new prop value' }),
+      value: PropValue({value: 'new prop value'}),
     })
     this.setState({
       tree: Utils.insertProp(this.state.tree, 'list-item-1', prop),
     })
-  }
+  };
 
   removeProp = () => {
     this.setState({
       tree: Utils.removeNodeById(this.state.tree, 'list-width-prop'),
     })
-  }
+  };
 
   setPropName = () => {
     this.setState({
       tree: Utils.setPropName(
-        this.state.tree, 'list-title-prop', 'newNameOfTitleProp'
-      )
+        this.state.tree,
+        'list-title-prop',
+        'newNameOfTitleProp',
+      ),
     })
-  }
+  };
 
   setPropValue = () => {
     this.setState({
       tree: Utils.setPropValue(
-        this.state.tree, 'list-title-prop',
+        this.state.tree,
+        'list-title-prop',
         PropValue({
           value: 'New list title',
           type: 'string',
-        })
-      )
+        }),
+      ),
     })
-  }
+  };
 
   insertComponentAsFirst = () => {
     this.setState({
       tree: Utils.insertComponent(
-        this.state.tree, 'list', 0,
+        this.state.tree,
+        'list',
+        0,
         Component({
           id: 'new-component-as-first',
           name: 'NewComponent',
-        })
+        }),
       ),
     })
-  }
+  };
 
   insertComponentAsThird = () => {
     this.setState({
       tree: Utils.insertComponent(
-        this.state.tree, 'list', 2,
+        this.state.tree,
+        'list',
+        2,
         Component({
           id: 'new-component-as-third',
           name: 'AnotherNewComponent',
-        })
+        }),
       ),
     })
-  }
+  };
 
   insertComponentInThird = () => {
     this.setState({
       tree: Utils.insertComponent(
-        this.state.tree, 'new-component-as-third', 0,
+        this.state.tree,
+        'new-component-as-third',
+        0,
         Component({
           id: 'new-component-in-third',
           name: 'YetAnotherNewComponent',
-        })
+        }),
       ),
     })
-  }
+  };
 
   removeComponent = () => {
     this.setState({
       tree: Utils.removeComponent(this.state.tree, 'list-item-2'),
     })
-  }
+  };
 
   setComponentName = () => {
     this.setState({
       tree: Utils.setComponentName(
-        this.state.tree, 'list-item-3', 'NewListItem'
+        this.state.tree,
+        'list-item-3',
+        'NewListItem',
       ),
     })
-  }
+  };
 
   setComponentText = () => {
     this.setState({
-      tree: Utils.setComponentText(
-        this.state.tree, 'list-item-3', 'New text'
-      )
+      tree: Utils.setComponentText(this.state.tree, 'list-item-3', 'New text'),
     })
-  }
+  };
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
     action('onRemoveProp').call(null, nodeId)
     const tree = Utils.removeProp(this.state.tree, nodeId)
-    this.setState({ tree })
-  }
+    this.setState({tree})
+  };
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
     action('onRemoveComponent').call(null, nodeId)
     const tree = Utils.removeComponent(this.state.tree, nodeId)
-    this.setState({ tree })
-  }
+    this.setState({tree})
+  };
 
   handleInsertComponent = (
     parentId: NodeIdentifierT,
     index: number,
-    component: Component
+    component: Component,
   ) => {
     action('onInsertComponent').call(null, parentId, index, component)
     const tree = Utils.insertComponent(
-      this.state.tree, parentId, index, component
+      this.state.tree,
+      parentId,
+      index,
+      component,
     )
-    this.setState({ tree })
-  }
+    this.setState({tree})
+  };
 
-  handleChangeComponentName = (
-    nodeId: NodeIdentifierT,
-    name: string,
-  ) => {
+  handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     action('onChangeComponentName').call(null, nodeId, name)
     const tree = Utils.setComponentName(this.state.tree, nodeId, name)
-    this.setState({ tree })
-  }
+    this.setState({tree})
+  };
 
   render () {
     return (
@@ -314,46 +323,43 @@ class TreeEditorContainer extends React.Component {
         />
         <div>
           {[
-            this.createAction(
-              'Add prop to first list item',
-              this.insertProp
-            ),
+            this.createAction('Add prop to first list item', this.insertProp),
             this.createAction(
               'Remove the listWidth prop from List',
-              this.removeProp
+              this.removeProp,
             ),
             this.createAction(
               'Change the name of the title prop',
-              this.setPropName
+              this.setPropName,
             ),
             this.createAction(
               'Change value of the title prop',
-              this.setPropValue
+              this.setPropValue,
             ),
             this.createAction(
               'Add a new, empty component to List as the 1st child',
-              this.insertComponentAsFirst
+              this.insertComponentAsFirst,
             ),
             this.createAction(
               'Add a new, empty component to List as the 3rd child',
-              this.insertComponentAsThird
+              this.insertComponentAsThird,
             ),
             this.createAction(
               'Add a new, empty component to the new 3rd child of List',
-              this.insertComponentInThird
+              this.insertComponentInThird,
             ),
             this.createAction(
               'Remove the second list item',
-              this.removeComponent
+              this.removeComponent,
             ),
             this.createAction(
               'Update the name of the third list item',
-              this.setComponentName
+              this.setComponentName,
             ),
             this.createAction(
               'Change the text of the third list item',
-              this.setComponentText
-            )
+              this.setComponentText,
+            ),
           ]}
         </div>
       </div>

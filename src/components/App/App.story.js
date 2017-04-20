@@ -1,33 +1,39 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import {storiesOf, action} from '@kadira/storybook'
 import App from './App'
-import { profile } from '../../../mocks/profile'
-import { liveViewState } from '../../../mocks/live-view'
-import { propKeyValues, dataCode, actionsCode } from '../../../mocks/components'
+import {profile} from '../../../mocks/profile'
+import {liveViewState} from '../../../mocks/live-view'
+import {
+  TreeEditorContainer,
+  regularTree,
+} from '../../../mocks/componentTreeEditor'
+import {
+  componentTree,
+  propKeyValues,
+  dataCode,
+  actionsCode,
+} from '../../../mocks/components'
 import Properties from '../Properties'
 import Header from '../Header'
 import QuickAction from '../QuickAction'
 import LivePreview from '../LivePreview'
 import LiveEditor from '../LiveEditor'
-import {
-  Colors,
-  Fonts,
-} from '@workflo/styles'
+import {Colors, Fonts} from '@workflo/styles'
 
 class AppScrollTopContainer extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { screen: 'Initial screen' }
+    this.state = {screen: 'Initial screen'}
   }
 
   handleChangeScreen = () => {
     this.setState(state => {
-      state.screen = (state.screen == 'Initial screen')
-                   ? 'Second screen'
-                   : 'Initial screen'
+      state.screen = state.screen == 'Initial screen'
+        ? 'Second screen'
+        : 'Initial screen'
       return state
     })
-  }
+  };
 
   render () {
     return (
@@ -36,20 +42,20 @@ class AppScrollTopContainer extends React.Component {
         screen={this.state.screen}
         layout={{
           header: (
-            <div style={{ backgroundColor: Colors.red400, height: 100 }}>
+            <div style={{backgroundColor: Colors.red400, height: 100}}>
               {this.state.screen}
             </div>
           ),
           content: (
-            <div style={{ backgroundColor: Colors.red600, height: 1000 }}>
+            <div style={{backgroundColor: Colors.red600, height: 1000}}>
               Content
             </div>
           ),
           bottom: (
-            <div style={{ backgroundColor: Colors.red700, height: 100 }}>
+            <div style={{backgroundColor: Colors.red700, height: 100}}>
               <button onClick={this.handleChangeScreen}>Change screen</button>
             </div>
-          )
+          ),
         }}
       />
     )
@@ -59,21 +65,14 @@ class AppScrollTopContainer extends React.Component {
 storiesOf('App', module)
   .add('LiveView', () => (
     <App
-      profile={profile}
       layout={{
         header: (
           <Header
-            {...actions}
-            profile={profile}
             title={{
               value: 'Drawer',
             }}
             subtitle={{
               value: 'Collapsed',
-            }}
-            onClickBack={() => {}}
-            search={{
-              show: true,
             }}
           />
         ),
@@ -90,18 +89,14 @@ storiesOf('App', module)
         ),
         centerRight: (
           <LiveEditor
-            componentName='Comment'
-            propKeyValues={propKeyValues}
-            onChangeCode={() => {}}
+            componentTree={componentTree}
             data={{text: dataCode}}
             actions={{text: actionsCode}}
+            onChangeData={action('onChangeData')}
+            onChangeActions={action('onChangeActions')}
           />
         ),
-        bottom: (
-          <Properties
-            properties={liveViewState.component.properties}
-          />
-        ),
+        bottom: <Properties properties={liveViewState.component.properties} />,
       }}
     />
   ))
@@ -110,10 +105,14 @@ storiesOf('App', module)
       profile={profile}
       layout={{
         header: (
-          <div style={{ backgroundColor: Colors.red600, height: 100 }}>Header</div>
+          <div style={{backgroundColor: Colors.red600, height: 100}}>
+            Header
+          </div>
         ),
         content: (
-          <div style={{ backgroundColor: Colors.red400, height: 400 }}>Content</div>
+          <div style={{backgroundColor: Colors.red400, height: 400}}>
+            Content
+          </div>
         ),
       }}
     />
@@ -123,23 +122,27 @@ storiesOf('App', module)
       profile={profile}
       layout={{
         header: (
-          <div style={{ backgroundColor: Colors.red400, height: 100 }}>Header</div>
+          <div style={{backgroundColor: Colors.red400, height: 100}}>
+            Header
+          </div>
         ),
         centerLeft: (
-          <div style={{ backgroundColor: Colors.red600, height: 400 }}>Left</div>
+          <div style={{backgroundColor: Colors.red600, height: 400}}>Left</div>
         ),
         centerRight: (
-          <div style={{ backgroundColor: Colors.primary300, height: 400 }}>Right</div>
+          <div style={{backgroundColor: Colors.primary300, height: 400}}>
+            Right
+          </div>
         ),
         bottom: (
-          <div style={{ backgroundColor: Colors.green300, height: 300 }}>Bottom</div>
+          <div style={{backgroundColor: Colors.green300, height: 300}}>
+            Bottom
+          </div>
         ),
       }}
     />
   ))
-  .add('Scroll top animation', () => (
-    <AppScrollTopContainer />
-  ))
+  .add('Scroll top animation', () => <AppScrollTopContainer />)
 
 const actions = {
   quickActions: [
@@ -147,11 +150,7 @@ const actions = {
       icon='alignment'
       input={{
         type: 'Radio',
-        options: [
-          'Left',
-          'Center',
-          'Right',
-        ],
+        options: ['Left', 'Center', 'Right'],
         value: 'Center',
       }}
     />,
@@ -159,11 +158,7 @@ const actions = {
       icon='theme'
       input={{
         type: 'Radio',
-        options: [
-          'Small',
-          'Base',
-          'Large',
-        ],
+        options: ['Small', 'Base', 'Large'],
         value: 'Base',
       }}
     />,
@@ -171,7 +166,18 @@ const actions = {
 }
 
 const MyComponent = () => (
-  <div style={{ backgroundColor: 'magenta', height: 50, width: 100, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', ...Fonts.base }}>
+  <div
+    style={{
+      backgroundColor: 'magenta',
+      height: 50,
+      width: 100,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+      ...Fonts.base,
+    }}
+  >
     Hello
   </div>
 )

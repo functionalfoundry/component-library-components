@@ -1,7 +1,8 @@
-import { configure } from '@kadira/storybook'
+import {configure} from '@kadira/storybook'
 
 function loadStories () {
   require('../src/components/App/App.story.js')
+  require('../src/components/App2/App2.story.js')
   require('../src/components/AnimationDemo/AnimationDemo.story.js')
   require('../src/components/BulkActionBar/BulkActionBar.story.js')
   require('../src/components/Code/Code.story.js')
