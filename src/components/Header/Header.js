@@ -1,20 +1,10 @@
 import React from 'react'
 import Theme from 'js-theme'
-import { ActionT } from '../../types/Action'
-import { SearchT } from '../../types/Search'
-import {
-  View,
-  Icon,
-  HoverIcon,
-  Heading,
-  EditableText,
-  // ProfilePhoto,
-} from '@workflo/components'
-import {
-  Colors,
-  Fonts,
-  Spacing,
-} from '@workflo/styles'
+import {ActionT} from '../../types/Action'
+import {SearchT} from '../../types/Search'
+import {View, Icon, HoverIcon, Heading, EditableText} from // ProfilePhoto,
+'@workflo/components'
+import {Colors, Fonts, Spacing} from '@workflo/styles'
 import SubHeader from '../SubHeader'
 import BulkActionBar from '../BulkActionBar'
 
@@ -25,7 +15,7 @@ type EditableTextPropsT = {
   onChange: Function,
   onStartEdit: Function,
   onStopEdit: Function,
-}
+};
 
 type Props = {
   profile: Object,
@@ -42,91 +32,56 @@ type Props = {
     onClearSelection: Function,
   },
   theme: Object,
-}
+};
 
-const Header = ({
-  profile,
-  title,
-  subtitle,
-  onClickBack,
-  primaryAction,
-  secondaryActions,
-  quickActions,
-  bulkActions,
-  search,
-  theme,
-}: Props) => (
-  <View
-    {...theme.header}
-  >
-    <View
-      {...theme.titleRow}
-    >
-      <View
-        {...theme.leftBlock}
-      >
-        <Back
-          onClickBack={onClickBack}
-          theme={theme}
-        />
-        <View
-          {...theme.separator}
-          inline
-        />
-        <View
-          {...theme.title}
-        >
-          <EditableText
-            {...title}
-            size='Huge'
-          />
+const Header = (
+  {
+    profile,
+    title,
+    subtitle,
+    onClickBack,
+    primaryAction,
+    secondaryActions,
+    quickActions,
+    bulkActions,
+    search,
+    theme,
+  }: Props,
+) => (
+  <View {...theme.header}>
+    <View {...theme.titleRow}>
+      <View {...theme.leftBlock}>
+        <Back onClickBack={onClickBack} theme={theme} />
+        <View {...theme.separator} inline />
+        <View {...theme.title}>
+          <EditableText {...title} size='Huge' />
         </View>
       </View>
-      <View
-        {...theme.rightBlock}
-      >
-        <Actions
-          profile={profile}
-          search={search}
-          theme={theme}
-        />
+      <View {...theme.rightBlock}>
+        <Actions profile={profile} search={search} theme={theme} />
       </View>
     </View>
-    <View
-      {...theme.row}
-    >
-      <View
-        {...theme.subtitle}
-      >
-        <EditableText
-          {...subtitle}
-          size='Large'
-        />
+    <View {...theme.row}>
+      <View {...theme.subtitle}>
+        <EditableText {...subtitle} size='Large' />
       </View>
     </View>
-    <View
-      {...theme.row}
-      {...theme.subHeaderContainer}
-    >
-      {bulkActions && (
+    <View {...theme.row} {...theme.subHeaderContainer}>
+      {bulkActions &&
         <BulkActionBar
           numberSelected={bulkActions.numberSelected}
           onClearSelection={bulkActions.onClearSelection}
         >
           {bulkActions.quickActions}
-        </BulkActionBar>
-      )}
-      {!bulkActions && (
-        <View
-          {...theme.rightBlock}
-        >
+        </BulkActionBar>}
+      {!bulkActions &&
+        <View {...theme.rightBlock}>
           <SubHeader
             primaryAction={primaryAction}
             secondaryActions={secondaryActions}
             quickActions={quickActions}
           />
-        </View>
-      )}
+        </View>}
     </View>
   </View>
 )
@@ -134,15 +89,15 @@ const Header = ({
 type BackPropsT = {
   onClickBack: Function,
   theme: Object,
-}
+};
 
-const Back = ({
-  onClickBack,
-  theme,
-}: BackPropsT) => (
-  <View
-    {...theme.back}
-  >
+const Back = (
+  {
+    onClickBack,
+    theme,
+  }: BackPropsT,
+) => (
+  <View {...theme.back}>
     {onClickBack &&
       <HoverIcon
         name='back'
@@ -151,12 +106,7 @@ const Back = ({
         {...theme.backButton}
         onClick={onClickBack}
       />}
-    {!onClickBack &&
-      <Icon
-        name='logo'
-        size='large'
-        {...theme.backButton}
-      />}
+    {!onClickBack && <Icon name='logo' size='large' {...theme.backButton} />}
   </View>
 )
 
@@ -165,25 +115,20 @@ type ActionsPropsT = {
   actions: ActionsT,
   search?: React.Element,
   theme: Object,
-}
+};
 
-const Actions = ({
-  profile = {},
-  actions = [],
-  search,
-  theme,
-}: ActionsPropsT) => (
-  <View
-    {...theme.actions}
-  >
+const Actions = (
+  {
+    profile = {},
+    actions = [],
+    search,
+    theme,
+  }: ActionsPropsT,
+) => (
+  <View {...theme.actions}>
     {search}
     {actions}
-    {/* <ProfilePhoto
-      size='medium'
-      image={profile.image}
-      firstName={profile.firstName}
-      lastName={profile.lastName}
-    />*/}
+    {}
   </View>
 )
 
@@ -197,6 +142,7 @@ const defaultTheme = {
     flex: '0 1 auto',
     flexDirection: 'column',
     position: 'relative',
+    backgroundColor: Colors.grey900,
   },
   row: {
     flexDirection: 'row',

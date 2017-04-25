@@ -6,6 +6,21 @@ class App extends React.Component {
   static defaultProps = {
     backgroundColor: Colors.grey900,
   };
+
+  componentDidMount () {
+    this.updateBodyBackgroundColor(this.props)
+  }
+  componentWillReceiveProps (nextProps) {
+    this.updateBodyBackgroundColor(nextProps)
+  }
+
+  updateBodyBackgroundColor = props => {
+    const {backgroundColor} = props
+    const body = document.getElementsByTagName('html')[0]
+    console.log('update to: ', `background-color: ${backgroundColor};`)
+    body.style = `background-color: ${backgroundColor};`
+  };
+
   render () {
     const {theme, layout, backgroundColor} = this.props
     const {header, centerLeft, centerRight, bottom} = layout
@@ -56,7 +71,6 @@ const defaultTheme = (
   app: {
     display: 'flex',
     flexWrap: 'wrap',
-    backgroundColor: backgroundColor,
   },
   header: {
     width: '100%',
