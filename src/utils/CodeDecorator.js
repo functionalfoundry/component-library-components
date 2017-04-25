@@ -1,18 +1,15 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {
-  Colors,
-} from '@workflo/styles'
+import {Colors} from '@workflo/styles'
 
-import {
-  TextInput,
-} from '@workflo/components'
+import {TextInput} from '@workflo/components'
 import Radio from '@workflo/components/lib/Radio'
 import RadioGroup from '@workflo/components/lib/Radio/RadioGroup'
 import Popover from '@workflo/components/lib/Popover'
 import View from '@workflo/components/lib/View'
 import Trigger from '@workflo/components/lib/Trigger'
-import SimpleDecorator from '@workflo/components/lib/TextEditor/SimpleDecorator'
+import SimpleDecorator
+  from '@workflo/components/lib/TextEditor/SimpleDecorator'
 import MultiDecorator from '@workflo/components/lib/TextEditor/MultiDecorator'
 
 const acorn = require('acorn-jsx')
@@ -20,7 +17,7 @@ const acorn = require('acorn-jsx')
 export const componentStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: { jsx: true }
+    plugins: {jsx: true},
   })
   const components = []
   let componentNode = ast.body[0].expression.openingElement
@@ -29,7 +26,7 @@ export const componentStrategy = (contentBlock, callback) => {
     start: componentNode.name.start,
     end: componentNode.name.end,
   })
-  components.forEach((component) => {
+  components.forEach(component => {
     callback(component.start, component.end)
   })
 }
@@ -37,11 +34,11 @@ export const componentStrategy = (contentBlock, callback) => {
 export const propStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: { jsx: true }
+    plugins: {jsx: true},
   })
   const props = []
   let attributes = ast.body[0].expression.openingElement.attributes
-  attributes.forEach((attribute) => {
+  attributes.forEach(attribute => {
     props.push({
       name: attribute.name.name,
       start: attribute.name.start,
@@ -49,14 +46,14 @@ export const propStrategy = (contentBlock, callback) => {
     })
   })
   props.forEach((prop, index) => {
-    callback(prop.start, prop.end, { attribute: prop.name })
+    callback(prop.start, prop.end, {attribute: prop.name})
   })
 }
 
 export const valueStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: { jsx: true }
+    plugins: {jsx: true},
   })
   const values = []
   let attributes = ast.body[0].expression.openingElement.attributes
@@ -77,26 +74,25 @@ export const valueStrategy = (contentBlock, callback) => {
       })
     }
   })
-  values.forEach((value) => {
-    callback(value.start, value.end, { index: value.index })
+  values.forEach(value => {
+    callback(value.start, value.end, {index: value.index})
   })
 }
 
-const ComponentSpan = ({
-  theme,
-  children,
-  ...props
-}) => (
-  <span
-    {...theme.componentSpan}
-  >
+const ComponentSpan = (
+  {
+    theme,
+    children,
+    ...props
+  },
+) => (
+  <span {...theme.componentSpan}>
     {children}
   </span>
 )
 
 class PropSpan extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       isShowingMinus: false,
@@ -107,7 +103,7 @@ class PropSpan extends React.Component {
     this.setState({
       isShowingMinus: !this.state.isShowingMinus,
     })
-  }
+  };
 
   render () {
     const {
@@ -122,9 +118,7 @@ class PropSpan extends React.Component {
     } = this.state
 
     return (
-      <span
-        {...theme.propSpan}
-      >
+      <span {...theme.propSpan}>
 
         <Trigger
           triggerOn={['Hover', 'Mouse leave']}
@@ -132,9 +126,7 @@ class PropSpan extends React.Component {
         >
           <span {...theme.propRemoveWrapper}>
             {isShowingMinus &&
-              <span
-                onClick={() => onRemoveProp(attribute)}
-              >
+              <span onClick={() => onRemoveProp(attribute)}>
                 {'-'}
               </span>}
           </span>
@@ -150,55 +142,50 @@ const getValue = (propKeyValues, index) => {
   return propKeyValue
 }
 
-const ValueSpan = ({
-  theme,
-  children,
-  onChange,
-  propKeyValues,
-  index,
-  ...props
-}) => (
-  <View
-    inline
-  >
+const ValueSpan = (
+  {
+    theme,
+    children,
+    onChange,
+    propKeyValues,
+    index,
+    ...props
+  },
+) => (
+  <View inline>
     {propKeyValues[index].input &&
       <Popover
         position='Right'
         horizontalOffset={5}
         verticalOffset={2}
-        portal={(
-          <Input
-            propKey={propKeyValues[index].key}
-            input={propKeyValues[index].input}
-            options={propKeyValues[index].options}
-            value={propKeyValues[index].value.value}
-            onChange={onChange}
-          />
-        )}
+        portal={<Input
+          propKey={propKeyValues[index].key}
+          input={propKeyValues[index].input}
+          options={propKeyValues[index].options}
+          value={propKeyValues[index].value.value}
+          onChange={onChange}
+          />}
       >
-        <span
-          {...theme.value}
-        >
+        <span {...theme.value}>
           {children}
         </span>
-      </Popover>
-    }
+      </Popover>}
     {!propKeyValues[index].input &&
-      <span
-        {...theme.value}
-      >
+      <span {...theme.value}>
         {children}
       </span>}
   </View>
 )
 
-const Input = ({
-  input,
-  propKey,
-  options,
-  value,
-  onChange,
-}) => {
+const Input = (
+  {
+    input,
+    propKey,
+    options,
+    value,
+    onChange,
+  },
+) => {
   switch (input.type) {
     case 'Radio':
       return (
@@ -206,31 +193,33 @@ const Input = ({
           propKey={propKey}
           options={options}
           value={value}
-          onChange={(value) => onChange(propKey, value)}
+          onChange={value => onChange(propKey, value)}
         />
       )
     case 'TextInput':
       return (
         <TextInput
           value={value}
-          onChange={(value) => onChange(propKey, value)}
+          onChange={value => onChange(propKey, value)}
           theme={{
             textInput: {
               borderColor: Colors.primary,
               color: 'white',
-            }
+            },
           }}
         />
       )
   }
 }
 
-const Radios = ({
-  propKey,
-  options,
-  value,
-  onChange,
-}) => (
+const Radios = (
+  {
+    propKey,
+    options,
+    value,
+    onChange,
+  },
+) => (
   <RadioGroup
     value={value}
     onChange={onChange}
@@ -240,12 +229,8 @@ const Radios = ({
       },
     }}
   >
-    {options.map((option) => (
-      <Radio
-        key={option}
-        label={option}
-        value={option}
-      />
+    {options.map(option => (
+      <Radio key={option} label={option} value={option} />
     ))}
   </RadioGroup>
 )
@@ -255,7 +240,7 @@ const defaultTheme = {
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,
-    }
+    },
   },
   componentSpan: {
     color: 'black',
