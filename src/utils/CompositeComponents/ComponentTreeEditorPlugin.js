@@ -325,6 +325,7 @@ const ThemedComponentStartRenderer = Theme('ComponentStartRenderer', defaultThem
 type ComponentNameRendererStateT = {
   isEditing: boolean,
   name?: string,
+  value: string,
 }
 
 class ComponentNameRenderer extends React.Component {
@@ -337,19 +338,22 @@ class ComponentNameRenderer extends React.Component {
     this.state = {
       isEditing: false,
       filteredComponentNames: this.getOptions(props),
-      value: '',
+      value: this.getComponent(props).name || '',
     }
   }
 
   componentDidMount() {
-    const { mark, options } = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+    const { options } = this.props
+    const component = this.getComponent(this.props)
     const interactionState = options.interactionState
     const focus = component.id == interactionState.editingComponentId
     if (focus && this.editableText) {
       this.editableText.getWrappedInstance().focusAndSelect()
     }
   }
+
+  getComponent = (props: MarkRendererPropsT) =>
+    this.props.mark.getIn(['data', 'element', 'node'])
 
   getOptions = (props: MarkRendererPropsT) => {
     return (
@@ -384,15 +388,14 @@ class ComponentNameRenderer extends React.Component {
   }
 
   handleChangeComponentName = (event, data) => {
-    const { mark, options } = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+    const { options } = this.props
+    const component = this.getComponent(this.props)
     options && options.onChangeComponentName(component.id, data.suggestionValue)
   }
 
   render() {
     const { children, mark, theme, options } = this.props
-    const { filteredComponentNames } = this.state
-    const component = mark.getIn(['data', 'element', 'node'])
+    const { value, filteredComponentNames } = this.state
 
     return (
       <View {...theme.componentName} inline>
@@ -404,8 +407,10 @@ class ComponentNameRenderer extends React.Component {
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
           inputProps={{
-            value: component.name || '',
-            onChange: (e, some) => {},
+            value: value,
+            onChange: value => {
+              this.setState({ value })
+            },
           }}
           onSuggestionSelected={this.handleChangeComponentName}
           focusInputOnSuggestionClick
@@ -417,8 +422,8 @@ class ComponentNameRenderer extends React.Component {
 
   handleStartEdit = () => {
     this.setState({ isEditing: true })
-    const { mark, options } = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+    const { options } = this.props
+    const component = this.getComponent(this.props)
     options.onSelectComponent && options.onSelectComponent(component.id)
   }
 
