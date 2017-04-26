@@ -344,7 +344,7 @@ class ComponentNameRenderer extends React.Component {
     super(props)
     this.state = {
       isEditing: false,
-      filteredComponentNames: props.options,
+      filteredComponentNames: this.getOptions(props),
       value: '',
     }
   }
@@ -359,19 +359,22 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
-  getOptions = () =>
-    this.props.options && this.props.options.completionData.components
+  getOptions = (props: MarkRendererPropsT) => {
+    return (props.options
+            && props.options.completionData
+            && props.options.completionData.components) || []
+  }
 
   getSuggestions = value => {
-    // const escapedValue = escapeRegexCharacters(value.trim())
     const escapedValue = value.trim()
+    const candidates = this.getOptions(this.props)
 
     if (escapedValue === '') {
       return []
     }
 
     const regex = new RegExp('^' + escapedValue, 'i')
-    return this.getOptions().filter(item => regex.test(item))
+    return candidates.filter(item => regex.test(item))
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
