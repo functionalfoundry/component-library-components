@@ -407,7 +407,7 @@ class ComponentNameRenderer extends React.Component {
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
           inputProps={{
-            value: component.name,
+            value: component.name || '',
             onChange: (e, some) => {
             },
           }}
@@ -417,20 +417,6 @@ class ComponentNameRenderer extends React.Component {
         />
       </View>
     )
-
-    // <EditableText
-    //   ref={c => this.editableText = c}
-    //   isEditing={this.state.isEditing}
-    //   onStartEdit={this.handleStartEdit}
-    //   onStopEdit={this.handleStopEdit}
-    //   onChange={this.handleChange}
-    //   theme={{
-    //     text: {
-    //       ...Fonts.code,
-    //     },
-    //   }}
-    //   value={component.name}
-    // />
   }
 
   handleStartEdit = () => {
