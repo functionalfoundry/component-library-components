@@ -157,7 +157,7 @@ type MarkRendererPropsT = {
 class ComponentTagRenderer extends React.Component {
   props: MarkRendererPropsT
 
-  constructor(props) {
+  constructor(props: MarkRendererPropsT) {
     super(props)
   }
 
@@ -477,7 +477,7 @@ class PropNameRenderer extends React.Component {
   props: MarkRendererPropsT
   state: PropNameRendererStateT
 
-  constructor(props) {
+  constructor(props: MarkRendererPropsT) {
     super(props)
     this.state = { isShowingMinus: false }
   }
