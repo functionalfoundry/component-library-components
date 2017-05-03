@@ -2,22 +2,23 @@
 
 import React from 'react'
 import Theme from 'js-theme'
-import {Set} from 'immutable'
+import { Set } from 'immutable'
 import {
   AlignedTrigger,
+  AutoSuggest,
   EditableText,
   HoverIcon,
   Popover,
   View,
 } from '@workflo/components'
-import {Colors, Fonts, Spacing} from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import StaggerChildren from '../../components/StaggerChildren'
 import {
   AnyPropValueChooser,
   StringPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
-import type {NodeIdentifierT} from './ComponentTree'
-import {Component, ComponentTree, Prop, PropValue} from './ComponentTree'
+import type { NodeIdentifierT } from './ComponentTree'
+import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 import type {
   CompletionDataT,
   GlobalOptionsDataT,
@@ -34,7 +35,7 @@ const Utils = require('./ComponentTreeUtils')
 
 type InteractionStateT = {
   editingComponentId?: NodeIdentifierT,
-};
+}
 
 type PluginOptionsT = {
   tree: ComponentTree,
@@ -47,7 +48,7 @@ type PluginOptionsT = {
   onInsertComponent?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
-};
+}
 
 /**
  * Mark renderers
@@ -147,27 +148,24 @@ type MarkRendererPropsT = {
   marks: Set<Slate.Mark>,
   options: PluginOptionsT,
   theme: any,
-};
+}
 
 /**
  * Component tag renderer
  */
 
 class ComponentTagRenderer extends React.Component {
-  props: MarkRendererPropsT;
+  props: MarkRendererPropsT
 
-  constructor (props) {
+  constructor(props: MarkRendererPropsT) {
     super(props)
   }
 
-  render () {
-    const {children, mark, marks, theme} = this.props
+  render() {
+    const { children, mark, marks, theme } = this.props
     const node = mark.getIn(['data', 'element', 'node'])
     const tree = mark.getIn(['data', 'tree'])
-    const markNames = marks.reduce(
-      (out, mark) => out.add(mark.get('type')),
-      Set(),
-    )
+    const markNames = marks.reduce((out, mark) => out.add(mark.get('type')), Set())
 
     const isRoot = Immutable.is(tree.root, node)
     const showAddChild = markNames.contains('component-open-tag-end')
@@ -175,19 +173,17 @@ class ComponentTagRenderer extends React.Component {
 
     return (
       <AlignedTrigger
-        position='Right'
+        position="Right"
         openTriggers={['Mouse enter']}
         closeTriggers={['Mouse leave']}
-        portal={<View {...theme.componentTagActions}>
-            <StaggerChildren direction='Right'>
+        portal={
+          <View {...theme.componentTagActions}>
+            <StaggerChildren direction="Right">
               {showAddChild &&
-                <View
-                  {...theme.componentTagAction}
-                  onClick={this.handleAddChild}
-                >
+                <View {...theme.componentTagAction} onClick={this.handleAddChild}>
                   <HoverIcon
-                    name='primary-plus'
-                    hoverName='primary-plus-hover'
+                    name="primary-plus"
+                    hoverName="primary-plus-hover"
                     theme={{
                       icon: {
                         position: 'absolute',
@@ -203,13 +199,10 @@ class ComponentTagRenderer extends React.Component {
                   </View>
                 </View>}
               {showAddSibling &&
-                <View
-                  {...theme.componentTagAction}
-                  onClick={this.handleAddSibling}
-                >
+                <View {...theme.componentTagAction} onClick={this.handleAddSibling}>
                   <HoverIcon
-                    name='primary-plus'
-                    hoverName='primary-plus-hover'
+                    name="primary-plus"
+                    hoverName="primary-plus-hover"
                     theme={{
                       icon: {
                         position: 'absolute',
@@ -225,7 +218,8 @@ class ComponentTagRenderer extends React.Component {
                   </View>
                 </View>}
             </StaggerChildren>
-          </View>}
+          </View>
+        }
       >
         <View {...theme.componentTagEnd} inline>
           <View inline>
@@ -237,26 +231,26 @@ class ComponentTagRenderer extends React.Component {
   }
 
   handleAddChild = () => {
-    const {options, mark} = this.props
-    const {onInsertComponent} = options
+    const { options, mark } = this.props
+    const { onInsertComponent } = options
     const component = mark.getIn(['data', 'element', 'node'])
     onInsertComponent && onInsertComponent(component.id, 0, Component({}))
-  };
+  }
 
-  handleSetText = () => {};
+  handleSetText = () => {}
 
   handleAddSibling = () => {
-    const {options, mark} = this.props
-    const {onInsertComponent} = options
+    const { options, mark } = this.props
+    const { onInsertComponent } = options
     const element = mark.getIn(['data', 'element'])
     const parent = element.getIn(['data', 'parent'])
     const index = element.getIn(['data', 'index'])
     onInsertComponent && onInsertComponent(parent.id, index + 1, Component({}))
-  };
+  }
 }
 
 const ThemedComponentTagRenderer = Theme('ComponentTagRenderer', defaultTheme)(
-  ComponentTagRenderer,
+  ComponentTagRenderer
 )
 
 /**
@@ -265,20 +259,20 @@ const ThemedComponentTagRenderer = Theme('ComponentTagRenderer', defaultTheme)(
 
 type ComponentStartRendererStateT = {
   isShowingMinus: boolean,
-};
+}
 
 class ComponentStartRenderer extends React.Component {
-  props: MarkRendererPropsT;
-  state: ComponentStartRendererStateT;
+  props: MarkRendererPropsT
+  state: ComponentStartRendererStateT
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {isShowingMinus: false}
+    this.state = { isShowingMinus: false }
   }
 
-  render () {
-    const {children, theme, mark} = this.props
-    const {isShowingMinus} = this.state
+  render() {
+    const { children, theme, mark } = this.props
+    const { isShowingMinus } = this.state
     const node = mark.getIn(['data', 'element', 'node'])
     const tree = mark.getIn(['data', 'tree'])
     const isRoot = Immutable.is(tree.root, node)
@@ -304,51 +298,54 @@ class ComponentStartRenderer extends React.Component {
 
   handleMouseEnter = () => {
     console.log('mouseenter')
-    this.setState({isShowingMinus: true})
-  };
+    this.setState({ isShowingMinus: true })
+  }
 
   handleMouseLeave = () => {
-    this.setState({isShowingMinus: false})
-  };
+    this.setState({ isShowingMinus: false })
+  }
 
   handleClick = () => {
-    const {mark, options} = this.props
+    const { mark, options } = this.props
     const component = mark.getIn(['data', 'element', 'node'])
     const tree = Utils.removeComponent(options.tree, component.id)
     options.onChange && options.onChange(tree)
     options.onRemoveComponent && options.onRemoveComponent(component.id)
-  };
+  }
 }
 
-const ThemedComponentStartRenderer = Theme(
-  'ComponentStartRenderer',
-  defaultTheme,
-)(ComponentStartRenderer)
+const ThemedComponentStartRenderer = Theme('ComponentStartRenderer', defaultTheme)(
+  ComponentStartRenderer
+)
 
 /**
  * Component name renderer
  */
 
 type ComponentNameRendererStateT = {
+  filteredComponentNames: Array<string>,
   isEditing: boolean,
   name?: string,
-};
+  value: string,
+}
 
 class ComponentNameRenderer extends React.Component {
-  props: MarkRendererPropsT;
-  state: ComponentNameRendererStateT;
-  editableText: EditableText;
+  props: MarkRendererPropsT
+  state: ComponentNameRendererStateT
+  editableText: EditableText
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isEditing: false,
+      filteredComponentNames: this.getOptions(props),
+      value: this.getComponent(props).name || '',
     }
   }
 
-  componentDidMount () {
-    const {mark, options} = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+  componentDidMount() {
+    const { options } = this.props
+    const component = this.getComponent(this.props)
     const interactionState = options.interactionState
     const focus = component.id == interactionState.editingComponentId
     if (focus && this.editableText) {
@@ -356,58 +353,112 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
-  render () {
-    const {children, mark, theme, options} = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+  getComponent = (props: MarkRendererPropsT) =>
+    this.props.mark.getIn(['data', 'element', 'node'])
+
+  getOptions = (props: MarkRendererPropsT) => {
+    return (
+      (props.options &&
+        props.options.completionData &&
+        props.options.completionData.components) || []
+    )
+  }
+
+  getSuggestions = value => {
+    const escapedValue = value.trim()
+    const candidates = this.getOptions(this.props)
+
+    if (escapedValue === '') {
+      return candidates
+    }
+
+    const regex = new RegExp('^' + escapedValue, 'i')
+    return candidates.filter(item => regex.test(item))
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      filteredComponentNames: this.getSuggestions(value),
+    })
+  }
+
+  onSuggestionsClearRequested = () => {}
+
+  handleChangeComponentName = (event, data) => {
+    this.setState({ value: data.suggestionValue })
+    const { options } = this.props
+    const component = this.getComponent(this.props)
+    options && options.onChangeComponentName(component.id, data.suggestionValue)
+  }
+
+  render() {
+    const { children, mark, theme, options } = this.props
+    const { value, filteredComponentNames } = this.state
 
     return (
       <View {...theme.componentName} inline>
-        <EditableText
-          ref={c => this.editableText = c}
-          isEditing={this.state.isEditing}
-          onStartEdit={this.handleStartEdit}
-          onStopEdit={this.handleStopEdit}
-          onChange={this.handleChange}
-          theme={{
-            text: {
-              ...Fonts.code,
+        <AutoSuggest
+          suggestions={filteredComponentNames}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          renderInputComponent={renderInputComponent}
+          shouldRenderSuggestions={() => true}
+          inputProps={{
+            value: value,
+            ref: c => {
+              this.editableText = c
             },
+            isEditing: this.state.isEditing,
+            onStartEdit: this.handleStartEdit,
+            onStopEdit: this.handleStopEdit,
+            onChange: this.handleChange,
           }}
-          value={component.name}
+          onSuggestionSelected={this.handleChangeComponentName}
+          focusInputOnSuggestionClick
+          id="basic-example"
         />
       </View>
     )
   }
 
   handleStartEdit = () => {
-    this.setState({isEditing: true})
-    const {mark, options} = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
+    this.setState({ isEditing: true })
+    const { options } = this.props
+    const component = this.getComponent(this.props)
     options.onSelectComponent && options.onSelectComponent(component.id)
-  };
+  }
 
   handleStopEdit = () => {
-    const {mark, options} = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
-    const {name} = this.state
-    this.setState({isEditing: false})
-    if (name !== null && name !== undefined) {
-      const tree = Utils.setComponentName(options.tree, component.id, name)
-      options.onChange && options.onChange(tree)
-      const {onChangeComponentName} = options
-      onChangeComponentName && onChangeComponentName(component.id, name)
-    }
-  };
+    this.setState({ isEditing: false })
+  }
 
-  handleChange = name => {
-    this.setState({name})
-  };
+  handleChange = value => {
+    this.setState({ value })
+  }
 }
 
-const ThemedComponentNameRenderer = Theme(
-  'ComponentNameRenderer',
-  defaultTheme,
-)(ComponentNameRenderer)
+const getSuggestionValue = suggestion => suggestion
+
+const renderSuggestion = suggestion => <span>{suggestion}</span>
+
+// Move all of these
+const renderInputComponent = props => (
+  <EditableText
+    {...props}
+    theme={{
+      text: {
+        ...Fonts.code,
+        minWidth: '0.65em !important',
+      },
+    }}
+  />
+)
+
+const ThemedComponentNameRenderer = Theme('ComponentNameRenderer', defaultTheme)(
+  ComponentNameRenderer
+)
 
 /**
  * Property name renderer
@@ -415,20 +466,20 @@ const ThemedComponentNameRenderer = Theme(
 
 type PropNameRendererStateT = {
   isShowingMinus: boolean,
-};
+}
 
 class PropNameRenderer extends React.Component {
-  props: MarkRendererPropsT;
-  state: PropNameRendererStateT;
+  props: MarkRendererPropsT
+  state: PropNameRendererStateT
 
-  constructor (props) {
+  constructor(props: MarkRendererPropsT) {
     super(props)
-    this.state = {isShowingMinus: false}
+    this.state = { isShowingMinus: false }
   }
 
-  render () {
-    const {children, theme} = this.props
-    const {isShowingMinus} = this.state
+  render() {
+    const { children, theme } = this.props
+    const { isShowingMinus } = this.state
     return (
       <View {...theme.propName} inline>
         <View
@@ -448,25 +499,23 @@ class PropNameRenderer extends React.Component {
   }
 
   handleMouseEnter = () => {
-    this.setState({isShowingMinus: true})
-  };
+    this.setState({ isShowingMinus: true })
+  }
 
   handleMouseLeave = () => {
-    this.setState({isShowingMinus: false})
-  };
+    this.setState({ isShowingMinus: false })
+  }
 
   handleClick = () => {
-    const {mark, options} = this.props
+    const { mark, options } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const tree = Utils.removeProp(options.tree, prop.id)
     options.onChange && options.onChange(tree)
     options.onRemoveProp && options.onRemoveProp(prop.id)
-  };
+  }
 }
 
-const ThemedPropNameRenderer = Theme('PropNameRenderer', defaultTheme)(
-  PropNameRenderer,
-)
+const ThemedPropNameRenderer = Theme('PropNameRenderer', defaultTheme)(PropNameRenderer)
 
 /**
  * Property value renderer
@@ -477,40 +526,39 @@ const propValueChooserImplementations = {
   string: StringPropValueChooser,
 }
 
-const getPropValueRenderer = (
-  prop: Prop,
-  propCompletionData: PropCompletionDataT,
-) => {
+const getPropValueRenderer = (prop: Prop, propCompletionData: PropCompletionDataT) => {
   if (propCompletionData) {
-    return propValueChooserImplementations[propCompletionData.type] ||
+    return (
+      propValueChooserImplementations[propCompletionData.type] ||
       propValueChooserImplementations['any']
+    )
   } else {
     return propValueChooserImplementations['any']
   }
 }
 
 class PropValueRenderer extends React.Component {
-  props: MarkRendererPropsT;
+  props: MarkRendererPropsT
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
-    const {children, mark, marks, options, theme} = this.props
+  render() {
+    const { children, mark, marks, options, theme } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const component = mark.getIn(['data', 'element', 'data', 'component'])
     const value = mark.getIn(['data', 'element', 'node'])
 
-    const propCompletionData = options &&
+    const propCompletionData =
+      options &&
       options.completionData &&
       options.completionData.props &&
       options.completionData.props[component.name] &&
       options.completionData.props[component.name][prop.name]
 
-    const globalOptions = options &&
-      options.completionData &&
-      options.completionData.globalOptions
+    const globalOptions =
+      options && options.completionData && options.completionData.globalOptions
 
     const Chooser = getPropValueRenderer(prop, propCompletionData)
 
@@ -530,16 +578,18 @@ class PropValueRenderer extends React.Component {
       return (
         <View {...theme.propValueChooser} inline>
           <Popover
-            position='Right'
+            position="Right"
             horizontalOffset={5}
             verticalOffset={2}
-            portal={<Chooser
-              prop={prop}
-              value={value}
-              completionData={propCompletionData}
-              options={globalOptions}
-              onChange={this.handleChange}
-              />}
+            portal={
+              <Chooser
+                prop={prop}
+                value={value}
+                completionData={propCompletionData}
+                options={globalOptions}
+                onChange={this.handleChange}
+              />
+            }
           >
             <span>
               {children}
@@ -551,21 +601,17 @@ class PropValueRenderer extends React.Component {
   }
 
   handleChange = value => {
-    const {mark, options} = this.props
+    const { mark, options } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const propValue = mark.getIn(['data', 'element', 'node'])
-    const tree = Utils.setPropValue(
-      options.tree,
-      prop.id,
-      propValue.set('value', value),
-    )
+    const tree = Utils.setPropValue(options.tree, prop.id, propValue.set('value', value))
     options.onChange && options.onChange(tree)
     options.onChangePropValue && options.onChangePropValue(prop.id, value)
-  };
+  }
 }
 
 const ThemedPropValueRenderer = Theme('PropValueRenderer', defaultTheme)(
-  PropValueRenderer,
+  PropValueRenderer
 )
 
 /**
@@ -574,20 +620,20 @@ const ThemedPropValueRenderer = Theme('PropValueRenderer', defaultTheme)(
 
 type TextRendererStateT = {
   isShowingMinus: boolean,
-};
+}
 
 class TextRenderer extends React.Component {
-  props: MarkRendererPropsT;
-  state: TextRendererStateT;
+  props: MarkRendererPropsT
+  state: TextRendererStateT
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {isShowingMinus: false}
+    this.state = { isShowingMinus: false }
   }
 
-  render () {
-    const {children, theme} = this.props
-    const {isShowingMinus} = this.state
+  render() {
+    const { children, theme } = this.props
+    const { isShowingMinus } = this.state
     return (
       <View {...theme.text} inline>
         <View
@@ -607,19 +653,19 @@ class TextRenderer extends React.Component {
   }
 
   handleMouseEnter = () => {
-    this.setState({isShowingMinus: true})
-  };
+    this.setState({ isShowingMinus: true })
+  }
 
   handleMouseLeave = () => {
-    this.setState({isShowingMinus: false})
-  };
+    this.setState({ isShowingMinus: false })
+  }
 
   handleClick = () => {
-    const {mark, options} = this.props
+    const { mark, options } = this.props
     const component = mark.getIn(['data', 'element', 'node'])
     const tree = Utils.setComponentText(options.tree, component.id, null)
     options.onChange && options.onChange(tree)
-  };
+  }
 }
 
 const ThemedTextRenderer = Theme('TextRenderer', defaultTheme)(TextRenderer)
@@ -649,9 +695,7 @@ const ComponentTreeEditorPlugin = (options: PluginOptionsT) => ({
       'prop-value': (props: Object) => (
         <ThemedPropValueRenderer {...props} options={options} />
       ),
-      text: (props: Object) => (
-        <ThemedTextRenderer {...props} options={options} />
-      ),
+      text: (props: Object) => <ThemedTextRenderer {...props} options={options} />,
     },
   },
 })

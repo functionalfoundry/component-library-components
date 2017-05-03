@@ -4,10 +4,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import { EditableText, RadioGroup, Radio, View } from '@workflo/components'
 import { Fonts } from '@workflo/styles'
-import {
-  Prop,
-  PropValue,
-} from '../../utils/CompositeComponents/ComponentTree'
+import { Prop, PropValue } from '../../utils/CompositeComponents/ComponentTree'
 import type {
   GlobalOptionsDataT,
   PropCompletionDataT,
@@ -28,23 +25,23 @@ const unifyOptions = (
   const result = []
 
   if (completionData && completionData.options) {
-    completionData.options.map(option => (
+    completionData.options.map(option =>
       result.push({
         name: option,
         value: option,
-        source: null
+        source: null,
       })
-    ))
+    )
   }
 
   if (options && Object.keys(options)) {
-    Object.keys(options).map(key => (
+    Object.keys(options).map(key =>
       result.push({
         name: options && options[key] && options[key].name,
         value: options && options[key] && options[key].value,
-        source: options && options[key] && options[key].source
+        source: options && options[key] && options[key].source,
       })
-    ))
+    )
   }
 
   return result
@@ -52,13 +49,15 @@ const unifyOptions = (
 
 const isOptionAppropriateForProp = (option, prop: Prop, value: PropValue) => {
   if (prop.value.type == 'function') {
-    return option.source == 'actions'
-        && option.name !== 'setState'
-        && option.name !== 'state'
+    return (
+      option.source == 'actions' && option.name !== 'setState' && option.name !== 'state'
+    )
   } else {
-    return option.source !== 'actions'
-        && option.name !== 'initialState'
-        && option.name !== 'state'
+    return (
+      option.source !== 'actions' &&
+      option.name !== 'initialState' &&
+      option.name !== 'state'
+    )
   }
 }
 
@@ -81,11 +80,7 @@ const RadioPropValueChooser = ({
     {unifyOptions(completionData, options)
       .filter(option => isOptionAppropriateForProp(option, prop, value))
       .map(option => (
-        <Radio
-          key={option.name}
-          label={option.name}
-          value={option.value}
-        />
+        <Radio key={option.name} label={option.name} value={option.value} />
       ))}
   </RadioGroup>
 )
@@ -102,47 +97,43 @@ class StringPropValueChooser extends React.Component {
   props: PropValueChooserPropsT
   state: StringPropValueChooserStateT
 
-  constructor (props: PropValueChooserPropsT) {
+  constructor(props: PropValueChooserPropsT) {
     super(props)
     this.state = {
-      value: props.value.value
+      value: props.value.value,
     }
   }
 
   handleChange = (value: string) => {
-    console.log('handle change', value)
-    this.setState(state => state.value = value)
+    this.setState(state => (state.value = value))
   }
 
   handleStopEdit = () => {
-    console.log('stop edit')
     this.props.onChange && this.props.onChange(this.state.value)
   }
 
-  componentWillReceiveProps (nextProps: PropValueChooserPropsT) {
-    console.log('will receive props', nextProps.value)
+  componentWillReceiveProps(nextProps: PropValueChooserPropsT) {
     if (this.props.value !== nextProps.value) {
-      this.setState(state => state.value = nextProps.value.value)
+      this.setState(state => (state.value = nextProps.value.value))
     }
   }
 
-  render () {
+  render() {
     return (
-     <EditableText
-       value={this.props.value.value}
-       onChange={this.handleChange}
-       onStopEdit={this.handleStopEdit}
-       theme={{
-         text: {
-           ...Fonts.code,
-         }
-       }}
-     />
+      <EditableText
+        value={this.props.value.value}
+        onChange={this.handleChange}
+        onStopEdit={this.handleStopEdit}
+        theme={{
+          text: {
+            ...Fonts.code,
+            minWidth: '0.25em !important',
+            textAlign: 'center',
+          },
+        }}
+      />
     )
   }
 }
 
-export {
-  AnyPropValueChooser,
-  StringPropValueChooser,
-}
+export { AnyPropValueChooser, StringPropValueChooser }
