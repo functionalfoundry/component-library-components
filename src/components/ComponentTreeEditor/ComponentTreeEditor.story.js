@@ -320,6 +320,7 @@ class TreeEditorContainer extends React.Component {
           onInsertComponent={this.handleInsertComponent}
           onChangePropValue={action('onChangePropValue')}
           onChangeComponentName={this.handleChangeComponentName}
+          onSelectComponent={action('onSelectComponent')}
         />
         <div>
           {[
