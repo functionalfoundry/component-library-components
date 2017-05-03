@@ -449,6 +449,7 @@ const renderInputComponent = props => (
     theme={{
       text: {
         ...Fonts.code,
+        minWidth: '0.65em !important',
       },
     }}
   />
