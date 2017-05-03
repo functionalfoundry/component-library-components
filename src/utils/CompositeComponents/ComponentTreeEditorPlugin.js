@@ -385,6 +385,7 @@ class ComponentNameRenderer extends React.Component {
   onSuggestionsClearRequested = () => {}
 
   handleChangeComponentName = (event, data) => {
+    this.setState({ value: data.suggestionValue })
     const { options } = this.props
     const component = this.getComponent(this.props)
     options && options.onChangeComponentName(component.id, data.suggestionValue)
@@ -405,9 +406,13 @@ class ComponentNameRenderer extends React.Component {
           renderInputComponent={renderInputComponent}
           inputProps={{
             value: value,
-            onChange: value => {
-              this.setState({ value })
+            ref: c => {
+              this.editableText = c
             },
+            isEditing: this.state.isEditing,
+            onStartEdit: this.handleStartEdit,
+            onStopEdit: this.handleStopEdit,
+            onChange: this.handleChange,
           }}
           onSuggestionSelected={this.handleChangeComponentName}
           focusInputOnSuggestionClick
@@ -425,20 +430,11 @@ class ComponentNameRenderer extends React.Component {
   }
 
   handleStopEdit = () => {
-    const { mark, options } = this.props
-    const component = mark.getIn(['data', 'element', 'node'])
-    const { name } = this.state
     this.setState({ isEditing: false })
-    if (name !== null && name !== undefined) {
-      const tree = Utils.setComponentName(options.tree, component.id, name)
-      options.onChange && options.onChange(tree)
-      const { onChangeComponentName } = options
-      onChangeComponentName && onChangeComponentName(component.id, name)
-    }
   }
 
-  handleChange = name => {
-    this.setState({ name })
+  handleChange = value => {
+    this.setState({ value })
   }
 }
 
