@@ -404,6 +404,7 @@ class ComponentNameRenderer extends React.Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
+          shouldRenderSuggestions={() => true}
           inputProps={{
             value: value,
             ref: c => {
