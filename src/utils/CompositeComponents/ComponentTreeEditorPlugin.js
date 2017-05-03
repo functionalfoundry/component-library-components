@@ -323,6 +323,7 @@ const ThemedComponentStartRenderer = Theme('ComponentStartRenderer', defaultThem
  */
 
 type ComponentNameRendererStateT = {
+  filteredComponentNames: Array<string>,
   isEditing: boolean,
   name?: string,
   value: string,
