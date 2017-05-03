@@ -1,12 +1,17 @@
 {
   "parser": "babel-eslint",
-  "extends": ["standard", "standard-react"],
+  "extends": [
+    "standard",
+    "standard-react",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
   "plugins": [
       "flowtype"
   ],
   "rules": {
     "comma-dangle" : [0, "always-multiline"],
-    "flowtype/require-parameter-type": 0,
     "flowtype/require-return-type": [
         0,
         "always",
@@ -26,12 +31,9 @@
         1,
         "((^([A-Z][a-z0-9]+)+T$)|(^Props$)|(^DefaultProps$)|(^State$))"
     ],
-    "jsx-quotes": [2, "prefer-single"],
     "no-console": [1, {"allow": ["warn", "error"]}],
     "no-extra-semi": 2,
     "react/jsx-boolean-value": [0, "always"],
-    "react/jsx-curly-spacing": [2, "never", {"allowMultiline": false}],
-    "react/jsx-max-props-per-line": [2, {"maximum": 4}],
     "react/jsx-no-bind": [2, {
       "ignoreRefs": false,
       "allowArrowFunctions": true,
@@ -39,7 +41,7 @@
     }],
     "react/self-closing-comp": 2,
     "semi": [2, "never"],
-    "space-infix-ops": "off",
+    "space-infix-ops": "off"
   },
   "settings": {
     "flowtype": {

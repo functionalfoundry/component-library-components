@@ -1,0 +1,14 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "eslint.autoFixOnSave": true,
+  "prettier.semi": false,
+  "prettier.trailingComma": "es5",
+  "prettier.singleQuote": true,
+  "prettier.bracketSpacing": true,
+  "prettier.printWidth": 90,
+  "prettier.useTabs": false,
+  "prettier.jsxBracketSameLine": false,
+  "json.format.enable": false,
+  "javascript.format.enable": false,
+  "editor.formatOnSave": true
+}
