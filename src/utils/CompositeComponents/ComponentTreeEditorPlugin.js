@@ -369,7 +369,7 @@ class ComponentNameRenderer extends React.Component {
     const candidates = this.getOptions(this.props)
 
     if (escapedValue === '') {
-      return []
+      return candidates
     }
 
     const regex = new RegExp('^' + escapedValue, 'i')
@@ -382,11 +382,7 @@ class ComponentNameRenderer extends React.Component {
     })
   }
 
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      filteredComponentNames: [],
-    })
-  }
+  onSuggestionsClearRequested = () => {}
 
   handleChangeComponentName = (event, data) => {
     const { options } = this.props
