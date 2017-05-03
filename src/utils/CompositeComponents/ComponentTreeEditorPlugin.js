@@ -297,7 +297,6 @@ class ComponentStartRenderer extends React.Component {
   }
 
   handleMouseEnter = () => {
-    console.log('mouseenter')
     this.setState({ isShowingMinus: true })
   }
 
