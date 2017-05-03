@@ -127,7 +127,9 @@ class StringPropValueChooser extends React.Component {
         theme={{
           text: {
             ...Fonts.code,
-          }
+            minWidth: '0.25em !important',
+            textAlign: 'center',
+          },
         }}
       />
     )
