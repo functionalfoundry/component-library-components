@@ -1,6 +1,6 @@
-import {configure} from '@kadira/storybook'
+import { configure } from '@kadira/storybook'
 
-function loadStories () {
+function loadStories() {
   require('../src/components/App/App.story.js')
   require('../src/components/App2/App2.story.js')
   require('../src/components/AnimationDemo/AnimationDemo.story.js')
@@ -27,6 +27,7 @@ function loadStories () {
   require('../src/components/OrganizationChooser/OrganizationChooser.story.js')
   require('../src/components/RepositoryChooser/RepositoryChooser.story.js')
   require('../src/components/Preferences/Preferences.story.js')
+  require('../src/components/WalkthroughDialog/WalkthroughDialog.story.js')
 }
 
 configure(loadStories, module)
