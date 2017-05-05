@@ -20,30 +20,28 @@ type PropsT = {
 export default class Frame extends React.Component {
   props: PropsT
 
-  static defaultProps = {
-    initialContent: `
-      <!DOCTYPE html><html>
-        <head></head>
-        <body>
-          <div id="root" />
-          <script>
-            var root = document.getElementById('root')
-            function updateBundle(bundle) {
-              var evaluated = eval(bundle)
-              var Component = evaluated.default || evaluated
-              var element = React.createElement(Component, {})
-              ReactDOM.render(element, root)
-            }
-            // If the bundle is ready immediately the iframe needs to wait a tick
-            function renderInitialBundle(bundle) {
-              setTimeout(function(){updateBundle(bundle)})
-            }
-            window.updateBundle = updateBundle
-            window.renderInitialBundle = renderInitialBundle
-          </script>
-        </body>
-      </html>`,
-  }
+  static initialContent = `
+    <!DOCTYPE html><html>
+      <head></head>
+      <body>
+        <div id="root" />
+        <script>
+          var root = document.getElementById('root')
+          function updateBundle(bundle) {
+            var evaluated = eval(bundle)
+            var Component = evaluated.default || evaluated
+            var element = React.createElement(Component, {})
+            ReactDOM.render(element, root)
+          }
+          // If the bundle is ready immediately the iframe needs to wait a tick
+          function renderInitialBundle(bundle) {
+            setTimeout(function(){updateBundle(bundle)})
+          }
+          window.updateBundle = updateBundle
+          window.renderInitialBundle = renderInitialBundle
+        </script>
+      </body>
+    </html>`
 
   constructor(props, context) {
     super(props, context)
@@ -61,10 +59,6 @@ export default class Frame extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false
-    // const doc = this.getDoc()
-    // if (doc) {
-    //   ReactDOM.unmountComponentAtNode(this.getMountTarget())
-    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -98,7 +92,7 @@ export default class Frame extends React.Component {
 
       if (initialRender) {
         doc.open('text/html', 'replace')
-        doc.write(this.props.initialContent)
+        doc.write(Frame.initialContent)
         doc.close()
         this._setInitialContent = true
         const frame = window.frames[name]
@@ -112,14 +106,11 @@ export default class Frame extends React.Component {
       setTimeout(this.renderFrameContents.bind(this), 0)
     }
   }
-  storeFrame = c => {
-    this.frame = c
-  }
+
   render() {
     const { name } = this.props
     return (
       <iframe
-        ref={this.storeFrame}
         name={name}
         style={{
           border: 'none',
