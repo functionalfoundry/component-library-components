@@ -127,20 +127,24 @@ const defaultTheme = {
   componentTagActions: {
     display: 'flex',
     flexDirection: 'row',
-    padding: Spacing.tiny / 2,
+    ...Fonts.small,
   },
   componentTagAction: {
     cursor: 'pointer',
     backgroundColor: Colors.grey900,
     color: 'white',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: Spacing.tiny / 2,
     marginRight: Spacing.tiny / 2,
     borderRadius: Spacing.tiny / 2,
   },
   componentTagActionLabel: {
-    marginLeft: '24px',
+    display: 'flex',
+    flex: '1 1 auto',
+    height: '16px',
   },
 }
 
@@ -183,9 +187,6 @@ class ComponentTagRenderer extends React.Component {
                     name="primary-plus"
                     hoverName="primary-plus-hover"
                     theme={{
-                      icon: {
-                        position: 'absolute',
-                      },
                       svg: {
                         width: 22,
                         height: 22,
@@ -202,9 +203,6 @@ class ComponentTagRenderer extends React.Component {
                     name="primary-plus"
                     hoverName="primary-plus-hover"
                     theme={{
-                      icon: {
-                        position: 'absolute',
-                      },
                       svg: {
                         width: 22,
                         height: 22,
