@@ -1,44 +1,109 @@
+/* @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import {Colors} from '@workflo/styles'
+import { Colors } from '@workflo/styles'
+import { verticalSizes } from '../../utils/sizes'
+
+type SectionT = {
+  element: React.Element<any>,
+  layout: {
+    height?: Number,
+  },
+}
 
 class App extends React.Component {
   static defaultProps = {
     backgroundColor: Colors.grey900,
-  };
+  }
 
-  componentDidMount () {
+  componentDidMount() {
     this.updateBodyBackgroundColor(this.props)
   }
-  componentWillReceiveProps (nextProps) {
+
+  componentWillReceiveProps(nextProps) {
     this.updateBodyBackgroundColor(nextProps)
+    if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
+      TweenMax.to(this.centerRight, 0.5, {
+        flexGrow: 1,
+        ease: Power4.easeOut,
+      })
+    }
+    if (this.props.sections.centerRight && !nextProps.sections.centerRight) {
+      TweenMax.to(this.centerRight, 0.5, {
+        flexGrow: 0,
+        ease: Power4.easeOut,
+      })
+    }
+
+    if (nextProps.sections.bottom && !this.props.sections.bottom) {
+      console.log('new bottom')
+      TweenMax.fromTo(
+        this.bottom,
+        0.5,
+        {
+          y: 10,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          delay: 0.3,
+          ease: Power4.easeOut,
+        },
+      )
+    }
+    if (this.props.sections.bottom && !nextProps.sections.bottom) {
+      TweenMax.fromTo(
+        this.bottom,
+        0.5,
+        {
+          opacity: 1,
+          y: 0,
+        },
+        {
+          opacity: 0,
+          y: 10,
+          delay: 0.5,
+          ease: Power4.easeIn,
+        },
+      )
+    }
   }
 
   updateBodyBackgroundColor = props => {
-    const {backgroundColor} = props
+    const { backgroundColor } = props
     const body = document.getElementsByTagName('html')[0]
     console.log('update to: ', `background-color: ${backgroundColor};`)
     body.style = `background-color: ${backgroundColor};`
-  };
+  }
 
-  render () {
-    const {theme, layout, backgroundColor} = this.props
-    const {header, centerLeft, centerRight, bottom} = layout
+  storeCenterRight = c => (this.centerRight = c)
+  storeBottom = c => (this.bottom = c)
+
+  render() {
+    const { theme, sections, backgroundColor } = this.props
+    const { header, filters, centerLeft, centerRight, bottom } = sections
     return (
-      <div {...theme.app} id='app'>
-        <header {...theme.header}>
-          {header}
-        </header>
-        <main {...theme.main}>
-          <div {...theme.centerLeft}>
-            {centerLeft}
-          </div>
-          <div {...theme.centerRight}>
-            {centerRight}
-          </div>
-        </main>
-        <footer {...theme.bottom}>
-          {bottom}
+      <div {...theme.app} id="app">
+        {header &&
+          <header {...theme.header}>
+            <div {...theme.headerContent}>
+              {header.element}
+            </div>
+          </header>}
+        {filters && <div {...theme.filters} />}
+        {(centerLeft || centerRight) &&
+          <main {...theme.main}>
+            <div {...theme.centerLeft}>
+              {centerLeft && centerLeft.element}
+            </div>
+            <div {...theme.centerRight} ref={this.storeCenterRight}>
+              {centerRight && centerRight.element}
+            </div>
+          </main>}
+
+        <footer {...theme.bottom} ref={this.storeBottom}>
+          {bottom && bottom.element}
         </footer>
       </div>
     )
@@ -46,15 +111,15 @@ class App extends React.Component {
 }
 
 const headerheight = '163px'
-const centerHeight = 350
+const defaultCenterHeight = verticalSizes.Base
 
 const opacity = {
   opacity: 0.8,
 }
 
-const getCenterSideStyle = flexGrow => {
+const getCenterSideStyle = (flexGrow, sections) => {
   return {
-    height: centerHeight,
+    height: getCenterHeight(sections),
     flexGrow: flexGrow,
     transform: 'translateZ(0)',
     backfaceVisibility: 'hidden',
@@ -63,34 +128,66 @@ const getCenterSideStyle = flexGrow => {
   }
 }
 
-const defaultTheme = (
-  {
-    backgroundColor,
-  },
-) => ({
+const appWidth = {
+  width: 1200,
+  alignSelf: 'center',
+}
+
+const defaultTheme = ({ backgroundColor, sections }) => ({
   app: {
     display: 'flex',
     flexWrap: 'wrap',
+    flexDirection: 'column',
   },
   header: {
-    width: '100%',
     height: headerheight,
+    alignItems: 'center',
+    display: 'flex',
+    flexGrow: 1,
+    flexDirection: 'column',
+    backgroundColor: Colors.grey900,
+  },
+  headerContent: {
+    ...appWidth,
+  },
+  filters: {
+    height: 50,
+    width: `100%`,
   },
   main: {
-    width: '100%',
+    ...appWidth,
     position: 'relative',
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   centerLeft: {
-    ...getCenterSideStyle(3),
+    ...getCenterSideStyle(getCenterLeftGrow(sections.centerLeft), sections),
   },
   centerRight: {
-    ...getCenterSideStyle(1),
+    ...getCenterSideStyle(getCenterRightGrow(sections.centerRight), sections),
   },
   bottom: {
-    width: '100%',
+    ...appWidth,
   },
 })
+
+const getCenterLeftGrow = centerLeft => (centerLeft ? 3 : 0)
+
+const getCenterRightGrow = centerRight => (centerRight ? 1 : 0)
+
+const getCenterHeight = sections => {
+  const { centerLeft, centerRight } = sections
+  const leftHeight =
+    (centerLeft && centerLeft.layout && centerLeft.layout.height) || defaultCenterHeight
+  const rightHeight =
+    (centerRight && centerRight.layout && centerRight.layout.height) ||
+    defaultCenterHeight
+  if (leftHeight !== defaultCenterHeight) return leftHeight
+  if (rightHeight !== defaultCenterHeight) return rightHeight
+  return defaultCenterHeight
+}
 
 const ThemedApp = Theme('App', defaultTheme)(App)
 export default ThemedApp
