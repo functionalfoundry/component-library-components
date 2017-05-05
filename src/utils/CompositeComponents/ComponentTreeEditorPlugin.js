@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Theme from 'js-theme'
-import { Set } from 'immutable'
+import { Record, Set } from 'immutable'
 import {
   AlignedTrigger,
   AutoSuggest,
@@ -30,12 +30,22 @@ const Slate = require('slate')
 const Utils = require('./ComponentTreeUtils')
 
 /**
- * Plugin options
+ * Interaction state
  */
 
-type InteractionStateT = {
+export type InteractionStateT = {
   editingComponentId?: NodeIdentifierT,
 }
+
+const InteractionState = Record({
+  editingComponentId: null,
+})
+
+export { InteractionState }
+
+/**
+ * Plugin options
+ */
 
 type PluginOptionsT = {
   tree: ComponentTree,
@@ -699,4 +709,4 @@ const ComponentTreeEditorPlugin = (options: PluginOptionsT) => ({
   },
 })
 
-export default ComponentTreeEditorPlugin
+export { ComponentTreeEditorPlugin }
