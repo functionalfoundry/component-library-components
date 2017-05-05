@@ -3,8 +3,8 @@ import Button from '@workflo/components/lib/Button'
 import { storiesOf } from '@kadira/storybook'
 import { range } from 'lodash'
 
-import WalkthroughTarget from '.'
-import WalkthroughProvider from '../WalkthroughProvider'
+import WalkthroughTarget from '../WalkthroughTarget'
+import WalkthroughProvider, { WalkthroughBloop } from '.'
 
 const App = () => (
   <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
@@ -31,14 +31,20 @@ const App = () => (
 
 const steps = [
   {
+    message: 'This is where you’ll find all the components across your organization. We automatically take screenshots of your components and display those here. Click on a component to see all of that component’s states.',
     target: 'target-1',
     title: 'Welcome!',
-    message: 'This is where you’ll find all the components across your organization. We automatically take screenshots of your components and display those here. Click on a component to see all of that component’s states.',
   },
   {
+    message: 'Step 3 is way down here.',
     target: 'target-7',
     title: 'Step 2',
-    message: 'Step 3 is way down here',
+  },
+  {
+    hintTargets: ['target-1', 'target-6'],
+    message: 'This step wants you to pay attention to a couple other things.',
+    target: 'target-4',
+    title: 'Step 3',
   },
 ]
 
@@ -127,6 +133,6 @@ class WalkthroughContainer extends React.Component {
   }
 }
 
-storiesOf('WalkthroughTarget', module).add('Beginning', () => (
-  <WalkthroughContainer steps={steps} />
-))
+storiesOf('Walkthrough', module)
+  .add('Beginning', () => <WalkthroughContainer steps={steps} />)
+  .add('Bloop', () => <WalkthroughBloop />)
