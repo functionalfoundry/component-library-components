@@ -3,7 +3,7 @@ import Button from '@workflo/components/lib/Button'
 import { storiesOf } from '@kadira/storybook'
 import { range } from 'lodash'
 
-import WalkthroughProvider, { WalkthroughBloop, WalkthroughTarget } from '.'
+import { WalkthroughBloop, WalkthroughStep } from '.'
 
 const App = () => (
   <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
@@ -18,11 +18,12 @@ const App = () => (
           width: 100,
         }}
       >
-        <WalkthroughTarget name={`target-${index}`}>
-          <div style={{ backgroundColor: 'red', height: '100%', width: '100%' }}>
-            {index}
-          </div>
-        </WalkthroughTarget>
+        <div
+          id={`target-${index}`}
+          style={{ backgroundColor: 'red', height: '100%', width: '100%' }}
+        >
+          {index}
+        </div>
       </div>
     ))}
   </div>
@@ -31,34 +32,40 @@ const App = () => (
 const steps = [
   {
     message: 'This is where you’ll find all the components across your organization. We automatically take screenshots of your components and display those here. Click on a component to see all of that component’s states.',
-    target: 'target-1',
+    targetSelector: '#target-1',
     title: 'Welcome!',
   },
   {
     message: 'Step 3 is way down here.',
-    target: 'target-7',
+    targetSelector: '#target-7',
     title: 'Step 2',
   },
   {
-    hintTargets: ['target-1', 'target-6'],
+    hintTargets: [
+      {
+        targetSelector: '#target-1',
+      },
+      {
+        targetSelector: '#target-6',
+      },
+    ],
     message: 'This step wants you to pay attention to a couple other things.',
-    target: 'target-4',
+    targetSelector: '#target-4',
     title: 'Step 3',
   },
   {
-    hintTargets: ['target-1', 'target-6'],
     message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sedeligendi maiores ea aspernatur oditvoluptatem temporibus corporis, commo assumenda repellat earum perspiciatis ut, quia hic possimus numquam impedit vero aliquid.',
-    target: 'target-4',
+    targetSelector: '#target-4',
     title: "Congrats! You're all signed up",
     type: 'Success',
   },
 ]
 
-class WalkthroughContainer extends React.Component {
+class Walkthrough extends React.Component {
   state: {
+    isActive: boolean,
     steps: Array<Object>,
     stepIndex: number,
-    status: string,
   }
   constructor(props) {
     const { steps } = props
@@ -69,8 +76,8 @@ class WalkthroughContainer extends React.Component {
     this.handleForward = this.handleForward.bind(this)
 
     this.state = {
+      isActive: false,
       steps: this.calculateSteps(steps),
-      status: 'Stopped',
       stepIndex: 0,
     }
   }
@@ -121,24 +128,20 @@ class WalkthroughContainer extends React.Component {
 
   render() {
     return (
-      <WalkthroughProvider
-        steps={this.state.steps}
-        stepIndex={this.state.stepIndex}
-        status={this.state.status}
-      >
-        <div style={{ width: 1000 }}>
-          <Button
-            onClick={() => this.setState(() => ({ status: 'Active', stepIndex: 0 }))}
-          >
-            Start Walkthrough
-          </Button>
-          <App />
-        </div>
-      </WalkthroughProvider>
+      <div style={{ width: 1000 }}>
+        <WalkthroughStep
+          {...this.state.steps[this.state.stepIndex]}
+          isActive={this.state.isActive}
+        />
+        <Button onClick={() => this.setState(() => ({ isActive: true, stepIndex: 0 }))}>
+          Start Walkthrough
+        </Button>
+        <App />
+      </div>
     )
   }
 }
 
 storiesOf('Walkthrough', module)
-  .add('End to End', () => <WalkthroughContainer steps={steps} />)
+  .add('End to End', () => <Walkthrough steps={steps} />)
   .add('Bloop', () => <WalkthroughBloop />)
