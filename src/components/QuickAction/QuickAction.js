@@ -311,9 +311,7 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
       backgroundColor: 'rgba(100, 100, 100, .3)',
     }
   }
-  if (hasLabel) {
-    buttonWrapperStyle.padding = '4px 10px 4px 4px'
-  }
+  buttonWrapperStyle.padding = '4px 10px 4px 4px'
   return buttonWrapperStyle
 }
 
