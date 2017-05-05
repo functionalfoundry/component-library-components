@@ -3,8 +3,7 @@ import Button from '@workflo/components/lib/Button'
 import { storiesOf } from '@kadira/storybook'
 import { range } from 'lodash'
 
-import WalkthroughTarget from '../WalkthroughTarget'
-import WalkthroughProvider, { WalkthroughBloop } from '.'
+import WalkthroughProvider, { WalkthroughBloop, WalkthroughTarget } from '.'
 
 const App = () => (
   <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
@@ -45,6 +44,13 @@ const steps = [
     message: 'This step wants you to pay attention to a couple other things.',
     target: 'target-4',
     title: 'Step 3',
+  },
+  {
+    hintTargets: ['target-1', 'target-6'],
+    message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sedeligendi maiores ea aspernatur oditvoluptatem temporibus corporis, commo assumenda repellat earum perspiciatis ut, quia hic possimus numquam impedit vero aliquid.',
+    target: 'target-4',
+    title: "Congrats! You're all signed up",
+    type: 'Success',
   },
 ]
 
@@ -134,5 +140,5 @@ class WalkthroughContainer extends React.Component {
 }
 
 storiesOf('Walkthrough', module)
-  .add('Beginning', () => <WalkthroughContainer steps={steps} />)
+  .add('End to End', () => <WalkthroughContainer steps={steps} />)
   .add('Bloop', () => <WalkthroughBloop />)

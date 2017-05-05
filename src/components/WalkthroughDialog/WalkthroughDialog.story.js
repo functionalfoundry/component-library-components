@@ -37,6 +37,16 @@ storiesOf('WalkthroughDialog', module)
       />
     </div>
   ))
+  .add('Success', () => (
+    <div style={{ position: 'absolute', top: 20, left: 20 }}>
+      <WalkthroughDialog
+        onDismiss={action('dismiss-clicked')}
+        message="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sedeligendi maiores ea aspernatur oditvoluptatem temporibus corporis, commo assumenda repellat earum perspiciatis ut, quia hic possimus numquam impedit vero aliquid."
+        title="Congrats! You're all signed up"
+        type="Success"
+      />
+    </div>
+  ))
   .add('With Aligned Pointer', () => (
     <PreviewContainer shade="dark">
       <Preview label="Aligned Pointer With WalkthroughDialog">

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import Align from '@workflo/components/lib/Align'
 import { includes } from 'lodash'
 
-import WalkthroughDialog from '../WalkthroughDialog'
-import { WalkthroughBloop } from '../Walkthrough'
+import WalkthroughDialog from '../../WalkthroughDialog'
+import { WalkthroughBloop } from '../'
 
 type StepT = {
   hintTargets: Array<string>,
@@ -15,6 +15,7 @@ type StepT = {
   onForward?: Function,
   target: string,
   title: string,
+  type?: string,
 }
 
 type Props = {
@@ -87,11 +88,12 @@ class WalkthroughTarget extends React.Component {
           <div style={{ position: 'relative' }}>
             {currentStep && currentStep.target === name && status === 'Active'
               ? <WalkthroughDialog
-                  title={currentStep.title}
                   message={currentStep.message}
                   onBack={currentStep.onBack}
                   onDismiss={currentStep.onDismiss}
                   onForward={currentStep.onForward}
+                  title={currentStep.title}
+                  type={currentStep.type}
                 />
               : null}
             {currentStep && includes(currentStep.hintTargets, name) && status === 'Active'
