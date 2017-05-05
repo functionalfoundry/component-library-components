@@ -2,8 +2,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Align from '@workflo/components/lib/Align'
+import { includes } from 'lodash'
 
 import WalkthroughDialog from '../WalkthroughDialog'
+import { WalkthroughBloop } from '../Walkthrough'
 
 type StepT = {
   hintTargets: Array<string>,
@@ -82,15 +84,20 @@ class WalkthroughTarget extends React.Component {
       <Align
         isOpen
         portal={
-          currentStep && currentStep.target === name && status === 'Active'
-            ? <WalkthroughDialog
-                title={currentStep.title}
-                message={currentStep.message}
-                onBack={currentStep.onBack}
-                onDismiss={currentStep.onDismiss}
-                onForward={currentStep.onForward}
-              />
-            : <div />
+          <div style={{ position: 'relative' }}>
+            {currentStep && currentStep.target === name && status === 'Active'
+              ? <WalkthroughDialog
+                  title={currentStep.title}
+                  message={currentStep.message}
+                  onBack={currentStep.onBack}
+                  onDismiss={currentStep.onDismiss}
+                  onForward={currentStep.onForward}
+                />
+              : null}
+            {currentStep && includes(currentStep.hintTargets, name) && status === 'Active'
+              ? <WalkthroughBloop />
+              : null}
+          </div>
         }
         position="Bottom Right"
         theme={{
