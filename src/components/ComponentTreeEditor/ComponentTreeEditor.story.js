@@ -65,7 +65,7 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({value: '10'}),
+        value: PropValue({ value: '10' }),
       }),
       Prop({
         id: 'list-on-select-prop',
@@ -84,7 +84,7 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
-            value: PropValue({value: '0'}),
+            value: PropValue({ value: '0', type: 'string' }),
           }),
         ]),
         text: 'First list item',
@@ -96,7 +96,7 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
-            value: PropValue({value: '1'}),
+            value: PropValue({ value: '1', type: 'string' }),
           }),
         ]),
         text: 'Second list item',
