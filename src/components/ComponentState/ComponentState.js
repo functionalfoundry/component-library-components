@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import { Card, Checkbox, Icon, View } from '@workflo/components'
+import { Checkbox, Icon, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
 import { Power2, TweenMax } from 'gsap'
@@ -138,6 +138,7 @@ class ComponentState extends React.Component {
   props: PropsT
   numOpenPopups: number
   iconRefs: Array<any>
+  harnessCard: ?React.Element<>
 
   static defaultProps = defaultProps
 
@@ -183,7 +184,7 @@ class ComponentState extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.harnessCard.isSelected != nextProps.harnessCard.isSelected) {
+    if (this.props.harnessCard.isSelected !== nextProps.harnessCard.isSelected) {
       this.animateSelectionChange(nextProps.harnessCard.isSelected)
     }
   }
@@ -198,6 +199,7 @@ class ComponentState extends React.Component {
 
   animateSelectionChange = (isSelected, onComplete?: Function) => {
     const { clientWidth, clientHeight } = this.harnessCard
+
     let to
 
     if (isSelected) {
@@ -226,13 +228,7 @@ class ComponentState extends React.Component {
   storeHarnessCard = c => (this.harnessCard = c)
 
   render() {
-    const {
-      harnessCard,
-      onChangeIsSelected,
-      onClickTitle,
-      isHovering,
-      theme,
-    } = this.props
+    const { harnessCard, onClickTitle, isHovering, theme } = this.props
 
     const forceShowActions = this.getForceShowActions()
 
@@ -352,15 +348,14 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     zIndex: 10,
   },
   title: {
-    ...Fonts.title,
     ...Fonts.large,
+    fontSize: 24, // BIG HACK. HEADING BASE?
     transform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
       ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
       : `translate3d(0, 0, 0)`,
     WebkitTransform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
       ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
       : `translate3d(0, 0, 0)`,
-    fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
     transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
