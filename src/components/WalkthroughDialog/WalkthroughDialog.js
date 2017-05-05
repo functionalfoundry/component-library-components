@@ -6,7 +6,7 @@ import { compose } from 'recompose'
 
 import withTransitionGroup from '../../utils/withTransitionGroup'
 import defaultTheme from './defaultTheme'
-import { BackIcon, DismissIcon, ForwardIcon } from './components'
+import { BasicStep, SuccessStep } from './components'
 
 type Props = {
   onBack: Function,
@@ -15,11 +15,26 @@ type Props = {
   message: string,
   theme: Object,
   title: string,
+  type: string,
 }
 
 class WalkthroughDialog extends React.Component {
   props: Props
   container: any
+  static defaultProps = {
+    type: 'Basic',
+  }
+
+  static getContentComponent(type) {
+    switch (type) {
+      case 'Success':
+        return SuccessStep
+      case 'Basic':
+      default:
+        return BasicStep
+    }
+  }
+
   componentWillEnter(callback: Function) {
     const el = this.container
 
@@ -60,26 +75,17 @@ class WalkthroughDialog extends React.Component {
   }
 
   render() {
-    const { message, onBack, onDismiss, onForward, title, theme } = this.props
+    const { message, onBack, onDismiss, onForward, title, theme, type } = this.props
+    const ContentComponent = WalkthroughDialog.getContentComponent(type)
     return (
       <div {...theme.container} ref={c => (this.container = c)}>
-        <h1 {...theme.title}>{title}</h1>
-        <p {...theme.content}>{message}</p>
-        {onBack
-          ? <button onClick={onBack} {...theme.button}>
-              <BackIcon />
-            </button>
-          : null}
-        {onDismiss
-          ? <button onClick={onDismiss} {...theme.button}>
-              <DismissIcon />
-            </button>
-          : null}
-        {onForward
-          ? <button onClick={onForward} {...theme.button}>
-              <ForwardIcon />
-            </button>
-          : null}
+        <ContentComponent
+          message={message}
+          onBack={onBack}
+          onDismiss={onDismiss}
+          onForward={onForward}
+          title={title}
+        />
       </div>
     )
   }
