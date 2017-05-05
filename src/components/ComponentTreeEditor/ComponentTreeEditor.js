@@ -3,19 +3,23 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
-import { Record } from 'immutable'
 
-import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
-import {
+import type {
   Component,
   ComponentTree,
+  NodeIdentifierT,
 } from '../../utils/CompositeComponents/ComponentTree'
-import ComponentTreeEditorPlugin from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
-import ComponentTreeSyntaxPlugin from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
+import {
+  type InteractionStateT,
+  ComponentTreeEditorPlugin,
+  InteractionState,
+} from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
+import ComponentTreeSyntaxPlugin
+  from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
 import {
   ComponentTreeLayout,
   generateTreeLayout,
-  generateTreeLayoutMarkup
+  generateTreeLayoutMarkup,
 } from '../../utils/CompositeComponents/ComponentTreeLayout'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
@@ -36,20 +40,7 @@ type PropsT = {
   onSelectComponent?: Function,
 }
 
-const defaultProps = {
-}
-
-/**
- * Interaction state
- */
-
-type InteractionStateT = {
-  editingComponentId: ?NodeIdentifierT,
-}
-
-const InteractionState = Record({
-  editingComponentId: null,
-})
+const defaultProps = {}
 
 /**
  * State
@@ -63,27 +54,26 @@ type StateT = {
   interactionState: InteractionState,
 }
 
-const getComponentTreeEditorState = (
-  tree: ComponentTree,
-  layout: ComponentTreeLayout
-) => (
-  Raw.deserialize({
-    nodes: [
-      {
-        kind: 'block',
-        type: 'code',
-        nodes: [
-          {
-            kind: 'text',
-            text: generateTreeLayoutMarkup(layout),
-          }
-        ]
-      }
-    ]
-  }, {
-    terse: true,
-  })
-)
+const getComponentTreeEditorState = (tree: ComponentTree, layout: ComponentTreeLayout) =>
+  Raw.deserialize(
+    {
+      nodes: [
+        {
+          kind: 'block',
+          type: 'code',
+          nodes: [
+            {
+              kind: 'text',
+              text: generateTreeLayoutMarkup(layout),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      terse: true,
+    }
+  )
 
 const getComponentTreeEditorPlugins = (
   editor: ComponentTreeEditor,
@@ -91,10 +81,9 @@ const getComponentTreeEditorPlugins = (
   layout: ComponentTreeLayout,
   completionData: CompletionDataT,
   interactionState: InteractionStateT
-) => ([
+) => [
   ComponentTreeEditorPlugin({
     tree,
-    layout,
     completionData,
     interactionState,
     onChange: editor.handleTreeChange,
@@ -107,9 +96,9 @@ const getComponentTreeEditorPlugins = (
   }),
   ComponentTreeSyntaxPlugin({
     tree,
-    layout
+    layout,
   }),
-])
+]
 
 /**
  * ComponentTree component
@@ -121,22 +110,22 @@ class ComponentTreeEditor extends React.Component {
 
   static defaultProps = defaultProps
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = this.getStateFromTreeAndProps(
-      props.tree, props, InteractionState()
-    )
+    this.state = this.getStateFromTreeAndProps(props.tree, props, InteractionState())
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState(state => {
       return this.getStateFromTreeAndProps(
-        nextProps.tree, nextProps, state.interactionState
+        nextProps.tree,
+        nextProps,
+        state.interactionState
       )
     })
   }
 
-  render () {
+  render() {
     return (
       <Editor
         state={this.state.editorState}
@@ -155,7 +144,11 @@ class ComponentTreeEditor extends React.Component {
     const layout = generateTreeLayout(tree)
     const editorState = getComponentTreeEditorState(tree, layout)
     const plugins = getComponentTreeEditorPlugins(
-      this, tree, layout, props.completionData, interactionState
+      this,
+      tree,
+      layout,
+      props.completionData,
+      interactionState
     )
     return {
       tree,
@@ -168,15 +161,11 @@ class ComponentTreeEditor extends React.Component {
 
   updateInteractionState = (interactionState: InteractionState) => {
     this.setState((state, props) => {
-      return this.getStateFromTreeAndProps(
-        props.tree, props, interactionState
-      )
+      return this.getStateFromTreeAndProps(props.tree, props, interactionState)
     })
   }
 
-  handleChange = (editorState: State) => (
-    this.setState({ editorState })
-  )
+  handleChange = (editorState: State) => this.setState({ editorState })
 
   handleTreeChange = (tree: ComponentTree) => {
     this.setState((state, props) => {
@@ -199,13 +188,12 @@ class ComponentTreeEditor extends React.Component {
     component: Component
   ) => {
     component = component.set('id', this.props.nodeIdGenerator())
-    this.updateInteractionState(this.state.interactionState.set(
-      'editingComponentId', component.get('id')
-    ))
-    const { onInsertComponent } = this.props
-    onInsertComponent && onInsertComponent(
-      parentNodeId, index, component, component.toJS()
+    this.updateInteractionState(
+      this.state.interactionState.set('editingComponentId', component.get('id'))
     )
+    const { onInsertComponent } = this.props
+    onInsertComponent &&
+      onInsertComponent(parentNodeId, index, component, component.toJS())
   }
 
   handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
@@ -213,9 +201,9 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
-    this.updateInteractionState(this.state.interactionState.set(
-      'editingComponentId', null
-    ))
+    this.updateInteractionState(
+      this.state.interactionState.set('editingComponentId', null)
+    )
     const { onChangeComponentName } = this.props
     onChangeComponentName && onChangeComponentName(nodeId, name)
   }
@@ -229,9 +217,9 @@ class ComponentTreeEditor extends React.Component {
  * Theming
  */
 
-const defaultTheme = {
-}
+const defaultTheme = {}
 
-const ThemedComponentTreeEditor =
-  Theme('ComponentTreeEditor', defaultTheme)(ComponentTreeEditor)
+const ThemedComponentTreeEditor = Theme('ComponentTreeEditor', defaultTheme)(
+  ComponentTreeEditor
+)
 export default ThemedComponentTreeEditor
