@@ -31,6 +31,6 @@
   "StaggerChildren",
   "SubHeader",
   "ThemePreferences",
-  "WalkthroughDialog",
-  "WalkthroughProvider"
+  "Walkthrough",
+  "WalkthroughDialog"
 ]
