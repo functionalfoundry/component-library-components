@@ -1,12 +1,10 @@
 /* @flow */
 
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
-import {Preview, PreviewContainer} from '@workflo/components'
-import {List} from 'immutable'
-import type {
-  NodeIdentifierT,
-} from '../../utils/CompositeComponents/ComponentTree'
+import { storiesOf, action } from '@kadira/storybook'
+import { Preview, PreviewContainer } from '@workflo/components'
+import { List } from 'immutable'
+import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
 import {
   Component,
   ComponentTree,
@@ -149,53 +147,47 @@ const treeFromRaw = Utils.createTree({
 
 type TreeEditorContainerPropsT = {
   tree: ComponentTree,
-};
+}
 
 type TreeEditorContainerStateT = {
   tree: ComponentTree,
-};
+}
 
 class TreeEditorContainer extends React.Component {
-  props: TreeEditorContainerPropsT;
-  state: TreeEditorContainerStateT;
+  props: TreeEditorContainerPropsT
+  state: TreeEditorContainerStateT
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       tree: this.props.tree,
     }
   }
 
-  createAction = (name, handler) => (
-    <button key={name} onClick={handler}>{name}</button>
-  );
+  createAction = (name, handler) => <button key={name} onClick={handler}>{name}</button>
 
   insertProp = () => {
     const prop = Prop({
       id: 'new-prop',
       name: 'newProp',
-      value: PropValue({value: 'new prop value'}),
+      value: PropValue({ value: 'new prop value' }),
     })
     this.setState({
       tree: Utils.insertProp(this.state.tree, 'list-item-1', prop),
     })
-  };
+  }
 
   removeProp = () => {
     this.setState({
       tree: Utils.removeNodeById(this.state.tree, 'list-width-prop'),
     })
-  };
+  }
 
   setPropName = () => {
     this.setState({
-      tree: Utils.setPropName(
-        this.state.tree,
-        'list-title-prop',
-        'newNameOfTitleProp',
-      ),
+      tree: Utils.setPropName(this.state.tree, 'list-title-prop', 'newNameOfTitleProp'),
     })
-  };
+  }
 
   setPropValue = () => {
     this.setState({
@@ -205,10 +197,10 @@ class TreeEditorContainer extends React.Component {
         PropValue({
           value: 'New list title',
           type: 'string',
-        }),
+        })
       ),
     })
-  };
+  }
 
   insertComponentAsFirst = () => {
     this.setState({
@@ -219,10 +211,10 @@ class TreeEditorContainer extends React.Component {
         Component({
           id: 'new-component-as-first',
           name: 'NewComponent',
-        }),
+        })
       ),
     })
-  };
+  }
 
   insertComponentAsThird = () => {
     this.setState({
@@ -233,10 +225,10 @@ class TreeEditorContainer extends React.Component {
         Component({
           id: 'new-component-as-third',
           name: 'AnotherNewComponent',
-        }),
+        })
       ),
     })
-  };
+  }
 
   insertComponentInThird = () => {
     this.setState({
@@ -247,67 +239,58 @@ class TreeEditorContainer extends React.Component {
         Component({
           id: 'new-component-in-third',
           name: 'YetAnotherNewComponent',
-        }),
+        })
       ),
     })
-  };
+  }
 
   removeComponent = () => {
     this.setState({
       tree: Utils.removeComponent(this.state.tree, 'list-item-2'),
     })
-  };
+  }
 
   setComponentName = () => {
     this.setState({
-      tree: Utils.setComponentName(
-        this.state.tree,
-        'list-item-3',
-        'NewListItem',
-      ),
+      tree: Utils.setComponentName(this.state.tree, 'list-item-3', 'NewListItem'),
     })
-  };
+  }
 
   setComponentText = () => {
     this.setState({
       tree: Utils.setComponentText(this.state.tree, 'list-item-3', 'New text'),
     })
-  };
+  }
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
     action('onRemoveProp').call(null, nodeId)
     const tree = Utils.removeProp(this.state.tree, nodeId)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
     action('onRemoveComponent').call(null, nodeId)
     const tree = Utils.removeComponent(this.state.tree, nodeId)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
   handleInsertComponent = (
     parentId: NodeIdentifierT,
     index: number,
-    component: Component,
+    component: Component
   ) => {
     action('onInsertComponent').call(null, parentId, index, component)
-    const tree = Utils.insertComponent(
-      this.state.tree,
-      parentId,
-      index,
-      component,
-    )
-    this.setState({tree})
-  };
+    const tree = Utils.insertComponent(this.state.tree, parentId, index, component)
+    this.setState({ tree })
+  }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     action('onChangeComponentName').call(null, nodeId, name)
     const tree = Utils.setComponentName(this.state.tree, nodeId, name)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
-  render () {
+  render() {
     return (
       <div>
         <ComponentTreeEditor
@@ -325,41 +308,29 @@ class TreeEditorContainer extends React.Component {
         <div>
           {[
             this.createAction('Add prop to first list item', this.insertProp),
-            this.createAction(
-              'Remove the listWidth prop from List',
-              this.removeProp,
-            ),
-            this.createAction(
-              'Change the name of the title prop',
-              this.setPropName,
-            ),
-            this.createAction(
-              'Change value of the title prop',
-              this.setPropValue,
-            ),
+            this.createAction('Remove the listWidth prop from List', this.removeProp),
+            this.createAction('Change the name of the title prop', this.setPropName),
+            this.createAction('Change value of the title prop', this.setPropValue),
             this.createAction(
               'Add a new, empty component to List as the 1st child',
-              this.insertComponentAsFirst,
+              this.insertComponentAsFirst
             ),
             this.createAction(
               'Add a new, empty component to List as the 3rd child',
-              this.insertComponentAsThird,
+              this.insertComponentAsThird
             ),
             this.createAction(
               'Add a new, empty component to the new 3rd child of List',
-              this.insertComponentInThird,
+              this.insertComponentInThird
             ),
-            this.createAction(
-              'Remove the second list item',
-              this.removeComponent,
-            ),
+            this.createAction('Remove the second list item', this.removeComponent),
             this.createAction(
               'Update the name of the third list item',
-              this.setComponentName,
+              this.setComponentName
             ),
             this.createAction(
               'Change the text of the third list item',
-              this.setComponentText,
+              this.setComponentText
             ),
           ]}
         </div>
@@ -370,15 +341,15 @@ class TreeEditorContainer extends React.Component {
 
 storiesOf('Component Tree Editor', module)
   .add('Regular', () => (
-    <PreviewContainer shade='light'>
-      <Preview label='Regular'>
+    <PreviewContainer shade="light">
+      <Preview label="Regular">
         <TreeEditorContainer tree={regularTree} />
       </Preview>
     </PreviewContainer>
   ))
   .add('Tree from raw data', () => (
-    <PreviewContainer shade='light'>
-      <Preview label='Regular'>
+    <PreviewContainer shade="light">
+      <Preview label="Regular">
         <TreeEditorContainer tree={treeFromRaw} />
       </Preview>
     </PreviewContainer>
