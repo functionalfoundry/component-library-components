@@ -1,15 +1,6 @@
 import React from 'react'
-import {
-  Icon,
-  RadioGroup,
-  Radio,
-  View,
-  Text,
-} from '@workflo/components'
-import {
-  Colors,
-  Spacing,
-} from '@workflo/styles'
+import { Icon, RadioGroup, Radio, View, Text } from '@workflo/components'
+import { Colors, Spacing } from '@workflo/styles'
 import AlignedPointer from '@workflo/components/lib/AlignedPointer'
 import IconButtonGroup from '@workflo/components/lib/IconButtonGroup/IconButtonGroup'
 
@@ -32,7 +23,6 @@ type PropsT = {
   onClick: Function,
   onOpen: Function,
   onClose: Function,
-
 }
 
 class QuickAction extends React.Component {
@@ -44,7 +34,7 @@ class QuickAction extends React.Component {
     iconKind: 'Secondary',
   }
 
-  render () {
+  render() {
     return (
       <View
         inline
@@ -54,9 +44,7 @@ class QuickAction extends React.Component {
           },
         }}
       >
-        <Content
-          {...this.props}
-        />
+        <Content {...this.props} />
       </View>
     )
   }
@@ -79,12 +67,12 @@ const Content = ({
     case 'Radio':
       return (
         <AlignedPointer
-          position='Top'
+          position="Top"
           openTriggers={['Mouse enter']}
           closeTriggers={['Mouse leave']}
           onOpen={onOpen}
           onClose={onClose}
-          portal={(
+          portal={
             <View
               theme={{
                 view: {
@@ -92,7 +80,7 @@ const Content = ({
                 },
               }}
             >
-              {!showLabelInButton && (
+              {!showLabelInButton &&
                 <Text
                   theme={{
                     text: {
@@ -102,12 +90,11 @@ const Content = ({
                   }}
                 >
                   {label}
-                </Text>
-              )}
+                </Text>}
               <Radios
                 options={input.options}
                 value={input.value}
-                onChange={(value) => onChange(value)}
+                onChange={value => onChange(value)}
                 theme={{
                   radios: {
                     marginRight: 40,
@@ -115,7 +102,7 @@ const Content = ({
                 }}
               />
             </View>
-          )}
+          }
         >
           <View
             theme={{
@@ -124,26 +111,25 @@ const Content = ({
           >
             <Icon
               name={icon}
-              size='large'
+              size="large"
               onClick={onClick}
               stroke={getColor(shade, iconKind)}
               fill={getColor(shade, iconKind)}
               theme={{
                 icon: {
                   display: 'inline-block',
-                }
+                },
               }}
             />
-            {showLabelInButton && (
+            {showLabelInButton &&
               <Text
-                size='small'
+                size="small"
                 theme={{
                   text: buttonTextStyle,
                 }}
               >
                 {label}
-              </Text>
-            )}
+              </Text>}
           </View>
         </AlignedPointer>
       )
@@ -151,23 +137,24 @@ const Content = ({
       const iconElement = (
         <Icon
           name={icon}
-          size='large'
+          size="large"
           stroke={getColor(shade, iconKind)}
           fill={getColor(shade, iconKind)}
           theme={{
             icon: {
               display: 'inline-block',
-            }
+              cursor: 'pointer',
+            },
           }}
         />
       )
       if (label && !showLabelInButton) {
         return (
           <AlignedPointer
-            position='Top'
+            position="Top"
             openTriggers={['Mouse enter']}
             closeTriggers={['Mouse leave']}
-            portal={(
+            portal={
               <View
                 theme={{
                   view: {
@@ -185,7 +172,7 @@ const Content = ({
                   {label}
                 </Text>
               </View>
-            )}
+            }
           >
             <View
               theme={{
@@ -194,16 +181,15 @@ const Content = ({
               onClick={onClick}
             >
               {iconElement}
-              {showLabelInButton && (
+              {showLabelInButton &&
                 <Text
-                  size='small'
+                  size="small"
                   theme={{
                     text: buttonTextStyle,
                   }}
                 >
                   {label}
-                </Text>
-              )}
+                </Text>}
             </View>
           </AlignedPointer>
         )
@@ -211,32 +197,31 @@ const Content = ({
       return (
         <View
           theme={{
-            view: getButtonWrapperStyle(true, true)
+            view: getButtonWrapperStyle(true, true),
           }}
           onClick={onClick}
         >
           {iconElement}
-          {showLabelInButton && (
+          {showLabelInButton &&
             <Text
-              size='small'
+              size="small"
               theme={{
                 text: buttonTextStyle,
               }}
             >
               {label}
-            </Text>
-          )}
+            </Text>}
         </View>
       )
     case 'Icon':
       return (
         <AlignedPointer
-          position='Top'
+          position="Top"
           openTriggers={['Mouse enter']}
           closeTriggers={['Mouse leave']}
           onOpen={onOpen}
           onClose={onClose}
-          portal={(
+          portal={
             <View
               theme={{
                 view: {
@@ -244,22 +229,21 @@ const Content = ({
                 },
               }}
             >
-              {!showLabelInButton && (
+              {!showLabelInButton &&
                 <Text
                   theme={{
                     text: baseTextStyle,
                   }}
                 >
                   {label}
-                </Text>
-              )}
+                </Text>}
               <IconButtonGroup
-                onChange={(value) => onChange(value)}
+                onChange={value => onChange(value)}
                 icons={input.options}
                 selectedIconName={input.value}
               />
             </View>
-          )}
+          }
         >
           <View
             theme={{
@@ -268,26 +252,25 @@ const Content = ({
           >
             <Icon
               name={icon}
-              size='large'
+              size="large"
               onClick={onClick}
               stroke={getColor(shade, iconKind)}
               fill={getColor(shade, iconKind)}
               theme={{
                 icon: {
                   display: 'inline-block',
-                }
+                },
               }}
             />
-            {showLabelInButton && (
+            {showLabelInButton &&
               <Text
-                size='small'
+                size="small"
                 theme={{
                   text: buttonTextStyle,
                 }}
               >
                 {label}
-              </Text>
-            )}
+              </Text>}
           </View>
         </AlignedPointer>
       )
@@ -315,11 +298,10 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
     flexDirection: 'row',
     alignItems: 'center',
     flex: '0 1 auto',
+    cursor: 'default',
   }
   if (isButton) {
     buttonWrapperStyle.cursor = 'pointer'
-  } else {
-    buttonWrapperStyle.cursor = 'default'
   }
   if (isButton && hasLabel) {
     buttonWrapperStyle[':hover'] = {
@@ -335,11 +317,7 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
   return buttonWrapperStyle
 }
 
-const Radios = ({
-  options,
-  value,
-  onChange,
-}) => (
+const Radios = ({ options, value, onChange }) => (
   <RadioGroup
     value={value}
     onChange={onChange}
@@ -349,13 +327,7 @@ const Radios = ({
       },
     }}
   >
-    {options.map((option, index) => (
-      <Radio
-        key={index}
-        label={option}
-        value={option}
-      />
-    ))}
+    {options.map((option, index) => <Radio key={index} label={option} value={option} />)}
   </RadioGroup>
 )
 
