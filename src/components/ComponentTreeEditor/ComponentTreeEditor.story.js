@@ -4,8 +4,8 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import { List } from 'immutable'
-import type { NodeIdentifierT } from '../../utils/CompositeComponents/ComponentTree'
 import {
+  type NodeIdentifierT,
   Component,
   ComponentTree,
   Prop,
@@ -263,13 +263,13 @@ class TreeEditorContainer extends React.Component {
   }
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
-    action('onRemoveProp').call(null, nodeId)
+    action('onRemoveProp')(nodeId)
     const tree = Utils.removeProp(this.state.tree, nodeId)
     this.setState({ tree })
   }
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
-    action('onRemoveComponent').call(null, nodeId)
+    action('onRemoveComponent')(nodeId)
     const tree = Utils.removeComponent(this.state.tree, nodeId)
     this.setState({ tree })
   }
@@ -279,13 +279,13 @@ class TreeEditorContainer extends React.Component {
     index: number,
     component: Component
   ) => {
-    action('onInsertComponent').call(null, parentId, index, component)
+    action('onInsertComponent')(parentId, index, component)
     const tree = Utils.insertComponent(this.state.tree, parentId, index, component)
     this.setState({ tree })
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
-    action('onChangeComponentName').call(null, nodeId, name)
+    action('onChangeComponentName')(nodeId, name)
     const tree = Utils.setComponentName(this.state.tree, nodeId, name)
     this.setState({ tree })
   }
