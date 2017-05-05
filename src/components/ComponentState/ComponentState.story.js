@@ -4,7 +4,9 @@ import ComponentState from './ComponentState'
 import QuickAction from '../QuickAction'
 import { Preview, PreviewContainer } from '@workflo/components'
 
-const MyComponent = ({ children }) => (
+const MyComponent = ({
+  children, // eslint-disable-line react/prop-types
+}) => (
   <div style={{ backgroundColor: 'magenta', width: 100, height: 100 }}>
     {children}
   </div>
@@ -18,7 +20,7 @@ const element = (
 
 const actions = [
   <QuickAction
-    icon="delete"
+    icon="alignment"
     input={{
       type: 'Radio',
       options: ['Left', 'Center', 'Right'],
@@ -36,7 +38,15 @@ const actions = [
     }}
   />,
   <QuickAction
-    icon="duplicate"
+    label="Delete"
+    icon="delete"
+    input={{
+      type: 'Button',
+    }}
+    onClick={action('Delete')}
+  />,
+  <QuickAction
+    icon="size"
     input={{
       type: 'Radio',
       options: ['Small', 'Base', 'Large'],
@@ -74,7 +84,7 @@ class Container extends React.Component {
   }
 
   handleChangeIsSelected = isSelected => {
-    action('onChangeIsSelected').call(null, isSelected)
+    action('onChangeIsSelected')(null, isSelected)
     this.setState(state => (state.isSelected = isSelected))
   }
 
