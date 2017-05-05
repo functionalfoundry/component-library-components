@@ -114,9 +114,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.77":
-  version "0.8.77"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.77.tgz#a88d8f66a0a83eb383cef92b2e977c79e9614198"
+"@workflo/components@^0.8.81":
+  version "0.8.81"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.81.tgz#6cf54ad970486409a099d00e5c890730d3906316"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
@@ -133,13 +133,28 @@
     fbjs "^0.8.4"
     gsap "^1.19.1"
     immutable "^3.8.1"
-    js-theme "0.7.3"
+    js-theme "^0.8.0"
     memoizee "^0.4.3"
     rc-animate "^2.3.1"
     rc-util "^4.0.0"
     react-timeout "^1.0.0"
     shallow-equal "^1.0.0"
     slate "^0.19.3"
+
+"@workflo/css-shorthand-expand@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@workflo/css-shorthand-expand/-/css-shorthand-expand-1.1.0.tgz#961e2e37962f739354fd8b469c145212e9a78359"
+  dependencies:
+    css-color-names "0.0.1"
+    css-url-regex "0.0.1"
+    hex-color-regex "^1.0.1"
+    hsl-regex "^1.0.0"
+    hsla-regex "^1.0.0"
+    map-obj "^1.0.0"
+    repeat-element "^1.1.0"
+    rgb-regex "^1.0.1"
+    rgba-regex "^1.0.0"
+    xtend "^4.0.0"
 
 "@workflo/styles@^0.7.10":
   version "0.7.10"
@@ -1780,6 +1795,10 @@ css-animation@^1.3.0:
   dependencies:
     component-classes "^1.2.5"
 
+css-color-names@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.1.tgz#5d0548fa256456ede4a9a0c2ac7ab19d3eb1ad81"
+
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
@@ -1848,6 +1867,10 @@ css-selector-tokenizer@^0.7.0:
     cssesc "^0.1.0"
     fastparse "^1.1.1"
     regexpu-core "^1.0.0"
+
+css-url-regex@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/css-url-regex/-/css-url-regex-0.0.1.tgz#e05af8c6c290d451ef1632b455ea5c81b4b1395c"
 
 css-what@2.1:
   version "2.1.0"
@@ -2874,6 +2897,10 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
+hex-color-regex@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.0.3.tgz#2175693bc292fe06711b04faee9004790926f9b0"
+
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
@@ -2892,6 +2919,14 @@ home-or-tmp@^2.0.0:
 hosted-git-info@^2.1.4:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.4.2.tgz#0076b9f46a270506ddbaaea56496897460612a67"
+
+hsl-regex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hsl-regex/-/hsl-regex-1.0.0.tgz#d49330c789ed819e276a4c0d272dffa30b18fe6e"
+
+hsla-regex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hsla-regex/-/hsla-regex-1.0.0.tgz#c1ce7a3168c8c6614033a4b5f7877f3b225f9c38"
 
 html-comment-regex@^1.1.0:
   version "1.1.1"
@@ -3402,11 +3437,12 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
-js-theme@0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.7.3.tgz#387cc3e8bb717160aee9db6a4f19403306324299"
+js-theme@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.0.tgz#bcdab135efc1c43b12b80839c5506448d1c8ca85"
   dependencies:
     "@workflo/aphrodite" "0.7.4"
+    "@workflo/css-shorthand-expand" "1.1.0"
     invariant "^2.2.1"
     lodash "^4.15.0"
 
@@ -3773,6 +3809,10 @@ mantra-core@^1.7.0:
     babel-runtime "6.x.x"
     react-komposer "^1.9.0"
     react-simple-di "^1.2.0"
+
+map-obj@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
 markdown-escapes@^1.0.0:
   version "1.0.0"
@@ -5026,7 +5066,7 @@ remove-trailing-separator@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.0.1.tgz#615ebb96af559552d4bf4057c8436d486ab63cc4"
 
-repeat-element@^1.1.2:
+repeat-element@^1.1.0, repeat-element@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/repeat-element/-/repeat-element-1.1.2.tgz#ef089a178d1483baae4d93eb98b4f9e4e11d990a"
 
@@ -5110,6 +5150,14 @@ restore-cursor@^1.0.1:
   dependencies:
     exit-hook "^1.0.0"
     onetime "^1.0.0"
+
+rgb-regex@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rgb-regex/-/rgb-regex-1.0.1.tgz#c0e0d6882df0e23be254a475e8edd41915feaeb1"
+
+rgba-regex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
 
 right-align@^0.1.1:
   version "0.1.3"
