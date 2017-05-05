@@ -17,13 +17,8 @@ import {
   AnyPropValueChooser,
   StringPropValueChooser,
 } from '../../components/ComponentTreeEditor/PropValueChoosers'
-import type { NodeIdentifierT } from './ComponentTree'
-import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
-import type {
-  CompletionDataT,
-  GlobalOptionsDataT,
-  PropCompletionDataT,
-} from './Completion'
+import { type NodeIdentifierT, Component, ComponentTree, Prop } from './ComponentTree'
+import type { CompletionDataT, PropCompletionDataT } from './Completion'
 
 const Immutable = require('immutable')
 const Slate = require('slate')
@@ -74,7 +69,6 @@ const defaultTheme = {
     left: '-35px',
     width: 35,
     height: '100%',
-    display: 'inline-block',
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
@@ -94,7 +88,6 @@ const defaultTheme = {
     left: '-35px',
     width: 35,
     height: '100%',
-    display: 'inline-block',
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
@@ -120,7 +113,6 @@ const defaultTheme = {
     left: '-35px',
     width: 35,
     height: '100%',
-    display: 'inline-block',
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
@@ -166,10 +158,6 @@ type MarkRendererPropsT = {
 
 class ComponentTagRenderer extends React.Component {
   props: MarkRendererPropsT
-
-  constructor(props: MarkRendererPropsT) {
-    super(props)
-  }
 
   render() {
     const { children, mark, marks, theme } = this.props
@@ -356,7 +344,7 @@ class ComponentNameRenderer extends React.Component {
     const { options } = this.props
     const component = this.getComponent(this.props)
     const interactionState = options.interactionState
-    const focus = component.id == interactionState.editingComponentId
+    const focus = component.id === interactionState.editingComponentId
     if (focus && this.editableText) {
       this.editableText.getWrappedInstance().focusAndSelect()
     }
@@ -397,11 +385,13 @@ class ComponentNameRenderer extends React.Component {
     this.setState({ value: data.suggestionValue })
     const { options } = this.props
     const component = this.getComponent(this.props)
-    options && options.onChangeComponentName(component.id, data.suggestionValue)
+    if (options.onChangeComponentName) {
+      options.onChangeComponentName(component.id, data.suggestionValue)
+    }
   }
 
   render() {
-    const { children, mark, theme, options } = this.props
+    const { theme } = this.props
     const { value, filteredComponentNames } = this.state
 
     return (
@@ -532,15 +522,27 @@ const ThemedPropNameRenderer = Theme('PropNameRenderer', defaultTheme)(PropNameR
 
 const propValueChooserImplementations = {
   any: AnyPropValueChooser,
+  array: AnyPropValueChooser,
+  boolean: AnyPropValueChooser,
+  custom: AnyPropValueChooser,
+  element: AnyPropValueChooser,
+  enum: AnyPropValueChooser,
+  function: AnyPropValueChooser,
+  literal: AnyPropValueChooser,
+  node: AnyPropValueChooser,
+  number: AnyPropValueChooser,
+  object: AnyPropValueChooser,
   string: StringPropValueChooser,
+  symbol: AnyPropValueChooser,
+  tuple: AnyPropValueChooser,
+  union: AnyPropValueChooser,
+  unknown: AnyPropValueChooser,
+  void: AnyPropValueChooser,
 }
 
 const getPropValueRenderer = (prop: Prop, propCompletionData: PropCompletionDataT) => {
   if (propCompletionData) {
-    return (
-      propValueChooserImplementations[propCompletionData.type] ||
-      propValueChooserImplementations['any']
-    )
+    return propValueChooserImplementations[propCompletionData.type]
   } else {
     return propValueChooserImplementations['any']
   }
@@ -549,29 +551,27 @@ const getPropValueRenderer = (prop: Prop, propCompletionData: PropCompletionData
 class PropValueRenderer extends React.Component {
   props: MarkRendererPropsT
 
-  constructor(props) {
-    super(props)
-  }
-
   render() {
-    const { children, mark, marks, options, theme } = this.props
+    const { children, mark, options, theme } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const component = mark.getIn(['data', 'element', 'data', 'component'])
     const value = mark.getIn(['data', 'element', 'node'])
 
-    const propCompletionData =
-      options &&
+    const propCompletionData = (options &&
       options.completionData &&
       options.completionData.props &&
       options.completionData.props[component.name] &&
-      options.completionData.props[component.name][prop.name]
+      options.completionData.props[component.name][prop.name]) || {
+      type: 'any',
+      options: [],
+    }
 
     const globalOptions =
       options && options.completionData && options.completionData.globalOptions
 
     const Chooser = getPropValueRenderer(prop, propCompletionData)
 
-    if (Chooser == StringPropValueChooser) {
+    if (Chooser === StringPropValueChooser) {
       return (
         <View {...theme.propValueEditor} inline>
           <Chooser
