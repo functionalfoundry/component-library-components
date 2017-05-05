@@ -1,17 +1,8 @@
 /* @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import {
-  Card,
-  Checkbox,
-  Icon,
-  View,
-} from '@workflo/components'
-import {
-  Colors,
-  Fonts,
-  Spacing,
-} from '@workflo/styles'
+import { Card, Checkbox, Icon, View } from '@workflo/components'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
 import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
@@ -112,7 +103,7 @@ export default class ComponentStateContainer extends React.Component {
   props: PropsT
   state: StateContainerStateT
 
-  constructor (props: PropsT) {
+  constructor(props: PropsT) {
     super(props)
     this.state = {
       isHovering: false,
@@ -150,7 +141,7 @@ class ComponentState extends React.Component {
 
   static defaultProps = defaultProps
 
-  constructor (props: PropsT) {
+  constructor(props: PropsT) {
     super(props)
     // We're using a number instead of a boolean to track
     // whether to force show quick actions while a quickaction popover is open
@@ -163,7 +154,7 @@ class ComponentState extends React.Component {
     this.iconRefs = []
   }
 
-  storeRef = (name, c) => this[name] = c
+  storeRef = (name, c) => (this[name] = c)
 
   handleOpenPopup = () => {
     this.numOpenPopups = this.numOpenPopups + 1
@@ -181,23 +172,23 @@ class ComponentState extends React.Component {
   }
 
   handleMouseLeave = () => {
-    if(!this.getForceShowActions()) {
+    if (!this.getForceShowActions()) {
       // console.log('hide these icons: ', this.iconRefs)
     }
     this.props.onMouseLeave()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.animateSelectionChange(this.props.harnessCard.isSelected)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.harnessCard.isSelected != nextProps.harnessCard.isSelected) {
       this.animateSelectionChange(nextProps.harnessCard.isSelected)
     }
   }
 
-  handleChangeIsSelected = (isSelected) => {
+  handleChangeIsSelected = isSelected => {
     this.animateSelectionChange(isSelected, () => {
       setTimeout(() => {
         this.props.onChangeIsSelected(isSelected)
@@ -211,8 +202,8 @@ class ComponentState extends React.Component {
 
     if (isSelected) {
       const margin = 15
-      const desiredWidth = clientWidth - 2*margin
-      const desiredHeight = clientHeight - 2*margin
+      const desiredWidth = clientWidth - 2 * margin
+      const desiredHeight = clientHeight - 2 * margin
       const xFactor = desiredWidth / clientWidth
       const yFactor = desiredHeight / clientHeight
       to = {
@@ -232,9 +223,9 @@ class ComponentState extends React.Component {
 
   getForceShowActions = () => this.numOpenPopups > 0
 
-  storeHarnessCard = (c) => this.harnessCard = c
+  storeHarnessCard = c => (this.harnessCard = c)
 
-  render () {
+  render() {
     const {
       harnessCard,
       onChangeIsSelected,
@@ -254,37 +245,27 @@ class ComponentState extends React.Component {
         ref={this.storeHarnessCard}
         flush
       >
-        <View
-          {...theme.section}
-        >
+        <View {...theme.section}>
           <div style={{ display: 'flex' }}>
-            <View
-              {...theme.titleContainer}
-            >
+            <View {...theme.titleContainer}>
               {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
                 <Checkbox
                   checked={harnessCard.isSelected}
                   onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
                   theme={{ checkbox: { marginTop: 2 } }}
                 />}
-              <Heading
-                {...theme.title}
-                size={'Base'}
-                onPress={() => onClickTitle()}
-              >
+              <Heading {...theme.title} size={'Base'} onPress={() => onClickTitle()}>
                 {harnessCard.harness.componentState.name}
               </Heading>
             </View>
-            <View
-              {...theme.actions}
-            >
+            <View {...theme.actions}>
               {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
                 <StaggerChildren>
                   {harnessCard.actions.map((action, index) => (
                     <div
                       {...theme.iconGroup}
                       key={index}
-                      ref={(c) => this.iconRefs[index] = c}
+                      ref={c => (this.iconRefs[index] = c)}
                     >
                       {React.cloneElement(action, {
                         ...action.props,
@@ -294,12 +275,14 @@ class ComponentState extends React.Component {
                     </div>
                   ))}
                 </StaggerChildren>}
-              {(!isHovering && !harnessCard.isSelected && !forceShowActions) &&
-                <div ref={(c) => this.storeRef('more', c)}>
+              {!isHovering &&
+                !harnessCard.isSelected &&
+                !forceShowActions &&
+                <div ref={c => this.storeRef('more', c)}>
                   <RotateFade>
                     <Icon
-                      name='more-horizontal'
-                      size='large'
+                      name="more-horizontal"
+                      size="large"
                       fill={Colors.grey700}
                       stroke={Colors.grey700}
                     />
@@ -307,9 +290,7 @@ class ComponentState extends React.Component {
                 </div>}
             </View>
           </div>
-          <View
-            {...theme.preview}
-          >
+          <View {...theme.preview}>
             <LivePreview
               element={harnessCard.element}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
@@ -322,13 +303,9 @@ class ComponentState extends React.Component {
   }
 }
 
-const shouldShowCheckbox = (isHovering, isSelected) =>
-  isHovering || isSelected
+const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 
-const defaultTheme = ({
-  harnessCard,
-  isHovering,
-}) => ({
+const defaultTheme = ({ harnessCard, isHovering }) => ({
   harnessCard: {
     display: 'flex',
     // transition: 'all .4s ease',
@@ -377,8 +354,12 @@ const defaultTheme = ({
   title: {
     ...Fonts.title,
     ...Fonts.large,
-    transform: shouldShowCheckbox(isHovering, harnessCard.isSelected) ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
-    WebkitTransform: shouldShowCheckbox(isHovering, harnessCard.isSelected) ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)` : `translate3d(0, 0, 0)`,
+    transform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
+      ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
+      : `translate3d(0, 0, 0)`,
+    WebkitTransform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
+      ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
+      : `translate3d(0, 0, 0)`,
     fontSize: 24, // BIG HACK. HEADING BASE?
     color: Colors.grey800,
     display: 'inline',
