@@ -165,7 +165,9 @@ const defaultTheme = {
   },
   separator: {
     flex: '0 1 auto',
-    borderLeft: `1px solid ${Colors.grey500}`,
+    borderLeftWidth: 1,
+    borderLeftStyle: 'solid',
+    borderLeftColor: Colors.grey500,
     height: 40, // Make line-size height
     marginRight: SEPARATOR_MARGIN,
   },
