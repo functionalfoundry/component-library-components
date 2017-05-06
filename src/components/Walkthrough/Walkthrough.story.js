@@ -41,11 +41,13 @@ const steps = [
     title: 'Step 2',
   },
   {
-    hintTargets: [
+    hints: [
       {
+        position: 'Top Left',
         targetSelector: '#target-1',
       },
       {
+        verticalOffset: -20,
         targetSelector: '#target-6',
       },
     ],
@@ -116,7 +118,7 @@ class Walkthrough extends React.Component {
 
   handleDismiss() {
     this.setState(() => ({
-      status: 'Stopped',
+      isActive: false,
     }))
   }
 

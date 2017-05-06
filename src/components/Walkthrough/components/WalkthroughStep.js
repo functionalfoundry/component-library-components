@@ -55,7 +55,7 @@ type DefaultProps = {
   position: string,
 }
 
-export default class WalkthroughProvider extends React.Component {
+export default class WalkthroughStep extends React.Component {
   props: Props
 
   static defaultProps: DefaultProps = {
@@ -107,15 +107,12 @@ export default class WalkthroughProvider extends React.Component {
         {hints.map(hint => (
           <Align
             isOpen
-            portal={
-              <WalkthroughBloop
-                gravity={hint.gravity || 'Corner'}
-                horizontalOffset={hint.horizontalOffset}
-                position={hint.position || 'Bottom Right'}
-                targetSelector={hint.targetSelector}
-                verticalOffset={hint.verticalOffset}
-              />
-            }
+            gravity={hint.gravity || 'Corner'}
+            horizontalOffset={hint.horizontalOffset}
+            portal={<WalkthroughBloop />}
+            position={hint.position || 'Bottom Right'}
+            targetSelector={hint.targetSelector}
+            verticalOffset={hint.verticalOffset}
           />
         ))}
       </div>

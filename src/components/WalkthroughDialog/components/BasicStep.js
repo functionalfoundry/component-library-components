@@ -46,8 +46,9 @@ const defaultTheme = {
     width: 270,
   },
   button: {
+    backgroundColor: 'transparent',
     border: 0,
-    boxShadow: 0,
+    boxShadow: 'none',
     background: 'none',
     outline: 'none',
     verticalAlign: 'middle',
