@@ -17,6 +17,7 @@
   "ErrorView",
   "Frame",
   "Header",
+  "LiveCanvas",
   "LiveEditor",
   "LivePreview",
   "LiveView",

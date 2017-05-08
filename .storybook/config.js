@@ -9,6 +9,7 @@ function loadStories() {
   require('../src/components/Data/Data.story.js')
   require('../src/components/ErrorView/ErrorView.story.js')
   require('../src/components/Frame/Frame.story.js')
+  require('../src/components/LiveCanvas/LiveCanvas.story.js')
   require('../src/components/LiveEditor/LiveEditor.story.js')
   require('../src/components/LiveView/LiveView.story.js')
   require('../src/components/LivePreview/LivePreview.story.js')
