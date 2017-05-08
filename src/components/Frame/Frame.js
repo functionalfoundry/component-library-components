@@ -1,6 +1,7 @@
 // From https://github.com/ryanseddon/react-frame-component/blob/b4437e082dcf4a8521f1ac4218c0b5d2aed81350/src/Frame.jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Theme from 'js-theme'
 
 type PropsT = {
   /* A packaged bundle that evaluates to an ES6 Module with a single default export for the React component */
@@ -10,14 +11,14 @@ type PropsT = {
   /* The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
   /* A unique ID for the iFrame */
-  name: String,
+  name: string,
 }
 
 /**
  * Evaluates and renders a React component in isolation given a particular version of
  * React and React DOM.
  */
-export default class Frame extends React.Component {
+class Frame extends React.Component {
   props: PropsT
 
   static initialContent = `
@@ -108,18 +109,18 @@ export default class Frame extends React.Component {
   }
 
   render() {
-    const { name } = this.props
-    return (
-      <iframe
-        name={name}
-        style={{
-          border: 'none',
-          borderRadius: 0,
-          backgroundColor: 'white',
-          width: '100%',
-          height: '100%',
-        }}
-      />
-    )
+    const { name, theme } = this.props
+    return <iframe {...theme.frame} ref={this.storeFrame} name={name} />
   }
 }
+
+const defaultTheme = {
+  frame: {
+    border: 'none',
+    borderRadius: 0,
+    backgroundColor: 'white',
+  },
+}
+
+const ThemedFrame = Theme('Frame', defaultTheme)(Frame)
+export default ThemedFrame
