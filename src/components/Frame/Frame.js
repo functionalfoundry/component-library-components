@@ -34,6 +34,9 @@ class Frame extends React.Component {
       <body>
         <div id="root" />
         <script>
+          // Needed for evaluating bundles
+          window.production = 'production';
+
           var root = document.getElementById('root')
           function renderComponentTree() {
             var realizeComponentTree = __workflo_data.realizeComponentTree;
