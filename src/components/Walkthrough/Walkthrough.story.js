@@ -73,10 +73,6 @@ class Walkthrough extends React.Component {
     const { steps } = props
     super(props)
 
-    this.handleBack = this.handleBack.bind(this)
-    this.handleDismiss = this.handleDismiss.bind(this)
-    this.handleForward = this.handleForward.bind(this)
-
     this.state = {
       isActive: false,
       steps: this.calculateSteps(steps),
@@ -110,19 +106,19 @@ class Walkthrough extends React.Component {
     )
   }
 
-  handleBack() {
+  handleBack = () => {
     this.setState(prevState => ({
       stepIndex: prevState.stepIndex - 1,
     }))
   }
 
-  handleDismiss() {
+  handleDismiss = () => {
     this.setState(() => ({
       isActive: false,
     }))
   }
 
-  handleForward() {
+  handleForward = () => {
     this.setState(prevState => ({
       stepIndex: prevState.stepIndex + 1,
     }))

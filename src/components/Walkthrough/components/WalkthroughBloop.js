@@ -95,10 +95,14 @@ class WalkthroughBloop extends React.Component {
     )
   }
 
+  saveContainerRef = (ref: any) => {
+    this.container = ref
+  }
+
   render() {
     const { theme } = this.props
     return (
-      <div {...theme.shape} ref={c => (this.container = c)}>
+      <div {...theme.shape} ref={this.saveContainerRef}>
         <div {...theme.shapeDiv} />
         <div {...theme.shapeDiv} />
       </div>
