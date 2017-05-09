@@ -1,17 +1,17 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {Tab, TabList, TabPanel, Tabs, View} from '@workflo/components'
-import {Colors, Spacing} from '@workflo/styles'
+import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
+import { Colors, Spacing } from '@workflo/styles'
 import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
-import type {CompletionDataT} from '../../utils/CompositeComponents/Completion'
+import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
 const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 type DataT = {
   /* Passed in on initial load to seed the editor state */
   text: string,
-};
+}
 
 type PropsT = {
   nodeIdGenerator: Function,
@@ -28,7 +28,7 @@ type PropsT = {
   completionData?: CompletionDataT,
   data: DataT,
   actions: DataT,
-};
+}
 
 const defaultProps = {
   onChangeData: () => {},
@@ -44,15 +44,15 @@ const defaultProps = {
 type StateT = {
   data: any,
   actions: any,
-};
+}
 
 class LiveEditor extends React.Component {
-  props: PropsT;
-  state: StateT;
+  props: PropsT
+  state: StateT
 
-  static defaultProps = defaultProps;
+  static defaultProps = defaultProps
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       selectedIndex: 0,
@@ -61,31 +61,31 @@ class LiveEditor extends React.Component {
     }
   }
 
-  handleSelect = index => this.setState({selectedIndex: index});
+  handleSelect = index => this.setState({ selectedIndex: index })
 
   handleTreeChange = tree => {
-    const {onChangeComponentTree} = this.props
+    const { onChangeComponentTree } = this.props
     const rawTreeData = TreeUtils.getRawTreeData(tree)
     onChangeComponentTree && onChangeComponentTree(rawTreeData)
-  };
+  }
 
   handleRemoveProp = nodeId => {
     this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
-  };
+  }
 
   handleChangePropValue = (nodeId, value) => {
     this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
-  };
+  }
 
   handleChangeData = dataState => {
-    this.setState({dataState})
-  };
+    this.setState({ dataState })
+  }
 
   handleChangeActions = actionsState => {
-    this.setState({actionsState})
-  };
+    this.setState({ actionsState })
+  }
 
-  render () {
+  render() {
     const {
       componentTree,
       completionData,
@@ -112,9 +112,9 @@ class LiveEditor extends React.Component {
         >
           <TabList>
             {/* TODO: Rename Code -> Markup in code */}
-            <Tab>Markup</Tab>
-            <Tab>Data</Tab>
-            <Tab>Actions</Tab>
+            <Tab data-walkthrough-id="markup-tab">Markup</Tab>
+            <Tab data-walkthrough-id="data-tab">Data</Tab>
+            <Tab data-walkthrough-id="actions-tab">Actions</Tab>
           </TabList>
           <TabPanel>
             <ComponentTreeEditor
