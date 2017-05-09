@@ -1,13 +1,6 @@
 import React from 'react'
-import {
-  View,
-  Icon,
-  Text,
-} from '@workflo/components'
-import {
-  Colors,
-  Spacing,
-} from '@workflo/styles'
+import { View, Icon, Text } from '@workflo/components'
+import { Colors, Spacing } from '@workflo/styles'
 
 type PropsT = {
   onClearSelection: Function,
@@ -22,23 +15,17 @@ export default class BulkActionBar extends React.Component {
   props: PropsT
   static defaultProps = defaultProps
 
-  constructor () {
+  constructor() {
     super()
     this.state = {
       isHovering: false,
     }
   }
 
-  handleClick = () => {
+  handleClick = () => {}
 
-  }
-
-  render () {
-    const {
-      children,
-      onClearSelection,
-      numberSelected,
-    } = this.props
+  render() {
+    const { children, onClearSelection, numberSelected } = this.props
     const { isHovering } = this.state
     return (
       <View
@@ -51,8 +38,8 @@ export default class BulkActionBar extends React.Component {
         }}
       >
         <Icon
-          name='close'
-          size='small'
+          name="close"
+          size="small"
           onClick={onClearSelection}
           stroke={Colors.primary}
           theme={{
@@ -71,7 +58,7 @@ export default class BulkActionBar extends React.Component {
           }}
         />
         <Text
-          size='small'
+          size="small"
           theme={{
             text: {
               // Currently duplicated with QuickAction

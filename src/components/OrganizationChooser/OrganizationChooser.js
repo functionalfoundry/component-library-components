@@ -4,13 +4,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
-import {
-  Button,
-  Heading,
-  Radio,
-  RadioGroup,
-  View
-} from '@workflo/components'
+import { Button, Heading, Radio, RadioGroup, View } from '@workflo/components'
 import StaggerChildren from '../StaggerChildren'
 
 type OrganizationT = {
@@ -40,17 +34,12 @@ const OrganizationChooser = ({
   onContinueWithOrganization,
   organizations,
   selectedId,
-  theme
+  theme,
 }: PropsT) => (
-  <View
-    {...theme.organizationChooser}
-  >
-    <View
-      {...theme.title}
-    >
-      <Heading size='Large'>Select an organization</Heading>
-      <View
-        {...theme.subtitle}>
+  <View {...theme.organizationChooser}>
+    <View {...theme.title}>
+      <Heading size="Large">Select an organization</Heading>
+      <View {...theme.subtitle}>
         Only organizations with compatible repositories are shown
       </View>
     </View>
@@ -63,15 +52,15 @@ const OrganizationChooser = ({
           theme={{
             staggerChildren: {
               flexDirection: 'column',
-            }
+            },
           }}
         />
       }
       onChange={onChange}
       value={selectedId}
     >
-      {
-        organizations && organizations.map((organization) => (
+      {organizations &&
+        organizations.map(organization => (
           <Radio
             key={organization.id}
             label={organization.name}
@@ -80,32 +69,26 @@ const OrganizationChooser = ({
               container: {
                 marginBottom: Spacing.tiny,
                 color: 'white',
-              }
+              },
             }}
           />
-        ))
-      }
+        ))}
     </RadioGroup>
-    <View
-      {...theme.buttons}
-    >
+    <View {...theme.buttons}>
       <Button
-        label='Continue as an individual'
+        label="Continue as an individual"
         kind={'hero'}
         ghost={true}
         onClick={onContinueAsIndividual}
         {...theme.button}
       />
-      {
-        selectedId && (
-          <Button
-            label='Continue'
-            kind={'hero'}
-            onClick={onContinueWithOrganization}
-            {...theme.button}
-          />
-        )
-      }
+      {selectedId &&
+        <Button
+          label="Continue"
+          kind={'hero'}
+          onClick={onContinueWithOrganization}
+          {...theme.button}
+        />}
     </View>
   </View>
 )
@@ -113,8 +96,7 @@ const OrganizationChooser = ({
 OrganizationChooser.defaultProps = defaultProps
 
 const defaultTheme = {
-  organizationChooser: {
-  },
+  organizationChooser: {},
   title: {
     marginBottom: Spacing.large,
   },
@@ -135,7 +117,8 @@ const defaultTheme = {
   },
 }
 
-const ThemedOrganizationChooser =
-  Theme('OrganizationChooser', defaultTheme)(OrganizationChooser)
+const ThemedOrganizationChooser = Theme('OrganizationChooser', defaultTheme)(
+  OrganizationChooser
+)
 
 export default ThemedOrganizationChooser

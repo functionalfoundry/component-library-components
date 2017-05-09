@@ -6,11 +6,7 @@ import {
   Text, // Probably shouldn't be using Heading for this. Text?
   View,
 } from '@workflo/components'
-import {
-  Colors,
-  Fonts,
-  Spacing,
-} from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 
 export type ActionT = {
   label: string,
@@ -29,27 +25,11 @@ const defaultProps = {
   // primaryAction: {},
 }
 
-const SubHeader = ({
-  primaryAction,
-  secondaryActions,
-  quickActions,
-  theme,
-}: Props) => (
-  <View
-    {...theme.header}
-  >
-    <QuickActions
-      quickActions={quickActions}
-      theme={theme}
-    />
-    <SecondaryActions
-      secondaryActions={secondaryActions}
-      theme={theme}
-    />
-    <PrimaryAction
-      primaryAction={primaryAction}
-      theme={theme}
-    />
+const SubHeader = ({ primaryAction, secondaryActions, quickActions, theme }: Props) => (
+  <View {...theme.header}>
+    <QuickActions quickActions={quickActions} theme={theme} />
+    <SecondaryActions secondaryActions={secondaryActions} theme={theme} />
+    <PrimaryAction primaryAction={primaryAction} theme={theme} />
   </View>
 )
 
@@ -59,21 +39,12 @@ const ActionsPropsT = {
   isEditorDirty: Boolean,
 }
 
-const QuickActions = ({
-  quickActions = [],
-  theme,
-}: ActionsPropsT) => {
+const QuickActions = ({ quickActions = [], theme }: ActionsPropsT) => {
   if (quickActions.length < 1) return null
   return (
-    <div
-      {...theme.actions}
-    >
+    <div {...theme.actions}>
       {quickActions.map((action, index) => (
-        <div
-          key={index}
-          onClick={action.onClick}
-          {...theme.quickAction}
-        >
+        <div key={index} onClick={action.onClick} {...theme.quickAction}>
           {action}
         </div>
       ))}
@@ -81,18 +52,10 @@ const QuickActions = ({
   )
 }
 
-const ActionButton = ({
-  label,
-  onClick,
-  icon,
-  kind = 'secondary',
-  theme,
-}) => {
+const ActionButton = ({ label, onClick, icon, kind = 'secondary', theme }) => {
   if (!label) return null
   return (
-    <div
-      {...theme.primaryAction}
-    >
+    <div {...theme.primaryAction}>
       <Button
         label={label}
         onClick={onClick}
@@ -106,36 +69,18 @@ const ActionButton = ({
 }
 
 const PrimaryAction = ({ primaryAction, theme }) => (
-  <ActionButton
-    {...primaryAction}
-    theme={theme}
-    kind='regular'
-  />
+  <ActionButton {...primaryAction} theme={theme} kind="regular" />
 )
 
 const SecondaryAction = ({ action, theme }) => (
-  <ActionButton
-    {...action}
-    theme={theme}
-    kind='secondary'
-  />
+  <ActionButton {...action} theme={theme} kind="secondary" />
 )
 
-const SecondaryActions = ({
-  secondaryActions = [],
-  theme,
-}) => {
+const SecondaryActions = ({ secondaryActions = [], theme }) => {
   if (secondaryActions.length < 1) return null
   return (
-    <div
-      {...theme.secondaryActions}
-    >
-      {secondaryActions.map((action) => (
-        <SecondaryAction
-          action={action}
-          theme={theme}
-        />
-      ))}
+    <div {...theme.secondaryActions}>
+      {secondaryActions.map(action => <SecondaryAction action={action} theme={theme} />)}
     </div>
   )
 }
@@ -168,7 +113,7 @@ const defaultTheme = {
     ...Fonts.title,
     ...Fonts.base,
     color: Colors.grey300,
-    paddingRight: Spacing.small/2,
+    paddingRight: Spacing.small / 2,
     flex: '0 1',
   },
   profilePhoto: {
@@ -179,7 +124,7 @@ const defaultTheme = {
   profileName: {
     ...Fonts.title,
     ...Fonts.base,
-    paddingLeft: Spacing.small/2,
+    paddingLeft: Spacing.small / 2,
     color: Colors.primary,
     flex: '1 1',
   },

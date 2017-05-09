@@ -46,10 +46,7 @@ storiesOf('Preferences', module)
     <PreviewContainer>
       <Preview label={'Empty'}>
         <Preferences>
-          <RepoPreferences
-            title={'Repositories'}
-            repos={repos}
-          />
+          <RepoPreferences title={'Repositories'} repos={repos} />
         </Preferences>
       </Preview>
     </PreviewContainer>
@@ -64,10 +61,7 @@ storiesOf('Preferences', module)
             onChange={action('onChange')}
             onSelectLocalDirectory={action('onSelectLocalDirectory')}
           />
-          <ThemePreferences
-            title={'Themes'}
-            themes={themes}
-          />
+          <ThemePreferences title={'Themes'} themes={themes} />
         </Preferences>
       </Preview>
     </PreviewContainer>

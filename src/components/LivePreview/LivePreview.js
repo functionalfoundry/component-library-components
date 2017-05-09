@@ -1,13 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {
-  Image,
-  View,
-} from '@workflo/components'
-import {
-  Colors,
-  Spacing,
-} from '@workflo/styles'
+import { Image, View } from '@workflo/components'
+import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 
 type Props = {
@@ -18,7 +12,7 @@ type Props = {
     horizontal: 'Left' | 'Center' | 'Right',
     vertical: 'Top' | 'Center' | 'Bottom',
   },
-};
+}
 
 const defaultProps = {
   backgroundColor: 'white',
@@ -36,12 +30,12 @@ class LivePreview extends React.Component {
     error: null,
   }
 
-  unstable_handleError (error) {
-    this.setState({error})
+  unstable_handleError(error) {
+    this.setState({ error })
   }
 
-  render () {
-    const { element, theme } = this.props;
+  render() {
+    const { element, theme } = this.props
 
     if (this.state.error) {
       return (
@@ -67,10 +61,7 @@ class LivePreview extends React.Component {
         return (
           <View {...theme.livePreview}>
             <View {...theme.errorContainer}>
-              <ErrorView
-                message={error.message}
-                stacktrace={error.stack}
-              />
+              <ErrorView message={error.message} stacktrace={error.stack} />
             </View>
           </View>
         )
@@ -81,10 +72,7 @@ class LivePreview extends React.Component {
 
 LivePreview.defaultProps = defaultProps
 
-const defaultTheme = ({
-  backgroundColor,
-  alignment,
-}) => ({
+const defaultTheme = ({ backgroundColor, alignment }) => ({
   livePreview: {
     backgroundColor,
     padding: Spacing.small,
@@ -97,11 +85,15 @@ const defaultTheme = ({
     // alignItems: 'center',
     position: 'relative',
   },
-  previewContainer: Object.assign({}, {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  }, getHorizontalAlignment(alignment.horizontal)),
+  previewContainer: Object.assign(
+    {},
+    {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    getHorizontalAlignment(alignment.horizontal)
+  ),
   errorContainer: {
     display: 'flex',
     flex: '1 1 auto',
@@ -110,7 +102,7 @@ const defaultTheme = ({
   },
 })
 
-const getHorizontalAlignment = (horizontalAlignment) => {
+const getHorizontalAlignment = horizontalAlignment => {
   switch (horizontalAlignment) {
     case 'Left':
       return { justifyContent: 'flex-start' }

@@ -1,15 +1,14 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {Colors} from '@workflo/styles'
+import { Colors } from '@workflo/styles'
 
-import {TextInput} from '@workflo/components'
+import { TextInput } from '@workflo/components'
 import Radio from '@workflo/components/lib/Radio'
 import RadioGroup from '@workflo/components/lib/Radio/RadioGroup'
 import Popover from '@workflo/components/lib/Popover'
 import View from '@workflo/components/lib/View'
 import Trigger from '@workflo/components/lib/Trigger'
-import SimpleDecorator
-  from '@workflo/components/lib/TextEditor/SimpleDecorator'
+import SimpleDecorator from '@workflo/components/lib/TextEditor/SimpleDecorator'
 import MultiDecorator from '@workflo/components/lib/TextEditor/MultiDecorator'
 
 const acorn = require('acorn-jsx')
@@ -17,7 +16,7 @@ const acorn = require('acorn-jsx')
 export const componentStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: {jsx: true},
+    plugins: { jsx: true },
   })
   const components = []
   let componentNode = ast.body[0].expression.openingElement
@@ -34,7 +33,7 @@ export const componentStrategy = (contentBlock, callback) => {
 export const propStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: {jsx: true},
+    plugins: { jsx: true },
   })
   const props = []
   let attributes = ast.body[0].expression.openingElement.attributes
@@ -46,14 +45,14 @@ export const propStrategy = (contentBlock, callback) => {
     })
   })
   props.forEach((prop, index) => {
-    callback(prop.start, prop.end, {attribute: prop.name})
+    callback(prop.start, prop.end, { attribute: prop.name })
   })
 }
 
 export const valueStrategy = (contentBlock, callback) => {
   const code = contentBlock.getText()
   const ast = acorn.parse(code, {
-    plugins: {jsx: true},
+    plugins: { jsx: true },
   })
   const values = []
   let attributes = ast.body[0].expression.openingElement.attributes
@@ -75,24 +74,18 @@ export const valueStrategy = (contentBlock, callback) => {
     }
   })
   values.forEach(value => {
-    callback(value.start, value.end, {index: value.index})
+    callback(value.start, value.end, { index: value.index })
   })
 }
 
-const ComponentSpan = (
-  {
-    theme,
-    children,
-    ...props
-  },
-) => (
+const ComponentSpan = ({ theme, children, ...props }) => (
   <span {...theme.componentSpan}>
     {children}
   </span>
 )
 
 class PropSpan extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isShowingMinus: false,
@@ -103,19 +96,11 @@ class PropSpan extends React.Component {
     this.setState({
       isShowingMinus: !this.state.isShowingMinus,
     })
-  };
+  }
 
-  render () {
-    const {
-      theme,
-      children,
-      attribute,
-      onRemoveProp,
-      ...props
-    } = this.props
-    const {
-      isShowingMinus,
-    } = this.state
+  render() {
+    const { theme, children, attribute, onRemoveProp, ...props } = this.props
+    const { isShowingMinus } = this.state
 
     return (
       <span {...theme.propSpan}>
@@ -142,29 +127,22 @@ const getValue = (propKeyValues, index) => {
   return propKeyValue
 }
 
-const ValueSpan = (
-  {
-    theme,
-    children,
-    onChange,
-    propKeyValues,
-    index,
-    ...props
-  },
-) => (
+const ValueSpan = ({ theme, children, onChange, propKeyValues, index, ...props }) => (
   <View inline>
     {propKeyValues[index].input &&
       <Popover
-        position='Right'
+        position="Right"
         horizontalOffset={5}
         verticalOffset={2}
-        portal={<Input
-          propKey={propKeyValues[index].key}
-          input={propKeyValues[index].input}
-          options={propKeyValues[index].options}
-          value={propKeyValues[index].value.value}
-          onChange={onChange}
-          />}
+        portal={
+          <Input
+            propKey={propKeyValues[index].key}
+            input={propKeyValues[index].input}
+            options={propKeyValues[index].options}
+            value={propKeyValues[index].value.value}
+            onChange={onChange}
+          />
+        }
       >
         <span {...theme.value}>
           {children}
@@ -177,15 +155,7 @@ const ValueSpan = (
   </View>
 )
 
-const Input = (
-  {
-    input,
-    propKey,
-    options,
-    value,
-    onChange,
-  },
-) => {
+const Input = ({ input, propKey, options, value, onChange }) => {
   switch (input.type) {
     case 'Radio':
       return (
@@ -212,14 +182,7 @@ const Input = (
   }
 }
 
-const Radios = (
-  {
-    propKey,
-    options,
-    value,
-    onChange,
-  },
-) => (
+const Radios = ({ propKey, options, value, onChange }) => (
   <RadioGroup
     value={value}
     onChange={onChange}
@@ -229,9 +192,7 @@ const Radios = (
       },
     }}
   >
-    {options.map(option => (
-      <Radio key={option} label={option} value={option} />
-    ))}
+    {options.map(option => <Radio key={option} label={option} value={option} />)}
   </RadioGroup>
 )
 

@@ -1,6 +1,4 @@
-export type PropConstraintTypeT =
-  | 'union'
-  | 'range'
+export type PropConstraintTypeT = 'union' | 'range'
 
 export type UnionConstraintValueT = Array<any>
 
@@ -12,6 +10,5 @@ export type RangeConstraintValueT = {
 
 export type PropConstraintT = {
   type: PropConstraintTypeT,
-  value: UnionConstraintValueT |
-         RangeConstraintValueT
+  value: UnionConstraintValueT | RangeConstraintValueT,
 }

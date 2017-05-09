@@ -57,20 +57,17 @@ export default class Code extends React.Component {
   getText = ({ componentName, propKeyValues }: PropsT) =>
     getCodeString(componentName, propKeyValues)
 
-  getPlugins = ({ onRemoveProp, propKeyValues }: PropsT) => ([
+  getPlugins = ({ onRemoveProp, propKeyValues }: PropsT) => [
     PropKeyValuePlugin({
       onChange: this.handleChange,
       onRemoveProp,
-      propKeyValues
+      propKeyValues,
     }),
-  ])
+  ]
 
   handleChange = (key: string, value: any) => {
-    const {
-      onChange,
-      propKeyValues,
-    } = this.props
-    const propKeyValue = propKeyValues.find((propKeyValue) => propKeyValue.key === key)
+    const { onChange, propKeyValues } = this.props
+    const propKeyValue = propKeyValues.find(propKeyValue => propKeyValue.key === key)
     const index = propKeyValues.indexOf(propKeyValue)
     const newPropKeyValues = [...propKeyValues]
     newPropKeyValues[index].value.value = value
@@ -79,18 +76,14 @@ export default class Code extends React.Component {
 
   render() {
     return (
-      <TextEditor
-        text={this.state.text}
-        plugins={this.state.plugins}
-        readOnly={true}
-      />
+      <TextEditor text={this.state.text} plugins={this.state.plugins} readOnly={true} />
     )
   }
 }
 
 const getCodeString = (componentName, propKeyValues) => {
   const props = propKeyValues
-    .map((propKeyValue) => {
+    .map(propKeyValue => {
       const { key, value } = propKeyValue
       switch (value.type) {
         case 'JavaScript':

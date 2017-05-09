@@ -5,60 +5,60 @@ import { Borders, Colors, Spacing, Fonts } from '@workflo/styles'
 import TweenMax from 'gsap'
 
 type PropsT = {
-    message: string,
-    stacktrace: string,
-    theme: Object,
-};
+  message: string,
+  stacktrace: string,
+  theme: Object,
+}
 
 const defaultProps = {
-    message: '',
-    stacktrace: '',
+  message: '',
+  stacktrace: '',
 }
 
 class ErrorView extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
-  componentDidMount (callback) {
-    const eBorder = this.errorborder;
-    const timeDelay = 0.2;
+  componentDidMount(callback) {
+    const eBorder = this.errorborder
+    const timeDelay = 0.2
     TweenMax.to(eBorder, timeDelay, {
       boxShadow: `0px 0px 0px 3px ${Colors.red400}`,
-      ease: Sine.easeOut
-    });
-    TweenMax.to(eBorder, .1, {
+      ease: Sine.easeOut,
+    })
+    TweenMax.to(eBorder, 0.1, {
       x: -2,
       delay: timeDelay,
-      ease: Quad.easeInOut
-    });
-    TweenMax.to(eBorder, .1, {
+      ease: Quad.easeInOut,
+    })
+    TweenMax.to(eBorder, 0.1, {
       repeat: 6,
       x: 2,
       yoyo: true,
       delay: timeDelay + 0.1,
-      ease: Quad.easeInOut
-    });
-    TweenMax.to(eBorder, .1, {
+      ease: Quad.easeInOut,
+    })
+    TweenMax.to(eBorder, 0.1, {
       x: 0,
-      delay: timeDelay + (.1 * 6),
-      onComplete: callback
-    });
+      delay: timeDelay + 0.1 * 6,
+      onComplete: callback,
+    })
   }
 
-  render () {
+  render() {
     const { message, stacktrace, theme } = this.props
     return (
-     <div ref={c => this.errorborder = c}>
-      <View {...theme.errorView}>
-        <View {...theme.errorMessage}>
-          {message}
+      <div ref={c => (this.errorborder = c)}>
+        <View {...theme.errorView}>
+          <View {...theme.errorMessage}>
+            {message}
+          </View>
+          <View {...theme.errorStacktrace}>
+            {stacktrace}
+          </View>
         </View>
-        <View {...theme.errorStacktrace}>
-          {stacktrace}
-        </View>
-      </View>
-    </div>
+      </div>
     )
   }
 }

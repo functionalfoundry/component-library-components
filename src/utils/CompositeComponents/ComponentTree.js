@@ -11,7 +11,7 @@ export type NodeIdentifierT = string
 type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
 export type PropValueTypeT =
-  'any'
+  | 'any'
   | 'array'
   | 'boolean'
   | 'custom'
@@ -53,10 +53,7 @@ type ComponentT = {
   text: ?string,
 }
 
-export type ComponentTreeNodeT =
-  ComponentT
-  | PropT
-  | PropValueT
+export type ComponentTreeNodeT = ComponentT | PropT | PropValueT
 
 export type ComponentTreePathT = List<any>
 

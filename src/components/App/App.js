@@ -5,13 +5,8 @@ import { Power3, TweenMax } from 'gsap'
 import '../../utils/insertFont'
 import { ActionsT } from '../../types/Action'
 import { SearchT } from '../../types/Search'
-import {
-  View,
-} from '@workflo/components'
-import {
-  Colors,
-  Spacing,
-} from '@workflo/styles'
+import { View } from '@workflo/components'
+import { Colors, Spacing } from '@workflo/styles'
 
 type AnimationT = Object
 
@@ -40,18 +35,19 @@ type Props = {
 }
 
 class App extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.screen !== prevProps.screen) {
       document.body.scrollTop = 0
     }
   }
 
-  render () {
-    const { profile,
+  render() {
+    const {
+      profile,
       layout = {},
       navigation = {},
       backgroundColor,
@@ -62,49 +58,25 @@ class App extends React.Component {
     } = this.props
 
     return (
-      <View
-        ref={ref => this.container = ref}
-        {...theme.container}
-      >
-        {layout.header && (
-          <View
-            {...theme.header}
-          >
-            <View
-              {...theme.center}
-            >
-              <View
-                {...theme.maxWidth}
-              >
+      <View ref={ref => (this.container = ref)} {...theme.container}>
+        {layout.header &&
+          <View {...theme.header}>
+            <View {...theme.center}>
+              <View {...theme.maxWidth}>
                 {layout.header}
               </View>
             </View>
-          </View>
-        )}
-        <View
-          {...theme.content}
-        >
-          <View
-            {...theme.center}
-          >
-            <View
-              {...theme.maxWidth}
-            >
+          </View>}
+        <View {...theme.content}>
+          <View {...theme.center}>
+            <View {...theme.maxWidth}>
               {(layout.centerLeft || layout.centerRight) &&
-                <View
-                  {...theme.centerContainerWrapper}
-                >
-                  <View
-                    {...theme.centerContainer}
-                  >
-                    <View
-                      {...theme.centerLeftContainer}
-                    >
+                <View {...theme.centerContainerWrapper}>
+                  <View {...theme.centerContainer}>
+                    <View {...theme.centerLeftContainer}>
                       {layout.centerLeft}
                     </View>
-                    <View
-                      {...theme.centerRightContainer}
-                    >
+                    <View {...theme.centerRightContainer}>
                       {layout.centerRight}
                     </View>
                   </View>
@@ -114,16 +86,10 @@ class App extends React.Component {
           </View>
         </View>
         {layout.bottom &&
-          <View
-            {...theme.bottom}
-          >
-            <View
-              {...theme.center}
-            >
-              <View
-                {...theme.maxWidth}
-              >
-                  {layout.bottom}
+          <View {...theme.bottom}>
+            <View {...theme.center}>
+              <View {...theme.maxWidth}>
+                {layout.bottom}
               </View>
             </View>
           </View>}

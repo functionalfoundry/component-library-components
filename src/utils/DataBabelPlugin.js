@@ -3,10 +3,10 @@ import template from 'babel-template'
 function dataBabelPlugin({ types: t }) {
   return {
     visitor: {
-      Program (path) {
+      Program(path) {
         path.unshiftContainer('body', buildInit())
       },
-      VariableDeclaration (path) {
+      VariableDeclaration(path) {
         const name = path.node.declarations[0].id.name
         const parentType = path.parent.type
 
@@ -27,11 +27,11 @@ function dataBabelPlugin({ types: t }) {
           path.skip()
         }
       },
-    }
+    },
   }
 }
 
-const getBaseObject = (t) => {
+const getBaseObject = t => {
   const windowI = t.identifier('window')
   const workfloI = t.memberExpression(windowI, t.identifier('workflo'))
   const componentLibraryI = t.memberExpression(workfloI, t.identifier('componentLibrary'))

@@ -1,14 +1,9 @@
 import React from 'react'
 import Theme from 'js-theme'
 import ComponentState from '../ComponentState'
-import {
-  View,
-} from '@workflo/components'
+import { View } from '@workflo/components'
 import MultiSizeGrid from '@workflo/components/lib/MultiSizeGrid/MultiSizeGrid'
-import {
-  Colors,
-  Spacing,
-} from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 
 type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
 type VerticalAlignmentT = 'Top' | 'Center' | 'Bottom'
@@ -36,7 +31,7 @@ type HarnessT = {
       colors: {
         background: string,
       },
-    }
+    },
   },
 }
 
@@ -54,19 +49,17 @@ type PropsT = {
 }
 
 const ComponentStates = (props: PropsT) => {
-  const {
-    onChange,
-    theme,
-  } = props
+  const { onChange, theme } = props
   return (
     <MultiSizeGrid
       {...theme.componentStates}
       data={getData(props)} // TODO: Memoize
       renderer={ComponentState}
-      onChangeDatum={(datum) => onChange({
-        ...datum.value.harnessCard,
-        isSelected: datum.descriptor.isSelected,
-      })}
+      onChangeDatum={datum =>
+        onChange({
+          ...datum.value.harnessCard,
+          isSelected: datum.descriptor.isSelected,
+        })}
       theme={{
         multiSizeGrid: {
           margin: -4,
@@ -80,19 +73,16 @@ const ComponentStates = (props: PropsT) => {
 }
 
 // TODO: Memoize
-const getData = ({
-  harnessCards,
-  onClick,
-  onChange,
-}) => {
-  return harnessCards.map((harnessCard) => ({
+const getData = ({ harnessCards, onClick, onChange }) => {
+  return harnessCards.map(harnessCard => ({
     value: {
       harnessCard,
       onClickTitle: () => onClick(harnessCard.harness.id),
-      onChangeIsSelected: (isSelected) => onChange({
-        ...harnessCard,
-        isSelected,
-      }),
+      onChangeIsSelected: isSelected =>
+        onChange({
+          ...harnessCard,
+          isSelected,
+        }),
     },
     descriptor: {
       id: harnessCard.harness.id,

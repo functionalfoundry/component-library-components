@@ -12,7 +12,7 @@ export type PropCompletionDataT = {
 }
 
 export type PropsCompletionDataT = {
-  [key:string]: PropCompletionDataT,
+  [key: string]: PropCompletionDataT,
 }
 
 export type OptionSourceT = 'state' | 'data' | 'actions'
@@ -25,11 +25,11 @@ export type GlobalOptionDataT = {
 }
 
 export type GlobalOptionsDataT = {
-  [key:string]: GlobalOptionDataT,
+  [key: string]: GlobalOptionDataT,
 }
 
 export type ComponentPropsCompletionDataT = {
-  [key:string]: PropsCompletionDataT
+  [key: string]: PropsCompletionDataT,
 }
 
 export type CompletionDataT = {

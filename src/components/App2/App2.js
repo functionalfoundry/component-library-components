@@ -1,31 +1,31 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {Colors} from '@workflo/styles'
+import { Colors } from '@workflo/styles'
 
 class App extends React.Component {
   static defaultProps = {
     backgroundColor: Colors.grey900,
-  };
+  }
 
-  componentDidMount () {
+  componentDidMount() {
     this.updateBodyBackgroundColor(this.props)
   }
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.updateBodyBackgroundColor(nextProps)
   }
 
   updateBodyBackgroundColor = props => {
-    const {backgroundColor} = props
+    const { backgroundColor } = props
     const body = document.getElementsByTagName('html')[0]
     console.log('update to: ', `background-color: ${backgroundColor};`)
     body.style = `background-color: ${backgroundColor};`
-  };
+  }
 
-  render () {
-    const {theme, layout, backgroundColor} = this.props
-    const {header, centerLeft, centerRight, bottom} = layout
+  render() {
+    const { theme, layout, backgroundColor } = this.props
+    const { header, centerLeft, centerRight, bottom } = layout
     return (
-      <div {...theme.app} id='app'>
+      <div {...theme.app} id="app">
         <header {...theme.header}>
           {header}
         </header>
@@ -63,11 +63,7 @@ const getCenterSideStyle = flexGrow => {
   }
 }
 
-const defaultTheme = (
-  {
-    backgroundColor,
-  },
-) => ({
+const defaultTheme = ({ backgroundColor }) => ({
   app: {
     display: 'flex',
     flexWrap: 'wrap',

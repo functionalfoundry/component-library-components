@@ -4,22 +4,19 @@ import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import MultiPropertiesTable from './MultiPropertiesTable'
 
-storiesOf('MultiPropertiesTable', module)
-  .add('Regular', () => (
-    <PreviewContainer>
-      <Preview
-        label='Regular'
-      >
-        <MultiPropertiesTable
-          components={components}
-          selectedComponentId={'2'}
-          onClickPlus={action('onClickPlus')}
-          onClickMinus={action('onClickMinus')}
-          onChangeComponent={action('onChangeComponent')}
-        />
-      </Preview>
-    </PreviewContainer>
-  ))
+storiesOf('MultiPropertiesTable', module).add('Regular', () => (
+  <PreviewContainer>
+    <Preview label="Regular">
+      <MultiPropertiesTable
+        components={components}
+        selectedComponentId={'2'}
+        onClickPlus={action('onClickPlus')}
+        onClickMinus={action('onClickMinus')}
+        onChangeComponent={action('onChangeComponent')}
+      />
+    </Preview>
+  </PreviewContainer>
+))
 
 const components = [
   {
@@ -32,12 +29,14 @@ const components = [
         default: '',
         description: 'The content of the tab label',
         isUsedByTreeEditor: false,
-      }
+      },
     ],
   },
   {
     name: 'Tabs',
-    id: '2', properties: [{
+    id: '2',
+    properties: [
+      {
         name: 'kind',
         type: 'Primary | Secondary',
         default: 'false',
@@ -50,13 +49,12 @@ const components = [
         default: "'top'",
         description: 'The position of the tab labels',
         isUsedByTreeEditor: false,
-      }
+      },
     ],
   },
   {
     name: 'TabList',
     id: '3',
-    properties: [
-    ],
+    properties: [],
   },
 ]

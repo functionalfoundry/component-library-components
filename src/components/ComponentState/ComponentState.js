@@ -4,7 +4,7 @@ import Theme from 'js-theme'
 import { Checkbox, Icon, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
-import {Power2, TweenMax} from 'gsap'
+import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
 import StaggerChildren from '../StaggerChildren'
 import RotateFade from '../RotateFade'
@@ -13,13 +13,13 @@ import RotateFade from '../RotateFade'
  * Prop types
  */
 
-type HorizontalAlignmentT = 'Left' | 'Center' | 'Right';
-type VerticalAlignmentT = 'Top' | 'Center' | 'Right';
-type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large';
+type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
+type VerticalAlignmentT = 'Top' | 'Center' | 'Right'
+type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
 
 type ComponentStateT = {
   name: string,
-};
+}
 
 type HarnessT = {
   id: string,
@@ -41,7 +41,7 @@ type HarnessT = {
       },
     },
   },
-};
+}
 
 type PropsT = {
   harnessCard: {
@@ -57,7 +57,7 @@ type PropsT = {
   onMouseLeave: Function,
   isHovering: ?boolean,
   theme: Object,
-};
+}
 
 /**
  * Default props
@@ -97,11 +97,11 @@ const defaultProps = {
 
 type StateContainerStateT = {
   isHovering?: boolean,
-};
+}
 
 export default class ComponentStateContainer extends React.Component {
-  props: PropsT;
-  state: StateContainerStateT;
+  props: PropsT
+  state: StateContainerStateT
 
   constructor(props: PropsT) {
     super(props)
@@ -111,14 +111,14 @@ export default class ComponentStateContainer extends React.Component {
   }
 
   handleMouseEnter = () => {
-    this.setState({isHovering: true})
-  };
+    this.setState({ isHovering: true })
+  }
 
   handleMouseLeave = () => {
-    this.setState({isHovering: false})
-  };
+    this.setState({ isHovering: false })
+  }
 
-  render () {
+  render() {
     return (
       <ThemedComponentState
         {...this.props}
@@ -140,7 +140,7 @@ class ComponentState extends React.Component {
   iconRefs: Array<any>
   harnessCard: ?React$Element<any>
 
-  static defaultProps = defaultProps;
+  static defaultProps = defaultProps
 
   constructor(props: PropsT) {
     super(props)
@@ -160,24 +160,24 @@ class ComponentState extends React.Component {
   handleOpenPopup = () => {
     this.numOpenPopups = this.numOpenPopups + 1
     this.forceUpdate()
-  };
+  }
 
   handleClosePopup = () => {
     this.numOpenPopups = this.numOpenPopups - 1
     this.forceUpdate()
-  };
+  }
 
   handleMouseEnter = () => {
     this.props.onMouseEnter()
     // console.log('show the icons :)')
-  };
+  }
 
   handleMouseLeave = () => {
     if (!this.getForceShowActions()) {
       // console.log('hide these icons: ', this.iconRefs)
     }
     this.props.onMouseLeave()
-  };
+  }
 
   componentDidMount() {
     this.animateSelectionChange(this.props.harnessCard.isSelected)
@@ -191,14 +191,11 @@ class ComponentState extends React.Component {
 
   handleChangeIsSelected = isSelected => {
     this.animateSelectionChange(isSelected, () => {
-      setTimeout(
-        () => {
-          this.props.onChangeIsSelected(isSelected)
-        },
-        0,
-      )
+      setTimeout(() => {
+        this.props.onChangeIsSelected(isSelected)
+      }, 0)
     })
-  };
+  }
 
   animateSelectionChange = (isSelected, onComplete?: Function) => {
     const { clientWidth, clientHeight } = this.harnessCard
@@ -224,9 +221,9 @@ class ComponentState extends React.Component {
       }
     }
     TweenMax.to(this.harnessCard, 0.13, to)
-  };
+  }
 
-  getForceShowActions = () => this.numOpenPopups > 0;
+  getForceShowActions = () => this.numOpenPopups > 0
 
   storeHarnessCard = c => (this.harnessCard = c)
 
@@ -250,9 +247,8 @@ class ComponentState extends React.Component {
               {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
                 <Checkbox
                   checked={harnessCard.isSelected}
-                  onChange={() =>
-                    this.handleChangeIsSelected(!harnessCard.isSelected)}
-                  theme={{checkbox: {marginTop: 2}}}
+                  onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
+                  theme={{ checkbox: { marginTop: 2 } }}
                 />}
               <Heading {...theme.title} size={'Base'} onPress={() => onClickTitle()}>
                 {harnessCard.harness.componentState.name}
@@ -305,12 +301,7 @@ class ComponentState extends React.Component {
 
 const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 
-const defaultTheme = (
-  {
-    harnessCard,
-    isHovering,
-  },
-) => ({
+const defaultTheme = ({ harnessCard, isHovering }) => ({
   harnessCard: {
     display: 'flex',
     // transition: 'all .4s ease',
@@ -375,6 +366,4 @@ const defaultTheme = (
   },
 })
 
-const ThemedComponentState = Theme('ComponentState', defaultTheme)(
-  ComponentState,
-)
+const ThemedComponentState = Theme('ComponentState', defaultTheme)(ComponentState)

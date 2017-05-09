@@ -1,13 +1,13 @@
 /* @flow */
 
 export type PropKeyValueTypeT =
-  'Radio' |
-  'Checkbox' |
-  'Slider' |
-  'TextInput' |
-  'Date' |
-  'Color' |
-  'Icon'
+  | 'Radio'
+  | 'Checkbox'
+  | 'Slider'
+  | 'TextInput'
+  | 'Date'
+  | 'Color'
+  | 'Icon'
 
 type InputT = {
   type: PropKeyValueTypeT,

@@ -2,19 +2,8 @@
 import React from 'react'
 import Theme from 'js-theme'
 import mergeProps from 'js-theme/lib/mergeProps'
-import {
-  Avatar,
-  Card,
-  Heading,
-  Image,
-  View,
-} from '@workflo/components'
-import {
-  Colors,
-  Fonts,
-  Spacing,
-  Shadows,
-} from '@workflo/styles'
+import { Avatar, Card, Heading, Image, View } from '@workflo/components'
+import { Colors, Fonts, Spacing, Shadows } from '@workflo/styles'
 
 type Props = {
   name: string,
@@ -22,33 +11,13 @@ type Props = {
   thumbnail: string,
 }
 
-const Component = ({
-  name,
-  theme,
-  thumbnail,
-  ...props,
-}: Props) => (
-  <Card
-    {...theme.componentCard}
-    {...props}
-    size='medium'
-    flush
-  >
-    <View
-      {...theme.imageContainer}
-    >
-      <Image
-        {...theme.image}
-        src={thumbnail || 'http://placehold.it/250x250'}
-      />
+const Component = ({ name, theme, thumbnail, ...props }: Props) => (
+  <Card {...theme.componentCard} {...props} size="medium" flush>
+    <View {...theme.imageContainer}>
+      <Image {...theme.image} src={thumbnail || 'http://placehold.it/250x250'} />
     </View>
-    <View
-      {...theme.footer}
-    >
-      <Heading
-        {...theme.name}
-        size='Base'
-      >
+    <View {...theme.footer}>
+      <Heading {...theme.name} size="Base">
         {name}
       </Heading>
     </View>

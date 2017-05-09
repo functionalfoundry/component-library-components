@@ -6,20 +6,16 @@ import Theme from 'js-theme'
 import { Spacing } from '@workflo/styles'
 import { Tab, Tabs, TabList, TabPanel, View } from '@workflo/components'
 
-const defaultProps = {
-}
+const defaultProps = {}
 
 const defaultTheme = {
-  preferences: {
-  },
+  preferences: {},
 }
 
 const Preferences = ({ children, theme, ...props }) => (
-  <View
-    {...theme.preferences}
-  >
+  <View {...theme.preferences}>
     <Tabs
-      kind='Primary'
+      kind="Primary"
       theme={{
         tabs: {
           marginTop: Spacing.tiny, // Remove when we add padding option to app layout
@@ -28,29 +24,22 @@ const Preferences = ({ children, theme, ...props }) => (
       }}
     >
       <TabList>
-        {
-          React.Children.map(children, (child, index) => (
-            <Tab
-              key={`tab-${index}`}
-            >
-              {child.props.title}
-            </Tab>
-          ))
-        }
+        {React.Children.map(children, (child, index) => (
+          <Tab key={`tab-${index}`}>
+            {child.props.title}
+          </Tab>
+        ))}
       </TabList>
-      {
-        React.Children.map(children, (child, index) => (
-          <TabPanel
-            key={`panel-${index}`}
-            theme={{
-              tabPanel: {
-              }
-            }}
-          >
-            {child}
-          </TabPanel>
-        ))
-      }
+      {React.Children.map(children, (child, index) => (
+        <TabPanel
+          key={`panel-${index}`}
+          theme={{
+            tabPanel: {},
+          }}
+        >
+          {child}
+        </TabPanel>
+      ))}
     </Tabs>
   </View>
 )

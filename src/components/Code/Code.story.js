@@ -4,18 +4,13 @@ import Code from './Code'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import Preview from '@workflo/components/lib/Preview'
 
-storiesOf('Code', module)
-  .add('Regular', () => (
-    <PreviewContainer
-      shade='light'
-    >
-      <Preview
-        label='Code'
-      >
-        <StoryContainer />
-      </Preview>
-    </PreviewContainer>
-  ))
+storiesOf('Code', module).add('Regular', () => (
+  <PreviewContainer shade="light">
+    <Preview label="Code">
+      <StoryContainer />
+    </Preview>
+  </PreviewContainer>
+))
 
 class StoryContainer extends React.Component {
   constructor(props) {
@@ -31,11 +26,7 @@ class StoryContainer extends React.Component {
             type: 'JavaScript',
             value: 'comment',
           },
-          options: [
-            'comment',
-            'description',
-            'user',
-          ],
+          options: ['comment', 'description', 'user'],
         },
         {
           key: 'description',
@@ -46,11 +37,7 @@ class StoryContainer extends React.Component {
             type: 'JavaScript',
             value: 'description',
           },
-          options: [
-            'comment',
-            'description',
-            'user',
-          ],
+          options: ['comment', 'description', 'user'],
         },
         {
           key: 'size',
@@ -61,13 +48,7 @@ class StoryContainer extends React.Component {
             type: 'String',
             value: 'Base',
           },
-          options: [
-            'Tiny',
-            'Small',
-            'Base',
-            'Large',
-            'Huge',
-          ],
+          options: ['Tiny', 'Small', 'Base', 'Large', 'Huge'],
         },
         {
           key: 'likeCount',
@@ -76,18 +57,18 @@ class StoryContainer extends React.Component {
           },
           value: 21,
         },
-      ]
+      ],
     }
   }
 
-  handleChange = (propKeyValues) => {
+  handleChange = propKeyValues => {
     this.setState({ propKeyValues })
   }
 
   render() {
     return (
       <Code
-        componentName='Comment'
+        componentName="Comment"
         propKeyValues={this.state.propKeyValues}
         onChange={this.handleChange}
         onRemoveProp={action('onRemoveProp')}

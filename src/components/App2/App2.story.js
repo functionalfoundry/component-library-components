@@ -1,6 +1,6 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
-import {Colors} from '@workflo/styles'
+import { storiesOf, action } from '@kadira/storybook'
+import { Colors } from '@workflo/styles'
 import App from './App2'
 import Components from '../Components'
 import Properties from '../Properties'
@@ -8,7 +8,7 @@ import Header from '../Header'
 import QuickAction from '../QuickAction'
 import LivePreview from '../LivePreview'
 import LiveEditor from '../LiveEditor'
-import {liveViewState} from '../../../mocks/live-view'
+import { liveViewState } from '../../../mocks/live-view'
 import {
   componentTree,
   propKeyValues,
@@ -30,7 +30,7 @@ import {
 storiesOf('App2', module).add('App', () => <AppContainer />)
 
 class AppContainer extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       screen: 'components',
@@ -43,10 +43,10 @@ class AppContainer extends React.Component {
       screen: 'live view',
       id,
     })
-  };
+  }
 
-  render () {
-    const {screen} = this.state
+  render() {
+    const { screen } = this.state
     switch (screen) {
       case 'components':
         return (
@@ -99,21 +99,19 @@ class AppContainer extends React.Component {
                     horizontal: 'Center',
                     vertical: 'Center',
                   }}
-                  backgroundColor='cyan'
+                  backgroundColor="cyan"
                 />
               ),
               centerRight: (
                 <LiveEditor
                   componentTree={componentTree}
-                  data={{text: dataCode}}
-                  actions={{text: actionsCode}}
+                  data={{ text: dataCode }}
+                  actions={{ text: actionsCode }}
                   onChangeData={action('onChangeData')}
                   onChangeActions={action('onChangeActions')}
                 />
               ),
-              bottom: (
-                <Properties properties={liveViewState.component.properties} />
-              ),
+              bottom: <Properties properties={liveViewState.component.properties} />,
             }}
           />
         )
