@@ -3,15 +3,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 
+type BundleMapT = object
+type ImplementationMapT = object
+
 type PropsT = {
-  /* A packaged bundle that evaluates to an ES6 Module with a single default export for the React component */
-  bundle: string,
+  /* Takes a map from component names to component functions / classes and returns the composite component tree */
+  realizeComponentTree: ImplementationMapT => React$element,
+  /* Map from component names to bundle strings */
+  bundleMap: BundleMapT,
   /* The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
   React?: any,
   /* The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
   /* A unique ID for the iFrame */
   name: string,
+  /* Harness element to render the component inside */
+  harnessElement: React$Element<any>,
 }
 
 /**
@@ -28,18 +35,25 @@ class Frame extends React.Component {
         <div id="root" />
         <script>
           var root = document.getElementById('root')
-          function updateBundle(bundle) {
-            var evaluated = eval(bundle)
-            var Component = evaluated.default || evaluated
-            var element = React.createElement(Component, {})
-            ReactDOM.render(element, root)
+          function renderComponentTree() {
+            var realizeComponentTree = __workflo_data.realizeComponentTree;
+            var harnessElement = __workflo_data.harnessElement;
+            var bundleMap = __workflo_data.bundleMap;
+            var implementationMap = Object.keys(bundleMap).map(function(key) {
+              var exported = eval(bundleMap[key])
+              if (!exported) return [key, function(){}]
+              return [key, exported.default]
+            }).reduce(function(acc, val) {
+              acc[val[0]] = val[1];
+              return acc;
+            }, {});
+            var element = React.cloneElement(harnessElement, {
+              children: realizeComponentTree(implementationMap),
+            });
+            
+            ReactDOM.render(element, root);
           }
-          // If the bundle is ready immediately the iframe needs to wait a tick
-          function renderInitialBundle(bundle) {
-            setTimeout(function(){updateBundle(bundle)})
-          }
-          window.updateBundle = updateBundle
-          window.renderInitialBundle = renderInitialBundle
+          window.renderComponentTree = renderComponentTree;
         </script>
       </body>
     </html>`
@@ -63,10 +77,14 @@ class Frame extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.bundle !== this.props.bundle) {
-      const frame = window.frames[nextProps.name]
-      frame.updateBundle(nextProps.bundle)
+    const { harnessElement, realizeComponentTree, bundleMap } = nextProps
+    const frame = window.frames[nextProps.name]
+    frame.__workflo_data = {
+      harnessElement,
+      realizeComponentTree,
+      bundleMap,
     }
+    frame.renderComponentTree()
   }
 
   /**
@@ -77,7 +95,7 @@ class Frame extends React.Component {
   }
 
   renderFrameContents() {
-    const { name, bundle } = this.props
+    const { name, harnessElement, realizeComponentTree, bundleMap } = this.props
     if (!this._isMounted) {
       return
     }
@@ -99,9 +117,14 @@ class Frame extends React.Component {
         const frame = window.frames[name]
         frame.React = React
         frame.ReactDOM = ReactDOM
-        if (bundle) {
-          frame.renderInitialBundle(bundle)
+        frame.__workflo_data = {
+          harnessElement,
+          realizeComponentTree,
+          bundleMap,
         }
+        setTimeout(() => {
+          frame.renderComponentTree()
+        })
       }
     } else {
       setTimeout(this.renderFrameContents.bind(this), 0)
@@ -110,7 +133,7 @@ class Frame extends React.Component {
 
   render() {
     const { name, theme } = this.props
-    return <iframe {...theme.frame} ref={this.storeFrame} name={name} />
+    return <iframe {...theme.frame} name={name} />
   }
 }
 
@@ -119,6 +142,10 @@ const defaultTheme = {
     border: 'none',
     borderRadius: 0,
     backgroundColor: 'white',
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // transformOrigin: 'top left',
   },
 }
 
