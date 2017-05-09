@@ -104,9 +104,10 @@ export default class WalkthroughStep extends React.Component {
               verticalOffset={verticalOffset}
             />
           : null}
-        {hints.map(hint => (
+        {hints.map((hint, index) => (
           <Align
             isOpen
+            key={index}
             gravity={hint.gravity || 'Corner'}
             horizontalOffset={hint.horizontalOffset}
             portal={<WalkthroughBloop />}

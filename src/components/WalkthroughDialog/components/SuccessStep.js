@@ -20,6 +20,10 @@ class SuccessStep extends React.Component {
     this.circleRefs = []
   }
 
+  componentWillUpdate() {
+    this.circleRefs = []
+  }
+
   componentDidMount() {
     this.circleRefs.forEach(ref => {
       TweenMax.set(ref, {
@@ -116,15 +120,34 @@ class SuccessStep extends React.Component {
 
     tl.timeScale(1.5)
   }
+
+  saveCircleRefs = (ref: any) => {
+    if (ref) {
+      this.circleRefs.push(ref)
+    }
+  }
+
+  saveCircleColorRef = (ref: any) => {
+    this.circleColorRef = ref
+  }
+
+  saveTitleRef = (ref: any) => {
+    this.titleRef = ref
+  }
+
+  saveMessageRef = (ref: any) => {
+    this.messageRef = ref
+  }
+
   render() {
     const { message, theme, title } = this.props
     return (
       <div>
         <div {...theme.contain}>
-          <div {...theme.circle} ref={ref => this.circleRefs.push(ref)} />
-          <div {...theme.circle} ref={ref => this.circleRefs.push(ref)} />
-          <div {...theme.circle} ref={ref => this.circleRefs.push(ref)} />
-          <div {...theme.circleColor} ref={ref => (this.circleColorRef = ref)} />
+          <div {...theme.circle} ref={this.saveCircleRefs} />
+          <div {...theme.circle} ref={this.saveCircleRefs} />
+          <div {...theme.circle} ref={this.saveCircleRefs} />
+          <div {...theme.circleColor} ref={this.saveCircleColorRef} />
           <svg
             {...theme.checkmark}
             xmlns="http://www.w3.org/2000/svg"
@@ -139,14 +162,14 @@ class SuccessStep extends React.Component {
               points="21.6 33.6 27.5 39.5 41.5 25.5"
               fill="none"
               stroke="white"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
             />
           </svg>
         </div>
-        <h1 {...theme.title} ref={ref => (this.titleRef = ref)}>{title}</h1>
-        <p {...theme.message} ref={ref => (this.messageRef = ref)}>
+        <h1 {...theme.title} ref={this.saveTitleRef}>{title}</h1>
+        <p {...theme.message} ref={this.saveMessageRef}>
           {message}
         </p>
       </div>

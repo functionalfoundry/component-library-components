@@ -1,5 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
+import { Fonts } from '@workflo/styles'
 
 import { BackIcon, DismissIcon, ForwardIcon } from '.'
 
@@ -39,7 +40,6 @@ const defaultTheme = {
     background: 'white',
     boxShadow: '2px 2px 7px 0 rgba(0,0,0,0.75)',
     color: '#000000',
-    fontFamily: '"Khula", sans-serif',
     padding: 30,
     position: 'absolute',
     textAlign: 'center',
@@ -54,12 +54,12 @@ const defaultTheme = {
     verticalAlign: 'middle',
   },
   content: {
+    ...Fonts.base,
     textAlign: 'left',
     paddingBottom: 20,
-    lineHeight: 1.5,
   },
   title: {
-    fontWeight: 300,
+    ...Fonts.large,
   },
 }
 
