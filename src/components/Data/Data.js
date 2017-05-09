@@ -14,18 +14,11 @@ const defaultProps = {
   onChange: () => {},
 }
 
-const Data = ({
-  state,
-  text,
-  onChange,
-  onChangeState,
-}: PropsT) => (
+const Data = ({ state, text, onChange, onChangeState }: PropsT) => (
   <TextEditor
     state={state}
     text={text}
-    plugins={[
-      JSEditorPlugin({}),
-    ]}
+    plugins={[JSEditorPlugin({})]}
     onChange={onChange}
     onChangeState={onChangeState}
   />

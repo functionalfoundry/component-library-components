@@ -24,13 +24,11 @@ type PluginOptionsT = {
  */
 
 const defaultTheme = {
-  codeContainer: {
-  },
+  codeContainer: {},
   code: {
     ...Fonts.code,
   },
-  component: {
-  },
+  component: {},
   componentName: {
     color: '#00719e',
   },
@@ -42,17 +40,13 @@ const defaultTheme = {
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,
-    }
+    },
   },
-  text: {
-  }
+  text: {},
 }
 
 const Code = ({ attributes, children, theme }) => (
-  <div
-    {...theme.codeContainer}
-    {...attributes}
-  >
+  <div {...theme.codeContainer} {...attributes}>
     <code {...theme.code}>
       {children}
     </code>
@@ -105,31 +99,29 @@ const ThemedText = Theme('Text', defaultTheme)(Text)
  * Decorators
  */
 
-const makeLayoutTagDecorator =
-  (tag: string, mark: string) =>
-  (characters, options) => {
-    const elements = options.layout.elements.filter(
-      element => element.tags.includes(tag)
-    )
-    return characters.map((char, index) => (
-      elements.reduce((char, element) => {
-        if (index >= element.start && index < element.end) {
-          return char.merge({
-            marks: char.marks.add(Slate.Mark.create({
+const makeLayoutTagDecorator = (tag: string, mark: string) => (characters, options) => {
+  const elements = options.layout.elements.filter(element => element.tags.includes(tag))
+  return characters.map((char, index) =>
+    elements.reduce((char, element) => {
+      if (index >= element.start && index < element.end) {
+        return char.merge({
+          marks: char.marks.add(
+            Slate.Mark.create({
               type: mark,
               data: {
                 tree: options.tree,
                 layout: options.layout,
                 element: element,
-              }
-            }))
-          })
-        } else {
-          return char
-        }
-      }, char)
-    ))
-  }
+              },
+            })
+          ),
+        })
+      } else {
+        return char
+      }
+    }, char)
+  )
+}
 
 /**
  * ComponentTreeSyntaxPlugin implementation
@@ -140,30 +132,31 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
     nodes: {
       code: {
         render: ThemedCode,
-        decorate: combineDecorators([
-          makeLayoutTagDecorator('component', 'component'),
-          makeLayoutTagDecorator('component-name', 'component-name'),
-          makeLayoutTagDecorator('component-start', 'component-start'),
-          makeLayoutTagDecorator('component-end', 'component-end'),
-          makeLayoutTagDecorator('component-open-tag-end',
-                                 'component-open-tag-end'),
-          makeLayoutTagDecorator('component-close-tag-end',
-                                 'component-close-tag-end'),
-          makeLayoutTagDecorator('prop-name', 'prop-name'),
-          makeLayoutTagDecorator('prop-equals', 'prop-equals'),
-          makeLayoutTagDecorator('prop-value', 'prop-value'),
-          makeLayoutTagDecorator('text', 'text'),
-        ], options),
-      }
+        decorate: combineDecorators(
+          [
+            makeLayoutTagDecorator('component', 'component'),
+            makeLayoutTagDecorator('component-name', 'component-name'),
+            makeLayoutTagDecorator('component-start', 'component-start'),
+            makeLayoutTagDecorator('component-end', 'component-end'),
+            makeLayoutTagDecorator('component-open-tag-end', 'component-open-tag-end'),
+            makeLayoutTagDecorator('component-close-tag-end', 'component-close-tag-end'),
+            makeLayoutTagDecorator('prop-name', 'prop-name'),
+            makeLayoutTagDecorator('prop-equals', 'prop-equals'),
+            makeLayoutTagDecorator('prop-value', 'prop-value'),
+            makeLayoutTagDecorator('text', 'text'),
+          ],
+          options
+        ),
+      },
     },
     marks: {
-      'component': ThemedComponent,
+      component: ThemedComponent,
       'component-name': ThemedComponentName,
       'prop-name': ThemedPropName,
       'prop-value': ThemedPropValue,
-      'text': ThemedText,
-    }
-  }
+      text: ThemedText,
+    },
+  },
 })
 
 export default ComponentTreeSyntaxPlugin

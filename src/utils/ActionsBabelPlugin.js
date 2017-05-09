@@ -3,12 +3,12 @@ import template from 'babel-template'
 function actionsBabelPlugin({ types: t }) {
   return {
     visitor: {
-      Program (path) {
+      Program(path) {
         path.unshiftContainer('body', buildInit())
         // path.unshiftContainer('body', buildDefineState())
         // path.unshiftContainer('body', buildDefineSetState())
       },
-      VariableDeclaration (path) {
+      VariableDeclaration(path) {
         if (isStateOrSetState(path.node)) return
 
         const name = path.node.declarations[0].id.name
@@ -30,14 +30,14 @@ function actionsBabelPlugin({ types: t }) {
           path.skip()
         }
       },
-    }
+    },
   }
 }
 
-const isStateOrSetState = (node) =>
+const isStateOrSetState = node =>
   node.declarations[0].id.name === 'state' || node.declarations[0].id.name === 'setState'
 
-const getBaseObject = (t) => {
+const getBaseObject = t => {
   const windowI = t.identifier('window')
   const workfloI = t.memberExpression(windowI, t.identifier('workflo'))
   const componentLibraryI = t.memberExpression(workfloI, t.identifier('componentLibrary'))

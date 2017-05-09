@@ -8,43 +8,29 @@ import dataBabelPlugin from '../../utils/DataBabelPlugin'
 
 storiesOf('Data', module)
   .add('Data plugin', () => (
-    <PreviewContainer
-      shade='light'
-    >
-      <Preview
-        label='Data'
-      >
-        <DataContainer
-          text={initialDataText}
-          plugin={dataBabelPlugin}
-        />
+    <PreviewContainer shade="light">
+      <Preview label="Data">
+        <DataContainer text={initialDataText} plugin={dataBabelPlugin} />
       </Preview>
     </PreviewContainer>
   ))
   .add('Actions plugin', () => (
-    <PreviewContainer
-      shade='light'
-    >
-      <Preview
-        label='Data'
-      >
-        <DataContainer
-          text={initialActionsText}
-          plugin={actionsBabelPlugin}
-        />
+    <PreviewContainer shade="light">
+      <Preview label="Data">
+        <DataContainer text={initialActionsText} plugin={actionsBabelPlugin} />
       </Preview>
     </PreviewContainer>
   ))
 
 class DataContainer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       text: this.props.text,
     }
   }
 
-  handleChange = (text) => {
+  handleChange = text => {
     action('onChange')(text)
 
     const babelOptions = {
@@ -62,13 +48,8 @@ class DataContainer extends React.Component {
     }
   }
 
-  render () {
-    return (
-      <Data
-        text={this.state.text}
-        onChange={this.handleChange}
-      />
-    )
+  render() {
+    return <Data text={this.state.text} onChange={this.handleChange} />
   }
 }
 

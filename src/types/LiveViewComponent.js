@@ -1,3 +1,3 @@
 export type LiveViewComponentT = {
-  thumbnail: string;
+  thumbnail: string,
 }

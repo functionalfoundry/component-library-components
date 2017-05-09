@@ -7,12 +7,7 @@ import type {
   ComponentTreePathT,
   NodeIdentifierT,
 } from './ComponentTree'
-import {
-  Component,
-  ComponentTree,
-  Prop,
-  PropValue,
-} from './ComponentTree'
+import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 
 /**
  * Tree traversal
@@ -59,11 +54,7 @@ const TraverseContext = Record({
  * traverse result. This means any traversal may mutate a tree
  * and its nodes in flexible ways.
  */
-const traverse = (
-  tree: ComponentTree,
-  data: any,
-  visitor: Function
-): TraverseResultT => {
+const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseResultT => {
   /**
    * Traverses a child node and merges the result into parent context.
    */
@@ -71,12 +62,10 @@ const traverse = (
     ctx: TraverseContext,
     relativePath: Array<string>,
     node: ComponentTreeNodeT,
-    traverseFunction: Function,
-  ): TraverseContext  => {
+    traverseFunction: Function
+  ): TraverseContext => {
     const childCtx = traverseFunction(
-      ctx
-        .set('node', node)
-        .update('path', path => path.push(...relativePath))
+      ctx.set('node', node).update('path', path => path.push(...relativePath))
     )
     return ctx
       .set('tree', childCtx.tree)
@@ -93,16 +82,20 @@ const traverse = (
 
     // Traverse the component props
     if (!ctx.node.props.isEmpty()) {
-      ctx = ctx.node.props.reduce((ctx, prop, index) => (
-        traverseChildNode(ctx, ['props', index], prop, traverseProp)
-      ), ctx)
+      ctx = ctx.node.props.reduce(
+        (ctx, prop, index) =>
+          traverseChildNode(ctx, ['props', index], prop, traverseProp),
+        ctx
+      )
     }
 
     // Traverse the component's children
     if (!ctx.node.children.isEmpty()) {
-      ctx = ctx.node.children.reduce((ctx, child, index) => (
-        traverseChildNode(ctx, ['children', index], child, traverseComponent)
-      ), ctx)
+      ctx = ctx.node.children.reduce(
+        (ctx, child, index) =>
+          traverseChildNode(ctx, ['children', index], child, traverseComponent),
+        ctx
+      )
     }
 
     ctx = ctx.visitor(ctx, 'post')
@@ -125,9 +118,7 @@ const traverse = (
    * Traverses a prop value node and merges the result into the
    * parent context.
    */
-  const traversePropValue = (ctx: TraverseContext): TraverseContext => (
-    ctx.visitor(ctx)
-  )
+  const traversePropValue = (ctx: TraverseContext): TraverseContext => ctx.visitor(ctx)
 
   // Create an initial traverse context
   let ctx = TraverseContext({
@@ -159,10 +150,7 @@ const traverse = (
  * Node lookup
  */
 
-const findNodeById = (
-  tree: ComponentTree,
-  id: NodeIdentifierT
-): ComponentTreePathT => {
+const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
   const result = traverse(tree, null, (ctx: TraverseContext) => {
     if (ctx.node.id == id) {
       return ctx.set('data', ctx.path)
@@ -177,10 +165,7 @@ const findNodeById = (
  * Node removal
  */
 
-const removeNodeById = (
-  tree: ComponentTree,
-  nodeId: NodeIdentifierT
-): ComponentTree => {
+const removeNodeById = (tree: ComponentTree, nodeId: NodeIdentifierT): ComponentTree => {
   const path = findNodeById(tree, nodeId)
   if (path) {
     return tree.deleteIn(path)
@@ -196,9 +181,7 @@ const updateNodesAtPath = (
   tree: ComponentTree,
   path: ComponentTreePathT,
   updater: Function
-): ComponentTree => (
-  tree.updateIn(path, updater)
-)
+): ComponentTree => tree.updateIn(path, updater)
 
 /**
  * Component insertion
@@ -218,7 +201,9 @@ const insertComponent = (
   } else {
     throw new Error(
       'Failed to insert component into component tree: ' +
-      'Parent component with ID "' + parentId + '" not found'
+        'Parent component with ID "' +
+        parentId +
+        '" not found'
     )
   }
 }
@@ -250,7 +235,9 @@ const setComponentName = (
   } else {
     throw new Error(
       'Failed to set component name in component tree: ' +
-      'Component with ID "' + componentId + '" not found'
+        'Component with ID "' +
+        componentId +
+        '" not found'
     )
   }
 }
@@ -270,7 +257,9 @@ const setComponentText = (
   } else {
     throw new Error(
       'Failed to set component text in component tree: ' +
-      'Component with ID "' + componentId + '" not found'
+        'Component with ID "' +
+        componentId +
+        '" not found'
     )
   }
 }
@@ -286,22 +275,20 @@ const insertProp = (
 ): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
-    return updateNodesAtPath(
-      tree, componentPath.push('props'),
-      props => props.push(prop).sortBy(prop => prop.name && prop.name.name)
+    return updateNodesAtPath(tree, componentPath.push('props'), props =>
+      props.push(prop).sortBy(prop => prop.name && prop.name.name)
     )
   } else {
     throw new Error(
       'Failed to insert a prop into the component tree: ' +
-      'Component with ID "' + componentId + '" not found'
+        'Component with ID "' +
+        componentId +
+        '" not found'
     )
   }
 }
 
-const removeProp = (
-  tree: ComponentTree,
-  propId: NodeIdentifierT
-): ComponentTree => {
+const removeProp = (tree: ComponentTree, propId: NodeIdentifierT): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   return propPath ? tree.deleteIn(propPath) : tree
 }
@@ -317,7 +304,9 @@ const setPropName = (
   } else {
     throw new Error(
       'Failed to set a prop name in the component tree: ' +
-      'Prop with ID "' + propId + '" not found'
+        'Prop with ID "' +
+        propId +
+        '" not found'
     )
   }
 }
@@ -333,13 +322,15 @@ const setPropValue = (
   } else {
     throw new Error(
       'Failed to set a prop value in the component tree: ' +
-      'Prop with ID "' + propId + '" not found'
+        'Prop with ID "' +
+        propId +
+        '" not found'
     )
   }
 }
 
 const createTree = (data: Object): ComponentTree => {
-  const createComponent = (data: Object): Component => (
+  const createComponent = (data: Object): Component =>
     Component({
       id: data.id,
       name: data.name,
@@ -347,32 +338,27 @@ const createTree = (data: Object): ComponentTree => {
       children: List((data.children || []).map(createComponent)),
       text: data.text,
     })
-  )
 
-  const createProp = (data: Object): Prop => (
+  const createProp = (data: Object): Prop =>
     Prop({
       id: data.id,
       name: data.name,
       value: data.value ? createPropValue(data.value) : null,
     })
-  )
 
-  const createPropValue = (data: Object): PropValue => (
+  const createPropValue = (data: Object): PropValue =>
     PropValue({
       id: data.id,
       value: data.value,
       type: data.type,
     })
-  )
 
   return ComponentTree({
     root: createComponent(data),
   })
 }
 
-const getRawTreeData = (tree: ComponentTree) => (
-  tree.toJS()
-)
+const getRawTreeData = (tree: ComponentTree) => tree.toJS()
 
 export {
   // Generic tree operations
@@ -380,7 +366,6 @@ export {
   findNodeById,
   removeNodeById,
   updateNodesAtPath,
-
   // Higher-level, semantic tree operations
   insertComponent,
   removeComponent,
@@ -390,7 +375,6 @@ export {
   removeProp,
   setPropName,
   setPropValue,
-
   // Tree construction from raw data
   createTree,
   getRawTreeData,

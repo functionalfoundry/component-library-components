@@ -1,27 +1,19 @@
 import React from 'react'
 import Component from '../Component'
-import {
-  Grid,
-  View,
-} from '@workflo/components'
-import {
-  Spacing,
-} from '@workflo/styles'
+import { Grid, View } from '@workflo/components'
+import { Spacing } from '@workflo/styles'
 
 type Props = {
   components: Object,
   onClickComponent: Function,
 }
 
-const Components = ({
-  components,
-  onClickComponent,
-}: Props) => (
+const Components = ({ components, onClickComponent }: Props) => (
   <Grid
-    size='base'
+    size="base"
     data={components}
     renderer={renderer}
-    onClickItem={(component) => onClickComponent(component.id)}
+    onClickItem={component => onClickComponent(component.id)}
     theme={{
       grid: {
         margin: -4,
@@ -30,18 +22,18 @@ const Components = ({
         margin: 4,
         marginLeft: 4,
         marginRight: 4,
-      }
+      },
     }}
   />
 )
 
-const renderer = (props) => (
+const renderer = props => (
   <View
     theme={{
       view: {
         display: 'flex',
         flex: 1,
-      }
+      },
     }}
   >
     <Component {...props} />

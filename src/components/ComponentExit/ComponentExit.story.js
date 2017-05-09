@@ -5,28 +5,27 @@ import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewCo
 import ComponentExit from './ComponentExit'
 import ReactTransitionGroup from 'react-addons-transition-group'
 
-storiesOf('ComponentExit', module)
-  .add('Regular', () => (
-    <PreviewContainer>
-      <Preview
-        label='Regular'
-        theme={{
-          preview: {
-            width: 300,
-          },
-        }}
-      >
-        <ReactTransitionGroup>
-          <ComponentExit>
-            <div style={defaultTheme} />
-          </ComponentExit>
-        </ReactTransitionGroup>
-      </Preview>
-    </PreviewContainer>
-  ))
+storiesOf('ComponentExit', module).add('Regular', () => (
+  <PreviewContainer>
+    <Preview
+      label="Regular"
+      theme={{
+        preview: {
+          width: 300,
+        },
+      }}
+    >
+      <ReactTransitionGroup>
+        <ComponentExit>
+          <div style={defaultTheme} />
+        </ComponentExit>
+      </ReactTransitionGroup>
+    </Preview>
+  </PreviewContainer>
+))
 
 const defaultTheme = {
   background: '#eee',
   width: '200px',
-  height: '200px'
-};
+  height: '200px',
+}

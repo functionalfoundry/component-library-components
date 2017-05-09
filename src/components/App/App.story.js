@@ -1,12 +1,9 @@
 import React from 'react'
-import {storiesOf, action} from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import App from './App'
-import {profile} from '../../../mocks/profile'
-import {liveViewState} from '../../../mocks/live-view'
-import {
-  TreeEditorContainer,
-  regularTree,
-} from '../../../mocks/componentTreeEditor'
+import { profile } from '../../../mocks/profile'
+import { liveViewState } from '../../../mocks/live-view'
+import { TreeEditorContainer, regularTree } from '../../../mocks/componentTreeEditor'
 import {
   componentTree,
   propKeyValues,
@@ -18,41 +15,39 @@ import Header from '../Header'
 import QuickAction from '../QuickAction'
 import LivePreview from '../LivePreview'
 import LiveEditor from '../LiveEditor'
-import {Colors, Fonts} from '@workflo/styles'
+import { Colors, Fonts } from '@workflo/styles'
 
 class AppScrollTopContainer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {screen: 'Initial screen'}
+    this.state = { screen: 'Initial screen' }
   }
 
   handleChangeScreen = () => {
     this.setState(state => {
-      state.screen = state.screen == 'Initial screen'
-        ? 'Second screen'
-        : 'Initial screen'
+      state.screen = state.screen == 'Initial screen' ? 'Second screen' : 'Initial screen'
       return state
     })
-  };
+  }
 
-  render () {
+  render() {
     return (
       <App
         profile={profile}
         screen={this.state.screen}
         layout={{
           header: (
-            <div style={{backgroundColor: Colors.red400, height: 100}}>
+            <div style={{ backgroundColor: Colors.red400, height: 100 }}>
               {this.state.screen}
             </div>
           ),
           content: (
-            <div style={{backgroundColor: Colors.red600, height: 1000}}>
+            <div style={{ backgroundColor: Colors.red600, height: 1000 }}>
               Content
             </div>
           ),
           bottom: (
-            <div style={{backgroundColor: Colors.red700, height: 100}}>
+            <div style={{ backgroundColor: Colors.red700, height: 100 }}>
               <button onClick={this.handleChangeScreen}>Change screen</button>
             </div>
           ),
@@ -84,14 +79,14 @@ storiesOf('App', module)
               horizontal: 'Center',
               vertical: 'Center',
             }}
-            backgroundColor='cyan'
+            backgroundColor="cyan"
           />
         ),
         centerRight: (
           <LiveEditor
             componentTree={componentTree}
-            data={{text: dataCode}}
-            actions={{text: actionsCode}}
+            data={{ text: dataCode }}
+            actions={{ text: actionsCode }}
             onChangeData={action('onChangeData')}
             onChangeActions={action('onChangeActions')}
           />
@@ -105,12 +100,12 @@ storiesOf('App', module)
       profile={profile}
       layout={{
         header: (
-          <div style={{backgroundColor: Colors.red600, height: 100}}>
+          <div style={{ backgroundColor: Colors.red600, height: 100 }}>
             Header
           </div>
         ),
         content: (
-          <div style={{backgroundColor: Colors.red400, height: 400}}>
+          <div style={{ backgroundColor: Colors.red400, height: 400 }}>
             Content
           </div>
         ),
@@ -122,20 +117,20 @@ storiesOf('App', module)
       profile={profile}
       layout={{
         header: (
-          <div style={{backgroundColor: Colors.red400, height: 100}}>
+          <div style={{ backgroundColor: Colors.red400, height: 100 }}>
             Header
           </div>
         ),
         centerLeft: (
-          <div style={{backgroundColor: Colors.red600, height: 400}}>Left</div>
+          <div style={{ backgroundColor: Colors.red600, height: 400 }}>Left</div>
         ),
         centerRight: (
-          <div style={{backgroundColor: Colors.primary300, height: 400}}>
+          <div style={{ backgroundColor: Colors.primary300, height: 400 }}>
             Right
           </div>
         ),
         bottom: (
-          <div style={{backgroundColor: Colors.green300, height: 300}}>
+          <div style={{ backgroundColor: Colors.green300, height: 300 }}>
             Bottom
           </div>
         ),
@@ -147,7 +142,7 @@ storiesOf('App', module)
 const actions = {
   quickActions: [
     <QuickAction
-      icon='alignment'
+      icon="alignment"
       input={{
         type: 'Radio',
         options: ['Left', 'Center', 'Right'],
@@ -155,7 +150,7 @@ const actions = {
       }}
     />,
     <QuickAction
-      icon='theme'
+      icon="theme"
       input={{
         type: 'Radio',
         options: ['Small', 'Base', 'Large'],

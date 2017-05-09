@@ -4,31 +4,30 @@ import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 import Configuration from './Configuration'
 
-storiesOf('Configuration', module)
-  .add('Regular', () => (
-    <PreviewContainer>
-      <Preview
-        label='Regular'
-        theme={{
-          preview: {
-            width: 900,
-          },
+storiesOf('Configuration', module).add('Regular', () => (
+  <PreviewContainer>
+    <Preview
+      label="Regular"
+      theme={{
+        preview: {
+          width: 900,
+        },
+      }}
+    >
+      <Configuration
+        onChange={action('onChange')}
+        onClickAddRepo={action('onClickAddRepo')}
+        onClickAddTheme={action('onClickAddTheme')}
+        onClickDeleteRepo={action('onClickDeleteRepo')}
+        onClickDeleteTheme={action('onClickDeleteTheme')}
+        configuration={{
+          repos,
+          themes,
         }}
-      >
-        <Configuration
-          onChange={action('onChange')}
-          onClickAddRepo={action('onClickAddRepo')}
-          onClickAddTheme={action('onClickAddTheme')}
-          onClickDeleteRepo={action('onClickDeleteRepo')}
-          onClickDeleteTheme={action('onClickDeleteTheme')}
-          configuration={{
-            repos,
-            themes,
-          }}
-        />
-      </Preview>
-    </PreviewContainer>
-  ))
+      />
+    </Preview>
+  </PreviewContainer>
+))
 
 const repos = [
   {

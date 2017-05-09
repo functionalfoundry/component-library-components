@@ -5,70 +5,66 @@ import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewCo
 import BulkActionBar from './BulkActionBar'
 import QuickAction from '../QuickAction'
 
-storiesOf('BulkActionBar', module)
-  .add('Regular', () => (
-    <PreviewContainer>
-      <Preview
-        label='Regular'
-        theme={{
-          content: {
-            marginTop: 150,
-            marginBottom: 150,
-          },
-        }}
-      >
-        <BulkActionBar
-          onClearSelection={action('onClearSelected')}
-          numberSelected={2}
-        >
-          <QuickAction
-            icon='alignment'
-            iconKind='Primary'
-            label='Alignment'
-            input={{
-              type: 'Icon',
-              value: 'align-left',
-              options: [{
+storiesOf('BulkActionBar', module).add('Regular', () => (
+  <PreviewContainer>
+    <Preview
+      label="Regular"
+      theme={{
+        content: {
+          marginTop: 150,
+          marginBottom: 150,
+        },
+      }}
+    >
+      <BulkActionBar onClearSelection={action('onClearSelected')} numberSelected={2}>
+        <QuickAction
+          icon="alignment"
+          iconKind="Primary"
+          label="Alignment"
+          input={{
+            type: 'Icon',
+            value: 'align-left',
+            options: [
+              {
                 name: 'align-left',
                 hint: 'Left',
-              }, {
+              },
+              {
                 name: 'align-center',
                 hint: 'Center',
-              }, {
+              },
+              {
                 name: 'align-right',
                 hint: 'Right',
-              }]
-            }}
-            onClick={action('onClick')}
-            showLabelInButton
-          />
-          <QuickAction
-            icon='delete'
-            iconKind='Primary'
-            label='Delete'
-            input={{
-              type: 'Button',
-            }}
-            onClick={action('onClick')}
-            showLabelInButton
-          />
-          <QuickAction
-            icon='theme'
-            iconKind='Primary'
-            label='Theme'
-            input={{
-              options: [
-                'Light',
-                'Dark',
-                'Grey',
-              ],
-              value: 'Dark',
-              type: 'Radio',
-            }}
-            onClick={action('onClick')}
-            showLabelInButton
-          />
-        </BulkActionBar>
-      </Preview>
-    </PreviewContainer>
-  ))
+              },
+            ],
+          }}
+          onClick={action('onClick')}
+          showLabelInButton
+        />
+        <QuickAction
+          icon="delete"
+          iconKind="Primary"
+          label="Delete"
+          input={{
+            type: 'Button',
+          }}
+          onClick={action('onClick')}
+          showLabelInButton
+        />
+        <QuickAction
+          icon="theme"
+          iconKind="Primary"
+          label="Theme"
+          input={{
+            options: ['Light', 'Dark', 'Grey'],
+            value: 'Dark',
+            type: 'Radio',
+          }}
+          onClick={action('onClick')}
+          showLabelInButton
+        />
+      </BulkActionBar>
+    </Preview>
+  </PreviewContainer>
+))

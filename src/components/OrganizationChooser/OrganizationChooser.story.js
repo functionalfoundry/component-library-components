@@ -16,10 +16,7 @@ const organizations = [
 storiesOf('OrganizationChooser', module)
   .add('Regular', () => (
     <PreviewContainer>
-      <OrganizationChooser
-        onChange={action('onChange')}
-        organizations={organizations}
-      />
+      <OrganizationChooser onChange={action('onChange')} organizations={organizations} />
     </PreviewContainer>
   ))
   .add('Organization selected', () => (

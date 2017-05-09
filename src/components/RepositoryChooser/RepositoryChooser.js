@@ -5,12 +5,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import StaggerChildren from '../StaggerChildren'
-import {
-  Button,
-  Heading,
-  Checkbox,
-  View
-} from '@workflo/components'
+import { Button, Heading, Checkbox, View } from '@workflo/components'
 
 type RepositoryT = {
   id: string,
@@ -36,11 +31,11 @@ const defaultProps = {
 const isRepoSelected = (selectedIds, repo) =>
   selectedIds && selectedIds.indexOf(repo.id) >= 0
 
-const selectRepo = (selectedIds, repo) =>
-  [...new Set([...(selectedIds || []), repo.id])]
+const selectRepo = (selectedIds, repo) => [...new Set([...(selectedIds || []), repo.id])]
 
-const deselectRepo = (selectedIds, repo) =>
-  [...new Set([...(selectedIds || []).filter(id => id !== repo.id)])]
+const deselectRepo = (selectedIds, repo) => [
+  ...new Set([...(selectedIds || []).filter(id => id !== repo.id)]),
+]
 
 const RepositoryChooser = ({
   onBack,
@@ -48,18 +43,12 @@ const RepositoryChooser = ({
   onContinue,
   repositories,
   selectedIds,
-  theme
+  theme,
 }: PropsT) => (
-  <View
-    {...theme.repositoryChooser}
-  >
-    <View
-      {...theme.title}
-    >
-      <Heading size='Large'>Select repositories</Heading>
-      <View
-        {...theme.subtitle}
-      >
+  <View {...theme.repositoryChooser}>
+    <View {...theme.title}>
+      <Heading size="Large">Select repositories</Heading>
+      <View {...theme.subtitle}>
         Only compatible repositories are shown
       </View>
     </View>
@@ -71,30 +60,27 @@ const RepositoryChooser = ({
         theme={{
           staggerChildren: {
             flexDirection: 'column',
-          }
+          },
         }}
       >
-        {
-          repositories && repositories.map(repo => (
-            <View
-              {...theme.repository}
-              key={repo.id}
-            >
+        {repositories &&
+          repositories.map(repo => (
+            <View {...theme.repository} key={repo.id}>
               <Checkbox
                 checked={isRepoSelected(selectedIds, repo)}
                 onChange={() => {
                   onChange(
                     isRepoSelected(selectedIds, repo)
-                    ? deselectRepo(selectedIds, repo)
-                    : selectRepo(selectedIds, repo)
+                      ? deselectRepo(selectedIds, repo)
+                      : selectRepo(selectedIds, repo)
                   )
                 }}
                 theme={{
                   inner: {
                     backgroundColor: isRepoSelected(selectedIds, repo)
                       ? Colors.grey800
-                      : 'white'
-                  }
+                      : 'white',
+                  },
                 }}
               />
               <View
@@ -102,8 +88,8 @@ const RepositoryChooser = ({
                 onClick={() => {
                   onChange(
                     isRepoSelected(selectedIds, repo)
-                    ? deselectRepo(selectedIds, repo)
-                    : selectRepo(selectedIds, repo)
+                      ? deselectRepo(selectedIds, repo)
+                      : selectRepo(selectedIds, repo)
                   )
                 }}
               >
@@ -115,30 +101,20 @@ const RepositoryChooser = ({
                 </View>
               </View>
             </View>
-          ))
-        }
+          ))}
       </StaggerChildren>
     </View>
-    <View
-      {...theme.buttons}
-    >
+    <View {...theme.buttons}>
       <Button
-        label='Back to organizations'
-        kind='hero'
+        label="Back to organizations"
+        kind="hero"
         ghost={true}
         onClick={onBack}
         {...theme.button}
       />
-      {
-        selectedIds && selectedIds.length > 0 && (
-          <Button
-            label='Get started'
-            kind='hero'
-            onClick={onContinue}
-            {...theme.button}
-          />
-        )
-      }
+      {selectedIds &&
+        selectedIds.length > 0 &&
+        <Button label="Get started" kind="hero" onClick={onContinue} {...theme.button} />}
     </View>
   </View>
 )
@@ -146,8 +122,7 @@ const RepositoryChooser = ({
 RepositoryChooser.defaultProps = defaultProps
 
 const defaultTheme = {
-  repositoryChooser: {
-  },
+  repositoryChooser: {},
   title: {
     marginBottom: Spacing.large,
   },
@@ -155,8 +130,7 @@ const defaultTheme = {
     ...Fonts.small,
     color: Colors.grey400,
   },
-  repositories: {
-  },
+  repositories: {},
   repository: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -184,7 +158,8 @@ const defaultTheme = {
   },
 }
 
-const ThemedRepositoryChooser =
-  Theme('RepositoryChooser', defaultTheme)(RepositoryChooser)
+const ThemedRepositoryChooser = Theme('RepositoryChooser', defaultTheme)(
+  RepositoryChooser
+)
 
 export default ThemedRepositoryChooser

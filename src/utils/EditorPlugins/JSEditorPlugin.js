@@ -16,7 +16,7 @@ const defaultTheme = {
   },
   keyword: {
     color: '#00719e',
-  }
+  },
 }
 
 type DecoratorPropsT = {
@@ -51,8 +51,8 @@ const ThemedKeyword = Theme('Keyword', defaultTheme)(Keyword)
 
 const decorateIdentifiers = (characters, ast, options) => {
   const declarations = ast.body
-    .filter((node) => node.type === 'VariableDeclaration')
-    .map((node) => ({
+    .filter(node => node.type === 'VariableDeclaration')
+    .map(node => ({
       start: node.declarations[0].id.start,
       end: node.declarations[0].id.end,
     }))
@@ -63,10 +63,10 @@ const decorateIdentifiers = (characters, ast, options) => {
         return char
       } else {
         const mark = Slate.Mark.create({
-          type: 'identifier'
+          type: 'identifier',
         })
         return char.merge({
-          marks: char.marks.add(mark)
+          marks: char.marks.add(mark),
         })
       }
     }, char)
@@ -75,10 +75,10 @@ const decorateIdentifiers = (characters, ast, options) => {
 
 const decorateKeywords = (characters, ast, options) => {
   const declarations = ast.body
-    .filter((node) => node.type === 'VariableDeclaration')
-    .map((node) => ({
+    .filter(node => node.type === 'VariableDeclaration')
+    .map(node => ({
       start: node.start,
-      end: node.start + (node.kind ? node.kind.length : 0)
+      end: node.start + (node.kind ? node.kind.length : 0),
     }))
 
   return characters.map((char, index) =>
@@ -87,10 +87,10 @@ const decorateKeywords = (characters, ast, options) => {
         return char
       } else {
         const mark = Slate.Mark.create({
-          type: 'keyword'
+          type: 'keyword',
         })
         return char.merge({
-          marks: char.marks.add(mark)
+          marks: char.marks.add(mark),
         })
       }
     }, char)
@@ -114,25 +114,21 @@ const combineDecorators = (decorators: Array<Function>, options) => {
  * CodeEditorPlugin
  */
 
-type PluginOptions = {
-}
+type PluginOptions = {}
 
-const JSEditorPlugin = (options : PluginOptions) => {
+const JSEditorPlugin = (options: PluginOptions) => {
   return {
     schema: {
       nodes: {
         code: {
-          decorate: combineDecorators([
-            decorateIdentifiers,
-            decorateKeywords,
-          ], options),
-        }
+          decorate: combineDecorators([decorateIdentifiers, decorateKeywords], options),
+        },
       },
       marks: {
-        'identifier': ThemedIdentifier,
-        'keyword': ThemedKeyword,
+        identifier: ThemedIdentifier,
+        keyword: ThemedKeyword,
       },
-    }
+    },
   }
 }
 

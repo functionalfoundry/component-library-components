@@ -1,14 +1,7 @@
 import React from 'react'
 import Properties, { PropertyT } from '../Properties'
-import {
-  Tabs,
-  Tab,
-  TabList,
-  TabPanel,
-} from '@workflo/components'
-import {
-  Spacing,
-} from '@workflo/styles'
+import { Tabs, Tab, TabList, TabPanel } from '@workflo/components'
+import { Spacing } from '@workflo/styles'
 
 type ComponentT = {
   id: string,
@@ -43,21 +36,16 @@ export default class MultiPropertiesTable extends React.Component {
   props: PropsT
   static defaultProps: PropsT = defaultProps
 
-  handleSelect = (i) => {
+  handleSelect = i => {
     const { onChangeComponent, components } = this.props
     onChangeComponent(components[i].id)
   }
 
-  render () {
-    const {
-      components,
-      onClickPlus,
-      onClickMinus,
-      selectedComponentId,
-    } = this.props
+  render() {
+    const { components, onClickPlus, onClickMinus, selectedComponentId } = this.props
     return (
       <Tabs
-        kind='Primary'
+        kind="Primary"
         onSelect={this.handleSelect}
         selectedIndex={getSelectedComponentIndex(components, selectedComponentId)}
         theme={{

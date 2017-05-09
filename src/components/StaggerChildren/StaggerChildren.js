@@ -31,44 +31,52 @@ class StaggerChildren extends React.Component {
   props: PropsT
   static defaultProps = defaultProps
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  componentDidMount (callback) {
+  componentDidMount(callback) {
     const { direction, duration, distance, stagger } = this.props
-    const elChild = this.childrenContainer.childNodes;
+    const elChild = this.childrenContainer.childNodes
 
-    TweenMax.staggerFromTo(elChild, duration, {
-      x: direction == 'Left' ? distance : -distance,
-      opacity: 0
-    }, {
-      x: 0,
-      opacity: 1,
-      ease: Power2.easeOut,
-      onComplete: callback
-    }, stagger);
+    TweenMax.staggerFromTo(
+      elChild,
+      duration,
+      {
+        x: direction == 'Left' ? distance : -distance,
+        opacity: 0,
+      },
+      {
+        x: 0,
+        opacity: 1,
+        ease: Power2.easeOut,
+        onComplete: callback,
+      },
+      stagger
+    )
   }
 
-  componentWillUnmount (callback) {
+  componentWillUnmount(callback) {
     const { direction, duration, distance, stagger } = this.props
-    const elChild = this.childrenContainer.childNodes;
+    const elChild = this.childrenContainer.childNodes
 
-    TweenMax.staggerTo(elChild, duration, {
-      x: direction == 'Left' ? distance : -distance,
-      opacity: 0,
-      ease: Power3.easeIn,
-      onComplete: callback
-    }, stagger);
+    TweenMax.staggerTo(
+      elChild,
+      duration,
+      {
+        x: direction == 'Left' ? distance : -distance,
+        opacity: 0,
+        ease: Power3.easeIn,
+        onComplete: callback,
+      },
+      stagger
+    )
   }
 
-  render () {
+  render() {
     const { theme } = this.props
     return (
-      <div
-        {...theme.staggerChildren}
-        ref={c => this.childrenContainer = c}
-      >
+      <div {...theme.staggerChildren} ref={c => (this.childrenContainer = c)}>
         {this.props.children}
       </div>
     )
@@ -78,7 +86,7 @@ class StaggerChildren extends React.Component {
 const defaultTheme = {
   staggerChildren: {
     display: 'flex',
-  }
+  },
 }
 
 const ThemedStaggerChildren = Theme('StaggerChildren', defaultTheme)(StaggerChildren)

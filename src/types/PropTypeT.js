@@ -1,2 +1,1 @@
-export type PropTypeT = {
-}
+export type PropTypeT = {}

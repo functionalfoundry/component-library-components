@@ -24,27 +24,19 @@ const element = (
 
 const actions = [
   <QuickAction
-    icon='delete'
+    icon="delete"
     input={{
       type: 'Radio',
-      options: [
-        'Left',
-        'Center',
-        'Right',
-      ],
+      options: ['Left', 'Center', 'Right'],
       value: 'Center',
     }}
     onChange={action('Alignment')}
   />,
   <QuickAction
-    icon='duplicate'
+    icon="duplicate"
     input={{
       type: 'Radio',
-      options: [
-        'Small',
-        'Base',
-        'Large',
-      ],
+      options: ['Small', 'Base', 'Large'],
       value: 'Base',
     }}
     onChange={action('Size')}
@@ -69,7 +61,7 @@ const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) 
       patterns: {
         colors: {
           background: color,
-        }
+        },
       },
     },
   },
@@ -103,13 +95,12 @@ const stateCards = [
   }),
 ]
 
-storiesOf('Component States', module)
-  .add('Regular', () => (
-    <div style={{ backgroundColor: Colors.grey900 }}>
-      <ComponentStates
-        harnessCards={stateCards}
-        onClick={action('onClick')}
-        onChange={action('onChange')}
-      />
-    </div>
-  ))
+storiesOf('Component States', module).add('Regular', () => (
+  <div style={{ backgroundColor: Colors.grey900 }}>
+    <ComponentStates
+      harnessCards={stateCards}
+      onClick={action('onClick')}
+      onChange={action('onChange')}
+    />
+  </div>
+))
