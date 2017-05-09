@@ -4,13 +4,8 @@ import Properties from '../Properties'
 import LivePreview from '../LivePreview'
 import LiveEditor from '../LiveEditor'
 // import LiveHeader, { ActionT } from '../LiveHeader'
-import {
-  View,
-} from '@workflo/components'
-import {
-  Spacing,
-  Colors,
-} from '@workflo/styles'
+import { View } from '@workflo/components'
+import { Spacing, Colors } from '@workflo/styles'
 
 type DataT = {
   /* Passed in on initial load to seed the editor state */
@@ -92,15 +87,9 @@ const LiveView = ({
   onChangeActions,
   harness,
 }: Props) => (
-  <View
-    {...theme.liveView}
-  >
-    <View
-      {...theme.previewAndEditor}
-    >
-      <View
-        {...theme.livePreviewContainer}
-      >
+  <View {...theme.liveView} data-walkthrough-id="live-view">
+    <View {...theme.previewAndEditor}>
+      <View {...theme.livePreviewContainer}>
         {
           // The date-based React key here is a hack to always force a
           // new LivePreview on render; this is necessary because the
@@ -114,9 +103,7 @@ const LiveView = ({
           alignment={harness.alignment}
         />
       </View>
-      <View
-        {...theme.liveEditorContainer}
-      >
+      <View {...theme.liveEditorContainer}>
         <LiveEditor
           componentName={component.name}
           componentTree={componentState.componentTree}
@@ -128,9 +115,7 @@ const LiveView = ({
         />
       </View>
     </View>
-    <View
-      {...theme.propertyPaneContainer}
-    >
+    <View {...theme.propertyPaneContainer}>
       <Properties
         properties={component.properties}
         onClickPlus={onAddPropToPropKeyValues}

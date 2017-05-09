@@ -1,14 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
-import {
-  HoverIcon,
-  Icon,
-} from '@workflo/components'
-import {
-  Colors,
-  Fonts,
-  Spacing,
-} from '@workflo/styles'
+import { HoverIcon, Icon } from '@workflo/components'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 
 export type PropertyT = {
   name: string,
@@ -24,7 +17,7 @@ type PropsT = {
 }
 
 class PropertiesContainer extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       sortAsc: true,
@@ -36,11 +29,11 @@ class PropertiesContainer extends React.Component {
     this.setState({ sortAsc: !this.state.sortAsc })
   }
 
-  handleHoverChange = (hoveredIndex) => {
+  handleHoverChange = hoveredIndex => {
     this.setState({ hoveredIndex })
   }
 
-  render () {
+  render() {
     return (
       <Properties
         {...this.props}
@@ -56,7 +49,7 @@ class PropertiesContainer extends React.Component {
 class Properties extends React.Component {
   props: PropsT
 
-  getHandleClickPlus = (property) => {
+  getHandleClickPlus = property => {
     return () => {
       const { onClickPlus } = this.props
       if (onClickPlus) {
@@ -65,7 +58,7 @@ class Properties extends React.Component {
     }
   }
 
-  getHandleClickMinus = (property) => {
+  getHandleClickMinus = property => {
     return () => {
       const { onClickMinus } = this.props
       if (onClickMinus) {
@@ -74,7 +67,7 @@ class Properties extends React.Component {
     }
   }
 
-  sort = (arr) => {
+  sort = arr => {
     const clonedProperties = this.props.properties.concat()
     const sortedProperties = clonedProperties.sort()
     if (!this.props.sortAsc) {
@@ -84,7 +77,7 @@ class Properties extends React.Component {
   }
 
   // Takes a property row and returns the hover handler for that row
-  getHandleMouseEnter = (index) => {
+  getHandleMouseEnter = index => {
     return () => {
       this.props.onHoverChange(index)
     }
@@ -95,26 +88,13 @@ class Properties extends React.Component {
   }
 
   render() {
-    const {
-      properties = [],
-      onClickPlus,
-      onSortChange,
-      theme,
-      sortAsc,
-    } = this.props
+    const { properties = [], onClickPlus, onSortChange, theme, sortAsc } = this.props
 
     return (
-      <table
-        {...theme.properties}
-        cellSpacing='0'
-      >
+      <table {...theme.properties} cellSpacing="0" data-walkthrough-id="properties-table">
         <thead>
-          <tr
-            {...theme.headerRow}
-          >
-            <th
-              {...theme.firstHeader}
-            >
+          <tr {...theme.headerRow}>
+            <th {...theme.firstHeader}>
               Prop
               <Icon
                 name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
@@ -128,26 +108,18 @@ class Properties extends React.Component {
                 onClick={onSortChange}
               />
             </th>
-            <th
-              {...theme.headerCell}
-            >
+            <th {...theme.headerCell}>
               Type
             </th>
-            <th
-              {...theme.headerCell}
-            >
+            <th {...theme.headerCell}>
               Default
             </th>
-            <th
-              {...theme.lastHeader}
-            >
+            <th {...theme.lastHeader}>
               Description
             </th>
           </tr>
         </thead>
-        <tbody
-          onMouseLeave={this.handleMouseLeave}
-        >
+        <tbody onMouseLeave={this.handleMouseLeave}>
           {this.sort(properties).map((property, index) => {
             const isHovering = this.props.hoveredIndex === index
 
@@ -184,16 +156,13 @@ const Row = ({
     onMouseEnter={getHandleMouseEnter(index)}
     key={index}
   >
-    <td
-      {...theme.prop}
-    >
-      <div
-        {...theme.nameCellInner}
-      >
-        {isHovering && !property.isUsedByTreeEditor && (
+    <td {...theme.prop}>
+      <div {...theme.nameCellInner}>
+        {isHovering &&
+          !property.isUsedByTreeEditor &&
           <HoverIcon
-            name='primary-plus'
-            hoverName='primary-plus-hover'
+            name="primary-plus"
+            hoverName="primary-plus-hover"
             onClick={getHandleClickPlus(property)}
             theme={{
               icon: {
@@ -205,12 +174,11 @@ const Row = ({
                 height: 22,
               },
             }}
-          />
-        )}
-        {property.isUsedByTreeEditor && (
+          />}
+        {property.isUsedByTreeEditor &&
           <HoverIcon
-            name='primary-minus'
-            hoverName='primary-minus-hover'
+            name="primary-minus"
+            hoverName="primary-minus-hover"
             onClick={getHandleClickMinus(property)}
             theme={{
               icon: {
@@ -222,28 +190,19 @@ const Row = ({
                 height: 22,
               },
             }}
-          />
-        )}
-        <span
-          {...theme.propName}
-        >
+          />}
+        <span {...theme.propName}>
           {property.name}
         </span>
       </div>
     </td>
-    <td
-      {...theme.column}
-    >
+    <td {...theme.column}>
       {property.type}
     </td>
-    <td
-      {...theme.column}
-    >
+    <td {...theme.column}>
       {property.default}
     </td>
-    <td
-      {...theme.description}
-    >
+    <td {...theme.description}>
       {property.description}
     </td>
   </tr>
@@ -267,10 +226,7 @@ const selectedStyle = {
   backgroundColor: 'rgba(73,79,82, .2)',
 }
 
-const defaultRowTheme = ({
-  property,
-  isHovering,
-}) => ({
+const defaultRowTheme = ({ property, isHovering }) => ({
   row: {
     borderBottom: `1px solid ${Colors.grey800}`,
   },
@@ -287,7 +243,9 @@ const defaultRowTheme = ({
   },
   propName: {
     // Sync with Component State Checkbox animation
-    transform: (isHovering || property.isUsedByTreeEditor) ? `translate3d(28px, 0, 0)` : `translate3d(0, 0, 0)`,
+    transform: isHovering || property.isUsedByTreeEditor
+      ? `translate3d(28px, 0, 0)`
+      : `translate3d(0, 0, 0)`,
     transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
   },
   description: {
@@ -311,9 +269,9 @@ const ThemedRow = Theme('PropertiesRow', defaultRowTheme)(Row)
 
 const defaultTheme = {
   properties: {
-    ...(Object.assign({}, Fonts.monospace, {
+    ...Object.assign({}, Fonts.monospace, {
       fontSize: 14,
-    })),
+    }),
     width: '100%',
     maxWidth: '100%',
     borderCollapse: 'collapse',
