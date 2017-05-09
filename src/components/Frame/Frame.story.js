@@ -24,13 +24,32 @@ class FetchAndRender extends React.Component {
     /** We need a bundle that has CORS enabled. I've created a ticket to do this with
      *  Google cloud storage. For now this needs to be served locally.
      */
-    xhr.open('GET', 'http://127.0.0.1:8080/comment.js', true)
+    xhr.open(
+      'GET',
+      'https://storage.googleapis.com/component-bundles/157e1b3ed5f3d585906fbc5f40f78f3656eae31889769c8221a021c227d0149a.Loader.js',
+      true
+    )
     xhr.send()
   }
 
   render() {
     const { bundle } = this.state
+    const realizeComponentTree = implementationMap => {
+      if (bundle === '') return <div />
+      return <implementationMap.Loader />
+    }
 
-    return <Frame name="frame-1" bundle={bundle} React={React} ReactDOM={ReactDOM} />
+    return (
+      <Frame
+        name="frame-1"
+        realizeComponentTree={realizeComponentTree}
+        bundleMap={{ Loader: bundle }}
+        React={React}
+        ReactDOM={ReactDOM}
+        harnessElement={<HarnessComponent />}
+      />
+    )
   }
 }
+
+const HarnessComponent = ({ children }) => <div>{children}</div>
