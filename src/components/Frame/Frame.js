@@ -3,22 +3,24 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 
-type BundleMapT = object
-type ImplementationMapT = object
+type BundleMapT = Map<string, string>
+type ImplementationMapT = Map<string, React.Element<any>>
 
 type PropsT = {
-  /* Takes a map from component names to component functions / classes and returns the composite component tree */
-  realizeComponentTree: ImplementationMapT => React$element,
-  /* Map from component names to bundle strings */
+  /** Takes a map from component names to component functions / classes and returns the composite component tree */
+  realizeComponentTree: ImplementationMapT => React.Element<any>,
+  /** Map from component names to bundle strings */
   bundleMap: BundleMapT,
-  /* The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
+  /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
   React?: any,
-  /* The ReactDOM object to use inside the iFrame */
+  /** The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
-  /* A unique ID for the iFrame */
+  /** A unique ID for the iFrame */
   name: string,
-  /* Harness element to render the component inside */
-  harnessElement: React$Element<any>,
+  /** Harness element to render the component inside */
+  harnessElement: React.Element<any>,
+  /** The theme for the frame */
+  theme: Object,
 }
 
 /**
@@ -109,7 +111,6 @@ class Frame extends React.Component {
         this._setInitialContent = false
       }
 
-      const win = doc.defaultView || doc.parentView
       const initialRender = !this._setInitialContent
 
       if (initialRender) {
