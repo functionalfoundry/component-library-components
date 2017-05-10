@@ -51,7 +51,9 @@ class FetchAndRender extends React.Component {
         bundleMap={{ Loader: bundle }}
         React={React}
         ReactDOM={ReactDOM}
-        alignment="Center"
+        alignment={{
+          horizontal: 'Center',
+        }}
         backgroundColor="cyan"
         zoom={zoom}
         onChangeZoom={this.handleChangeZoom}
