@@ -4,16 +4,14 @@ import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
 import Frame from '../Frame'
-import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 
-type BundlesT = Object<string, string>
+const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+
+type BundlesT = Object
 
 type PropsT = {
-  /**
-   * Takes a map from component names to component functions / classes
-   * and returns the composite component tree
-   */
-  tree: ComponentTree,
+  /** * A raw component tree */
+  tree: Object,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
   /* The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
@@ -60,7 +58,7 @@ const LivePreview = ({
     <LiveCanvas zoom={zoom} onChangeZoom={onChangeZoom}>
       <Frame
         name={name}
-        tree={tree}
+        tree={TreeUtils.createTree(tree)}
         bundles={bundles}
         React={React}
         ReactDOM={ReactDOM}

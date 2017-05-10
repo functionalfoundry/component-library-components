@@ -5,8 +5,6 @@ import ComponentState from './ComponentState'
 import QuickAction from '../QuickAction'
 import { Preview, PreviewContainer } from '@workflo/components'
 
-const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
-
 const MyComponentBundle = `
   (
     function () {
@@ -24,12 +22,12 @@ const MyComponentBundle = `
     }
  )`
 
-const exampleTree = TreeUtils.createTree({
+const rawExampleTree = {
   id: 'my-component',
   name: 'MyComponent',
   props: [],
   children: [],
-})
+}
 
 const actions = [
   <QuickAction
@@ -108,7 +106,7 @@ class Container extends React.Component {
         <ComponentState
           harnessCard={{
             actions,
-            tree: exampleTree,
+            tree: rawExampleTree,
             bundles: { 'my-component': MyComponentBundle },
             React,
             ReactDOM,
