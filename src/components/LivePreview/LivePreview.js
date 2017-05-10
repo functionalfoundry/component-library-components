@@ -143,8 +143,10 @@ const getHarnessStyle = backgroundColor => ({
   padding: Spacing.small,
   display: 'flex',
   flexDirection: 'row',
-  flex: 1,
+  flex: '1 1 auto',
   position: 'relative',
+  width: '100vw',
+  height: '100vh',
 })
 
 const getPreviewContainerStyle = alignment =>
@@ -152,9 +154,10 @@ const getPreviewContainerStyle = alignment =>
     {},
     {
       display: 'flex',
+      flex: '1 1 auto',
       flexDirection: 'row',
-      alignItems: 'center',
     },
+    getVerticalAlignment(alignment.vertical),
     getHorizontalAlignment(alignment.horizontal)
   )
 
@@ -165,6 +168,18 @@ const errorContainerStyle = {
   justifyContent: 'center',
 }
 
+const getVerticalAlignment = verticalAlignment => {
+  switch (verticalAlignment) {
+    case 'Top':
+      return { alignItems: 'flex-start' }
+    case 'Bottom':
+      return { alignItems: 'flex-end' }
+    case 'Center':
+    default:
+      return { alignItems: 'center' }
+  }
+}
+
 const getHorizontalAlignment = horizontalAlignment => {
   switch (horizontalAlignment) {
     case 'Left':
@@ -172,6 +187,7 @@ const getHorizontalAlignment = horizontalAlignment => {
     case 'Right':
       return { justifyContent: 'flex-end' }
     case 'Center':
+    default:
       return { justifyContent: 'center' }
   }
 }
