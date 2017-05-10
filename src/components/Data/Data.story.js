@@ -24,11 +24,7 @@ storiesOf('Data', module)
   .add('With animation', () => (
     <PreviewContainer shade="light">
       <Preview label="Data">
-        <DataContainer
-          shouldAnimate
-          plugin={actionsBabelPlugin}
-          text={initialActionsText}
-        />
+        <DataContainer shouldAnimate plugin={actionsBabelPlugin} text={initialDataText} />
       </Preview>
     </PreviewContainer>
   ))
@@ -75,8 +71,7 @@ class DataContainer extends React.Component {
   }
 }
 
-const initialDataText = `
-const button = ({title}) => {}
+const initialDataText = `const button = ({title}) => {}
 const label = ({caption}) => {}
 `
 
