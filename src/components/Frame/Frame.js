@@ -50,7 +50,7 @@ class Frame extends React.Component {
   static initialContent = `
     <!DOCTYPE html><html>
       <head></head>
-      <body>
+      <body style="margin:0px; padding:0px">
         <div id="root" />
         <script>
           // Needed for evaluating bundles
