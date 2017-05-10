@@ -59,6 +59,7 @@ class FetchAndRender extends React.Component {
         ReactDOM={ReactDOM}
         alignment={{
           horizontal: 'Center',
+          vertical: 'Center',
         }}
         backgroundColor="cyan"
         zoom={zoom}
