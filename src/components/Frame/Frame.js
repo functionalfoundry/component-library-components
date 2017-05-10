@@ -3,15 +3,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 
-type BundleMapT = Map<string, string>
-type ImplementationMapT = Map<string, React.Element<any>>
+import { ComponentTree } from '../../utils/CompositeComponents/ComponentTree'
+
+type BundlesT = Object<string, string>
 
 type PropsT = {
-  /** Takes a map from component names to component functions / classes and returns the composite component tree */
-  realizeComponentTree: ImplementationMapT => React.Element<any>,
-  /** Map from component names to bundle strings */
-  bundleMap: BundleMapT,
-  /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
+  /**
+   * Takes a map from component names to component functions / classes
+   * and returns the composite component tree
+   */
+  tree: ComponentTree,
+  /** Map from tree component IDs to bundle strings */
+  bundles: BundlesT,
+  /**
+   * The React object to use inside the iFrame (in the future should
+   * this be a string and get evaluated in the iFrame?)
+   */
   React?: any,
   /** The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
@@ -47,28 +54,63 @@ class Frame extends React.Component {
         <div id="root" />
         <script>
           // Needed for evaluating bundles
-          window.production = 'production';
+          window.production = 'production'
 
-          var root = document.getElementById('root')
-          function renderComponentTree() {
-            var realizeComponentTree = __workflo_data.realizeComponentTree;
-            var harnessElement = __workflo_data.harnessElement;
-            var bundleMap = __workflo_data.bundleMap;
-            var implementationMap = Object.keys(bundleMap).map(function(key) {
-              var exported = eval(bundleMap[key])
-              if (!exported) return [key, function(){}]
-              return [key, exported.default]
-            }).reduce(function(acc, val) {
-              acc[val[0]] = val[1];
-              return acc;
-            }, {});
-            var element = React.cloneElement(harnessElement, {
-              children: realizeComponentTree(implementationMap),
-            });
-            
-            ReactDOM.render(element, root);
+          function evaluateBundles (bundles) {
+            return Object.keys(bundles).reduce(function (out, key) {
+              const evaluated = eval(bundles[key] || '') // eslint-disable-line no-eval
+              const result = (evaluated && (evaluated.default || evaluated)) || null
+              out[key] = result
+              return out
+            }, {})
           }
-          window.renderComponentTree = renderComponentTree;
+
+          function realizeComponentTree (tree, implementations) {
+            function realizeProps (component) {
+              return component.props.reduce(function (props, prop) {
+                props[prop.name] = prop.value.value
+                return props
+              }, {})
+            }
+
+            function realizeChildren (component) {
+              return component.children.map(function (child) {
+                return realizeComponent(child)
+              })
+            }
+
+            function realizeComponent (component) {
+              const implementation = implementations[component.id]
+              if (implementation) {
+                const props = realizeProps(component)
+                const children = realizeChildren(component) || component.text
+                return React.createElement(implementation, props, children)
+              }
+            }
+
+            if (tree.root) {
+              return realizeComponent(tree.root)
+            } else {
+              return null
+            }
+          }
+
+          window.renderComponentTree = function () {
+            const bundles = __workflo_data.bundles
+            const harnessElement = __workflo_data.harnessElement
+            const tree = __workflo_data.tree
+
+            window.React = React
+            window.ReactDOM = ReactDOM
+
+            const implementations = evaluateBundles(bundles)
+            const treeElement = realizeComponentTree(tree, implementations)
+            const harness = React.cloneElement(harnessElement, {
+              children: treeElement,
+            })
+            const root = document.getElementById('root')
+            ReactDOM.render(harness, root)
+          }
         </script>
       </body>
     </html>`
@@ -95,24 +137,38 @@ class Frame extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { harnessElement, realizeComponentTree, bundleMap } = nextProps
+    const { bundles, harnessElement, React, ReactDOM, tree } = nextProps
+
     const frame = window.frames[nextProps.name]
+
+    // Inject React and React DOM into the frame
+    frame.React = React
+    frame.ReactDOM = ReactDOM
+
+    // Inject render data into the frame
     frame.__workflo_data = {
       harnessElement,
-      realizeComponentTree,
-      bundleMap,
+      bundles,
+      tree,
     }
+
     frame.renderComponentTree()
   }
 
   /**
    * Returns the iFrame's document
    */
-  getDoc() {
-    return ReactDOM.findDOMNode(this).contentDocument // eslint-disable-line
+  getDocument() {
+    const node = ReactDOM.findDOMNode(this)
+    if (node !== null) {
+      return node.contentDocument // eslint-disable-line
+    } else {
+      return undefined
+    }
   }
 
   renderFrameContents() {
+    const { bundles, harnessElement, name, React, ReactDOM, tree } = this.props
     const { isMounted } = this.state
     let { isInitialContentSet } = this.state
 
@@ -120,8 +176,8 @@ class Frame extends React.Component {
       return
     }
 
-    const doc = this.getDoc()
-    if (doc && doc.readyState === 'complete') {
+    const doc = this.getDocument()
+    if (doc !== undefined && doc.readyState === 'complete') {
       if (doc.querySelector('div') === null) {
         isInitialContentSet = false
       }
@@ -134,13 +190,19 @@ class Frame extends React.Component {
         this.setState({ isInitialContentSet: true })
 
         const frame = window.frames[name]
+
+        // Inject React and React DOM into the frame
         frame.React = React
         frame.ReactDOM = ReactDOM
+
+        // Inject render data into the frame
         frame.__workflo_data = {
           harnessElement,
-          realizeComponentTree,
-          bundleMap,
+          bundles,
+          tree,
         }
+
+        // Render the frame ASAP
         setTimeout(() => {
           frame.renderComponentTree()
         })
