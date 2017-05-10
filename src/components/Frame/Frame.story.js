@@ -8,7 +8,7 @@ const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
 
-const exampleTree = TreeUtils.createTree({
+export const exampleTree = TreeUtils.createTree({
   id: 'badge',
   name: 'Badge',
   props: [
@@ -39,8 +39,8 @@ const exampleTree = TreeUtils.createTree({
   ],
 })
 
-const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
-const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'
+export const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
+export const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'
 
 class FetchAndRender extends React.Component {
   constructor() {
