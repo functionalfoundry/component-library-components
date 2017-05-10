@@ -223,10 +223,6 @@ const defaultTheme = {
     border: 'none',
     borderRadius: 0,
     backgroundColor: 'white',
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // transformOrigin: 'top left',
   },
 }
 
