@@ -2,33 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { storiesOf } from '@kadira/storybook'
 import LivePreview from './LivePreview'
-import { Preview, PreviewContainer } from '@workflo/components'
+
+import { BADGE_URL, LOADER_URL, exampleTree } from '../Frame/Frame.story'
 
 class FetchAndRender extends React.Component {
   constructor() {
     super()
     this.state = {
-      bundle: '',
+      badge: null,
+      loader: null,
       zoom: 100,
     }
-  }
-
-  componentWillMount() {
-    var xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == XMLHttpRequest.DONE) {
-        this.setState({ bundle: xhr.responseText })
-      }
-    }
-    /** We need a bundle that has CORS enabled. I've created a ticket to do this with
-     *  Google cloud storage. For now this needs to be served locally.
-     */
-    xhr.open(
-      'GET',
-      'https://storage.googleapis.com/component-bundles/157e1b3ed5f3d585906fbc5f40f78f3656eae31889769c8221a021c227d0149a.Loader.js',
-      true
-    )
-    xhr.send()
   }
 
   handleChangeZoom = zoom => {
@@ -37,18 +21,40 @@ class FetchAndRender extends React.Component {
     }))
   }
 
-  render() {
-    const { bundle, zoom } = this.state
-    const realizeComponentTree = implementationMap => {
-      if (bundle === '') return <div />
-      return <implementationMap.Loader />
+  fetchBadge = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ badge: xhr.responseText })
+      }
     }
+    xhr.open('GET', BADGE_URL, true)
+    xhr.send()
+  }
 
+  fetchLoader = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ loader: xhr.responseText })
+      }
+    }
+    xhr.open('GET', LOADER_URL, true)
+    xhr.send()
+  }
+
+  componentWillMount() {
+    this.fetchBadge()
+    this.fetchLoader()
+  }
+
+  render() {
+    const { badge, loader, zoom } = this.state
     return (
       <LivePreview
         name="frame-1"
-        realizeComponentTree={realizeComponentTree}
-        bundleMap={{ Loader: bundle }}
+        tree={exampleTree}
+        bundles={{ badge, loader }}
         React={React}
         ReactDOM={ReactDOM}
         alignment={{
