@@ -9,7 +9,6 @@ import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
 import StaggerChildren from '../StaggerChildren'
 import RotateFade from '../RotateFade'
-import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 
 /**
  * Prop types
@@ -50,7 +49,7 @@ type BundlesT = Object
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
-    tree: ComponentTree,
+    tree: Object,
     bundles: BundlesT,
     React: any,
     ReactDOM: any,

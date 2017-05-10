@@ -8,7 +8,7 @@ const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
 
-export const exampleTree = TreeUtils.createTree({
+export const rawExampleTree = {
   id: 'badge',
   name: 'Badge',
   props: [
@@ -37,7 +37,9 @@ export const exampleTree = TreeUtils.createTree({
       ],
     },
   ],
-})
+}
+
+export const exampleTree = TreeUtils.createTree(rawExampleTree)
 
 export const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
 export const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'
