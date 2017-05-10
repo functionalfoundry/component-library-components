@@ -1,23 +1,22 @@
 /* @flow */
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Theme from 'js-theme'
 import TextEditor from '@workflo/components/lib/TextEditor'
 import JSEditorPlugin from '../../utils/EditorPlugins/JSEditorPlugin'
 import { trimStart } from 'lodash'
 
 import SplitText from '../../../vendor/greensock/commonjs-flat/SplitText'
 import TimelineMax from '../../../vendor/greensock/commonjs-flat/TimelineMax'
-import {
-  // Circ,
-  Power4,
-} from '../../../vendor/greensock/commonjs-flat/EasePack'
+import { Circ, Power4 } from '../../../vendor/greensock/commonjs-flat/EasePack'
 
 type Props = {
+  onChange: Function,
+  onChangeState: Function,
   shouldAnimate: boolean,
   state?: any,
   text: string,
-  onChange: Function,
-  onChangeState: Function,
+  theme: Object,
 }
 
 type State = {
@@ -33,8 +32,10 @@ class Data extends React.Component {
   props: Props
   state: State
 
+  _cursorRef: any
   _editorRef: any
   _isAnimating: boolean
+  _targetRef: any
 
   static defaultProps = defaultProps
 
@@ -101,55 +102,53 @@ class Data extends React.Component {
       }).chars
 
       /**
-       * For some reason greensock SplitText on the groups above produces mounted as well
-       * as unmonunted nodes. We filter out the unmounted nodes by checking for a parentNode
-       * so that our staggered animation timings are not messed up.
+       * For some reason greensock SplitText on the groups above produces duplicate
+       * nodes at varying levels of nesting for each character. By filtering on the nodes
+       * whose immediate child are text nodes (nodeType === 3) we prevent duplication which
+       * would otherwise throw of the timing of the animation.
        */
-      const mountedChars = chars.filter(char => char.firstChild.nodeType === 3)
-
-      // mountedChars.forEach(char => console.log(char.innerHTML))
+      const dedupedChars = chars.filter(char => char.firstChild.nodeType === 3)
 
       const tl = new TimelineMax()
 
-      // tl.fromTo(
-      //   '.target',
-      //   0.1,
-      //   {
-      //     opacity: 0,
-      //     scale: 0.5,
-      //   },
-      //   {
-      //     opacity: 0.2,
-      //     scale: 2.5,
-      //     transformOrigin: '50% 50%',
-      //     ease: Power4.easeOut,
-      //   }
-      // )
-      // tl.to('.target', 0.05, {
-      //   opacity: 0,
-      //   ease: Circ.easein,
-      // })
-      // tl.fromTo(
-      //   '.cursor',
-      //   0.22,
-      //   {
-      //     opacity: 0,
-      //   },
-      //   {
-      //     opacity: 1,
-      //     yoyo: true,
-      //     repeat: 3,
-      //     delay: 0.1,
-      //     repeatDelay: 0.1,
-      //     ease: Circ.easeInOut,
-      //   }
-      // )
-      // this.chars = chars
-      // chars.forEach(char => {
-      //   char.style.opacity = 0
-      // })
+      const cursor = ReactDOM.findDOMNode(this._cursorRef)
+      const target = ReactDOM.findDOMNode(this._targetRef)
+
+      tl.fromTo(
+        target,
+        0.1,
+        {
+          opacity: 0,
+          scale: 0.5,
+        },
+        {
+          opacity: 0.2,
+          scale: 2.5,
+          transformOrigin: '50% 50%',
+          ease: Power4.easeOut,
+        }
+      )
+      tl.to(target, 0.05, {
+        opacity: 0,
+        ease: Circ.easein,
+      })
+      tl.fromTo(
+        cursor,
+        0.22,
+        {
+          opacity: 0,
+        },
+        {
+          opacity: 1,
+          yoyo: true,
+          repeat: 3,
+          delay: 0.1,
+          repeatDelay: 0.1,
+          ease: Circ.easeInOut,
+        }
+      )
       tl.staggerFromTo(
-        mountedChars,
+        dedupedChars,
         0.22,
         {
           opacity: 0,
@@ -166,25 +165,60 @@ class Data extends React.Component {
       )
     }
   }
+  saveCursorRef = (ref: any) => {
+    this._cursorRef = ref
+  }
   saveEditorRef = (ref: any) => {
     this._editorRef = ref
   }
+  saveTargetRef = (ref: any) => {
+    this._targetRef = ref
+  }
   render() {
-    const { state, text, onChange, onChangeState } = this.props
+    const { state, text, onChange, onChangeState, theme } = this.props
     const { shouldAnimate } = this.state
     /** We disable the editor while animation is happening */
     return (
-      <TextEditor
-        onChange={onChange}
-        onChangeState={onChangeState}
-        plugins={[JSEditorPlugin({})]}
-        readOnly={shouldAnimate}
-        ref={this.saveEditorRef}
-        state={state}
-        text={text}
-      />
+      <div {...theme.container}>
+        <TextEditor
+          onChange={onChange}
+          onChangeState={onChangeState}
+          plugins={[JSEditorPlugin({})]}
+          readOnly={shouldAnimate}
+          ref={this.saveEditorRef}
+          state={state}
+          text={text}
+        />
+        {shouldAnimate ? <div {...theme.cursor} ref={this.saveCursorRef}>|</div> : null}
+        {shouldAnimate ? <div {...theme.target} ref={this.saveTargetRef} /> : null}
+      </div>
     )
   }
 }
+const positioning = {
+  top: 3,
+  left: -3,
+}
 
-export default Data
+const defaultTheme = {
+  container: {
+    position: 'relative',
+  },
+  cursor: {
+    ...positioning,
+    position: 'absolute',
+    fontSize: '20px',
+    color: '#555',
+  },
+  target: {
+    ...positioning,
+    position: 'absolute',
+    background: '#999',
+    opacity: '0.2',
+    width: '20px',
+    height: '20px',
+    borderRadius: '50%',
+  },
+}
+
+export default Theme('Data', defaultTheme)(Data)
