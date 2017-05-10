@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 import { Checkbox, Icon, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
@@ -8,6 +9,7 @@ import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
 import StaggerChildren from '../StaggerChildren'
 import RotateFade from '../RotateFade'
+import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 
 /**
  * Prop types
@@ -43,9 +45,15 @@ type HarnessT = {
   },
 }
 
+type BundlesT = Object
+
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
+    tree: ComponentTree,
+    bundles: BundlesT,
+    React: any,
+    ReactDOM: any,
     harness: HarnessT,
     actions: Array<React.Element<*>>,
     isSelected: boolean,
@@ -66,7 +74,10 @@ type PropsT = {
 
 const defaultProps = {
   harnessCard: {
-    element: null,
+    tree: null,
+    bundles: {},
+    React,
+    ReactDOM,
     harness: {
       componentState: {
         name: '',
@@ -139,7 +150,7 @@ class ComponentState extends React.Component {
   props: PropsT
   numOpenPopups: number
   iconRefs: Array<any>
-  harnessCard: ?React$Element<any>
+  harnessCard: ?React.Element<any>
 
   static defaultProps = defaultProps
 
@@ -258,7 +269,11 @@ class ComponentState extends React.Component {
           </div>
           <View {...theme.preview}>
             <LivePreview
-              element={harnessCard.element}
+              name={harnessCard.harness.id}
+              tree={harnessCard.tree}
+              bundles={harnessCard.bundles}
+              React={harnessCard.React}
+              ReactDOM={harnessCard.ReactDOM}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
               alignment={harnessCard.harness.alignment}
             />
@@ -274,7 +289,6 @@ const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 const defaultTheme = ({ harnessCard, isHovering }) => ({
   harnessCard: {
     display: 'flex',
-    // transition: 'all .4s ease',
     position: 'relative',
     overflow: 'hidden',
     width: 'inherit', // FIX
@@ -282,6 +296,7 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     flex: '1',
   },
   section: {
+    position: 'relative',
     display: 'flex',
     alignContent: 'center',
     alignItems: 'center',

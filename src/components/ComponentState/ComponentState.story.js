@@ -1,22 +1,35 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { storiesOf, action } from '@kadira/storybook'
 import ComponentState from './ComponentState'
 import QuickAction from '../QuickAction'
 import { Preview, PreviewContainer } from '@workflo/components'
 
-const MyComponent = ({
-  children, // eslint-disable-line react/prop-types
-}) => (
-  <div style={{ backgroundColor: 'magenta', width: 100, height: 100 }}>
-    {children}
-  </div>
-)
+const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
-const element = (
-  <MyComponent>
-    <div>Inner Text</div>
-  </MyComponent>
-)
+const MyComponentBundle = `
+  (
+    function () {
+      return React.createElement(
+        "div",
+        {
+          style: {
+            backgroundColor: "magenta",
+            width: "100px",
+            height: "100px"
+          }
+        },
+        "Example component"
+      )
+    }
+ )`
+
+const exampleTree = TreeUtils.createTree({
+  id: 'my-component',
+  name: 'MyComponent',
+  props: [],
+  children: [],
+})
 
 const actions = [
   <QuickAction
@@ -95,13 +108,18 @@ class Container extends React.Component {
         <ComponentState
           harnessCard={{
             actions,
-            element,
+            tree: exampleTree,
+            bundles: { 'my-component': MyComponentBundle },
+            React,
+            ReactDOM,
             harness: {
+              id: Date.now(),
               componentState: {
                 name: 'With title',
               },
               alignment: {
                 horizontal: 'Right',
+                vertical: 'Center',
               },
               theme: {
                 patterns: {
