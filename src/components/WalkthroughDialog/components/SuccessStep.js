@@ -1,7 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Back, Power4, Sine, TweenMax, TimelineMax } from 'gsap'
-import SplitText from '../../../../vendor/greensock/utils/SplitText.min'
+import SplitText from '../../../../vendor/greensock/minified/utils/SplitText.min'
 
 type Props = {
   message: string,

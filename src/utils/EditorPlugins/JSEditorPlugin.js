@@ -45,6 +45,8 @@ const Keyword = ({ children, theme }) => (
 
 const ThemedKeyword = Theme('Keyword', defaultTheme)(Keyword)
 
+const Newline = () => <br />
+
 /**
  * Decorators
  */
@@ -97,6 +99,22 @@ const decorateKeywords = (characters, ast, options) => {
   )
 }
 
+const decorateNewlines = (characters, ast, options) => {
+  return characters.map((char, index) => {
+    // console.log('char: ', char.text)
+    if (char.text !== '\n') {
+      return char
+    } else {
+      const mark = Slate.Mark.create({
+        type: 'newline',
+      })
+      return char.merge({
+        marks: char.marks.add(mark),
+      })
+    }
+  })
+}
+
 const combineDecorators = (decorators: Array<Function>, options) => {
   return (text: Slate.Text, block: Slate.Block) => {
     try {
@@ -121,12 +139,16 @@ const JSEditorPlugin = (options: PluginOptions) => {
     schema: {
       nodes: {
         code: {
-          decorate: combineDecorators([decorateIdentifiers, decorateKeywords], options),
+          decorate: combineDecorators(
+            [decorateIdentifiers, decorateKeywords, decorateNewlines],
+            options
+          ),
         },
       },
       marks: {
         identifier: ThemedIdentifier,
         keyword: ThemedKeyword,
+        newline: Newline,
       },
     },
   }

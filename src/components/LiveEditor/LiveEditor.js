@@ -14,20 +14,25 @@ type DataT = {
 }
 
 type PropsT = {
-  nodeIdGenerator: Function,
-  onChangeComponentTree?: Function,
-  onRemoveProp?: Function,
-  onRemoveComponent?: Function,
-  onInsertComponent?: Function,
-  onChangePropValue?: Function,
-  onChangeComponentName?: Function,
-  onSelectComponent?: Function,
-  onChangeData: Function,
-  onChangeActions: Function,
-  componentTree: Object,
-  completionData?: CompletionDataT,
-  data: DataT,
   actions: DataT,
+  completionData?: CompletionDataT,
+  componentTree: Object,
+  data: DataT,
+  nodeIdGenerator: Function,
+  onChangeActions: Function,
+  onChangeComponentName?: Function,
+  onChangeComponentTree?: Function,
+  onChangeData: Function,
+  onChangePropValue?: Function,
+  onInsertComponent?: Function,
+  onRemoveComponent?: Function,
+  onRemoveProp?: Function,
+  onSelectComponent?: Function,
+  /**
+   * If set to true the contents of the Data editor will animate onto the screen
+   * as if typed.
+   */
+  shouldAnimateDataEditor: boolean,
 }
 
 const defaultProps = {
@@ -87,20 +92,21 @@ class LiveEditor extends React.Component {
 
   render() {
     const {
-      componentTree,
+      actions,
       completionData,
+      componentTree,
+      data,
       nodeIdGenerator,
-      onChangeComponentTree,
-      onChangeComponentName,
-      onChangeData,
       onChangeActions,
+      onChangeComponentName,
+      onChangeComponentTree,
+      onChangeData,
       onChangePropValue,
       onInsertComponent,
-      onRemoveProp,
       onRemoveComponent,
+      onRemoveProp,
       onSelectComponent,
-      actions,
-      data,
+      shouldAnimateDataEditor,
       theme,
     } = this.props
     return (
@@ -136,6 +142,7 @@ class LiveEditor extends React.Component {
               text={data.text}
               onChange={onChangeData}
               onChangeState={this.handleChangeData}
+              shouldAnimate={shouldAnimateDataEditor}
             />
           </TabPanel>
           <TabPanel>
