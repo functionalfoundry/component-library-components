@@ -4,15 +4,18 @@ import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
 import Frame from '../Frame'
+import ComponentTree from '../../utils/CompositeComponents/ComponentTree'
 
-type BundleMapT = object
-type ImplementationMapT = object
+type BundlesT = Object<string, string>
 
-type Props = {
-  /* Takes a map from component names to component functions / classes and returns the composite component tree */
-  realizeComponentTree: ImplementationMapT => React$element,
-  /* Map from component names to bundle strings */
-  bundleMap: BundleMapT,
+type PropsT = {
+  /**
+   * Takes a map from component names to component functions / classes
+   * and returns the composite component tree
+   */
+  tree: ComponentTree,
+  /** Map from tree component IDs to bundle strings */
+  bundles: BundlesT,
   /* The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
   React?: any,
   /* The ReactDOM object to use inside the iFrame */
@@ -24,10 +27,7 @@ type Props = {
   zoom: number,
   onChangeZoom: Function,
   /* Horizontal and vertical alignments that get rendered with flexbox */
-  alignment: {
-    horizontal: 'Left' | 'Center' | 'Right',
-    vertical: 'Top' | 'Center' | 'Bottom',
-  },
+  alignment: AlignmentT,
 }
 
 const defaultProps = {
@@ -38,18 +38,21 @@ const defaultProps = {
   },
 }
 
+/**
+ * LivePreview component
+ */
+
 const LivePreview = ({
   name,
-  bundleMap,
-  realizeComponentTree,
+  tree,
+  bundles,
   React,
   ReactDOM,
-  propMap,
   zoom,
   onChangeZoom,
   backgroundColor,
   alignment,
-}) => {
+}: PropsT) => {
   const harnessElement = (
     <Harness backgroundColor={backgroundColor} alignment={alignment} />
   )
@@ -57,8 +60,8 @@ const LivePreview = ({
     <LiveCanvas zoom={zoom} onChangeZoom={onChangeZoom}>
       <Frame
         name={name}
-        bundleMap={bundleMap}
-        realizeComponentTree={realizeComponentTree}
+        tree={tree}
+        bundles={bundles}
         React={React}
         ReactDOM={ReactDOM}
         harnessElement={harnessElement}
@@ -69,8 +72,24 @@ const LivePreview = ({
 
 export default LivePreview
 
+/**
+ * Harness component
+ */
+
+type AlignmentT = {
+  horizontal: 'Left' | 'Center' | 'Right',
+  vertical: 'Top' | 'Center' | 'Bottom',
+}
+
+type HarnessPropsT = {
+  alignment: AlignmentT,
+  backgroundColor: string,
+  children: React.Children,
+  theme: any,
+}
+
 class Harness extends React.Component {
-  // props: Props
+  props: HarnessPropsT
   static defaultProps = defaultProps
 
   state = {
@@ -82,7 +101,7 @@ class Harness extends React.Component {
   }
 
   render() {
-    const { children, theme, backgroundColor, alignment } = this.props
+    const { children, backgroundColor, alignment } = this.props
 
     if (this.state.error) {
       return (
