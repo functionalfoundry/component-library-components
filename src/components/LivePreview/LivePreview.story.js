@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { storiesOf } from '@kadira/storybook'
 import LivePreview from './LivePreview'
 
-import { BADGE_URL, LOADER_URL, exampleTree } from '../Frame/Frame.story'
+import { BADGE_URL, LOADER_URL, rawExampleTree } from '../Frame/Frame.story'
 
 class FetchAndRender extends React.Component {
   constructor() {
@@ -53,7 +53,7 @@ class FetchAndRender extends React.Component {
     return (
       <LivePreview
         name="frame-1"
-        tree={exampleTree}
+        tree={rawExampleTree}
         bundles={{ badge, loader }}
         React={React}
         ReactDOM={ReactDOM}
