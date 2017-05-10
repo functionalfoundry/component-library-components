@@ -17,7 +17,7 @@ class FetchAndRender extends React.Component {
   componentWillMount() {
     var xhr = new XMLHttpRequest()
     xhr.onreadystatechange = () => {
-      if (xhr.readyState == XMLHttpRequest.DONE) {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
         this.setState({ bundle: xhr.responseText })
       }
     }
@@ -40,16 +40,24 @@ class FetchAndRender extends React.Component {
     }
 
     return (
-      <Frame
-        name="frame-1"
-        realizeComponentTree={realizeComponentTree}
-        bundleMap={{ Loader: bundle }}
-        React={React}
-        ReactDOM={ReactDOM}
-        harnessElement={<HarnessComponent />}
-      />
+      <PreviewContainer>
+        <Preview title="Frame">
+          <Frame
+            name="frame-1"
+            realizeComponentTree={realizeComponentTree}
+            bundleMap={{ Loader: bundle }}
+            React={React}
+            ReactDOM={ReactDOM}
+            harnessElement={<HarnessComponent />}
+          />
+        </Preview>
+      </PreviewContainer>
     )
   }
 }
 
-const HarnessComponent = ({ children }) => <div>{children}</div>
+type HarnessComponentPropsT = {
+  children: React.Children,
+}
+
+const HarnessComponent = ({ children }: HarnessComponentPropsT) => <div>{children}</div>
