@@ -17,12 +17,28 @@ storiesOf('Data', module)
   .add('Actions plugin', () => (
     <PreviewContainer shade="light">
       <Preview label="Data">
-        <DataContainer text={initialActionsText} plugin={actionsBabelPlugin} />
+        <DataContainer plugin={actionsBabelPlugin} text={initialActionsText} />
+      </Preview>
+    </PreviewContainer>
+  ))
+  .add('With animation', () => (
+    <PreviewContainer shade="light">
+      <Preview label="Data">
+        <DataContainer
+          shouldAnimate
+          plugin={actionsBabelPlugin}
+          text={initialActionsText}
+        />
       </Preview>
     </PreviewContainer>
   ))
 
+type Props = {
+  shouldAnimate: boolean,
+  text: 'string',
+}
 class DataContainer extends React.Component {
+  props: Props
   constructor(props) {
     super(props)
     this.state = {
@@ -49,7 +65,13 @@ class DataContainer extends React.Component {
   }
 
   render() {
-    return <Data text={this.state.text} onChange={this.handleChange} />
+    return (
+      <Data
+        shouldAnimate={this.props.shouldAnimate}
+        text={this.state.text}
+        onChange={this.handleChange}
+      />
+    )
   }
 }
 
