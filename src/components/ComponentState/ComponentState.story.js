@@ -22,11 +22,15 @@ const MyComponentBundle = `
     }
  )`
 
-const rawExampleTree = {
+export const rawExampleTree = {
   id: 'my-component',
   name: 'MyComponent',
   props: [],
   children: [],
+}
+
+export const exampleBundles = {
+  'my-component': MyComponentBundle,
 }
 
 const actions = [
