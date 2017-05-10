@@ -1,5 +1,4 @@
 import React from 'react'
-import Theme from 'js-theme'
 import { Image, View } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
@@ -48,9 +47,12 @@ const LivePreview = ({
   propMap,
   zoom,
   onChangeZoom,
+  backgroundColor,
+  alignment,
 }) => {
-  // const harnessElement = <Harness />
-  const HarnessComponent = ({ children }) => <div>{children}</div>
+  const harnessElement = (
+    <Harness backgroundColor={backgroundColor} alignment={alignment} />
+  )
   return (
     <LiveCanvas zoom={zoom} onChangeZoom={onChangeZoom}>
       <Frame
@@ -59,7 +61,7 @@ const LivePreview = ({
         realizeComponentTree={realizeComponentTree}
         React={React}
         ReactDOM={ReactDOM}
-        harnessElement={<HarnessComponent />}
+        harnessElement={harnessElement}
       />
     </LiveCanvas>
   )
@@ -67,20 +69,67 @@ const LivePreview = ({
 
 LivePreview.defaultProps = defaultProps
 
-const defaultTheme = ({ backgroundColor, alignment }) => ({
-  livePreview: {
-    backgroundColor,
-    padding: Spacing.small,
-    // borderRight: `1px solid ${Colors.grey200}`,
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 1,
-    // flex: '0 1 auto',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    position: 'relative',
-  },
-  previewContainer: Object.assign(
+export default LivePreview
+
+class Harness extends React.Component {
+  // props: Props
+  static defaultProps = defaultProps
+
+  state = {
+    error: null,
+  }
+
+  unstable_handleError(error) {
+    this.setState({ error })
+  }
+
+  render() {
+    const { children, theme, backgroundColor, alignment } = this.props
+
+    if (this.state.error) {
+      return (
+        <View style={getHarnessStyle(backgroundColor)}>
+          <View style={errorContainerStyle}>
+            <ErrorView
+              message={this.state.error.message}
+              stacktrace={this.state.error.stack}
+            />
+          </View>
+        </View>
+      )
+    } else {
+      try {
+        return (
+          <View style={getHarnessStyle(backgroundColor)}>
+            <View style={getPreviewContainerStyle(alignment)}>
+              {children}
+            </View>
+          </View>
+        )
+      } catch (error) {
+        return (
+          <View style={getHarnessStyle(backgroundColor)}>
+            <View style={errorContainerStyle}>
+              <ErrorView message={error.message} stacktrace={error.stack} />
+            </View>
+          </View>
+        )
+      }
+    }
+  }
+}
+
+const getHarnessStyle = backgroundColor => ({
+  backgroundColor,
+  padding: Spacing.small,
+  display: 'flex',
+  flexDirection: 'row',
+  flex: 1,
+  position: 'relative',
+})
+
+const getPreviewContainerStyle = alignment =>
+  Object.assign(
     {},
     {
       display: 'flex',
@@ -88,14 +137,14 @@ const defaultTheme = ({ backgroundColor, alignment }) => ({
       alignItems: 'center',
     },
     getHorizontalAlignment(alignment.horizontal)
-  ),
-  errorContainer: {
-    display: 'flex',
-    flex: '1 1 auto',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-})
+  )
+
+const errorContainerStyle = {
+  display: 'flex',
+  flex: '1 1 auto',
+  flexDirection: 'row',
+  justifyContent: 'center',
+}
 
 const getHorizontalAlignment = horizontalAlignment => {
   switch (horizontalAlignment) {
@@ -107,6 +156,3 @@ const getHorizontalAlignment = horizontalAlignment => {
       return { justifyContent: 'center' }
   }
 }
-
-const ThemedLivePreview = Theme('LivePreview', defaultTheme)(LivePreview)
-export default ThemedLivePreview
