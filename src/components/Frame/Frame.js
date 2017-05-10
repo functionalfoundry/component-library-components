@@ -24,11 +24,21 @@ type PropsT = {
 }
 
 /**
+ * State
+ */
+
+type StateT = {
+  isMounted: boolean,
+  isInitialContentSet: boolean,
+}
+
+/**
  * Evaluates and renders a React component in isolation given a particular version of
  * React and React DOM.
  */
 class Frame extends React.Component {
   props: PropsT
+  state: StateT
 
   static initialContent = `
     <!DOCTYPE html><html>
@@ -65,11 +75,14 @@ class Frame extends React.Component {
 
   constructor(props, context) {
     super(props, context)
-    this._isMounted = false
+    this.state = {
+      isMounted: false,
+      isInitialContentSet: false,
+    }
   }
 
   componentDidMount() {
-    this._isMounted = true
+    this.setState({ isMounted: true })
     this.renderFrameContents()
   }
 
@@ -78,7 +91,7 @@ class Frame extends React.Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false
+    this.setState({ isMounted: false })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,24 +113,26 @@ class Frame extends React.Component {
   }
 
   renderFrameContents() {
-    const { name, harnessElement, realizeComponentTree, bundleMap } = this.props
-    if (!this._isMounted) {
+    const { isMounted } = this.state
+    let { isInitialContentSet } = this.state
+
+    if (!isMounted) {
       return
     }
 
     const doc = this.getDoc()
     if (doc && doc.readyState === 'complete') {
       if (doc.querySelector('div') === null) {
-        this._setInitialContent = false
+        isInitialContentSet = false
       }
 
-      const initialRender = !this._setInitialContent
-
-      if (initialRender) {
+      if (!isInitialContentSet) {
         doc.open('text/html', 'replace')
         doc.write(Frame.initialContent)
         doc.close()
-        this._setInitialContent = true
+
+        this.setState({ isInitialContentSet: true })
+
         const frame = window.frames[name]
         frame.React = React
         frame.ReactDOM = ReactDOM
