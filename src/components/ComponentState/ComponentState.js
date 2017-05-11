@@ -322,6 +322,7 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     width: 'inherit', // FIX
     height: 320, // FIX
     flex: '1',
+    background: harnessCard.harness.theme.patterns.colors.background,
   },
   section: {
     position: 'relative',
