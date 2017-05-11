@@ -1,11 +1,16 @@
 import React from 'react'
-import { Image, View } from '@workflo/components'
-import { Colors, Spacing } from '@workflo/styles'
+import ReactDOM from 'react-dom'
+import { View } from '@workflo/components'
+import { Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
 import Frame from '../Frame'
 
 const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+
+/**
+ * Props
+ */
 
 type BundlesT = Object
 
@@ -28,6 +33,10 @@ type PropsT = {
   alignment: AlignmentT,
 }
 
+/**
+ * Default props
+ */
+
 const defaultProps = {
   backgroundColor: 'white',
   alignment: {
@@ -37,38 +46,103 @@ const defaultProps = {
 }
 
 /**
+ * State
+ */
+
+type StateT = {
+  canvasWidth: number,
+  canvasHeight: number,
+}
+
+/**
  * LivePreview component
  */
 
-const LivePreview = ({
-  name,
-  tree,
-  bundles,
-  React,
-  ReactDOM,
-  zoom,
-  onChangeZoom,
-  backgroundColor,
-  alignment,
-}: PropsT) => {
-  const harnessElement = (
-    <Harness backgroundColor={backgroundColor} alignment={alignment} />
-  )
-  return (
-    <LiveCanvas zoom={zoom} onChangeZoom={onChangeZoom}>
-      <Frame
-        name={name}
-        tree={TreeUtils.createTree(tree)}
-        bundles={bundles}
-        React={React}
-        ReactDOM={ReactDOM}
-        harnessElement={harnessElement}
-      />
-    </LiveCanvas>
-  )
-}
+class LivePreview extends React.Component {
+  props: PropsT
+  state: StateT
 
-LivePreview.defaultProps = defaultProps
+  defaultProps = defaultProps
+
+  liveCanvas = null
+
+  constructor(props: PropsT) {
+    super(props)
+
+    this.state = {
+      canvasWidth: 0,
+      canvasHeight: 0,
+    }
+  }
+
+  getDimensions = () => {
+    const node = ReactDOM.findDOMNode(this)
+    return {
+      width: node !== null ? node.offsetWidth : 0,
+      height: node !== null ? node.offsetHeight : 0,
+    }
+  }
+
+  updateDimensions = () => {
+    const dimensions = this.getDimensions()
+    this.setState({
+      canvasWidth: dimensions.width,
+      canvasHeight: dimensions.height,
+    })
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions)
+    setTimeout(() => {
+      this.updateDimensions()
+    })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions)
+  }
+
+  render() {
+    const {
+      name,
+      tree,
+      bundles,
+      React,
+      ReactDOM,
+      zoom,
+      onChangeZoom,
+      backgroundColor,
+      alignment,
+    } = this.props
+
+    const { canvasWidth, canvasHeight } = this.state
+
+    const harnessElement = (
+      <Harness backgroundColor={backgroundColor} alignment={alignment} />
+    )
+
+    return (
+      <View>
+        <LiveCanvas
+          ref={c => (this.liveCanvas = c)}
+          width={canvasWidth}
+          height={canvasHeight}
+          zoom={zoom}
+          onChangeZoom={onChangeZoom}
+        >
+          <Frame
+            name={name}
+            tree={TreeUtils.createTree(tree)}
+            bundles={bundles}
+            React={React}
+            ReactDOM={ReactDOM}
+            harnessElement={harnessElement}
+          />
+        </LiveCanvas>
+      </View>
+    )
+  }
+}
 
 export default LivePreview
 
@@ -138,6 +212,7 @@ class Harness extends React.Component {
 
 const getHarnessStyle = backgroundColor => ({
   backgroundColor,
+  boxSizing: 'border-box',
   padding: Spacing.small,
   display: 'flex',
   flexDirection: 'row',
