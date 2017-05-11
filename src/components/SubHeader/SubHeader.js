@@ -142,7 +142,6 @@ const defaultTheme = {
     justifyContent: 'flex-end',
   },
   quickAction: {
-    marginLeft: Spacing.small,
     cursor: 'pointer',
   },
 }

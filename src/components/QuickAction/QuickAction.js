@@ -40,7 +40,7 @@ class QuickAction extends React.Component {
         inline
         theme={{
           view: {
-            marginLeft: Spacing.tiny, // AWEFULLEST OF HACKS
+            marginLeft: Spacing.tiny / 2, // AWEFULLEST OF HACKS
           },
         }}
       >
