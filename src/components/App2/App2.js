@@ -21,8 +21,8 @@ class App extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const liveTiming = 0.5,
-          liveScale = 0.92,
-          liveEase = Power3.easeOut;
+          liveScale = 0.94,
+          liveEase = Power1.easeOut;
     this.updateBodyBackgroundColor(nextProps)
     if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
       console.clear()
