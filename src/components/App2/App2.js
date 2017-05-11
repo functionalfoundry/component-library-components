@@ -20,52 +20,50 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const liveTiming = 0.5,
+          liveScale = 0.92,
+          liveEase = Power3.easeOut;
     this.updateBodyBackgroundColor(nextProps)
     if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
-      TweenMax.to(this.centerRight, 0.5, {
-        flexGrow: 1,
-        ease: Power4.easeOut,
+      console.clear()
+      console.log('live view')
+      TweenMax.from(this.centerRight, liveTiming, {
+        scale: liveScale,
+        transformOrigin: '0% 0%',
+        ease: liveEase
+      })
+      TweenMax.from(this.centerLeft, liveTiming, {
+        scale: liveScale,
+        transformOrigin: '100% 0%',
+        ease: liveEase,
       })
     }
     if (this.props.sections.centerRight && !nextProps.sections.centerRight) {
-      TweenMax.to(this.centerRight, 0.5, {
-        flexGrow: 0,
-        ease: Power4.easeOut,
+      //collection of components
+      console.clear()
+      console.log('collection')
+      TweenMax.from(this.centerMain, liveTiming, {
+        scale: 0.95,
+        y: 10,
+        transformOrigin: '50% 50%',
+        ease: liveEase,
       })
     }
 
     if (nextProps.sections.bottom && !this.props.sections.bottom) {
-      console.log('new bottom')
-      TweenMax.fromTo(
-        this.bottom,
-        0.5,
-        {
-          y: 10,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          delay: 0.3,
-          ease: Power4.easeOut,
-        },
-      )
+      //live view
+      console.log('new bottom live view')
+      TweenMax.fromTo(this.bottom, liveTiming, {
+        y: 10,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        ease: liveEase,
+      })
     }
     if (this.props.sections.bottom && !nextProps.sections.bottom) {
-      TweenMax.fromTo(
-        this.bottom,
-        0.5,
-        {
-          opacity: 1,
-          y: 0,
-        },
-        {
-          opacity: 0,
-          y: 10,
-          delay: 0.5,
-          ease: Power4.easeIn,
-        },
-      )
+      console.log('return')
     }
   }
 
@@ -73,10 +71,15 @@ class App extends React.Component {
     const { backgroundColor } = props
     const body = document.getElementsByTagName('html')[0]
     console.log('update to: ', `background-color: ${backgroundColor};`)
-    body.style = `background-color: ${backgroundColor};`
+    TweenMax.to(body, 0.2, {
+      backgroundColor: `${backgroundColor}`,
+      ease: Power3.easeOut
+    })
   }
 
   storeCenterRight = c => (this.centerRight = c)
+  storeCenterLeft = c => (this.centerLeft = c)
+  storeMain = c => (this.centerMain = c)
   storeBottom = c => (this.bottom = c)
 
   render() {
@@ -92,8 +95,8 @@ class App extends React.Component {
           </header>}
         {filters && <div {...theme.filters} />}
         {(centerLeft || centerRight) &&
-          <main {...theme.main}>
-            <div {...theme.centerLeft}>
+          <main {...theme.main} ref={this.storeMain}>
+            <div {...theme.centerLeft} ref={this.storeCenterLeft}>
               {centerLeft && centerLeft.element}
             </div>
             <div {...theme.centerRight} ref={this.storeCenterRight}>
