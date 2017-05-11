@@ -1,5 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
+import { View } from '@workflo/components'
 
 type PropsT = {
   /* Rendered inside the canvas */
@@ -55,7 +56,7 @@ class LiveCanvas extends React.Component {
     const { children, theme, width, height, panX, panY, zoom } = this.props
     const zoomValue = zoom * 0.01
     return (
-      <div
+      <View
         {...theme.liveCanvas}
         ref={this.storeCanvas}
         onWheel={this.handleWheel}
@@ -66,7 +67,7 @@ class LiveCanvas extends React.Component {
         }}
       >
         {children}
-      </div>
+      </View>
     )
   }
 }
@@ -74,6 +75,7 @@ class LiveCanvas extends React.Component {
 const defaultTheme = () => {
   return {
     liveCanvas: {
+      boxSizing: 'border-box',
       transformOrigin: 'top left',
       position: 'absolute',
       top: 0,
@@ -94,5 +96,5 @@ const getTransformStyle = (zoom, panX, panY) => {
   }
 }
 
-const ThemedLiveCanvas = Theme('LiveCanvas', defaultTheme)(LiveCanvas)
+const ThemedLiveCanvas = Theme('LiveCanvas', defaultTheme, { withRef: true })(LiveCanvas)
 export default ThemedLiveCanvas
