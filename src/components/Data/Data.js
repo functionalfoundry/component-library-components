@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 import TextEditor from '@workflo/components/lib/TextEditor'
 import JSEditorPlugin from '../../utils/EditorPlugins/JSEditorPlugin'
-import { trimStart } from 'lodash'
 
 import SplitText from '../../../vendor/greensock/commonjs-flat/SplitText'
 import TimelineMax from '../../../vendor/greensock/commonjs-flat/TimelineMax'
 import { Circ, Power4 } from '../../../vendor/greensock/commonjs-flat/EasePack'
+import trimLeft from '../../utils/String/trimLeft'
 
 type Props = {
   onChange: Function,
@@ -34,7 +34,6 @@ class Data extends React.Component {
 
   _cursorRef: any
   _editorRef: any
-  _isAnimating: boolean
   _targetRef: any
 
   static defaultProps = defaultProps
@@ -88,7 +87,7 @@ class Data extends React.Component {
       groups.forEach(group => {
         if (group) {
           const innerHTML = group.innerHTML
-          const trimmedInnerHTML = trimStart(innerHTML)
+          const trimmedInnerHTML = trimLeft(innerHTML)
           group.innerHTML = trimmedInnerHTML
         }
       })

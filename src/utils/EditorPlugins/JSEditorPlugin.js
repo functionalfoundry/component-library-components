@@ -101,7 +101,6 @@ const decorateKeywords = (characters, ast, options) => {
 
 const decorateNewlines = (characters, ast, options) => {
   return characters.map((char, index) => {
-    // console.log('char: ', char.text)
     if (char.text !== '\n') {
       return char
     } else {
