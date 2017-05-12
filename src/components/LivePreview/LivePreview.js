@@ -50,8 +50,8 @@ const defaultProps = {
  */
 
 type StateT = {
-  canvasWidth: number,
-  canvasHeight: number,
+  canvasWidth: ?number,
+  canvasHeight: ?number,
 }
 
 /**
