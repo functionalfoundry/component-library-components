@@ -136,6 +136,11 @@ class LivePreview extends React.Component {
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
+                theme={{
+                  frame: {
+                    backgroundColor: backgroundColor,
+                  },
+                }}
               />
             </LiveCanvas>
           : null}
