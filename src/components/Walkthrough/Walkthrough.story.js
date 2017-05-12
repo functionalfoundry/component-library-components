@@ -36,7 +36,7 @@ const steps = [
     title: 'Welcome!',
   },
   {
-    message: 'Step 3 is way down here.',
+    message: 'Step 2 is way down here.',
     targetSelector: '#target-7',
     title: 'Step 2',
   },
