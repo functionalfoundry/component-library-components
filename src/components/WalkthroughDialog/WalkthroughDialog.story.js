@@ -1,10 +1,47 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
+import Button from '@workflo/components/lib/Button'
 import AlignedTrigger from '@workflo/components/lib/AlignedTrigger'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer'
 
 import WalkthroughDialog from '.'
+
+class AnimatedWalkthroughDialog extends React.Component {
+  _dialogRef: any
+
+  constructor(props) {
+    super(props)
+    this.showDialog = true
+  }
+  handleClick = () => {
+    if (this._dialogRef) {
+      this.showDialog = !this.showDialog
+      if (this.showDialog) {
+        this._dialogRef.animateEnter()
+      } else {
+        this._dialogRef.animateExit()
+      }
+    }
+  }
+  saveDialogRef = (ref: any) => {
+    this._dialogRef = ref
+  }
+  render() {
+    return (
+      <div style={{ position: 'absolute', top: 20, left: 20 }}>
+        <Button onClick={this.handleClick}> Toggle Visibility </Button>
+        <WalkthroughDialog
+          message="This is where you’ll find all the components across your organization. We automatically take screenshots of your components and display those here. Click on a component to see all of that component’s states."
+          onDismiss={action('dismiss-clicked')}
+          onForward={action('forward-clicked')}
+          dialogRef={this.saveDialogRef}
+          title="Welcome to Workflo!"
+        />
+      </div>
+    )
+  }
+}
 
 storiesOf('WalkthroughDialog', module)
   .add('Beginning', () => (
@@ -68,3 +105,4 @@ storiesOf('WalkthroughDialog', module)
       </Preview>
     </PreviewContainer>
   ))
+  .add('With Animation', () => <AnimatedWalkthroughDialog />)

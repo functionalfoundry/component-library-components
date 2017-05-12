@@ -1,14 +1,15 @@
 /** @flow */
 import React from 'react'
-import { Circ, TweenMax } from 'gsap'
 import Theme from 'js-theme'
-import { compose } from 'recompose'
 
-import withTransitionGroup from '../../utils/withTransitionGroup'
+import TimelineMax from '../../../vendor/greensock/commonjs-flat/TimelineMax'
+import { Circ } from '../../../vendor/greensock/commonjs-flat/EasePack'
 import defaultTheme from './defaultTheme'
 import { BasicStep, SuccessStep } from './components'
 
 type Props = {
+  /** Used to get ref to the dialog since component will be wrapped in HOC */
+  dialogRef: any,
   onBack: Function,
   onDismiss: Function,
   onForward: Function,
@@ -22,6 +23,7 @@ class WalkthroughDialog extends React.Component {
   props: Props
   container: any
   static defaultProps = {
+    dialogRef: () => {},
     type: 'Basic',
   }
 
@@ -35,10 +37,19 @@ class WalkthroughDialog extends React.Component {
     }
   }
 
-  componentWillEnter(callback: Function) {
+  componentDidMount() {
+    const { dialogRef } = this.props
+    if (dialogRef) {
+      dialogRef(this)
+    }
+  }
+
+  animateEnter() {
     const el = this.container
 
-    TweenMax.fromTo(
+    const timeline = new TimelineMax()
+
+    timeline.fromTo(
       el,
       0.3,
       {
@@ -50,14 +61,16 @@ class WalkthroughDialog extends React.Component {
         scale: 1,
         tranformOrigin: '50% 50%',
         ease: Circ.easeOut,
-        onComplete: callback,
       }
     )
   }
 
-  componentWillLeave(callback: Function) {
+  animateExit() {
     const el = this.container
-    TweenMax.fromTo(
+
+    const timeline = new TimelineMax()
+
+    timeline.fromTo(
       el,
       0.2,
       {
@@ -69,7 +82,6 @@ class WalkthroughDialog extends React.Component {
         opacity: 0,
         transformOrigin: '50% 50%',
         ease: Circ.easeIn,
-        onComplete: callback,
       }
     )
   }
@@ -91,6 +103,4 @@ class WalkthroughDialog extends React.Component {
   }
 }
 
-export default compose(Theme('WalkthroughDialog', defaultTheme), withTransitionGroup)(
-  WalkthroughDialog
-)
+export default Theme('WalkthroughDialog', defaultTheme)(WalkthroughDialog)
