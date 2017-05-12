@@ -74,9 +74,13 @@ class Frame extends React.Component {
             }
 
             function realizeChildren (component) {
-              return component.children.map(function (child) {
-                return realizeComponent(child)
-              })
+              if (component.children.isEmpty()) {
+                return null
+              } else {
+                return component.children.map(function (child) {
+                  return realizeComponent(child)
+                })
+              }
             }
 
             function realizeComponent (component) {
