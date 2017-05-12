@@ -44,46 +44,36 @@ class WalkthroughDialog extends React.Component {
     }
   }
 
-  animateEnter() {
-    const el = this.container
-
+  hide() {
     const timeline = new TimelineMax()
 
-    timeline.fromTo(
-      el,
-      0.3,
-      {
-        opacity: 0,
-        scale: 0.95,
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        tranformOrigin: '50% 50%',
-        ease: Circ.easeOut,
-      }
-    )
+    timeline.set(this.container, { autoAlpha: 0 })
+
+    return timeline
+  }
+
+  animateEnter() {
+    const timeline = new TimelineMax()
+
+    timeline.to(this.container, 0.3, {
+      autoAlpha: 1,
+      scale: 1,
+      tranformOrigin: '50% 50%',
+      ease: Circ.easeOut,
+    })
+    return timeline
   }
 
   animateExit() {
-    const el = this.container
-
     const timeline = new TimelineMax()
 
-    timeline.fromTo(
-      el,
-      0.2,
-      {
-        opacity: 1,
-        scale: 1,
-      },
-      {
-        scale: 0.95,
-        opacity: 0,
-        transformOrigin: '50% 50%',
-        ease: Circ.easeIn,
-      }
-    )
+    timeline.to(this.container, 0.2, {
+      scale: 0.95,
+      autoAlpha: 0,
+      transformOrigin: '50% 50%',
+      ease: Circ.easeIn,
+    })
+    return timeline
   }
 
   render() {
