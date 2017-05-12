@@ -25,12 +25,11 @@ class App extends React.Component {
           liveEase = Power1.easeOut;
     this.updateBodyBackgroundColor(nextProps)
     if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
-      console.clear()
-      console.log('live view')
       TweenMax.from(this.centerRight, liveTiming, {
-        scale: liveScale,
-        transformOrigin: '0% 0%',
-        ease: liveEase
+        scale: 0.3,
+        opacity: 0,
+        transformOrigin: '100% 0%',
+        ease: Power4.easeOut
       })
       TweenMax.from(this.centerLeft, liveTiming, {
         scale: liveScale,
@@ -39,39 +38,23 @@ class App extends React.Component {
       })
     }
     if (this.props.sections.centerRight && !nextProps.sections.centerRight) {
-      //collection of components
-      console.clear()
-      console.log('collection')
-      TweenMax.from(this.centerMain, liveTiming, {
-        scale: 0.95,
-        y: 10,
-        transformOrigin: '50% 50%',
-        ease: liveEase,
-      })
+      //removing this view
     }
-
     if (nextProps.sections.bottom && !this.props.sections.bottom) {
-      //live view
-      console.log('new bottom live view')
       TweenMax.fromTo(this.bottom, liveTiming, {
-        y: 10,
+        y: 300,
         opacity: 0,
       }, {
         y: 0,
         opacity: 1,
-        ease: liveEase,
+        ease: Power4.easeOut,
       })
-    }
-    if (this.props.sections.bottom && !nextProps.sections.bottom) {
-      console.log('return')
     }
   }
 
   updateBodyBackgroundColor = props => {
     const { backgroundColor } = props
-    const body = document.getElementsByTagName('html')[0]
-    console.log('update to: ', `background-color: ${backgroundColor};`)
-    TweenMax.to(body, 0.2, {
+    TweenMax.to('html', 0.2, {
       backgroundColor: `${backgroundColor}`,
       ease: Power3.easeOut
     })
