@@ -93,7 +93,9 @@ class LivePreview extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions)
-    this.updateDimensions()
+    setTimeout(() => {
+      this.updateDimensions()
+    })
   }
 
   componentWillUnmount() {
@@ -121,29 +123,29 @@ class LivePreview extends React.Component {
 
     return (
       <View>
-        {canvasWidth !== undefined && canvasHeight !== undefined
-          ? <LiveCanvas
-              ref={c => (this.liveCanvas = c)}
-              width={canvasWidth}
-              height={canvasHeight}
-              zoom={zoom}
-              onChangeZoom={onChangeZoom}
-            >
-              <Frame
-                name={name}
-                tree={TreeUtils.createTree(tree)}
-                bundles={bundles}
-                React={React}
-                ReactDOM={ReactDOM}
-                harnessElement={harnessElement}
-                theme={{
-                  frame: {
-                    backgroundColor: backgroundColor,
-                  },
-                }}
-              />
-            </LiveCanvas>
-          : null}
+        <LiveCanvas
+          ref={c => (this.liveCanvas = c)}
+          width={canvasWidth}
+          height={
+            canvasHeight !== undefined && canvasHeight > 0 ? canvasHeight : 'inherit'
+          }
+          zoom={zoom}
+          onChangeZoom={onChangeZoom}
+        >
+          <Frame
+            name={name}
+            tree={TreeUtils.createTree(tree)}
+            bundles={bundles}
+            React={React}
+            ReactDOM={ReactDOM}
+            harnessElement={harnessElement}
+            theme={{
+              frame: {
+                backgroundColor: backgroundColor,
+              },
+            }}
+          />
+        </LiveCanvas>
       </View>
     )
   }
