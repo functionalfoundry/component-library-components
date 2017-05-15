@@ -172,6 +172,7 @@ const defaultTheme = (props: Props) => ({
     '@media (max-width: 800px)': {
       display: 'none',
     },
+    overflow: 'scroll',
   },
 })
 
