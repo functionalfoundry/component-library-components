@@ -58,7 +58,7 @@ const regularTree = ComponentTree({
         id: 'list-title-prop',
         name: 'title',
         value: PropValue({
-          value: 'Users',
+          value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
       }),

@@ -36,7 +36,10 @@ const defaultTheme = {
     color: '#009e71',
   },
   propValue: {
+    display: 'flex',
     minWidth: '1em',
+    maxWidth: '20em',
+    textOverflow: 'ellipsis',
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,

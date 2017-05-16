@@ -104,6 +104,16 @@ const defaultTheme = {
       background: Colors.grey200,
     },
   },
+  propValueContainer: {
+    display: 'flex',
+    maxWidth: '400px !important',
+    textAlign: 'left',
+  },
+  propValue: {
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
+    width: '100%',
+  },
   text: {
     position: 'relative',
   },
@@ -598,8 +608,10 @@ class PropValueRenderer extends React.Component {
               />
             }
           >
-            <span>
-              {children}
+            <span {...theme.propValueContainer}>
+              <div {...theme.propValue}>
+                {children}
+              </div>
             </span>
           </Popover>
         </View>
