@@ -40,6 +40,7 @@ const defaultTheme = {
     minWidth: '1em',
     maxWidth: '200px',
     textAlign: 'left',
+    wordBreak: 'break-all',
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,

@@ -130,6 +130,7 @@ class StringPropValueChooser extends React.Component {
             minWidth: '0.25em !important',
             maxWidth: '200px !important',
             textAlign: 'left',
+            wordBreak: 'break-all',
           },
         }}
       />
