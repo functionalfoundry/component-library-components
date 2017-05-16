@@ -45,6 +45,9 @@ const defaultTheme = {
       backgroundColor: Colors.grey200,
     },
   },
+  propClose: {
+    verticalAlign: 'bottom',
+  },
   text: {},
 }
 
@@ -89,6 +92,14 @@ const PropValue = ({ children, theme }) => (
 )
 
 const ThemedPropValue = Theme('PropValue', defaultTheme)(PropValue)
+
+const PropClose = ({ children, theme }) => (
+  <span {...theme.propClose}>
+    {children}
+  </span>
+)
+
+const ThemedPropClose = Theme('PropClose', defaultTheme)(PropClose)
 
 const Text = ({ children, theme }) => (
   <span {...theme.text}>
@@ -137,6 +148,8 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
         render: ThemedCode,
         decorate: combineDecorators(
           [
+            makeLayoutTagDecorator('prop-close', 'prop-close'),
+            makeLayoutTagDecorator('prop-value', 'prop-value'),
             makeLayoutTagDecorator('component', 'component'),
             makeLayoutTagDecorator('component-name', 'component-name'),
             makeLayoutTagDecorator('component-start', 'component-start'),
@@ -145,7 +158,6 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
             makeLayoutTagDecorator('component-close-tag-end', 'component-close-tag-end'),
             makeLayoutTagDecorator('prop-name', 'prop-name'),
             makeLayoutTagDecorator('prop-equals', 'prop-equals'),
-            makeLayoutTagDecorator('prop-value', 'prop-value'),
             makeLayoutTagDecorator('text', 'text'),
           ],
           options
@@ -157,6 +169,7 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
       'component-name': ThemedComponentName,
       'prop-name': ThemedPropName,
       'prop-value': ThemedPropValue,
+      'prop-close': ThemedPropClose,
       text: ThemedText,
     },
   },
