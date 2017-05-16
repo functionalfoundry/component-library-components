@@ -44,36 +44,45 @@ class WalkthroughDialog extends React.Component {
     }
   }
 
+  clearTransform() {
+    const timeline = new TimelineMax()
+    return timeline.set(this.container, { clearProps: 'transform' })
+  }
+
   hide() {
     const timeline = new TimelineMax()
+    return timeline.set(this.container, { autoAlpha: 0 })
+  }
 
-    timeline.set(this.container, { autoAlpha: 0 })
-
-    return timeline
+  /**
+   * Accepts a Greensock style object.
+   * See: https://greensock.com/docs/#/HTML5/GSAP/Plugins/CSSPlugin/
+   */
+  setStylesGS(style) {
+    const timeline = new TimelineMax()
+    return timeline.set(this.container, style)
   }
 
   animateEnter() {
     const timeline = new TimelineMax()
 
-    timeline.to(this.container, 0.3, {
+    return timeline.to(this.container, 0.6, {
       autoAlpha: 1,
       scale: 1,
       tranformOrigin: '50% 50%',
       ease: Circ.easeOut,
     })
-    return timeline
   }
 
   animateExit() {
     const timeline = new TimelineMax()
 
-    timeline.to(this.container, 0.2, {
+    return timeline.to(this.container, 0.2, {
       scale: 0.95,
       autoAlpha: 0,
       transformOrigin: '50% 50%',
-      ease: Circ.easeIn,
+      ease: Circ.easeOut,
     })
-    return timeline
   }
 
   render() {
