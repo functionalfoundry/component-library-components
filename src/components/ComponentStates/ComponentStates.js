@@ -39,6 +39,7 @@ type HarnessCardT = {
   element: React.Element,
   harness: HarnessT,
   isSelected: boolean,
+  extraProps?: any,
 }
 
 type PropsT = {
