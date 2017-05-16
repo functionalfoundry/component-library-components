@@ -254,37 +254,6 @@ class ComponentState extends React.Component {
                 {harnessCard.harness.componentState.name}
               </Heading>
             </View>
-            <View {...theme.actions}>
-              {((isHovering && !harnessCard.isSelected) || forceShowActions) &&
-                <StaggerChildren>
-                  {harnessCard.actions.map((action, index) => (
-                    <div
-                      {...theme.iconGroup}
-                      key={index}
-                      ref={c => (this.iconRefs[index] = c)}
-                    >
-                      {React.cloneElement(action, {
-                        ...action.props,
-                        onOpen: this.handleOpenPopup,
-                        onClose: this.handleClosePopup,
-                      })}
-                    </div>
-                  ))}
-                </StaggerChildren>}
-              {!isHovering &&
-                !harnessCard.isSelected &&
-                !forceShowActions &&
-                <div ref={c => this.storeRef('more', c)}>
-                  <RotateFade>
-                    <Icon
-                      name="more-horizontal"
-                      size="large"
-                      fill={Colors.grey700}
-                      stroke={Colors.grey700}
-                    />
-                  </RotateFade>
-                </div>}
-            </View>
           </div>
           <View {...theme.preview}>
             <LivePreview
