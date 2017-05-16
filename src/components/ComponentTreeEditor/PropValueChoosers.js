@@ -48,9 +48,9 @@ const unifyOptions = (
 }
 
 const isOptionAppropriateForProp = (option, prop: Prop, value: PropValue) => {
-  if (prop.value.type == 'function') {
+  if (prop.value.type === 'function') {
     return (
-      option.source == 'actions' && option.name !== 'setState' && option.name !== 'state'
+      option.source === 'actions' && option.name !== 'setState' && option.name !== 'state'
     )
   } else {
     return (
@@ -128,7 +128,8 @@ class StringPropValueChooser extends React.Component {
           text: {
             ...Fonts.code,
             minWidth: '0.25em !important',
-            textAlign: 'center',
+            maxWidth: '400px !important',
+            textAlign: 'left',
           },
         }}
       />
