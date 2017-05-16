@@ -128,7 +128,7 @@ class StringPropValueChooser extends React.Component {
           text: {
             ...Fonts.code,
             minWidth: '0.25em !important',
-            maxWidth: '400px !important',
+            maxWidth: '200px !important',
             textAlign: 'left',
           },
         }}

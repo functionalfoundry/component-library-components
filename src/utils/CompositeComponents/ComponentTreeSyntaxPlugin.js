@@ -38,8 +38,8 @@ const defaultTheme = {
   propValue: {
     display: 'flex',
     minWidth: '1em',
-    maxWidth: '20em',
-    textOverflow: 'ellipsis',
+    maxWidth: '200px',
+    textAlign: 'left',
     cursor: 'pointer',
     ':hover': {
       backgroundColor: Colors.grey200,
