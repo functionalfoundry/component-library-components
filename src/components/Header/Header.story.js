@@ -123,7 +123,8 @@ const actions = {
     },
   ],
   primaryAction: {
-    label: 'Save',
-    onClick: action('onSave'),
+    label: 'Share',
+    icon: 'share',
+    onClick: action('onShare'),
   },
 }

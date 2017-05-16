@@ -57,13 +57,27 @@ const ActionButton = ({ label, onClick, icon, kind = 'secondary', theme }) => {
   return (
     <div {...theme.primaryAction}>
       <Button
-        label={label}
         onClick={onClick}
         kind={kind}
+        icon={name}
         theme={{
           button: primaryStyle,
         }}
-      />
+      >
+        {icon &&
+          <Icon
+            name={icon}
+            stroke="white"
+            theme={{
+              icon: {
+                alignItems: 'center',
+                marginRight: 10,
+                marginBottom: 4,
+              },
+            }}
+          />}
+        {label}
+      </Button>
     </div>
   )
 }
