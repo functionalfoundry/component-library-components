@@ -91,7 +91,14 @@ class Properties extends React.Component {
   }
 
   render() {
-    const { properties = [], onClickPlus, onSortChange, theme, sortAsc } = this.props
+    const {
+      properties = [],
+      onClickPlus,
+      onSortChange,
+      theme,
+      sortAsc,
+      forceHoverRowIndex,
+    } = this.props
 
     return (
       <table {...theme.properties} cellSpacing="0" data-walkthrough-id="properties-table">
@@ -135,6 +142,7 @@ class Properties extends React.Component {
                 getHandleClickPlus={this.getHandleClickPlus}
                 getHandleClickMinus={this.getHandleClickMinus}
                 index={index}
+                forceHoverRowIndex={forceHoverRowIndex}
               />
             )
           })}
@@ -151,6 +159,7 @@ const Row = ({
   getHandleMouseEnter,
   getHandleClickPlus,
   getHandleClickMinus,
+  forceHoverRowIndex,
   index,
 }) => (
   <tr
@@ -164,6 +173,7 @@ const Row = ({
         {isHovering &&
           !property.isUsedByTreeEditor &&
           <HoverIcon
+            {...getDataAttributeForRow(index, forceHoverRowIndex)}
             name="primary-plus"
             hoverName="primary-plus-hover"
             onClick={getHandleClickPlus(property)}
@@ -210,6 +220,16 @@ const Row = ({
     </td>
   </tr>
 )
+
+const getDataAttributeForRow = (index, forceHoverRowIndex) => {
+  if (index === forceHoverRowIndex) {
+    return {
+      'data-walkthrough-id': 'plus-icon',
+    }
+  } else {
+    return {}
+  }
+}
 
 const cellBorder = {
   paddingTop: Spacing.tiny,
