@@ -31,7 +31,7 @@ type PropsT = {
   /**
    * Index of the selected tab.
    */
-  selectedTabIndex?: number,
+  selectedTabIndex?: ?number,
   /**
    * If set to true the contents of the Data editor will animate onto the screen
    * as if typed.
@@ -66,7 +66,10 @@ class LiveEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedIndex: props.selectedTabIndex !== undefined ? props.selectedTabIndex : 0,
+      selectedIndex: props.selectedTabIndex !== undefined &&
+        props.selectedTabIndex === null
+        ? props.selectedTabIndex
+        : 0,
       dataState: null,
       actionsState: null,
     }
@@ -97,7 +100,7 @@ class LiveEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedTabIndex !== undefined) {
+    if (nextProps.selectedTabIndex !== undefined && nextProps.selectedTabIndex !== null) {
       this.setState({ selectedIndex: nextProps.selectedTabIndex })
     }
   }
