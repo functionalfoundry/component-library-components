@@ -62,6 +62,8 @@ const defaultTheme = {
   },
   title: {
     ...Fonts.large,
+    marginTop: 20,
+    marginBottom: 20,
   },
 }
 

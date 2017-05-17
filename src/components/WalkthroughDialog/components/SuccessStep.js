@@ -213,7 +213,7 @@ const defaultTheme = {
   title: {
     ...Fonts.large,
     fontWeight: '300',
-    marginTop: '100px',
+    marginTop: 100,
   },
   message: {
     ...Fonts.base,
