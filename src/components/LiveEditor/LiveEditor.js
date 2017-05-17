@@ -67,7 +67,7 @@ class LiveEditor extends React.Component {
     super(props)
     this.state = {
       selectedIndex: props.selectedTabIndex !== undefined &&
-        props.selectedTabIndex === null
+        props.selectedTabIndex !== null
         ? props.selectedTabIndex
         : 0,
       dataState: null,
