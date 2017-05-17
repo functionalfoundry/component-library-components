@@ -214,6 +214,7 @@ const defaultTheme = {
     ...Fonts.large,
     fontWeight: '300',
     marginTop: 100,
+    textAlign: 'center',
   },
   message: {
     ...Fonts.base,

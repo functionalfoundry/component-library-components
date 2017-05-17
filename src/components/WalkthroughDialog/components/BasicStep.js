@@ -17,21 +17,23 @@ const BasicStep = ({ message, onBack, onDismiss, onForward, theme, title }: Prop
   <div>
     <h1 {...theme.title}>{title}</h1>
     <p {...theme.content}>{message}</p>
-    {onBack
-      ? <button onClick={onBack} {...theme.button}>
-          <BackIcon />
-        </button>
-      : null}
-    {onDismiss
-      ? <button onClick={onDismiss} {...theme.button}>
-          <DismissIcon />
-        </button>
-      : null}
-    {onForward
-      ? <button onClick={onForward} {...theme.button}>
-          <ForwardIcon />
-        </button>
-      : null}
+    <div {...theme.buttons}>
+      {onBack
+        ? <button onClick={onBack} {...theme.button}>
+            <BackIcon />
+          </button>
+        : null}
+      {onDismiss
+        ? <button onClick={onDismiss} {...theme.button}>
+            <DismissIcon />
+          </button>
+        : null}
+      {onForward
+        ? <button onClick={onForward} {...theme.button}>
+            <ForwardIcon />
+          </button>
+        : null}
+    </div>
   </div>
 )
 
@@ -55,6 +57,9 @@ const defaultTheme = {
     paddingLeft: 6,
     paddingRight: 6,
   },
+  buttons: {
+    textAlign: 'center',
+  },
   content: {
     ...Fonts.base,
     textAlign: 'left',
@@ -64,6 +69,7 @@ const defaultTheme = {
     ...Fonts.large,
     marginTop: 20,
     marginBottom: 20,
+    textAlign: 'center',
   },
 }
 
