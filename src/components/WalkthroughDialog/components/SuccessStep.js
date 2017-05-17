@@ -1,6 +1,8 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Back, Power4, Sine, TweenMax, TimelineMax } from 'gsap'
+import { Fonts } from '@workflo/styles'
+
 import SplitText from '../../../../vendor/greensock/minified/utils/SplitText.min'
 
 type Props = {
@@ -209,10 +211,12 @@ const defaultTheme = {
     marginTop: '-5px',
   },
   title: {
+    ...Fonts.large,
     fontWeight: '300',
     marginTop: '100px',
   },
   message: {
+    ...Fonts.base,
     textAlign: 'left',
     paddingBottom: '5px',
     lineHeight: '1.5',
