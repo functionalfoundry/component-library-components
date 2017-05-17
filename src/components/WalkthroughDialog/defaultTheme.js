@@ -6,7 +6,6 @@ const defaultTheme = {
     fontFamily: '"Khula", sans-serif',
     padding: 30,
     position: 'absolute',
-    textAlign: 'center',
     width: 270,
   },
   button: {
