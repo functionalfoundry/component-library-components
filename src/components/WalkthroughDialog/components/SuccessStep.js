@@ -217,6 +217,7 @@ const defaultTheme = {
   },
   message: {
     ...Fonts.base,
+    display: 'inline-block',
     textAlign: 'left',
     paddingBottom: '5px',
     lineHeight: '1.5',
