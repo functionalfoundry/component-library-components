@@ -110,7 +110,7 @@ class LiveEditor extends React.Component {
       theme,
     } = this.props
     return (
-      <View {...theme.liveEditor}>
+      <View {...theme.liveEditor} data-walkthrough-id="live-editor">
         <Tabs
           onSelect={this.handleSelect}
           selectedIndex={this.state.selectedIndex}
