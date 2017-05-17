@@ -1,7 +1,8 @@
 /* @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import { Colors } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
+import { verticalSizes } from '../../utils/sizes'
 
 type SectionT = {
   element: React.Element<any>,
@@ -131,6 +132,7 @@ const defaultTheme = ({ backgroundColor, sections }) => ({
     flexGrow: 1,
     flexDirection: 'column',
     backgroundColor: Colors.grey900,
+    paddingTop: Spacing.tiny,
   },
   headerContent: {
     ...appWidth,
@@ -152,9 +154,11 @@ const defaultTheme = ({ backgroundColor, sections }) => ({
   },
   centerRight: {
     ...getCenterSideStyle(getCenterRightGrow(sections.centerRight), sections),
+    flexBasis: sections.centerRight ? 260 : 0,
   },
   bottom: {
     ...appWidth,
+    paddingTop: sections.bottom ? 10 : 0,
   },
 })
 
