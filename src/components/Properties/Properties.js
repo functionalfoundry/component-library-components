@@ -11,12 +11,15 @@ export type PropertyT = {
 }
 
 type PropsT = {
+  forceHoverRowIndex?: number,
   properties: Array<PropertyT>,
   onClickPlus: Function,
   onClickMinus: Function,
 }
 
 class PropertiesContainer extends React.Component {
+  props: PropsT
+
   constructor() {
     super()
     this.state = {
@@ -38,7 +41,7 @@ class PropertiesContainer extends React.Component {
       <Properties
         {...this.props}
         sortAsc={this.state.sortAsc}
-        hoveredIndex={this.state.hoveredIndex}
+        hoveredIndex={this.props.forceHoverRowIndex || this.state.hoveredIndex}
         onSortChange={this.handleSortChange}
         onHoverChange={this.handleHoverChange}
       />
