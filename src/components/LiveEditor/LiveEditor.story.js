@@ -18,6 +18,7 @@ storiesOf('LiveEditor', module)
           actions={{ text: actionsCode }}
           onChangeData={action('onChangeData')}
           onChangeActions={action('onChangeActions')}
+          selectedTabIndex={1}
         />
       </Preview>
     </PreviewContainer>

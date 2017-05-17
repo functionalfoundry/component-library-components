@@ -52,6 +52,8 @@ const defaultTheme = {
     background: 'none',
     outline: 'none',
     verticalAlign: 'middle',
+    paddingLeft: 6,
+    paddingRight: 6,
   },
   content: {
     ...Fonts.base,

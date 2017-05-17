@@ -15,6 +15,7 @@ type PropsT = {
   onClickMinus: Function,
   selectedComponentId?: string,
   onChangeComponent: Function,
+  forceHoverRowIndex?: number,
 }
 
 const getSelectedComponentIndex = (components, id) => {
@@ -42,7 +43,13 @@ export default class MultiPropertiesTable extends React.Component {
   }
 
   render() {
-    const { components, onClickPlus, onClickMinus, selectedComponentId } = this.props
+    const {
+      components,
+      forceHoverRowIndex,
+      onClickPlus,
+      onClickMinus,
+      selectedComponentId,
+    } = this.props
     return (
       <Tabs
         kind="Primary"
@@ -65,6 +72,7 @@ export default class MultiPropertiesTable extends React.Component {
         {components.map((component, index) => (
           <TabPanel key={`panel-${index}`}>
             <Properties
+              forceHoverRowIndex={forceHoverRowIndex}
               properties={component.properties}
               onClickPlus={onClickPlus}
               onClickMinus={onClickMinus}

@@ -50,6 +50,7 @@ type PropsT = {
     actions: Array<React.Element<*>>,
     isSelected: boolean,
     forceShowActions: boolean,
+    extraProps?: any,
   },
   onClickTitle: Function,
   onChangeIsSelected: Function,
@@ -239,6 +240,7 @@ class ComponentState extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         ref={this.storeHarnessCard}
+        {...harnessCard.extraProps}
         flush
       >
         <View {...theme.section}>

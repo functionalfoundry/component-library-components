@@ -27,6 +27,7 @@ const RotateFade = require('./components/RotateFade')
 const Search = require('./components/Search')
 const StaggerChildren = require('./components/StaggerChildren')
 const SubHeader = require('./components/SubHeader')
+const WalkthroughStep = require('./components/WalkthroughStep')
 
 // Components forwarded from @workflo/components
 const Button = require('./components/Button')
@@ -65,6 +66,7 @@ const WorkfloComponents = {
   Search,
   StaggerChildren,
   SubHeader,
+  WalkthroughStep,
 }
 
 module.exports = WorkfloComponents

@@ -30,7 +30,7 @@ function loadStories() {
   require('../src/components/RepositoryChooser/RepositoryChooser.story.js')
   require('../src/components/Preferences/Preferences.story.js')
   require('../src/components/WalkthroughDialog/WalkthroughDialog.story.js')
-  require('../src/components/Walkthrough/Walkthrough.story.js')
+  require('../src/components/WalkthroughStep/Walkthrough.story.js')
 }
 
 configure(loadStories, module)
