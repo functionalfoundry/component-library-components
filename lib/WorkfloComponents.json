@@ -17,7 +17,6 @@
   "ErrorView",
   "Frame",
   "Header",
-  "LiveCanvas",
   "LiveEditor",
   "LivePreview",
   "LiveView",
@@ -33,7 +32,5 @@
   "StaggerChildren",
   "SubHeader",
   "ThemePreferences",
-  "WalkthroughBloop",
-  "WalkthroughDialog",
-  "WalkthroughStep"
+  "WalkthroughDialog"
 ]
