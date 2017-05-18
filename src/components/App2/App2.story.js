@@ -175,7 +175,6 @@ class AppContainer extends React.Component {
       case 'components':
         return (
           <App
-            backgroundColor={Colors.grey100}
             sections={{
               header: {
                 element: (
@@ -206,7 +205,6 @@ class AppContainer extends React.Component {
       case 'component states':
         return (
           <App
-            backgroundColor={Colors.grey100}
             sections={{
               header: {
                 element: (
