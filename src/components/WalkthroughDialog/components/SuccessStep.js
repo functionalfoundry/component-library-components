@@ -213,7 +213,8 @@ const defaultTheme = {
   title: {
     ...Fonts.large,
     fontWeight: '300',
-    marginTop: 100,
+    marginTop: 90,
+    marginBottom: 20,
     textAlign: 'center',
   },
   message: {
