@@ -11,7 +11,14 @@ type SectionT = {
   },
 }
 
+type PropsT = {
+  theme: Object,
+  sections: Array<SectionT>,
+  backgroundColor: string,
+}
+
 class App extends React.Component {
+  prop: PropsT
   static defaultProps = {
     backgroundColor: Colors.grey900,
   }
@@ -77,7 +84,7 @@ class App extends React.Component {
               {header.element}
             </div>
           </header>}
-        {filters && <div {...theme.filters} />}
+        {/** filters && <div {...theme.filters} /> */}
         {(centerLeft || centerRight) &&
           <main {...theme.main} ref={this.storeMain}>
             <div {...theme.centerLeft} ref={this.storeCenterLeft}>

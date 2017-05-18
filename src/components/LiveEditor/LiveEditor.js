@@ -182,6 +182,7 @@ const defaultTheme = {
     backgroundColor: 'white',
     color: Colors.grey600,
     overflowY: 'scroll',
+    flex: '1 1 auto',
   },
   liveEditorTabs: {},
 }
