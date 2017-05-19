@@ -2,6 +2,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
+import Slate from 'slate'
 import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
@@ -11,6 +12,7 @@ const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 type DataT = {
   /* Passed in on initial load to seed the editor state */
   text: string,
+  state?: ?Slate.State,
 }
 
 type PropsT = {
@@ -53,8 +55,6 @@ const defaultProps = {
 
 type StateT = {
   selectedIndex: number,
-  dataState: any,
-  actionsState: any,
 }
 
 class LiveEditor extends React.Component {
@@ -70,8 +70,6 @@ class LiveEditor extends React.Component {
         props.selectedTabIndex !== null
         ? props.selectedTabIndex
         : 0,
-      dataState: null,
-      actionsState: null,
     }
   }
 
@@ -89,14 +87,6 @@ class LiveEditor extends React.Component {
 
   handleChangePropValue = (nodeId, value) => {
     this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
-  }
-
-  handleChangeData = dataState => {
-    this.setState({ dataState })
-  }
-
-  handleChangeActions = actionsState => {
-    this.setState({ actionsState })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -154,20 +144,14 @@ class LiveEditor extends React.Component {
           </TabPanel>
           <TabPanel>
             <Data
-              state={this.state.dataState}
+              state={data.state}
               text={data.text}
               onChange={onChangeData}
-              onChangeState={this.handleChangeData}
               shouldAnimate={shouldAnimateDataEditor}
             />
           </TabPanel>
           <TabPanel>
-            <Data
-              state={this.state.actionsState}
-              text={actions.text}
-              onChange={onChangeActions}
-              onChangeState={this.handleChangeActions}
-            />
+            <Data state={actions.state} text={actions.text} onChange={onChangeActions} />
           </TabPanel>
         </Tabs>
       </View>
