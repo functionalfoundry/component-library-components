@@ -241,7 +241,6 @@ class ComponentState extends React.Component {
         onMouseLeave={this.handleMouseLeave}
         ref={this.storeHarnessCard}
         {...harnessCard.extraProps}
-        flush
       >
         <View {...theme.section}>
           <div style={{ display: 'flex' }}>
