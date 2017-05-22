@@ -52,6 +52,8 @@ type Props = {
   /** The type of WalkthroughDialog to render */
   type: 'Basic' | 'Success',
   verticalOffset: number,
+  /** Whether to do dismiss when receiving click outside the dialog */
+  dismissOnClickOutside: boolean,
 }
 
 type DefaultProps = {
@@ -68,6 +70,7 @@ type DefaultProps = {
   title: ?string,
   type: string,
   verticalOffset: number,
+  dismissOnClickOutside: boolean,
 }
 
 /**
@@ -95,6 +98,7 @@ export default class WalkthroughStep extends React.Component {
     title: null,
     type: 'Basic',
     verticalOffset: 0,
+    dismissOnClickOutside: false,
   }
 
   static childContextTypes = {
@@ -261,6 +265,7 @@ export default class WalkthroughStep extends React.Component {
             onForward={onForward && this.handleForward}
             title={title}
             type={type}
+            dismissOnClickOutside
           />
         </Portal>
         {hints.map((hint, index) => (
