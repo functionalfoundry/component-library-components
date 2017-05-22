@@ -15,7 +15,6 @@ const ErrorView = require('./components/ErrorView')
 const Header = require('./components/Header')
 const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
-const LiveView = require('./components/LiveView')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
 const OrganizationChooser = require('./components/OrganizationChooser')
 const Preferences = require('./components/Preferences')
@@ -56,7 +55,6 @@ const WorkfloComponents = {
   LiveEditor,
   LivePreview,
   RotateFade,
-  LiveView,
   MultiPropertiesTable,
   OrganizationChooser,
   Preferences,
