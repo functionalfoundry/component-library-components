@@ -17,6 +17,7 @@ type Props = {
   theme: Object,
   title: string,
   type: string,
+  dismissOnClickOutside: boolean,
 }
 
 class WalkthroughDialog extends React.Component {
@@ -38,9 +39,26 @@ class WalkthroughDialog extends React.Component {
   }
 
   componentDidMount() {
-    const { dialogRef } = this.props
+    const { dialogRef, dismissOnClickOutside } = this.props
     if (dialogRef) {
       dialogRef(this)
+    }
+    if (dismissOnClickOutside) {
+      window.addEventListener('click', this.handleClickAnywhere)
+    }
+  }
+
+  componentWillUnmount() {
+    const { dismissOnClickOutside } = this.props
+    if (dismissOnClickOutside) {
+      window.removeEventListener('click', this.handleClickAnywhere)
+    }
+  }
+
+  handleClickAnywhere = (e: Event) => {
+    const { dismissOnClickOutside, onDismiss } = this.props
+    if (dismissOnClickOutside && this.container && !this.container.contains(e.target)) {
+      onDismiss()
     }
   }
 

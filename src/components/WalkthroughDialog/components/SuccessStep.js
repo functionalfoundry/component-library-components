@@ -15,6 +15,7 @@ class SuccessStep extends React.Component {
   props: Props
   circleRefs: Array<Object>
   circleColorRef: Object
+  titleRef: Object
   messageRef: Object
 
   constructor(props) {
