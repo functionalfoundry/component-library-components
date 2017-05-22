@@ -38,6 +38,7 @@ type PropsT = {
   onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
+  onChangeMarkup?: Function,
 }
 
 const defaultProps = {}
@@ -54,7 +55,7 @@ type StateT = {
   interactionState: InteractionState,
 }
 
-const getComponentTreeEditorState = (tree: ComponentTree, layout: ComponentTreeLayout) =>
+const getComponentTreeEditorState = (tree: ComponentTree, treeMarkup: string) =>
   Raw.deserialize(
     {
       nodes: [
@@ -64,7 +65,7 @@ const getComponentTreeEditorState = (tree: ComponentTree, layout: ComponentTreeL
           nodes: [
             {
               kind: 'text',
-              text: generateTreeLayoutMarkup(layout),
+              text: treeMarkup,
             },
           ],
         },
@@ -142,7 +143,8 @@ class ComponentTreeEditor extends React.Component {
     interactionState: InteractionState
   ) => {
     const layout = generateTreeLayout(tree)
-    const editorState = getComponentTreeEditorState(tree, layout)
+    const treeMarkup = generateTreeLayoutMarkup(layout)
+    const editorState = getComponentTreeEditorState(tree, treeMarkup)
     const plugins = getComponentTreeEditorPlugins(
       this,
       tree,
@@ -150,8 +152,12 @@ class ComponentTreeEditor extends React.Component {
       props.completionData,
       interactionState
     )
+    if (props.onChangeMarkup) {
+      props.onChangeMarkup(treeMarkup)
+    }
     return {
       tree,
+      treeMarkup,
       layout,
       plugins,
       editorState,
