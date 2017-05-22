@@ -63,6 +63,7 @@ storiesOf('Header', module).add('Regular', () => (
           onClearSelection: action('onClearSelected'),
           quickActions: [
             <QuickAction
+              key="delete"
               icon="delete"
               iconKind="Primary"
               label="Delete"
