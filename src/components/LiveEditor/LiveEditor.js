@@ -1,8 +1,9 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
-import { Colors, Spacing } from '@workflo/styles'
+import { Colors, Spacing, Fonts } from '@workflo/styles'
 import Slate from 'slate'
+import CopyToClipboard from 'react-copy-to-clipboard'
 import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
@@ -70,6 +71,8 @@ class LiveEditor extends React.Component {
         props.selectedTabIndex !== null
         ? props.selectedTabIndex
         : 0,
+      copied: false,
+      markup: '',
     }
   }
 
@@ -79,6 +82,24 @@ class LiveEditor extends React.Component {
     const { onChangeComponentTree } = this.props
     const rawTreeData = TreeUtils.getRawTreeData(tree)
     onChangeComponentTree && onChangeComponentTree(rawTreeData)
+  }
+
+  handleMarkupChange = markup => {
+    // This is a little hacky. Because I don't want to call generateTreeLayoutMarkup()
+    // multiple times in ComponentTreeEditor, and that function is called during render,
+    // I call onMarkupChange during ComponentTreeEditor's render loop. A parent
+    // can't call setState during a child's render loop so what I'm doing here
+    // is checking if the markup's actually changed and then setting a timeout
+    // to setState on the next tick
+    if (markup === this.state.markup) return
+    setTimeout(() => {
+      this.setState(state => {
+        return {
+          markup,
+        }
+      })
+    })
+
   }
 
   handleRemoveProp = nodeId => {
@@ -115,6 +136,7 @@ class LiveEditor extends React.Component {
       shouldAnimateDataEditor,
       theme,
     } = this.props
+    const { copied, markup } = this.state
     return (
       <View {...theme.liveEditor} data-walkthrough-id="live-editor">
         <Tabs
@@ -134,6 +156,7 @@ class LiveEditor extends React.Component {
               completionData={completionData}
               nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
+              onChangeMarkup={this.handleMarkupChange}
               onChangeComponentName={onChangeComponentName}
               onChangePropValue={onChangePropValue}
               onInsertComponent={onInsertComponent}
@@ -154,6 +177,21 @@ class LiveEditor extends React.Component {
             <Data state={actions.state} text={actions.text} onChange={onChangeActions} />
           </TabPanel>
         </Tabs>
+        <CopyToClipboard
+          text={markup}
+          onCopy={() => {
+            this.setState({copied: true})
+            setTimeout(() => {
+              this.setState({copied: false})
+            }, 1100)
+          }}
+        >
+          <div
+            {...theme.copy}
+          >
+            {!copied ? 'Copy' : 'Copied!'}
+          </div>
+        </CopyToClipboard>
       </View>
     )
   }
@@ -167,8 +205,18 @@ const defaultTheme = {
     color: Colors.grey600,
     overflowY: 'scroll',
     flex: '1 1 auto',
+    position: 'relative',
   },
   liveEditorTabs: {},
+  copy: {
+    ...Fonts.small,
+    fontWeight: 400,
+    position: 'absolute',
+    top: Spacing.base,
+    right: Spacing.small,
+    color: '#00719e',
+    cursor: 'pointer',
+  },
 }
 
 export default Theme('LiveEditor', defaultTheme)(LiveEditor)
