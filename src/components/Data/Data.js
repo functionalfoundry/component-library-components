@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Slate from 'slate'
 import Theme from 'js-theme'
 import TextEditor from '@workflo/components/lib/TextEditor'
 import JSEditorPlugin from '../../utils/EditorPlugins/JSEditorPlugin'
@@ -12,9 +13,8 @@ import trimLeft from '../../utils/String/trimLeft'
 
 type Props = {
   onChange: Function,
-  onChangeState: Function,
   shouldAnimate: boolean,
-  state?: any,
+  state?: ?Slate.State,
   text: string,
   theme: Object,
 }
@@ -164,24 +164,27 @@ class Data extends React.Component {
       )
     }
   }
+
   saveCursorRef = (ref: any) => {
     this._cursorRef = ref
   }
+
   saveEditorRef = (ref: any) => {
     this._editorRef = ref
   }
+
   saveTargetRef = (ref: any) => {
     this._targetRef = ref
   }
+
   render() {
-    const { state, text, onChange, onChangeState, theme } = this.props
+    const { onChange, state, text, theme } = this.props
     const { shouldAnimate } = this.state
     /** We disable the editor while animation is happening */
     return (
       <div {...theme.container}>
         <TextEditor
           onChange={onChange}
-          onChangeState={onChangeState}
           plugins={[JSEditorPlugin({})]}
           readOnly={shouldAnimate}
           ref={this.saveEditorRef}

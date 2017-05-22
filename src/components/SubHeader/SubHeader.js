@@ -94,7 +94,9 @@ const SecondaryActions = ({ secondaryActions = [], theme }) => {
   if (secondaryActions.length < 1) return null
   return (
     <div {...theme.secondaryActions}>
-      {secondaryActions.map(action => <SecondaryAction action={action} theme={theme} />)}
+      {secondaryActions.map((action, index) => (
+        <SecondaryAction key={index} action={action} theme={theme} />
+      ))}
     </div>
   )
 }

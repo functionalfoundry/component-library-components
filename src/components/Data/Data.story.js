@@ -6,6 +6,8 @@ import Preview from '@workflo/components/lib/Preview'
 import actionsBabelPlugin from '../../utils/ActionsBabelPlugin'
 import dataBabelPlugin from '../../utils/DataBabelPlugin'
 
+const Babel = require('@workflo/babel-standalone')
+
 storiesOf('Data', module)
   .add('Data plugin', () => (
     <PreviewContainer shade="light">
@@ -29,21 +31,30 @@ storiesOf('Data', module)
     </PreviewContainer>
   ))
 
-type Props = {
-  shouldAnimate: boolean,
+type PropsT = {
+  shouldAnimate?: boolean,
   text: 'string',
+  plugin: any,
 }
+
 class DataContainer extends React.Component {
-  props: Props
+  props: PropsT
+
   constructor(props) {
     super(props)
     this.state = {
       text: this.props.text,
+      state: null,
     }
   }
 
-  handleChange = text => {
-    action('onChange')(text)
+  handleChange = (text, state) => {
+    action('onChange')(text, state)
+
+    this.setState({
+      text,
+      state,
+    })
 
     const babelOptions = {
       presets: ['es2015', 'react', 'stage-0'],
@@ -65,6 +76,7 @@ class DataContainer extends React.Component {
       <Data
         shouldAnimate={this.props.shouldAnimate}
         text={this.state.text}
+        state={this.state.state}
         onChange={this.handleChange}
       />
     )
