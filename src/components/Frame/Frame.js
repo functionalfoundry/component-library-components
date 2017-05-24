@@ -56,11 +56,14 @@ class Frame extends React.Component {
           // Needed for evaluating bundles
           window.production = 'production'
 
+          function evaluateBundle (bundle) {
+            const evaluated = eval(bundle || '') // eslint-disable-line no-eval
+            return (evaluated && (evaluated.default || evaluated)) || null
+          }
+
           function evaluateBundles (bundles) {
-            return Object.keys(bundles).reduce(function (out, key) {
-              const evaluated = eval(bundles[key] || '') // eslint-disable-line no-eval
-              const result = (evaluated && (evaluated.default || evaluated)) || null
-              out[key] = result
+            return Object.keys(bundles).reduce(function (out, name) {
+              out[name] = evaluateBundle(bundles[name])
               return out
             }, {})
           }
@@ -99,6 +102,22 @@ class Frame extends React.Component {
             }
           }
 
+          function updateImplementations (newBundles) {
+            bundles = window.bundles || {}
+            implementations = window.implementations || {}
+
+            Object.keys(newBundles).forEach(function (name) {
+              if (bundles[name] !== newBundles[name]) {
+                console.log('Bundle for', name, 'changed')
+                implementations[name] = evaluateBundle(newBundles[name])
+                bundles[name] = newBundles[name]
+              }
+            })
+
+            window.bundles = bundles
+            window.implementations = implementations
+          }
+
           window.renderComponentTree = function () {
             const bundles = __workflo_data.bundles
             const harnessElement = __workflo_data.harnessElement
@@ -107,11 +126,10 @@ class Frame extends React.Component {
             window.React = React
             window.ReactDOM = ReactDOM
 
-            const implementations = evaluateBundles(bundles)
-            const treeElement = realizeComponentTree(tree, implementations)
-            const harness = React.cloneElement(harnessElement, {
-              children: treeElement,
-            })
+            updateImplementations(bundles)
+
+            const treeElement = realizeComponentTree(tree, window.implementations)
+            const harness = React.cloneElement(harnessElement, {}, treeElement)
             const root = document.getElementById('root')
             ReactDOM.render(harness, root)
           }
