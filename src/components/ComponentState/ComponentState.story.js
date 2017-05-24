@@ -8,17 +8,32 @@ import { Preview, PreviewContainer } from '@workflo/components'
 const MyComponentBundle = `
   (
     function () {
-      return React.createElement(
-        "div",
-        {
-          style: {
-            backgroundColor: "magenta",
-            width: "100px",
-            height: "100px"
-          }
-        },
-        "Example component"
-      )
+      class ExampleComponent extends React.Component {
+        componentWillMount() {
+          console.log('ExampleComponent will mount')
+        }
+
+        componentWillReceiveProps() {
+          console.log('ExampleComponent will receive props')
+        }
+
+        render() {
+          return React.createElement(
+            "div",
+            {
+              key: "foo",
+              style: {
+                backgroundColor: "magenta",
+                width: "100px",
+                height: "100px"
+              }
+            },
+            "Example component"
+          )
+        }
+      }
+
+      return React.createElement(ExampleComponent, {});
     }
  )`
 
