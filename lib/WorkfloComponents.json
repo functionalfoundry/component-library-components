@@ -18,6 +18,7 @@
   "Frame",
   "Harness",
   "Header",
+  "LiveCanvas",
   "LiveEditor",
   "LivePreview",
   "MultiPropertiesTable",
