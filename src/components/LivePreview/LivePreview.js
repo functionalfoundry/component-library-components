@@ -93,7 +93,9 @@ class LivePreview extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions)
-    this.updateDimensions()
+    setTimeout(() => {
+      this.updateDimensions()
+    }, 0)
   }
 
   componentWillUnmount() {
