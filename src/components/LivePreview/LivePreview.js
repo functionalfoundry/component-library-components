@@ -116,7 +116,7 @@ class LivePreview extends React.Component {
     const { canvasWidth, canvasHeight } = this.state
 
     const harnessElement = (
-      <Harness backgroundColor={backgroundColor} alignment={alignment} />
+      <Harness key="harness" backgroundColor={backgroundColor} alignment={alignment} />
     )
 
     return (
