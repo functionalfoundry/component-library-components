@@ -243,7 +243,16 @@ export default class WalkthroughStep extends React.Component {
   }
 
   render() {
-    const { hints, message, onBack, onDismiss, onForward, title, type } = this.state
+    const {
+      dismissOnClickOutside,
+      hints,
+      message,
+      onBack,
+      onDismiss,
+      onForward,
+      title,
+      type,
+    } = this.state
     return (
       <div style={{ height: 0, width: 0 }}>
         <Portal
@@ -265,7 +274,7 @@ export default class WalkthroughStep extends React.Component {
             onForward={onForward && this.handleForward}
             title={title}
             type={type}
-            dismissOnClickOutside
+            dismissOnClickOutside={dismissOnClickOutside || type === 'Success'}
           />
         </Portal>
         {hints.map((hint, index) => (

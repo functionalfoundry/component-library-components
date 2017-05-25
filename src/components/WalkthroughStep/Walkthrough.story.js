@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '@workflo/components/lib/Button'
-import { storiesOf } from '@kadira/storybook'
+import { action, storiesOf } from '@kadira/storybook'
 import { range } from 'lodash'
 
 import WalkthroughStep from './WalkthroughStep'
@@ -108,18 +108,21 @@ class Walkthrough extends React.Component {
   }
 
   handleBack = () => {
+    action('onBack')()
     this.setState(prevState => ({
       stepIndex: prevState.stepIndex - 1,
     }))
   }
 
   handleDismiss = () => {
+    action('onDismiss')()
     this.setState(() => ({
       isActive: false,
     }))
   }
 
   handleForward = () => {
+    action('onForward')()
     this.setState(prevState => ({
       stepIndex: prevState.stepIndex + 1,
     }))
