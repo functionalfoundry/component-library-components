@@ -4,33 +4,103 @@ import { storiesOf } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import Frame from './Frame'
 
+const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+
 storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
+
+export const rawExampleTree = {
+  id: 'badge',
+  name: 'Badge',
+  props: [
+    {
+      id: '1',
+      name: 'count',
+      value: {
+        value: 50,
+        type: 'number',
+      },
+    },
+  ],
+  children: [
+    {
+      id: 'loader',
+      name: 'Loader',
+      props: [
+        {
+          id: '2',
+          name: 'color',
+          value: {
+            value: 'Secondary',
+            type: 'union',
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const exampleTree = TreeUtils.createTree(rawExampleTree)
+
+export const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
+export const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'
 
 class FetchAndRender extends React.Component {
   constructor() {
     super()
     this.state = {
-      bundle: '',
+      badge: null,
+      loader: null,
     }
   }
 
-  componentWillMount() {
-    var xhr = new XMLHttpRequest()
+  fetchBadge = () => {
+    let xhr = new XMLHttpRequest()
     xhr.onreadystatechange = () => {
-      if (xhr.readyState == XMLHttpRequest.DONE) {
-        this.setState({ bundle: xhr.responseText })
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ badge: xhr.responseText })
       }
     }
-    /** We need a bundle that has CORS enabled. I've created a ticket to do this with
-     *  Google cloud storage. For now this needs to be served locally.
-     */
-    xhr.open('GET', 'http://127.0.0.1:8080/comment.js', true)
+    xhr.open('GET', BADGE_URL, true)
     xhr.send()
   }
 
-  render() {
-    const { bundle } = this.state
+  fetchLoader = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ loader: xhr.responseText })
+      }
+    }
+    xhr.open('GET', LOADER_URL, true)
+    xhr.send()
+  }
 
-    return <Frame name="frame-1" bundle={bundle} React={React} ReactDOM={ReactDOM} />
+  componentWillMount() {
+    this.fetchBadge()
+    this.fetchLoader()
+  }
+
+  render() {
+    const { badge, loader } = this.state
+    return (
+      <PreviewContainer>
+        <Preview title="Frame">
+          <Frame
+            name="frame-1"
+            tree={exampleTree}
+            bundles={{ badge, loader }}
+            React={React}
+            ReactDOM={ReactDOM}
+            harnessElement={<HarnessComponent />}
+          />
+        </Preview>
+      </PreviewContainer>
+    )
   }
 }
+
+type HarnessComponentPropsT = {
+  children: React.Children,
+}
+
+const HarnessComponent = ({ children }: HarnessComponentPropsT) => <div>{children}</div>
