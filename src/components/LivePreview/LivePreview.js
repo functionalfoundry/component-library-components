@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Theme from 'js-theme'
 import { View } from '@workflo/components'
 import { Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
@@ -53,6 +54,14 @@ type StateT = {
   canvasWidth: ?number,
   canvasHeight: ?number,
 }
+
+/**
+ * Theming
+ */
+
+const defaultTheme = ({ backgroundColor }: Props) => ({
+  backgroundColor,
+})
 
 /**
  * LivePreview component
@@ -122,7 +131,11 @@ class LivePreview extends React.Component {
     )
 
     return (
-      <View>
+      <View
+        style={{
+          backgroundColor,
+        }}
+      >
         {canvasWidth !== undefined && canvasHeight !== undefined
           ? <LiveCanvas
               ref={c => (this.liveCanvas = c)}
@@ -130,6 +143,7 @@ class LivePreview extends React.Component {
               height={canvasHeight}
               zoom={zoom}
               onChangeZoom={onChangeZoom}
+              backgroundColor={backgroundColor}
             >
               <Frame
                 name={name}
@@ -138,6 +152,7 @@ class LivePreview extends React.Component {
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
+                backgroundColor={backgroundColor}
                 theme={{
                   frame: {
                     backgroundColor: backgroundColor,
@@ -151,7 +166,8 @@ class LivePreview extends React.Component {
   }
 }
 
-export default LivePreview
+const ThemedLivePreview = Theme('LivePreview', defaultTheme)(LivePreview)
+export default ThemedLivePreview
 
 /**
  * Harness component

@@ -1,6 +1,6 @@
 // From https://github.com/ryanseddon/react-frame-component/blob/b4437e082dcf4a8521f1ac4218c0b5d2aed81350/src/Frame.jsx
+
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 
 import { ComponentTree } from '../../utils/CompositeComponents/ComponentTree'
@@ -26,6 +26,8 @@ type PropsT = {
   name: string,
   /** Harness element to render the component inside */
   harnessElement: React.Element<any>,
+  /** Background color to use for the frame */
+  backgroundColor: string,
   /** The theme for the frame */
   theme: Object,
 }
@@ -34,10 +36,7 @@ type PropsT = {
  * State
  */
 
-type StateT = {
-  isMounted: boolean,
-  isInitialContentSet: boolean,
-}
+type StateT = {}
 
 /**
  * Evaluates and renders a React component in isolation given a particular version of
@@ -47,10 +46,14 @@ class Frame extends React.Component {
   props: PropsT
   state: StateT
 
+  _isMounted: boolean
+  _isInitialContentSet: boolean
+
   static initialContent = `
-    <!DOCTYPE html><html>
+    <!DOCTYPE html>
+    <html>
       <head></head>
-      <body style="margin:0px; padding:0px">
+      <body style="margin:0px; padding:0px;">
         <div id="root" />
         <script>
           // Needed for evaluating bundles
@@ -139,14 +142,13 @@ class Frame extends React.Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      isMounted: false,
-      isInitialContentSet: false,
-    }
+
+    this._isMounted = false
+    this._isInitialContentSet = false
   }
 
   componentDidMount() {
-    this.setState({ isMounted: true })
+    this._isMounted = true
     this.renderFrameContents()
   }
 
@@ -155,13 +157,36 @@ class Frame extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState({ isMounted: false })
+    this._isMounted = false
   }
 
   componentWillReceiveProps(nextProps) {
-    const { bundles, harnessElement, React, ReactDOM, tree } = nextProps
+    const frame = this.getFrame(nextProps)
+    this.injectData(frame, nextProps)
+    frame.renderComponentTree()
+  }
 
-    const frame = window.frames[nextProps.name]
+  /**
+   * Returns the iframe element.
+   */
+  getFrame = props => {
+    return window.frames[props.name]
+  }
+
+  /**
+   * Returns the iFrame's document
+   */
+  getDocument = () => {
+    const node = this._frame
+    if (node !== null) {
+      return node.contentDocument // eslint-disable-line
+    } else {
+      return undefined
+    }
+  }
+
+  injectData = (frame, props) => {
+    const { bundles, harnessElement, React, ReactDOM, tree } = props
 
     // Inject React and React DOM into the frame
     frame.React = React
@@ -173,70 +198,42 @@ class Frame extends React.Component {
       bundles,
       tree,
     }
-
-    frame.renderComponentTree()
-  }
-
-  /**
-   * Returns the iFrame's document
-   */
-  getDocument() {
-    const node = ReactDOM.findDOMNode(this)
-    if (node !== null) {
-      return node.contentDocument // eslint-disable-line
-    } else {
-      return undefined
-    }
   }
 
   renderFrameContents() {
-    const { bundles, harnessElement, name, React, ReactDOM, tree } = this.props
-    const { isMounted } = this.state
-    let { isInitialContentSet } = this.state
+    const { backgroundColor } = this.props
 
-    if (!isMounted) {
+    if (!this._isMounted) {
       return
     }
 
     const doc = this.getDocument()
-    if (doc !== undefined && doc.readyState === 'complete') {
+    if (doc && doc.readyState === 'complete') {
       if (doc.querySelector('div') === null) {
-        isInitialContentSet = false
+        this._isInitialContentSet = false
       }
 
-      if (!isInitialContentSet) {
+      if (!this._isInitialContentSet) {
         doc.open('text/html', 'replace')
         doc.write(Frame.initialContent)
         doc.close()
 
-        this.setState({ isInitialContentSet: true })
-
-        const frame = window.frames[name]
-
-        // Inject React and React DOM into the frame
-        frame.React = React
-        frame.ReactDOM = ReactDOM
-
-        // Inject render data into the frame
-        frame.__workflo_data = {
-          harnessElement,
-          bundles,
-          tree,
-        }
-
-        // Render the frame ASAP
-        setTimeout(() => {
-          frame.renderComponentTree()
-        })
+        this._isInitialContentSet = true
       }
+
+      const frame = this.getFrame(this.props)
+      this.injectData(frame, this.props)
+
+      // Render the frame ASAP
+      frame.renderComponentTree()
     } else {
       setTimeout(this.renderFrameContents.bind(this), 0)
     }
   }
 
   render() {
-    const { name, theme } = this.props
-    return <iframe {...theme.frame} name={name} />
+    const { name, backgroundColor, theme } = this.props
+    return <iframe ref={c => (this._frame = c)} {...theme.frame} name={name} />
   }
 }
 

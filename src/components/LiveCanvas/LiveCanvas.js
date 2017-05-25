@@ -3,6 +3,8 @@ import Theme from 'js-theme'
 import { View } from '@workflo/components'
 
 type PropsT = {
+  /* Background color to use for the canvas */
+  backgroundColor: string,
   /* Rendered inside the canvas */
   children: React.Children,
   /* Zoom level from 0 to 200 */
@@ -20,6 +22,7 @@ type PropsT = {
 }
 
 const defaultProps = {
+  backgroundColor: 'white',
   zoom: 100,
   panX: 0,
   panY: 0,
@@ -72,9 +75,10 @@ class LiveCanvas extends React.Component {
   }
 }
 
-const defaultTheme = () => {
+const defaultTheme = ({ backgroundColor }: PropsT) => {
   return {
     liveCanvas: {
+      backgroundColor,
       boxSizing: 'border-box',
       transformOrigin: 'top left',
       position: 'absolute',
