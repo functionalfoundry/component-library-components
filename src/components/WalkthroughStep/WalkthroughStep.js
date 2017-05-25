@@ -274,7 +274,7 @@ export default class WalkthroughStep extends React.Component {
             onForward={onForward && this.handleForward}
             title={title}
             type={type}
-            dismissOnClickOutside={dismissOnClickOutside}
+            dismissOnClickOutside={dismissOnClickOutside || type === 'Success'}
           />
         </Portal>
         {hints.map((hint, index) => (
