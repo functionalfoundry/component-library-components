@@ -14,6 +14,7 @@ import {
 import ComponentTreeEditor from './ComponentTreeEditor'
 
 const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+const TreeLayout = require('../../utils/CompositeComponents/ComponentTreeLayout')
 
 const completionData = {
   components: ['List', 'ListItem'],
@@ -291,10 +292,14 @@ class TreeEditorContainer extends React.Component {
   }
 
   render() {
+    const layout = TreeLayout.generateTreeLayout(this.state.tree)
+    const markup = TreeLayout.generateTreeLayoutMarkup(layout)
     return (
       <div>
         <ComponentTreeEditor
           tree={this.state.tree}
+          layout={layout}
+          markup={markup}
           completionData={completionData}
           nodeIdGenerator={() => Math.random().toString()}
           onChange={action('onChange')}
