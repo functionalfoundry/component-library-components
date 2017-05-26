@@ -1,11 +1,9 @@
 /* @flow */
 import React from 'react'
-import {List} from 'immutable'
-import {action} from '@kadira/storybook'
-import type {
-  NodeIdentifierT,
-} from '../src/utils/CompositeComponents/ComponentTree'
+import { List } from 'immutable'
+import { action } from '@kadira/storybook'
 import {
+  type NodeIdentifierT,
   Component,
   ComponentTree,
   Prop,
@@ -65,7 +63,7 @@ export const regularTree = ComponentTree({
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({value: '10'}),
+        value: PropValue({ value: '10' }),
       }),
       Prop({
         id: 'list-on-select-prop',
@@ -84,7 +82,7 @@ export const regularTree = ComponentTree({
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
-            value: PropValue({value: '0'}),
+            value: PropValue({ value: '0' }),
           }),
         ]),
         text: 'First list item',
@@ -96,7 +94,7 @@ export const regularTree = ComponentTree({
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
-            value: PropValue({value: '1'}),
+            value: PropValue({ value: '1' }),
           }),
         ]),
         text: 'Second list item',
@@ -116,17 +114,17 @@ export const regularTree = ComponentTree({
 
 type TreeEditorContainerPropsT = {
   tree: ComponentTree,
-};
+}
 
 type TreeEditorContainerStateT = {
   tree: ComponentTree,
-};
+}
 
 export class TreeEditorContainer extends React.Component {
-  props: TreeEditorContainerPropsT;
-  state: TreeEditorContainerStateT;
+  props: TreeEditorContainerPropsT
+  state: TreeEditorContainerStateT
 
-  constructor (props) {
+  constructor(props: TreeEditorContainerPropsT) {
     super(props)
     this.state = {
       tree: this.props.tree,
@@ -134,39 +132,34 @@ export class TreeEditorContainer extends React.Component {
   }
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
-    action('onRemoveProp').call(null, nodeId)
+    action('onRemoveProp')(nodeId)
     const tree = Utils.removeProp(this.state.tree, nodeId)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
-    action('onRemoveComponent').call(null, nodeId)
+    action('onRemoveComponent')(nodeId)
     const tree = Utils.removeComponent(this.state.tree, nodeId)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
   handleInsertComponent = (
     parentId: NodeIdentifierT,
     index: number,
-    component: Component,
+    component: Component
   ) => {
-    action('onInsertComponent').call(null, parentId, index, component)
-    const tree = Utils.insertComponent(
-      this.state.tree,
-      parentId,
-      index,
-      component,
-    )
-    this.setState({tree})
-  };
+    action('onInsertComponent')(parentId, index, component)
+    const tree = Utils.insertComponent(this.state.tree, parentId, index, component)
+    this.setState({ tree })
+  }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
-    action('onChangeComponentName').call(null, nodeId, name)
+    action('onChangeComponentName')(nodeId, name)
     const tree = Utils.setComponentName(this.state.tree, nodeId, name)
-    this.setState({tree})
-  };
+    this.setState({ tree })
+  }
 
-  render () {
+  render() {
     return (
       <div>
         <ComponentTreeEditor
