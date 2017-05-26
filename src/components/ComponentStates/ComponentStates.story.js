@@ -1,10 +1,26 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { storiesOf, action } from '@kadira/storybook'
 import { Colors } from '@workflo/styles'
 import ComponentStates from './ComponentStates'
 import QuickAction from '../QuickAction'
-import { exampleBundles, rawExampleTree } from '../ComponentState/ComponentState.story'
+
+const MockComponent = ({ children }) => (
+  <div
+    style={{
+      width: 100,
+      height: 100,
+      backgroundColor: 'magenta',
+    }}
+  >
+    {children}
+  </div>
+)
+
+const element = (
+  <MockComponent>
+    <div>Inner Text</div>
+  </MockComponent>
+)
 
 const actions = [
   <QuickAction
@@ -29,10 +45,7 @@ const actions = [
 
 const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) => ({
   actions,
-  tree: rawExampleTree,
-  bundles: exampleBundles,
-  React: React,
-  ReactDOM: ReactDOM,
+  element,
   harness: {
     id: Math.random().toString(),
     componentState: {
