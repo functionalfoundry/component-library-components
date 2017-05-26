@@ -8,6 +8,7 @@ import ComponentTreeEditor from '../ComponentTreeEditor'
 import Data from '../Data'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
+const TreeLayout = require('../../utils/CompositeComponents/ComponentTreeLayout')
 const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
 
 type DataT = {
@@ -56,6 +57,7 @@ const defaultProps = {
 
 type StateT = {
   selectedIndex: number,
+  markup: string,
 }
 
 class LiveEditor extends React.Component {
@@ -82,24 +84,6 @@ class LiveEditor extends React.Component {
     const { onChangeComponentTree } = this.props
     const rawTreeData = TreeUtils.getRawTreeData(tree)
     onChangeComponentTree && onChangeComponentTree(rawTreeData)
-  }
-
-  handleMarkupChange = markup => {
-    // This is a little hacky. Because I don't want to call generateTreeLayoutMarkup()
-    // multiple times in ComponentTreeEditor, and that function is called during render,
-    // I call onMarkupChange during ComponentTreeEditor's render loop. A parent
-    // can't call setState during a child's render loop so what I'm doing here
-    // is checking if the markup's actually changed and then setting a timeout
-    // to setState on the next tick
-    if (markup === this.state.markup) return
-    setTimeout(() => {
-      this.setState(state => {
-        return {
-          markup,
-        }
-      })
-    })
-
   }
 
   handleRemoveProp = nodeId => {
@@ -136,7 +120,12 @@ class LiveEditor extends React.Component {
       shouldAnimateDataEditor,
       theme,
     } = this.props
-    const { copied, markup } = this.state
+    const { copied } = this.state
+
+    const properTree = TreeUtils.createTree(componentTree)
+    const treeLayout = TreeLayout.generateTreeLayout(properTree)
+    const treeMarkup = TreeLayout.generateTreeLayoutMarkup(treeLayout)
+
     return (
       <View {...theme.liveEditor} data-walkthrough-id="live-editor">
         <Tabs
@@ -152,11 +141,12 @@ class LiveEditor extends React.Component {
           </TabList>
           <TabPanel>
             <ComponentTreeEditor
-              tree={TreeUtils.createTree(componentTree)}
+              tree={properTree}
+              layout={treeLayout}
+              markup={treeMarkup}
               completionData={completionData}
               nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
-              onChangeMarkup={this.handleMarkupChange}
               onChangeComponentName={onChangeComponentName}
               onChangePropValue={onChangePropValue}
               onInsertComponent={onInsertComponent}
@@ -178,17 +168,15 @@ class LiveEditor extends React.Component {
           </TabPanel>
         </Tabs>
         <CopyToClipboard
-          text={markup}
+          text={treeMarkup}
           onCopy={() => {
-            this.setState({copied: true})
+            this.setState({ copied: true })
             setTimeout(() => {
-              this.setState({copied: false})
+              this.setState({ copied: false })
             }, 1100)
           }}
         >
-          <div
-            {...theme.copy}
-          >
+          <div {...theme.copy}>
             {!copied ? 'Copy' : 'Copied!'}
           </div>
         </CopyToClipboard>
