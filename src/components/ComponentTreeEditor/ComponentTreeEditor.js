@@ -29,6 +29,8 @@ import type { CompletionDataT } from '../../utils/CompositeComponents/Completion
 
 type PropsT = {
   tree: ComponentTree,
+  layout: ComponentTreeLayout,
+  markup: string,
   completionData: CompletionDataT,
   nodeIdGenerator: Function,
   onChange?: Function,
@@ -38,7 +40,6 @@ type PropsT = {
   onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
-  onChangeMarkup?: Function,
 }
 
 const defaultProps = {}
@@ -49,6 +50,7 @@ const defaultProps = {}
 
 type StateT = {
   tree: ComponentTree,
+  markup: string,
   layout: ComponentTreeLayout,
   plugins: Array<Object>,
   editorState: State,
@@ -113,16 +115,12 @@ class ComponentTreeEditor extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = this.getStateFromTreeAndProps(props.tree, props, InteractionState())
+    this.state = this.getStateFromTreeAndProps(props, InteractionState())
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState(state => {
-      return this.getStateFromTreeAndProps(
-        nextProps.tree,
-        nextProps,
-        state.interactionState
-      )
+      return this.getStateFromTreeAndProps(nextProps, state.interactionState)
     })
   }
 
@@ -138,26 +136,20 @@ class ComponentTreeEditor extends React.Component {
   }
 
   getStateFromTreeAndProps = (
-    tree: ComponentTree,
-    props: PropsT,
+    { tree, markup, layout, completionData }: PropsT,
     interactionState: InteractionState
   ) => {
-    const layout = generateTreeLayout(tree)
-    const treeMarkup = generateTreeLayoutMarkup(layout)
-    const editorState = getComponentTreeEditorState(tree, treeMarkup)
+    const editorState = getComponentTreeEditorState(tree, markup)
     const plugins = getComponentTreeEditorPlugins(
       this,
       tree,
       layout,
-      props.completionData,
+      completionData,
       interactionState
     )
-    if (props.onChangeMarkup) {
-      props.onChangeMarkup(treeMarkup)
-    }
     return {
       tree,
-      treeMarkup,
+      markup,
       layout,
       plugins,
       editorState,
@@ -167,7 +159,7 @@ class ComponentTreeEditor extends React.Component {
 
   updateInteractionState = (interactionState: InteractionState) => {
     this.setState((state, props) => {
-      return this.getStateFromTreeAndProps(props.tree, props, interactionState)
+      return this.getStateFromTreeAndProps(props, interactionState)
     })
   }
 
@@ -175,7 +167,13 @@ class ComponentTreeEditor extends React.Component {
 
   handleTreeChange = (tree: ComponentTree) => {
     this.setState((state, props) => {
-      return this.getStateFromTreeAndProps(tree, props, state.interactionState)
+      const layout = generateTreeLayout(tree)
+      const markup = generateTreeLayoutMarkup(layout)
+
+      return this.getStateFromTreeAndProps(
+        Object.assign({}, props, { tree: tree, markup: markup, layout: layout }),
+        state.interactionState
+      )
     })
     this.props.onChange && this.props.onChange(tree)
   }
