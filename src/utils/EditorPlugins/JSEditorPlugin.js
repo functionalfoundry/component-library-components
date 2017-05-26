@@ -45,7 +45,13 @@ const Keyword = ({ children, theme }) => (
 
 const ThemedKeyword = Theme('Keyword', defaultTheme)(Keyword)
 
-const Newline = () => <br />
+const Newline = ({ children }) => {
+  return (
+    <span>
+      {children.split('').filter(c => c === '\n').map(() => <br />)}
+    </span>
+  )
+}
 
 /**
  * Decorators
