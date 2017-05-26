@@ -185,7 +185,7 @@ class Data extends React.Component {
       <div {...theme.container}>
         <TextEditor
           onChange={onChange}
-          plugins={[JSEditorPlugin({})]}
+          plugins={[JSEditorPlugin({ shouldAnimate })]}
           readOnly={shouldAnimate}
           ref={this.saveEditorRef}
           state={state}

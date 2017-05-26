@@ -131,7 +131,9 @@ const combineDecorators = (decorators: Array<Function>, options) => {
  * CodeEditorPlugin
  */
 
-type PluginOptions = {}
+type PluginOptions = {
+  shouldAnimate: boolean,
+}
 
 const JSEditorPlugin = (options: PluginOptions) => {
   return {
@@ -139,7 +141,11 @@ const JSEditorPlugin = (options: PluginOptions) => {
       nodes: {
         code: {
           decorate: combineDecorators(
-            [decorateIdentifiers, decorateKeywords, decorateNewlines],
+            [
+              decorateIdentifiers,
+              decorateKeywords,
+              ...(options.shouldAnimate ? [decorateNewlines] : []),
+            ],
             options
           ),
         },
