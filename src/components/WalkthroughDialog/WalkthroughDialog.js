@@ -55,7 +55,7 @@ class WalkthroughDialog extends React.Component {
       }
     } else {
       if (nextProps.dismissOnClickOutside !== this.props.dismissOnClickOutside) {
-        window.removeEventListenber('click', this.handleClickAnywhere)
+        window.removeEventListener('click', this.handleClickAnywhere)
       }
     }
   }
