@@ -30,13 +30,23 @@ const Utils = require('./ComponentTreeUtils')
 
 export type InteractionStateT = {
   editingComponentId?: NodeIdentifierT,
+  focusedNodeId?: NodeIdentifierT,
 }
 
 const InteractionState = Record({
   editingComponentId: null,
+  focusedNodeId: null,
 })
 
 export { InteractionState }
+
+/**
+ * Interaction helpers
+ */
+
+const isFocusedNode = (interactionState: InteractionState, node: any) => {
+  return interactionState.focusedNodeId === node.id
+}
 
 /**
  * Plugin options
@@ -53,6 +63,7 @@ type PluginOptionsT = {
   onInsertComponent?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
+  onFocusNode?: Function,
 }
 
 /**
@@ -348,12 +359,22 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
+  isOpenTag = () => {
+    const openMarks = this.props.marks.filter(
+      mark => mark.get('type') === 'component-open-tag-name'
+    )
+    return !openMarks.isEmpty()
+  }
+
   componentDidMount() {
     const { options } = this.props
     const component = this.getComponent(this.props)
     const interactionState = options.interactionState
-    const focus = component.id === interactionState.editingComponentId
-    if (focus && this.editableText) {
+    if (
+      this.editableText &&
+      this.isOpenTag() &&
+      isFocusedNode(interactionState, component)
+    ) {
       this.editableText.getWrappedInstance().focusAndSelect()
     }
   }
@@ -403,7 +424,7 @@ class ComponentNameRenderer extends React.Component {
     const { value, filteredComponentNames } = this.state
 
     return (
-      <View {...theme.componentName} inline>
+      <View {...theme.componentName} inline onClick={this.handleClick}>
         <AutoSuggest
           suggestions={filteredComponentNames}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -430,11 +451,14 @@ class ComponentNameRenderer extends React.Component {
     )
   }
 
-  handleStartEdit = () => {
-    this.setState({ isEditing: true })
+  handleClick = () => {
     const { options } = this.props
     const component = this.getComponent(this.props)
-    options.onSelectComponent && options.onSelectComponent(component.id)
+    options.onFocusNode && options.onFocusNode(component)
+  }
+
+  handleStartEdit = () => {
+    this.setState({ isEditing: true })
   }
 
   handleStopEdit = () => {
@@ -481,14 +505,26 @@ class PropNameRenderer extends React.Component {
 
   constructor(props: MarkRendererPropsT) {
     super(props)
-    this.state = { isShowingMinus: false }
+    this.state = { isFocused: false, isShowingMinus: false }
+  }
+
+  getProp = props => this.props.mark.getIn(['data', 'element', 'data', 'prop'])
+  getPropName = props => this.props.mark.getIn(['data', 'element', 'node'])
+
+  componentDidMount() {
+    const { options } = this.props
+    const propName = this.getPropName(this.props)
+    const interactionState = options.interactionState
+    if (isFocusedNode(interactionState, propName)) {
+      console.log('Prop name is focused', propName.toJS())
+    }
   }
 
   render() {
     const { children, theme } = this.props
     const { isShowingMinus } = this.state
     return (
-      <View {...theme.propName} inline>
+      <View {...theme.propName} inline onClick={this.handleClick}>
         <View
           {...theme.propRemover}
           inline
@@ -496,13 +532,21 @@ class PropNameRenderer extends React.Component {
           onMouseLeave={this.handleMouseLeave}
         >
           {isShowingMinus &&
-            <View onClick={this.handleClick} inline>
+            <View onClick={this.handleMinusClick} inline>
               {'-'}
             </View>}
         </View>
         {children}
       </View>
     )
+  }
+
+  handleClick = () => {
+    const { options } = this.props
+    const node = this.getPropName(this.props)
+    if (options.onFocusNode) {
+      options.onFocusNode(node)
+    }
   }
 
   handleMouseEnter = () => {
@@ -513,7 +557,7 @@ class PropNameRenderer extends React.Component {
     this.setState({ isShowingMinus: false })
   }
 
-  handleClick = () => {
+  handleMinusClick = () => {
     const { mark, options } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     const tree = Utils.removeProp(options.tree, prop.id)

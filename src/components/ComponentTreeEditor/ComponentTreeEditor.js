@@ -96,6 +96,7 @@ const getComponentTreeEditorPlugins = (
     onChangePropValue: editor.handleChangePropValue,
     onChangeComponentName: editor.handleChangeComponentName,
     onSelectComponent: editor.handleSelectComponent,
+    onFocusNode: editor.handleFocusNode,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -193,7 +194,7 @@ class ComponentTreeEditor extends React.Component {
   ) => {
     component = component.set('id', this.props.nodeIdGenerator())
     this.updateInteractionState(
-      this.state.interactionState.set('editingComponentId', component.get('id'))
+      this.state.interactionState.set('focusedNodeId', component.get('id'))
     )
     const { onInsertComponent } = this.props
     onInsertComponent &&
@@ -205,15 +206,24 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
-    this.updateInteractionState(
-      this.state.interactionState.set('editingComponentId', null)
-    )
+    this.updateInteractionState(this.state.interactionState.delete('focusedNodeId'))
     const { onChangeComponentName } = this.props
     onChangeComponentName && onChangeComponentName(nodeId, name)
   }
 
   handleSelectComponent = (nodeId: NodeIdentifierT) => {
     this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+  }
+
+  handleFocusNode = (node: any) => {
+    this.updateInteractionState(
+      node !== undefined && node !== null
+        ? this.state.interactionState.set('focusedNodeId', node.id)
+        : this.state.interactionState.delete('focusedNodeId')
+    )
+    if (node.type === 'component') {
+      this.handleSelectComponent(node.id)
+    }
   }
 }
 
