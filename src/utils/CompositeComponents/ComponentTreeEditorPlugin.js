@@ -29,11 +29,11 @@ const Utils = require('./ComponentTreeUtils')
  */
 
 export type InteractionStateT = {
-  editingComponentId?: NodeIdentifierT,
+  editingNodeId?: NodeIdentifierT,
 }
 
 const InteractionState = Record({
-  editingComponentId: null,
+  editingNodeId: null,
 })
 
 export { InteractionState }

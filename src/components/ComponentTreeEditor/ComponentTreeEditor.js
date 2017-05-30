@@ -193,7 +193,7 @@ class ComponentTreeEditor extends React.Component {
   ) => {
     component = component.set('id', this.props.nodeIdGenerator())
     this.updateInteractionState(
-      this.state.interactionState.set('editingComponentId', component.get('id'))
+      this.state.interactionState.set('editingNodeId', component.get('id'))
     )
     const { onInsertComponent } = this.props
     onInsertComponent &&
@@ -205,14 +205,13 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
-    this.updateInteractionState(
-      this.state.interactionState.set('editingComponentId', null)
-    )
     const { onChangeComponentName } = this.props
+    this.updateInteractionState(this.state.interactionState.delete('editingNodeId'))
     onChangeComponentName && onChangeComponentName(nodeId, name)
   }
 
   handleSelectComponent = (nodeId: NodeIdentifierT) => {
+    this.updateInteractionState(this.state.interactionState.set('editingNodeId', nodeId))
     this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
   }
 }
