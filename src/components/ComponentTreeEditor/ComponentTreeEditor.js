@@ -37,6 +37,7 @@ type PropsT = {
   onRemoveProp?: Function,
   onRemoveComponent?: Function,
   onInsertComponent?: Function,
+  onChangePropName?: Function,
   onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
@@ -93,9 +94,11 @@ const getComponentTreeEditorPlugins = (
     onRemoveProp: editor.handleRemoveProp,
     onRemoveComponent: editor.handleRemoveComponent,
     onInsertComponent: editor.handleInsertComponent,
+    onChangePropName: editor.handleChangePropName,
     onChangePropValue: editor.handleChangePropValue,
     onChangeComponentName: editor.handleChangeComponentName,
     onSelectComponent: editor.handleSelectComponent,
+    onSelectNode: editor.handleSelectNode,
   }),
   ComponentTreeSyntaxPlugin({
     tree,
@@ -200,8 +203,15 @@ class ComponentTreeEditor extends React.Component {
       onInsertComponent(parentNodeId, index, component, component.toJS())
   }
 
+  handleChangePropName = (nodeId: NodeIdentifierT, name: any) => {
+    const { onChangePropName } = this.props
+    this.updateInteractionState(this.state.interactionState.delete('editingNodeId'))
+    onChangePropName && onChangePropName(nodeId, name)
+  }
+
   handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
-    this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
+    const { onChangePropValue } = this.props
+    onChangePropValue && onChangePropValue(nodeId, value)
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
@@ -213,6 +223,10 @@ class ComponentTreeEditor extends React.Component {
   handleSelectComponent = (nodeId: NodeIdentifierT) => {
     this.updateInteractionState(this.state.interactionState.set('editingNodeId', nodeId))
     this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+  }
+
+  handleSelectNode = (nodeId: NodeIdentifierT) => {
+    this.updateInteractionState(this.state.interactionState.set('editingNodeId', nodeId))
   }
 }
 
