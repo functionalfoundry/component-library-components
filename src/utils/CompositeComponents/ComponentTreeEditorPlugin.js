@@ -339,6 +339,7 @@ type EditableNameRendererStateT = {
   isEditing: boolean,
   name?: string,
   value: string,
+  valueChanged: boolean,
   showMinus: boolean,
 }
 
@@ -434,6 +435,7 @@ class EditableNameRenderer extends React.Component {
       isEditing: false,
       filteredNames: this.getOptions(props),
       value: this.getName(props) || '',
+      valueChanged: false,
       showMinus: false,
     }
   }
@@ -506,11 +508,12 @@ class EditableNameRenderer extends React.Component {
     }
   }
 
+  shouldRenderSuggestions = newValue => this.state.valueChanged
+
   render() {
     const { theme } = this.props
     const { filteredNames, showMinus, value } = this.state
     const node = this.getNode(this.props)
-
     return (
       <View {...theme.nameRenderer} inline onClick={this.handleStartEdit}>
         {node.nodeType === 'prop' &&
@@ -532,7 +535,7 @@ class EditableNameRenderer extends React.Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
-          shouldRenderSuggestions={() => true}
+          shouldRenderSuggestions={this.shouldRenderSuggestions}
           inputProps={{
             value: value,
             ref: c => {
@@ -560,7 +563,7 @@ class EditableNameRenderer extends React.Component {
   }
 
   handleChange = value => {
-    this.setState({ value })
+    this.setState({ value, valueChanged: true })
   }
 }
 
