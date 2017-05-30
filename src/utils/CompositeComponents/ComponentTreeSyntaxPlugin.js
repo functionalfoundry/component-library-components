@@ -153,6 +153,7 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
             makeLayoutTagDecorator('prop-value', 'prop-value'),
             makeLayoutTagDecorator('component', 'component'),
             makeLayoutTagDecorator('component-name', 'component-name'),
+            makeLayoutTagDecorator('component-open-tag-name', 'component-open-tag-name'),
             makeLayoutTagDecorator('component-start', 'component-start'),
             makeLayoutTagDecorator('component-end', 'component-end'),
             makeLayoutTagDecorator('component-open-tag-end', 'component-open-tag-end'),
