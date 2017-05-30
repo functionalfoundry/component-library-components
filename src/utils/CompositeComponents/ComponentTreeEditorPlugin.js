@@ -532,7 +532,7 @@ class EditableNameRenderer extends React.Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
-          shouldRenderSuggestions={() => true}
+          shouldRenderSuggestions={() => value !== this.getName(this.props)}
           inputProps={{
             value: value,
             ref: c => {
