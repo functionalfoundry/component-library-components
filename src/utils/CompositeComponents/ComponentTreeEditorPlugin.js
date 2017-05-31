@@ -508,7 +508,15 @@ class EditableNameRenderer extends React.Component {
     }
   }
 
-  shouldRenderSuggestions = newValue => this.state.valueChanged
+  shouldRenderSuggestions = newValue => {
+    const { options } = this.props
+    const node = this.getNode(this.props)
+    const interactionState = options.interactionState
+    return (
+      this.state.valueChanged ||
+      (node.id === interactionState.editingNodeId && newValue === '')
+    )
+  }
 
   render() {
     const { theme } = this.props
