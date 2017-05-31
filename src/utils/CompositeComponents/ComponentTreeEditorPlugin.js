@@ -339,6 +339,7 @@ type EditableNameRendererStateT = {
   isEditing: boolean,
   name?: string,
   value: string,
+  valueChanged: boolean,
   showMinus: boolean,
 }
 
@@ -435,6 +436,7 @@ class EditableNameRenderer extends React.Component {
       isEditing: false,
       filteredNames: this.getOptions(props),
       value: this.getName(props) || '',
+      valueChanged: false,
       showMinus: false,
     }
   }
@@ -473,7 +475,7 @@ class EditableNameRenderer extends React.Component {
   onSuggestionsClearRequested = () => {}
 
   handleChangeName = (event, data) => {
-    this.setState({ value: data.suggestionValue })
+    this.setState({ value: data.suggestionValue, valueChanged: true })
     const node = this.getNode(this.props)
     nameRendererImplementations[node.nodeType].handleChange(
       this.props,
@@ -509,7 +511,7 @@ class EditableNameRenderer extends React.Component {
 
   render() {
     const { theme } = this.props
-    const { filteredNames, showMinus, value } = this.state
+    const { filteredNames, showMinus, value, valueChanged } = this.state
     const node = this.getNode(this.props)
 
     return (
@@ -533,7 +535,18 @@ class EditableNameRenderer extends React.Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
-          shouldRenderSuggestions={() => value !== this.getName(this.props)}
+          shouldRenderSuggestions={newValue => {
+            if (newValue !== this.getName(this.props)) {
+              if (!valueChanged) {
+                setTimeout(() => {
+                  this.setState({ valueChanged: true })
+                })
+              }
+              return true
+            } else {
+              return valueChanged
+            }
+          }}
           inputProps={{
             value: value,
             ref: c => {
