@@ -343,6 +343,7 @@ class ComponentNameRenderer extends React.Component {
     super(props)
     this.state = {
       isEditing: false,
+      hasChangedValue: false,
       filteredComponentNames: this.getOptions(props),
       value: this.getComponent(props).name || '',
     }
@@ -398,10 +399,12 @@ class ComponentNameRenderer extends React.Component {
     }
   }
 
+  shouldRenderSuggestions = () => this.state.hasChangedValue
+
   render() {
     const { theme } = this.props
-    const { value, filteredComponentNames } = this.state
-
+    const { value, filteredComponentNames, hasChangedValue } = this.state
+    console.log('rendering: ', hasChangedValue)
     return (
       <View {...theme.componentName} inline>
         <AutoSuggest
@@ -411,7 +414,7 @@ class ComponentNameRenderer extends React.Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
-          shouldRenderSuggestions={() => true}
+          shouldRenderSuggestions={this.shouldRenderSuggestions}
           inputProps={{
             value: value,
             ref: c => {
@@ -442,7 +445,10 @@ class ComponentNameRenderer extends React.Component {
   }
 
   handleChange = value => {
-    this.setState({ value })
+    this.setState({
+      value,
+      hasChangedValue: true,
+    })
   }
 }
 
