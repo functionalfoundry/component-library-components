@@ -412,12 +412,13 @@ const nameRendererImplementations = {
 
     handleChange: (props, node, value) => {
       const { options } = props
+      const component = props.mark.getIn(['data', 'element', 'data', 'component'])
       const tree = Utils.setPropName(options.tree, node.id, value)
       if (options.onChange) {
         options.onChange(tree)
       }
       if (options.onChangePropName) {
-        options.onChangePropName(node.id, value)
+        options.onChangePropName(component.id, node.id, value)
       }
     },
   },
