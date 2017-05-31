@@ -516,7 +516,7 @@ class EditableNameRenderer extends React.Component {
     return (
       this.state.valueChanged ||
       (node.id === interactionState.editingNodeId &&
-        (newValue !== value || newValue === ''))
+        (newValue !== value || (node.nodeType === 'component' && newValue === '')))
     )
   }
 
