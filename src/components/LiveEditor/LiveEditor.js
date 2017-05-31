@@ -27,6 +27,7 @@ type PropsT = {
   onChangeComponentName?: Function,
   onChangeComponentTree?: Function,
   onChangeData: Function,
+  onChangePropName?: Function,
   onChangePropValue?: Function,
   onInsertComponent?: Function,
   onRemoveComponent?: Function,
@@ -86,14 +87,6 @@ class LiveEditor extends React.Component {
     onChangeComponentTree && onChangeComponentTree(rawTreeData)
   }
 
-  handleRemoveProp = nodeId => {
-    this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
-  }
-
-  handleChangePropValue = (nodeId, value) => {
-    this.props.onChangePropValue && this.props.onChangePropValue(nodeId, value)
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedTabIndex !== undefined && nextProps.selectedTabIndex !== null) {
       this.setState({ selectedIndex: nextProps.selectedTabIndex })
@@ -111,6 +104,7 @@ class LiveEditor extends React.Component {
       onChangeComponentName,
       onChangeComponentTree, // eslint-disable-line no-unused-vars
       onChangeData,
+      onChangePropName,
       onChangePropValue,
       onInsertComponent,
       onRemoveComponent,
@@ -148,6 +142,7 @@ class LiveEditor extends React.Component {
               nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
               onChangeComponentName={onChangeComponentName}
+              onChangePropName={onChangePropName}
               onChangePropValue={onChangePropValue}
               onInsertComponent={onInsertComponent}
               onRemoveProp={onRemoveProp}
