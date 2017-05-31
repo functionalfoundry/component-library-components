@@ -203,10 +203,14 @@ class ComponentTreeEditor extends React.Component {
       onInsertComponent(parentNodeId, index, component, component.toJS())
   }
 
-  handleChangePropName = (nodeId: NodeIdentifierT, name: any) => {
+  handleChangePropName = (
+    componentId: NodeIdentifierT,
+    nodeId: NodeIdentifierT,
+    name: any
+  ) => {
     const { onChangePropName } = this.props
     this.updateInteractionState(this.state.interactionState.delete('editingNodeId'))
-    onChangePropName && onChangePropName(nodeId, name)
+    onChangePropName && onChangePropName(componentId, nodeId, name)
   }
 
   handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
