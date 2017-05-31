@@ -510,11 +510,13 @@ class EditableNameRenderer extends React.Component {
 
   shouldRenderSuggestions = newValue => {
     const { options } = this.props
+    const { value } = this.state
     const node = this.getNode(this.props)
     const interactionState = options.interactionState
     return (
       this.state.valueChanged ||
-      (node.id === interactionState.editingNodeId && newValue === '')
+      (node.id === interactionState.editingNodeId &&
+        (newValue !== value || newValue === ''))
     )
   }
 
