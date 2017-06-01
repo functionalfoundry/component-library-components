@@ -1,22 +1,52 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { storiesOf, action } from '@kadira/storybook'
 import ComponentState from './ComponentState'
 import QuickAction from '../QuickAction'
 import { Preview, PreviewContainer } from '@workflo/components'
 
-const MyComponent = ({
-  children, // eslint-disable-line react/prop-types
-}) => (
-  <div style={{ backgroundColor: 'magenta', width: 100, height: 100 }}>
-    {children}
-  </div>
-)
+const MyComponentBundle = `
+  (
+    function () {
+      class ExampleComponent extends React.Component {
+        componentWillMount() {
+          console.log('ExampleComponent will mount')
+        }
 
-const element = (
-  <MyComponent>
-    <div>Inner Text</div>
-  </MyComponent>
-)
+        componentWillReceiveProps() {
+          console.log('ExampleComponent will receive props')
+        }
+
+        render() {
+          return React.createElement(
+            "div",
+            {
+              key: "foo",
+              style: {
+                backgroundColor: "magenta",
+                width: "100px",
+                height: "100px"
+              }
+            },
+            "Example component"
+          )
+        }
+      }
+
+      return React.createElement(ExampleComponent, {});
+    }
+ )`
+
+export const rawExampleTree = {
+  id: 'my-component',
+  name: 'MyComponent',
+  props: [],
+  children: [],
+}
+
+export const exampleBundles = {
+  'my-component': MyComponentBundle,
+}
 
 const actions = [
   <QuickAction
@@ -95,13 +125,18 @@ class Container extends React.Component {
         <ComponentState
           harnessCard={{
             actions,
-            element,
+            tree: rawExampleTree,
+            bundles: { 'my-component': MyComponentBundle },
+            React,
+            ReactDOM,
             harness: {
+              id: Date.now(),
               componentState: {
                 name: 'With title',
               },
               alignment: {
                 horizontal: 'Right',
+                vertical: 'Center',
               },
               theme: {
                 patterns: {
