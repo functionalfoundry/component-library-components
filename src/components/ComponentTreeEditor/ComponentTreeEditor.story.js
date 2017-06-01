@@ -23,6 +23,9 @@ const completionData = {
       title: {
         type: 'string',
       },
+      onSelect: {
+        type: 'function',
+      },
       listWidth: {
         type: 'number',
         options: [10, 20, 30],
@@ -285,6 +288,16 @@ class TreeEditorContainer extends React.Component {
     this.setState({ tree })
   }
 
+  handleChangePropName = (
+    componentId: NodeIdentifierT,
+    nodeId: NodeIdentifierT,
+    name: string
+  ) => {
+    action('onChangePropName')(componentId, nodeId, name)
+    const tree = Utils.setPropName(this.state.tree, nodeId, name)
+    this.setState({ tree })
+  }
+
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     action('onChangeComponentName')(nodeId, name)
     const tree = Utils.setComponentName(this.state.tree, nodeId, name)
@@ -306,6 +319,7 @@ class TreeEditorContainer extends React.Component {
           onRemoveProp={this.handleRemoveProp}
           onRemoveComponent={this.handleRemoveComponent}
           onInsertComponent={this.handleInsertComponent}
+          onChangePropName={this.handleChangePropName}
           onChangePropValue={action('onChangePropValue')}
           onChangeComponentName={this.handleChangeComponentName}
           onSelectComponent={action('onSelectComponent')}

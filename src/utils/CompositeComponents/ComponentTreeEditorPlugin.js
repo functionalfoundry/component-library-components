@@ -29,11 +29,11 @@ const Utils = require('./ComponentTreeUtils')
  */
 
 export type InteractionStateT = {
-  editingComponentId?: NodeIdentifierT,
+  editingNodeId?: NodeIdentifierT,
 }
 
 const InteractionState = Record({
-  editingComponentId: null,
+  editingNodeId: null,
 })
 
 export { InteractionState }
@@ -49,21 +49,30 @@ type PluginOptionsT = {
   onChange?: Function,
   onRemoveProp?: Function,
   onRemoveComponent?: Function,
+  onChangePropName?: Function,
   onChangePropValue?: Function,
   onInsertComponent?: Function,
   onChangeComponentName?: Function,
-  onSelectComponent?: Function,
+  onSelectNode?: Function,
 }
 
 /**
  * Mark renderers
  */
 
-const defaultTheme = {
-  componentStart: {
-    position: 'relative',
-  },
-  componentRemover: {
+const nameRendererTheme = ({ mark }: MarkRendererPropsT) => ({
+  nameRenderer: mark.getIn(['data', 'element', 'node']).nodeType === 'component'
+    ? {
+        color: '#00719e',
+        ...Fonts.code,
+      }
+    : {
+        color: '#009e71',
+        position: 'relative',
+        marginRight: '0.1em',
+        ...Fonts.code,
+      },
+  remover: {
     cursor: 'pointer',
     top: 0,
     left: '-35px',
@@ -74,15 +83,13 @@ const defaultTheme = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  componentName: {
-    color: '#00719e',
-    ...Fonts.code,
-  },
-  propName: {
+})
+
+const defaultTheme = {
+  componentStart: {
     position: 'relative',
-    color: '#009e71',
   },
-  propRemover: {
+  componentRemover: {
     cursor: 'pointer',
     top: 0,
     left: '-35px',
@@ -327,46 +334,124 @@ const ThemedComponentStartRenderer = Theme('ComponentStartRenderer', defaultThem
  * Component name renderer
  */
 
-type ComponentNameRendererStateT = {
-  filteredComponentNames: Array<string>,
+type EditableNameRendererStateT = {
+  filteredNames: Array<string>,
   isEditing: boolean,
   name?: string,
   value: string,
+  valueChanged: boolean,
+  showMinus: boolean,
 }
 
-class ComponentNameRenderer extends React.Component {
+const nameRendererImplementations = {
+  /**
+   * Specific logic for editing component names.
+   */
+  component: {
+    getName: (props, node) => node.name,
+
+    getOptions: (props, node) =>
+      (props.options &&
+        props.options.completionData &&
+        props.options.completionData.components) || [],
+
+    handleSelect: (props, node) => {
+      const { options } = props
+      if (options.onSelectComponent) {
+        options.onSelectComponent(node.id)
+      }
+    },
+
+    handleRemove: (props, node) => {
+      console.debug('Handle remove not implemented for components yet')
+    },
+
+    handleChange: (props, node, value) => {
+      const { options } = props
+      const tree = Utils.setComponentName(options.tree, node.id, value)
+      if (options.onChange) {
+        options.onChange(tree)
+      }
+      if (options.onChangeComponentName) {
+        options.onChangeComponentName(node.id, value)
+      }
+    },
+  },
+
+  /**
+   * Specific logic for editing prop names.
+   */
+  prop: {
+    getName: (props, node) => node.name,
+
+    getOptions: (props, node) => {
+      const component = props.mark.getIn(['data', 'element', 'data', 'component'])
+      const completionProps = (props.options &&
+        props.options.completionData &&
+        props.options.completionData.props &&
+        props.options.completionData.props[component.name]) || {}
+      return Object.keys(completionProps).sort()
+    },
+
+    handleSelect: (props, node) => {
+      const { options } = props
+      if (options.onSelectNode) {
+        options.onSelectNode(node.id)
+      }
+    },
+
+    handleRemove: (props, node) => {
+      const { options } = props
+      const tree = Utils.removeProp(options.tree, node.id)
+      if (options.onChange) {
+        options.onChange(tree)
+      }
+      if (options.onRemoveProp) {
+        options.onRemoveProp(node.id)
+      }
+    },
+
+    handleChange: (props, node, value) => {
+      const { options } = props
+      const component = props.mark.getIn(['data', 'element', 'data', 'component'])
+      const tree = Utils.setPropName(options.tree, node.id, value)
+      if (options.onChange) {
+        options.onChange(tree)
+      }
+      if (options.onChangePropName) {
+        options.onChangePropName(component.id, node.id, value)
+      }
+    },
+  },
+}
+
+class EditableNameRenderer extends React.Component {
   props: MarkRendererPropsT
-  state: ComponentNameRendererStateT
+  state: EditableNameRendererStateT
   editableText: EditableText
 
   constructor(props) {
     super(props)
     this.state = {
       isEditing: false,
-      filteredComponentNames: this.getOptions(props),
-      value: this.getComponent(props).name || '',
+      filteredNames: this.getOptions(props),
+      value: this.getName(props) || '',
+      valueChanged: false,
+      showMinus: false,
     }
   }
 
-  componentDidMount() {
-    const { options } = this.props
-    const component = this.getComponent(this.props)
-    const interactionState = options.interactionState
-    const focus = component.id === interactionState.editingComponentId
-    if (focus && this.editableText) {
-      this.editableText.getWrappedInstance().focusAndSelect()
-    }
-  }
-
-  getComponent = (props: MarkRendererPropsT) =>
+  getNode = (props: MarkRendererPropsT) =>
     this.props.mark.getIn(['data', 'element', 'node'])
 
+  getName = (props: MarkRendererPropsT) => {
+    const node = this.getNode(props)
+    return nameRendererImplementations[node.nodeType].getName(props, node)
+  }
+
   getOptions = (props: MarkRendererPropsT) => {
-    return (
-      (props.options &&
-        props.options.completionData &&
-        props.options.completionData.components) || []
-    )
+    const node = this.getNode(props)
+    return nameRendererImplementations[node.nodeType].getOptions(props, node)
   }
 
   getSuggestions = value => {
@@ -383,48 +468,96 @@ class ComponentNameRenderer extends React.Component {
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      filteredComponentNames: this.getSuggestions(value),
+      filteredNames: this.getSuggestions(value),
     })
   }
 
   onSuggestionsClearRequested = () => {}
 
-  handleChangeComponentName = (event, data) => {
+  handleChangeName = (event, data) => {
     this.setState({ value: data.suggestionValue })
-    const { options } = this.props
-    const component = this.getComponent(this.props)
-    if (options.onChangeComponentName) {
-      options.onChangeComponentName(component.id, data.suggestionValue)
+    const node = this.getNode(this.props)
+    nameRendererImplementations[node.nodeType].handleChange(
+      this.props,
+      node,
+      data.suggestionValue
+    )
+  }
+
+  handleMouseEnter = () => this.setState({ showMinus: true })
+  handleMouseLeave = () => this.setState({ showMinus: false })
+
+  handleMinusClick = () => {
+    const node = this.getNode(this.props)
+    nameRendererImplementations[node.nodeType].handleRemove(this.props, node)
+  }
+
+  componentDidMount() {
+    const { marks, options } = this.props
+    const node = this.getNode(this.props)
+    const interactionState = options.interactionState
+    const focus = node.id === interactionState.editingNodeId
+    if (focus && this.editableText) {
+      this.setState({ isEditing: true })
+      if (node.nodeType === 'component') {
+        if (!marks.filter(mark => mark.type === 'component-open-tag-name').isEmpty()) {
+          this.editableText.getWrappedInstance().focusAndSelect()
+        }
+      } else {
+        this.editableText.getWrappedInstance().focusAndSelect()
+      }
     }
+  }
+
+  shouldRenderSuggestions = newValue => {
+    const { options } = this.props
+    const { value } = this.state
+    const node = this.getNode(this.props)
+    const interactionState = options.interactionState
+    return (
+      this.state.valueChanged ||
+      (node.id === interactionState.editingNodeId &&
+        (newValue !== value || (node.nodeType === 'component' && newValue === '')))
+    )
   }
 
   render() {
     const { theme } = this.props
-    const { value, filteredComponentNames } = this.state
-
+    const { filteredNames, showMinus, value } = this.state
+    const node = this.getNode(this.props)
     return (
-      <View {...theme.componentName} inline>
+      <View {...theme.nameRenderer} inline onClick={this.handleStartEdit}>
+        {node.nodeType === 'prop' &&
+          <View
+            {...theme.remover}
+            inline
+            onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={this.handleMouseLeave}
+          >
+            {showMinus &&
+              <View onClick={this.handleMinusClick} inline>
+                {'-'}
+              </View>}
+          </View>}
         <AutoSuggest
-          suggestions={filteredComponentNames}
+          suggestions={filteredNames}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           renderInputComponent={renderInputComponent}
-          shouldRenderSuggestions={() => true}
+          shouldRenderSuggestions={this.shouldRenderSuggestions}
           inputProps={{
             value: value,
             ref: c => {
               this.editableText = c
             },
             isEditing: this.state.isEditing,
-            onStartEdit: this.handleStartEdit,
             onStopEdit: this.handleStopEdit,
             onChange: this.handleChange,
           }}
-          onSuggestionSelected={this.handleChangeComponentName}
+          onSuggestionSelected={this.handleChangeName}
           focusInputOnSuggestionClick
-          id="basic-example"
         />
       </View>
     )
@@ -432,9 +565,8 @@ class ComponentNameRenderer extends React.Component {
 
   handleStartEdit = () => {
     this.setState({ isEditing: true })
-    const { options } = this.props
-    const component = this.getComponent(this.props)
-    options.onSelectComponent && options.onSelectComponent(component.id)
+    const node = this.getNode(this.props)
+    return nameRendererImplementations[node.nodeType].handleSelect(this.props, node)
   }
 
   handleStopEdit = () => {
@@ -442,7 +574,7 @@ class ComponentNameRenderer extends React.Component {
   }
 
   handleChange = value => {
-    this.setState({ value })
+    this.setState({ value, valueChanged: true })
   }
 }
 
@@ -463,66 +595,9 @@ const renderInputComponent = props => (
   />
 )
 
-const ThemedComponentNameRenderer = Theme('ComponentNameRenderer', defaultTheme)(
-  ComponentNameRenderer
+const ThemedEditableNameRenderer = Theme('EditableNameRenderer', nameRendererTheme)(
+  EditableNameRenderer
 )
-
-/**
- * Property name renderer
- */
-
-type PropNameRendererStateT = {
-  isShowingMinus: boolean,
-}
-
-class PropNameRenderer extends React.Component {
-  props: MarkRendererPropsT
-  state: PropNameRendererStateT
-
-  constructor(props: MarkRendererPropsT) {
-    super(props)
-    this.state = { isShowingMinus: false }
-  }
-
-  render() {
-    const { children, theme } = this.props
-    const { isShowingMinus } = this.state
-    return (
-      <View {...theme.propName} inline>
-        <View
-          {...theme.propRemover}
-          inline
-          onMouseEnter={this.handleMouseEnter}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {isShowingMinus &&
-            <View onClick={this.handleClick} inline>
-              {'-'}
-            </View>}
-        </View>
-        {children}
-      </View>
-    )
-  }
-
-  handleMouseEnter = () => {
-    this.setState({ isShowingMinus: true })
-  }
-
-  handleMouseLeave = () => {
-    this.setState({ isShowingMinus: false })
-  }
-
-  handleClick = () => {
-    const { mark, options } = this.props
-    const prop = mark.getIn(['data', 'element', 'data', 'prop'])
-    const tree = Utils.removeProp(options.tree, prop.id)
-    options.onChange && options.onChange(tree)
-    options.onRemoveProp && options.onRemoveProp(prop.id)
-  }
-}
-
-const ThemedPropNameRenderer = Theme('PropNameRenderer', defaultTheme)(PropNameRenderer)
 
 /**
  * Property value renderer
@@ -703,13 +778,13 @@ const ComponentTreeEditorPlugin = (options: PluginOptionsT) => ({
         <ThemedComponentTagRenderer {...props} options={options} />
       ),
       'component-name': (props: Object) => (
-        <ThemedComponentNameRenderer {...props} options={options} />
+        <ThemedEditableNameRenderer {...props} options={options} />
       ),
       'component-end': (props: Object) => (
         <ThemedComponentTagRenderer {...props} options={options} />
       ),
       'prop-name': (props: Object) => (
-        <ThemedPropNameRenderer {...props} options={options} />
+        <ThemedEditableNameRenderer {...props} options={options} />
       ),
       'prop-value': (props: Object) => (
         <ThemedPropValueRenderer {...props} options={options} />
