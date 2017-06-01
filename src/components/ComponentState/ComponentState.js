@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 import { Checkbox, Icon, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
@@ -43,9 +44,15 @@ type HarnessT = {
   },
 }
 
+type BundlesT = Object
+
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
+    tree: Object,
+    bundles: BundlesT,
+    React: any,
+    ReactDOM: any,
     harness: HarnessT,
     actions: Array<React.Element<*>>,
     isSelected: boolean,
@@ -66,7 +73,10 @@ type PropsT = {
 
 const defaultProps = {
   harnessCard: {
-    element: null,
+    tree: null,
+    bundles: {},
+    React,
+    ReactDOM,
     harness: {
       componentState: {
         name: '',
@@ -139,7 +149,7 @@ class ComponentState extends React.Component {
   props: PropsT
   numOpenPopups: number
   iconRefs: Array<any>
-  harnessCard: ?React$Element<any>
+  harnessCard: ?React.Element<any>
 
   static defaultProps = defaultProps
 
@@ -258,7 +268,11 @@ class ComponentState extends React.Component {
           </div>
           <View {...theme.preview}>
             <LivePreview
-              element={harnessCard.element}
+              name={harnessCard.harness.id}
+              tree={harnessCard.tree}
+              bundles={harnessCard.bundles}
+              React={harnessCard.React}
+              ReactDOM={harnessCard.ReactDOM}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
               alignment={harnessCard.harness.alignment}
             />
@@ -274,14 +288,15 @@ const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 const defaultTheme = ({ harnessCard, isHovering }) => ({
   harnessCard: {
     display: 'flex',
-    // transition: 'all .4s ease',
     position: 'relative',
     overflow: 'hidden',
     width: 'inherit', // FIX
     height: 320, // FIX
     flex: '1',
+    background: harnessCard.harness.theme.patterns.colors.background,
   },
   section: {
+    position: 'relative',
     display: 'flex',
     alignContent: 'center',
     alignItems: 'center',
