@@ -28,16 +28,14 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const liveTiming = 0.5,
-          liveScale = 0.94,
-          liveEase = Power1.easeOut;
+    const liveTiming = 0.5, liveScale = 0.94, liveEase = Power1.easeOut
     this.updateBodyBackgroundColor(nextProps)
     if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
       TweenMax.from(this.centerRight, liveTiming, {
         scale: 0.3,
         opacity: 0,
         transformOrigin: '100% 0%',
-        ease: Power4.easeOut
+        ease: Power4.easeOut,
       })
       TweenMax.from(this.centerLeft, liveTiming, {
         scale: liveScale,
@@ -46,17 +44,22 @@ class App extends React.Component {
       })
     }
     if (this.props.sections.centerRight && !nextProps.sections.centerRight) {
-      //removing this view
+      // removing this view
     }
     if (nextProps.sections.bottom && !this.props.sections.bottom) {
-      TweenMax.fromTo(this.bottom, liveTiming, {
-        y: 300,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        ease: Power4.easeOut,
-      })
+      TweenMax.fromTo(
+        this.bottom,
+        liveTiming,
+        {
+          y: 300,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          ease: Power4.easeOut,
+        }
+      )
     }
   }
 
@@ -64,7 +67,7 @@ class App extends React.Component {
     const { backgroundColor } = props
     TweenMax.to('html', 0.2, {
       backgroundColor: `${backgroundColor}`,
-      ease: Power3.easeOut
+      ease: Power3.easeOut,
     })
   }
 
