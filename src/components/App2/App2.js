@@ -103,7 +103,6 @@ class App extends React.Component {
   }
 }
 
-const headerheight = '163px'
 const defaultCenterHeight = verticalSizes.Base
 
 const opacity = {
@@ -133,7 +132,6 @@ const defaultTheme = ({ backgroundColor, sections }) => ({
     flexDirection: 'column',
   },
   header: {
-    height: headerheight,
     alignItems: 'center',
     display: 'flex',
     flexGrow: 1,
