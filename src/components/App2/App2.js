@@ -3,33 +3,53 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Spacing } from '@workflo/styles'
 import { verticalSizes } from '../../utils/sizes'
+import { Power1, Power3, Power4, TweenMax } from 'gsap'
 
 type SectionT = {
   element: React.Element<any>,
-  layout: {
+  layout?: {
     height?: Number,
   },
 }
 
+type SectionsT = {
+  header?: SectionT,
+  centerRight?: SectionT,
+  centerLeft?: SectionT,
+  centerMain?: SectionT,
+  bottom?: SectionT,
+}
+
 type PropsT = {
   theme: Object,
-  sections: Array<SectionT>,
+  sections: SectionsT,
   backgroundColor: string,
 }
 
 class App extends React.Component {
-  prop: PropsT
+  props: PropsT
+
   static defaultProps = {
     backgroundColor: Colors.grey900,
+    sections: {},
   }
+
+  header: ?React.Component<any>
+  centerLeft: ?React.Component<any>
+  centerRight: ?React.Component<any>
+  centerMain: ?React.Component<any>
+  bottom: ?React.Component<any>
 
   componentDidMount() {
     this.updateBodyBackgroundColor(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
-    const liveTiming = 0.5, liveScale = 0.94, liveEase = Power1.easeOut
-    this.updateBodyBackgroundColor(nextProps)
+  componentWillReceiveProps(nextProps: PropsT) {
+    const liveTiming = 0.5
+    const liveScale = 0.94
+    const liveEase = Power1.easeOut
+
+    this.updateBodyBackgroundColor((nextProps: PropsT))
     if (nextProps.sections.centerRight && !this.props.sections.centerRight) {
       TweenMax.from(this.centerRight, liveTiming, {
         scale: 0.3,
@@ -77,8 +97,8 @@ class App extends React.Component {
   storeBottom = c => (this.bottom = c)
 
   render() {
-    const { theme, sections, backgroundColor } = this.props
-    const { header, filters, centerLeft, centerRight, bottom } = sections
+    const { theme, sections } = this.props
+    const { header, centerLeft, centerRight, bottom } = sections
     return (
       <div {...theme.app} id="app">
         {header &&
@@ -107,10 +127,6 @@ class App extends React.Component {
 }
 
 const defaultCenterHeight = verticalSizes.Base
-
-const opacity = {
-  opacity: 0.8,
-}
 
 const getCenterSideStyle = (flexGrow, sections) => {
   return {
