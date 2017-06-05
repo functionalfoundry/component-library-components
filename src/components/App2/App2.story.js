@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { storiesOf, action } from '@kadira/storybook'
 import { Colors } from '@workflo/styles'
 import App from './App2'
@@ -269,6 +270,8 @@ class AppContainer extends React.Component {
                       vertical: 'Center',
                     }}
                     backgroundColor="cyan"
+                    React={React}
+                    ReactDOM={ReactDOM}
                   />
                 ),
               },
@@ -356,6 +359,8 @@ const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) 
     },
   },
   isSelected,
+  React,
+  ReactDOM,
   forceShowActions: false,
 })
 
