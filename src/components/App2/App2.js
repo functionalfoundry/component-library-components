@@ -149,6 +149,7 @@ const defaultTheme = ({ backgroundColor, sections }) => ({
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'column',
+    color: Colors.grey200,
   },
   header: {
     alignItems: 'center',
