@@ -17,6 +17,7 @@ function loadStories() {
   require('../src/components/ComponentExit/ComponentExit.story.js')
   require('../src/components/ComponentState/ComponentState.story.js')
   require('../src/components/Component/Component.story.js')
+  require('../src/components/ComponentLibraryHeader/ComponentLibraryHeader.story.js')
   require('../src/components/Components/Components.story.js')
   require('../src/components/ComponentsLeftNav/ComponentsLeftNav.story.js')
   require('../src/components/ComponentStates/ComponentStates.story.js')

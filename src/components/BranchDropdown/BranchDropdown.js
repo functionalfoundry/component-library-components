@@ -5,7 +5,7 @@ import { find } from 'lodash'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import { View } from '@workflo/components'
 
-type BranchT = {
+export type BranchT = {
   id: string,
   name: string,
 }

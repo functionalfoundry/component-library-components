@@ -5,7 +5,7 @@ import { find } from 'lodash'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import { View, Icon, Tooltip } from '@workflo/components'
 
-type RepoT = {
+export type RepoT = {
   id: string,
   name: string,
   url: string,

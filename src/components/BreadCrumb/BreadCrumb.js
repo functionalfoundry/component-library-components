@@ -1,10 +1,10 @@
 import React from 'react'
 import Theme from 'js-theme'
 
-import { Colors, Fonts, Spacing } from '@workflo/styles'
+import { Colors, Fonts } from '@workflo/styles'
 import { EditableText, View } from '@workflo/components'
 
-type BreadCrumbSegmentT =
+export type BreadCrumbSegmentT =
   | {
       value: string,
       onClick: Function,
