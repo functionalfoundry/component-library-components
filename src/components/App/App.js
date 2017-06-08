@@ -1,43 +1,24 @@
+/* @flow */
+
 import React from 'react'
 import Theme from 'js-theme'
-const ScrollToPlugin = require('gsap/ScrollToPlugin')
-import { Power3, TweenMax } from 'gsap'
 import '../../utils/insertFont'
-import { ActionsT } from '../../types/Action'
-import { SearchT } from '../../types/Search'
 import { View } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
+import { type SectionsT } from '../App2'
 
-type AnimationT = Object
-
-type SectionT = {
-  element: React.Element,
-  appearAnimation: AnimationT,
-  leaveAnimation: AnimationT,
-}
-
-type LayoutT = {
-  header?: React.Element | SectionT,
-  content?: React.Element | SectionT,
-  centerLeft?: React.Element | SectionT,
-  centerRight?: React.Element | SectionT,
-  bottom?: React.Element | SectionT,
-}
-
-type Props = {
+type PropsT = {
   profile: Object,
-  layout: LayoutT,
+  sections: SectionsT,
   backgroundColor: String,
   navigation: Object,
-  actions: ActionsT,
-  search: SearchT,
   screen: string,
+  theme: any,
 }
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+  props: PropsT
+  container: React.Element<any>
 
   componentDidUpdate(prevProps) {
     if (this.props.screen !== prevProps.screen) {
@@ -46,50 +27,42 @@ class App extends React.Component {
   }
 
   render() {
-    const {
-      profile,
-      layout = {},
-      navigation = {},
-      backgroundColor,
-      actions,
-      search,
-      screen,
-      theme,
-    } = this.props
+    const { sections = {}, theme } = this.props
 
     return (
       <View ref={ref => (this.container = ref)} {...theme.container}>
-        {layout.header &&
+        {sections.header &&
           <View {...theme.header}>
             <View {...theme.center}>
               <View {...theme.maxWidth}>
-                {layout.header}
+                {sections.header.element}
               </View>
             </View>
           </View>}
         <View {...theme.content}>
           <View {...theme.center}>
             <View {...theme.maxWidth}>
-              {(layout.centerLeft || layout.centerRight) &&
+              {(sections.centerLeft || sections.centerRight) &&
                 <View {...theme.centerContainerWrapper}>
                   <View {...theme.centerContainer}>
-                    <View {...theme.centerLeftContainer}>
-                      {layout.centerLeft}
-                    </View>
-                    <View {...theme.centerRightContainer}>
-                      {layout.centerRight}
-                    </View>
+                    {sections.centerLeft &&
+                      <View {...theme.centerLeftContainer}>
+                        {sections.centerLeft.element}
+                      </View>}
+                    {sections.centerRight &&
+                      <View {...theme.centerRightContainer}>
+                        {sections.centerRight.element}
+                      </View>}
                   </View>
                 </View>}
-              {layout.content}
             </View>
           </View>
         </View>
-        {layout.bottom &&
+        {sections.bottom &&
           <View {...theme.bottom}>
             <View {...theme.center}>
               <View {...theme.maxWidth}>
-                {layout.bottom}
+                {sections.bottom.element}
               </View>
             </View>
           </View>}
@@ -98,7 +71,7 @@ class App extends React.Component {
   }
 }
 
-const defaultTheme = (props: Props) => ({
+const defaultTheme = ({ sections, backgroundColor }: PropsT) => ({
   container: {
     backgroundColor: Colors.grey900,
     color: Colors.grey200,
@@ -132,7 +105,7 @@ const defaultTheme = (props: Props) => ({
     flex: 1,
     display: 'flex',
     alignItems: 'stretch',
-    backgroundColor: props.backgroundColor,
+    backgroundColor: backgroundColor,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
     ...mediumBreakpoint,
@@ -160,7 +133,11 @@ const defaultTheme = (props: Props) => ({
   },
   centerLeftContainer: {
     display: 'flex',
-    flex: '0 1 60%',
+    ...(sections.centerLeft && sections.centerRight
+      ? {
+          flex: '0 1 60%',
+        }
+      : {}),
     alignItems: 'stretch',
     '@media (max-width: 800px)': {
       flex: 1,
@@ -168,7 +145,11 @@ const defaultTheme = (props: Props) => ({
   },
   centerRightContainer: {
     display: 'flex',
-    flex: '0 1 40%',
+    ...(sections.centerLeft && sections.centerRight
+      ? {
+          flex: '0 1 40%',
+        }
+      : {}),
     '@media (max-width: 800px)': {
       display: 'none',
     },
