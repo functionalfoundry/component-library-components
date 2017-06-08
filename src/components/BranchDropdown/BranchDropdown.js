@@ -59,10 +59,10 @@ const defaultTheme = {
   },
   innerContainer: {
     ':hover': {
-      backgroundColor: Colors.grey700,
+      backgroundColor: Colors.grey800,
     },
     ':active': {
-      backgroundColor: Colors.grey600,
+      backgroundColor: Colors.grey700,
     },
     cursor: 'pointer',
     paddingTop: Spacing.micro,
@@ -86,7 +86,7 @@ const defaultTheme = {
     borderLeftWidth: 1,
     borderLeftStyle: 'solid',
     borderLeftColor: Colors.grey500,
-    height: 40,
+    height: 51,
     marginRight: Spacing.small,
   },
 }
