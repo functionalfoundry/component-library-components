@@ -107,23 +107,18 @@ const Actions = ({ profile = {}, actions = [], search, theme }: ActionsPropsT) =
 const SEPARATOR_MARGIN = Spacing.small
 
 const defaultTheme = {
+  actions: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingLeft: Spacing.tiny,
+  },
   header: {
     display: 'flex',
     flex: '0 1 auto',
     flexDirection: 'column',
     position: 'relative',
     backgroundColor: Colors.grey900,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  subHeaderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    backgroundColor: Colors.grey800,
-    color: Colors.grey300,
-    height: 56,
   },
   leftBlock: {
     display: 'flex',
@@ -146,9 +141,16 @@ const defaultTheme = {
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
   },
+  subHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: Colors.grey800,
+    color: Colors.grey300,
+    height: 56,
+  },
   subtitleRow: {
     ...Fonts.large,
-    alignItems: 'flex-end',
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     color: 'white',
@@ -156,11 +158,9 @@ const defaultTheme = {
     justifyContent: 'flex-start',
     marginBottom: Spacing.micro,
   },
-  actions: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    paddingLeft: Spacing.tiny,
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 }
 
