@@ -8,6 +8,7 @@
   "Component",
   "ComponentEntrance",
   "ComponentExit",
+  "ComponentLibraryHeader",
   "ComponentState",
   "ComponentStates",
   "ComponentTreeEditor",
