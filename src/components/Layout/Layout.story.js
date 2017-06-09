@@ -4,7 +4,9 @@ import { Colors } from '@workflo/styles'
 
 import Layout from './'
 
-storiesOf('Layout', module).add('App', () => (
+const fillParent = { flexGrow: 1 }
+
+const AppShell = ({ children }: { children: React.Element }) => (
   <Layout.App
     theme={{
       container: {
@@ -12,18 +14,48 @@ storiesOf('Layout', module).add('App', () => (
       },
     }}
     header={
-      <div style={{ backgroundColor: Colors.primary800, height: '100%', width: '100%' }}>
+      <div style={{ backgroundColor: Colors.primary800, ...fillParent }}>
         Header
       </div>
     }
     leftNav={
-      <div style={{ backgroundColor: Colors.primary500, height: '100%', width: '100%' }}>
+      <div style={{ backgroundColor: Colors.primary900, ...fillParent }}>
         Left Nav
       </div>
     }
   >
-    <div style={{ backgroundColor: Colors.red200, height: '100%', width: '100%' }}>
-      Content
-    </div>
+    {children}
   </Layout.App>
-))
+)
+
+const LiveViewShell = ({ children }: { children: React.Element }) => (
+  <Layout.LiveView
+    rightPanel={
+      <div style={{ backgroundColor: Colors.red700, ...fillParent }}>Right Panel</div>
+    }
+    leftPanel={
+      <div style={{ backgroundColor: Colors.red800, ...fillParent }}>Left Panel</div>
+    }
+    bottomPanel={
+      <div style={{ backgroundColor: Colors.red900, ...fillParent }}>Bottom Panel</div>
+    }
+  >
+    {children}
+  </Layout.LiveView>
+)
+
+const ContentPlaceholder = () => (
+  <div style={{ backgroundColor: Colors.red200, ...fillParent }}>
+    Content
+  </div>
+)
+
+storiesOf('Layout', module)
+  .add('App', () => <AppShell><ContentPlaceholder /></AppShell>)
+  .add('LiveView', () => (
+    <AppShell>
+      <LiveViewShell>
+        <ContentPlaceholder />
+      </LiveViewShell>
+    </AppShell>
+  ))

@@ -3,6 +3,9 @@ import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
 
+import Column from './Column'
+import Row from './Row'
+
 type Props = {
   children: React.Element,
   leftNav: React.Element,
@@ -10,14 +13,7 @@ type Props = {
   theme: Object,
 }
 
-const Column = ({ children, ...props }: { children: React.Element }) => (
-  <div {...props} style={{ display: 'flex', flexDirection: 'column' }}>{children}</div>
-)
-
-const Row = ({ children, ...props }: { children: React.Element }) => (
-  <div {...props} style={{ display: 'flex', flexDirection: 'row' }}>{children}</div>
-)
-
+/** Layout provider for rendering an App shell with header, leftnav and content sections */
 const App = ({ children, header, leftNav, theme }: Props) => (
   <Row {...theme.container}>
     <Column {...theme.page}>
