@@ -1,3 +1,4 @@
+/** @flow */
 import React from 'react'
 import Theme from 'js-theme'
 
@@ -7,19 +8,28 @@ import Column from './Column'
 import Row from './Row'
 
 type Props = {
-  children: React.Element,
-  leftNav: React.Element,
-  header: React.Element,
+  children: React.Element<*>,
+  leftNav: React.Element<*>,
+  header: React.Element<*>,
+  showHeader: boolean,
+  showLeftNav: boolean,
   theme: Object,
 }
 
 /** Layout provider for rendering an App shell with header, leftnav and content sections */
-const App = ({ children, header, leftNav, theme }: Props) => (
+const App = ({
+  children,
+  header,
+  leftNav,
+  showHeader = true,
+  showLeftNav = true,
+  theme,
+}: Props) => (
   <Row {...theme.container}>
     <Column {...theme.page}>
-      <Row {...theme.header}>{header}</Row>
+      {showHeader && header && <Row {...theme.header}>{header}</Row>}
       <Row {...theme.main}>
-        <Column {...theme.leftNav}>{leftNav}</Column>
+        {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
         <Column {...theme.content}>{children}</Column>
       </Row>
     </Column>
