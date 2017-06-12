@@ -5,14 +5,14 @@ import { Colors, Spacing } from '@workflo/styles'
 import { verticalSizes } from '../../utils/sizes'
 import { Power1, Power3, Power4, TweenMax } from 'gsap'
 
-type SectionT = {
+export type SectionT = {
   element: React.Element<any>,
   layout?: {
     height?: Number,
   },
 }
 
-type SectionsT = {
+export type SectionsT = {
   header?: SectionT,
   centerRight?: SectionT,
   centerLeft?: SectionT,
