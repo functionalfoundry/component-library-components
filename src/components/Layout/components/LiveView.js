@@ -53,6 +53,7 @@ const LiveView = ({
 
 const defaultTheme = {
   bottomPanel: {
+    flexShrink: 0,
     flexBasis: 400,
   },
   container: {
