@@ -115,7 +115,7 @@ const defaultTheme = {
   },
   header: {
     display: 'flex',
-    flex: '0 1 auto',
+    flexGrow: 1,
     flexDirection: 'column',
     position: 'relative',
     backgroundColor: Colors.grey900,

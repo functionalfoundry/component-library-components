@@ -2,7 +2,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 
-import { Colors } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 
 import Column from './Column'
 import Row from './Row'
@@ -41,15 +41,20 @@ const MAX_WIDTH = 1200
 const defaultTheme = {
   container: {
     backgroundColor: Colors.grey900,
+    boxSizing: 'border-box',
     height: '100%',
     justifyContent: 'center',
+    paddingLeft: Spacing.small,
+    paddingRight: Spacing.small,
+    paddingTop: Spacing.small,
     width: '100%',
   },
   content: {
     flexGrow: 1,
   },
   header: {
-    flexBasis: 100,
+    flexBasis: 188,
+    flexShrink: 0,
   },
   leftNav: {
     flexBasis: 250,
