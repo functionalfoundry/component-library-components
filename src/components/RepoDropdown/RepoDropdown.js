@@ -30,22 +30,17 @@ const RepoDropdown = ({
   const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
   return (
     <View {...theme.container}>
-      <View {...theme.repoTitle}>
-        {selectedRepo ? selectedRepo.name : '<All Repos>'}
-      </View>
       {selectedRepo
         ? <Tooltip
             portal={<span {...theme.tooltip}>{selectedRepo.url}</span>}
             position="Bottom"
           >
-            <Icon
-              {...theme.icon}
-              name="github"
-              onClick={onClickRepoGithub}
-              size="large"
-            />
+            <Icon {...theme.icon} name="github" onClick={onClickRepoGithub} size="base" />
           </Tooltip>
         : null}
+      <View {...theme.repoTitle}>
+        {selectedRepo ? selectedRepo.name : '<All Repos>'}
+      </View>
       <View {...theme.caret}>▼</View>
     </View>
   )
@@ -70,6 +65,7 @@ const defaultTheme = {
     marginLeft: Spacing.tiny,
   },
   caret: {
+    ...Fonts.tiny,
     ':hover': {
       color: Colors.grey100,
     },
