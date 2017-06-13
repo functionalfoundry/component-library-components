@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, TextInput } from '@workflo/components'
-import { Colors } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
 type Props = {
   /** Filter state to display in left nav */
@@ -39,6 +39,7 @@ class ComponentsLeftNav extends React.Component {
   props: Props
   static defaultProps = {
     filterValue: '',
+    items: [],
   }
 
   static getSelectedIndex = ({ items, selectedId }) => {
@@ -49,8 +50,6 @@ class ComponentsLeftNav extends React.Component {
   handleSelect = index => {
     const { items, onSelect } = this.props
     if (onSelect) {
-      console.log('index: ', index)
-      console.log('selecting: ', items[index].id)
       onSelect(items[index].id)
     }
   }
@@ -59,7 +58,9 @@ class ComponentsLeftNav extends React.Component {
     const { filterValue, items, onChangeFilter, selectedId } = this.props
     return (
       <div style={{ backgroundColor: '#34393C', height: '100%', width: '100%' }}>
-        <div style={{ paddingLeft: 8, width: '100%' }}>
+        <div
+          style={{ paddingLeft: Spacing.tiny, paddingTop: Spacing.tiny, width: '100%' }}
+        >
           <TextInput label="Filter" onChange={onChangeFilter} value={filterValue} />
         </div>
         <List
