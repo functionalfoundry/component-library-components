@@ -20,30 +20,42 @@ type Props = {
   theme: Object,
 }
 
-const RepoDropdown = ({
-  onClickRepoGithub,
-  onSelectRepo,
-  repos,
-  selectedRepoId,
-  theme,
-}: Props) => {
-  const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
-  return (
-    <View {...theme.container}>
-      {selectedRepo
-        ? <Tooltip
+class RepoDropdown extends React.Component {
+  props: Props
+  constructor(props) {
+    super(props)
+    this.state = {
+      githubIconRef: null,
+    }
+  }
+  saveRefToGithubIcon = githubIconRef => this.setState({ githubIconRef })
+
+  render() {
+    const { onClickRepoGithub, onSelectRepo, repos, selectedRepoId, theme } = this.props
+    const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
+    return (
+      <View {...theme.container}>
+        {selectedRepo &&
+          <Icon
+            {...theme.icon}
+            name="github"
+            onClick={onClickRepoGithub}
+            size="base"
+            ref={this.saveRefToGithubIcon}
+          />}
+        <View {...theme.repoTitle}>
+          {selectedRepo ? selectedRepo.name : '<All Repos>'}
+        </View>
+        <View {...theme.caret}>▼</View>
+        {selectedRepo &&
+          <Tooltip
             portal={<span {...theme.tooltip}>{selectedRepo.url}</span>}
             position="Bottom"
-          >
-            <Icon {...theme.icon} name="github" onClick={onClickRepoGithub} size="base" />
-          </Tooltip>
-        : null}
-      <View {...theme.repoTitle}>
-        {selectedRepo ? selectedRepo.name : '<All Repos>'}
+            targetRef={this.state.githubIconRef}
+          />}
       </View>
-      <View {...theme.caret}>▼</View>
-    </View>
-  )
+    )
+  }
 }
 
 const defaultTheme = {
@@ -63,6 +75,8 @@ const defaultTheme = {
     },
     fill: Colors.grey300,
     marginLeft: Spacing.tiny,
+    marginRight: Spacing.tiny,
+    paddingBottom: Spacing.pico,
   },
   caret: {
     ...Fonts.tiny,
@@ -70,7 +84,6 @@ const defaultTheme = {
       color: Colors.grey100,
     },
     color: Colors.grey300,
-    paddingTop: Spacing.tiny,
     marginLeft: Spacing.tiny,
     transform: 'scale(1, .75)',
   },
@@ -85,7 +98,6 @@ const defaultTheme = {
     fontSize: 26, // TODO: FIXX
     justifyContent: 'flex-start',
     marginBottom: 0,
-    marginTop: Spacing.tiny,
   },
   tooltip: {
     ...Fonts.small,
