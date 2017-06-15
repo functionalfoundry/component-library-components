@@ -187,6 +187,21 @@ const Content = ({
           />
         </BaseQuickAction>
       )
+      case 'Custom':
+        return (
+          <BaseQuickAction
+            onOpen={onOpen}
+            onClose={onClose}
+            showLabelInButton={showLabelInButton}
+            label={label}
+            shade={shade}
+            iconKind={iconKind}
+            icon={icon}
+            onClick={onClick}
+          >
+            {input.element}
+          </BaseQuickAction>
+        )
     default:
       console.error('Invalid input type set for QuickAction')
   }
