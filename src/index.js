@@ -8,6 +8,7 @@ const Component = require('./components/Component')
 const Components = require('./components/Components')
 const ComponentEntrance = require('./components/ComponentEntrance')
 const ComponentExit = require('./components/ComponentExit')
+const ComponentLibraryHeader = require('./components/ComponentLibraryHeader')
 const ComponentState = require('./components/ComponentState')
 const ComponentStates = require('./components/ComponentStates')
 const ComponentTreeEditor = require('./components/ComponentTreeEditor')
@@ -48,6 +49,7 @@ const WorkfloComponents = {
   Components,
   ComponentEntrance,
   ComponentExit,
+  ComponentLibraryHeader,
   ComponentState,
   ComponentStates,
   ComponentTreeEditor,

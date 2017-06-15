@@ -1,3 +1,1 @@
-import ComponentLibraryHeader from './ComponentLibraryHeader'
-
-export default ComponentLibraryHeader
+module.exports = require('./ComponentLibraryHeader').default
