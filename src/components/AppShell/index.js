@@ -1,3 +1,1 @@
-import AppShell from './AppShell'
-
-export default AppShell
+module.exports = require('./AppShell').default
