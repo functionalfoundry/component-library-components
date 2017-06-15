@@ -1,5 +1,6 @@
 const App = require('./components/App')
 const App2 = require('./components/App2')
+const AppShell = require('./components/AppShell')
 const BulkActionBar = require('./components/BulkActionBar')
 const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
@@ -38,6 +39,7 @@ import dataPlugin from './utils/DataBabelPlugin'
 const WorkfloComponents = {
   App,
   App2,
+  AppShell,
   BulkActionBar,
   Button,
   Code,
