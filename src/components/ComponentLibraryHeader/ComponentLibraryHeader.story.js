@@ -9,23 +9,25 @@ import { branches, breadCrumbPath, repos } from '../../../mocks/header'
 storiesOf('ComponentLibraryHeader', module).add('Regular', () => (
   <PreviewContainer flush>
     <Preview label="Regular">
-      <ComponentLibraryHeader
-        {...actions}
-        branches={branches}
-        breadCrumbPath={breadCrumbPath}
-        onClickRepoGithub={id => action('onClickRepoGithub')(id)}
-        profile={profile}
-        title={{
-          value: 'Drawer',
-        }}
-        repos={repos}
-        selectedBranchId={1}
-        selectedRepoId={1}
-        subtitle={{
-          value: 'Collapsed',
-        }}
-        onClickBack={() => {}}
-      />
+      <ComponentLibraryHeaderWrapper>
+        <ComponentLibraryHeader
+          {...actions}
+          branches={branches}
+          breadCrumbPath={breadCrumbPath}
+          onClickRepoGithub={id => action('onClickRepoGithub')(id)}
+          profile={profile}
+          title={{
+            value: 'Drawer',
+          }}
+          repos={repos}
+          selectedBranchId={1}
+          selectedRepoId={1}
+          subtitle={{
+            value: 'Collapsed',
+          }}
+          onClickBack={() => {}}
+        />
+      </ComponentLibraryHeaderWrapper>
     </Preview>
     <Preview label="With Logo">
       <ComponentLibraryHeader
@@ -87,6 +89,25 @@ storiesOf('ComponentLibraryHeader', module).add('Regular', () => (
     </Preview>
   </PreviewContainer>
 ))
+
+class ComponentLibraryHeaderWrapper extends React.Component {
+  props: { children: React.Element<*>, initialSelectedRepoId: string | number }
+
+  constructor(props) {
+    const { initialSelectedRepoId } = props
+    super(props)
+    this.state = {
+      selectedRepoId: initialSelectedRepoId || 1,
+    }
+  }
+  render() {
+    const { children } = this.props
+    return React.cloneElement(React.Children.only(children), {
+      onSelectRepo: id => this.setState({ selectedRepoId: id }),
+      selectedRepoId: this.state.selectedRepoId,
+    })
+  }
+}
 
 const actions = {
   quickActions: [
