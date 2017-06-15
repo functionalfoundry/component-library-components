@@ -3,7 +3,7 @@ import Theme from 'js-theme'
 import { find } from 'lodash'
 
 import { Colors, Fonts, Spacing } from '@workflo/styles'
-import { View, Icon, Tooltip } from '@workflo/components'
+import { Align, List, View, Icon, Tooltip, Trigger } from '@workflo/components'
 
 export type RepoT = {
   id: string,
@@ -26,12 +26,24 @@ class RepoDropdown extends React.Component {
     super(props)
     this.state = {
       githubIconRef: null,
+      isOpen: false,
     }
   }
   saveRefToGithubIcon = githubIconRef => this.setState({ githubIconRef })
+  saveRefToDropdownTarget = dropdownTargetRef => this.setState({ dropdownTargetRef })
+  handleSelectRepo = index => {
+    const { onSelectRepo, repos } = this.props
+    const newSelectedRepo = repos[index]
+    if (typeof onSelectRepo === 'function') {
+      onSelectRepo(newSelectedRepo.id)
+    }
+    this.close()
+  }
+
+  close = () => this.setState({ isOpen: false })
 
   render() {
-    const { onClickRepoGithub, onSelectRepo, repos, selectedRepoId, theme } = this.props
+    const { onClickRepoGithub, repos, selectedRepoId, theme } = this.props
     const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
     return (
       <View {...theme.container}>
@@ -43,10 +55,33 @@ class RepoDropdown extends React.Component {
             size="base"
             ref={this.saveRefToGithubIcon}
           />}
-        <View {...theme.repoTitle}>
-          {selectedRepo ? selectedRepo.name : '<All Repos>'}
-        </View>
-        <View {...theme.caret}>▼</View>
+        <div
+          {...theme.dropdownTarget}
+          onClick={() => this.setState(prevState => ({ isOpen: !prevState.isOpen }))}
+          ref={this.saveRefToDropdownTarget}
+        >
+          <View {...theme.repoTitle}>
+            {selectedRepo ? selectedRepo.name : '<All Repos>'}
+          </View>
+          <View {...theme.caret}>▼</View>
+        </div>
+        <Align
+          isOpen={this.state.isOpen}
+          portal={
+            <Trigger triggerOn={['Click outside']} onTrigger={this.close}>
+              <View {...theme.dropdownPanel}>
+                <List
+                  data={repos ? repos.map(repo => repo.name) : []}
+                  isKeyboardFocused={this.state.isOpen}
+                  onSelect={this.handleSelectRepo}
+                />
+              </View>
+            </Trigger>
+          }
+          gravity="Bottom"
+          position="Bottom Left"
+          targetRef={this.state.dropdownTargetRef}
+        />
         {selectedRepo &&
           <Tooltip
             portal={<span {...theme.tooltip}>{selectedRepo.url}</span>}
@@ -58,7 +93,7 @@ class RepoDropdown extends React.Component {
   }
 }
 
-const defaultTheme = {
+const defaultTheme = props => ({
   container: {
     alignItems: 'center',
     color: Colors.grey300,
@@ -87,6 +122,17 @@ const defaultTheme = {
     marginLeft: Spacing.tiny,
     transform: 'scale(1, .75)',
   },
+  dropdownPanel: {
+    backgroundColor: 'white',
+    height: 100,
+    width: 300,
+  },
+  dropdownTarget: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 0,
+  },
   repoTitle: {
     ...Fonts.large,
     ':hover': {
@@ -102,6 +148,6 @@ const defaultTheme = {
   tooltip: {
     ...Fonts.small,
   },
-}
+})
 
 export default Theme('RepoDropdown', defaultTheme)(RepoDropdown)
