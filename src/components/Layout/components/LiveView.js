@@ -2,6 +2,8 @@
 import React from 'react'
 import Theme from 'js-theme'
 
+import { BreakPoints, Spacing } from '@workflo/styles'
+
 import Column from './Column'
 import Row from './Row'
 
@@ -13,6 +15,7 @@ type Props = {
   showLeftPanel: boolean,
   showRightPanel: boolean,
   showBottomPanel: boolean,
+  tabletShowLeftPanel: boolean,
   theme: Object,
 }
 
@@ -51,10 +54,10 @@ const LiveView = ({
   </Column>
 )
 
-const defaultTheme = {
+const defaultTheme = ({ tabletShowLeftPanel }) => ({
   bottomPanel: {
     flexShrink: 0,
-    flexBasis: 400,
+    flexBasis: 300,
   },
   container: {
     flexGrow: 1,
@@ -64,13 +67,21 @@ const defaultTheme = {
   },
   leftPanel: {
     flexBasis: 300,
+    overflow: 'hidden',
+    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+      flexBasis: 0,
+    },
   },
   rightPanel: {
     flexBasis: 400,
+    overflow: 'hidden',
+    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+      flexBasis: 0,
+    },
   },
   middle: {
     flexGrow: 1,
   },
-}
+})
 
 export default Theme('LiveView', defaultTheme)(LiveView)
