@@ -144,7 +144,7 @@ const defaultTheme = {
   subHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    backgroundColor: Colors.grey800,
+    backgroundColor: '#23292b',
     color: Colors.grey300,
     height: 56,
   },

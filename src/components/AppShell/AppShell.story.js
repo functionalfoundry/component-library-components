@@ -6,7 +6,7 @@ import { storiesOf, action } from '@kadira/storybook'
 import { BreakPoints, Colors, Spacing } from '@workflo/styles'
 
 import AppShell from './'
-import Components from '../Components'
+import ComponentStates from '../ComponentStates'
 import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
@@ -16,10 +16,10 @@ import {
   // propKeyValues,
   dataCode,
   actionsCode,
-  components,
 } from '../../../mocks/components'
 import { branches, breadCrumbPath, repos } from '../../../mocks/header'
 import { liveViewState } from '../../../mocks/live-view'
+import { stateCards } from '../../../mocks/componentStates'
 
 const header = (
   <ComponentLibraryHeader
@@ -56,18 +56,17 @@ const leftPanel = (
 
 const ComponentsGridContent = ({ theme }: any) => (
   <div {...theme.container}>
-    <Components components={components} />
+    <ComponentStates harnessCards={stateCards} />
   </div>
 )
 
 const ThemedComponentsGridContent = Theme('ComponentsGridContent', {
   container: {
+    backgroundColor: '#f1f1f1',
     overflow: 'scroll',
     paddingLeft: Spacing.small,
+    paddingRight: Spacing.small,
     paddingTop: Spacing.small,
-    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
-      paddingLeft: 0,
-    },
   },
 })(ComponentsGridContent)
 
