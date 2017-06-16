@@ -20,12 +20,12 @@ const defaultProps = {
   marginRight: Spacing.small,
 }
 
-const VerticalSeparator = ({ theme }: PropsT) => <div {...theme.separator} />
+const VerticalSeparator = ({ theme }: PropsT) => <div {...theme.verticalSeparator} />
 VerticalSeparator.defaultProps = defaultProps
 
 const defaultTheme = ({ color, marginLeft, marginRight }) => {
   return {
-    separator: {
+    verticalSeparator: {
       flex: '0 1 auto',
       borderLeftWidth: 1,
       borderLeftStyle: 'solid',
