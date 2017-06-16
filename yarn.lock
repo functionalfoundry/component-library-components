@@ -156,9 +156,9 @@
     rgba-regex "^1.0.0"
     xtend "^4.0.0"
 
-"@workflo/styles@^0.7.10":
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.10.tgz#eb625e8af10da70a56dae1ee9784d72ef149ffc3"
+"@workflo/styles@^0.7.10", "@workflo/styles@^0.7.11":
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.11.tgz#9def2229c86a549d3840ee0b452f3fcc9e8d6b90"
 
 abbrev@1:
   version "1.1.0"

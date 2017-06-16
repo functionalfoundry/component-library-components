@@ -1,7 +1,9 @@
 /** @flow */
 import React from 'react'
+import Theme from 'js-theme'
+
 import { storiesOf, action } from '@kadira/storybook'
-import { Colors, Spacing } from '@workflo/styles'
+import { BreakPoints, Colors, Spacing } from '@workflo/styles'
 
 import AppShell from './'
 import Components from '../Components'
@@ -52,22 +54,26 @@ const leftPanel = (
   <div style={{ backgroundColor: Colors.red800, flexGrow: 1 }}>Left Panel</div>
 )
 
-const componentsGridContent = (
-  <div
-    style={{
-      overflow: 'scroll',
-      // flexGrow: 1,
-      paddingLeft: Spacing.base,
-      paddingTop: Spacing.small,
-    }}
-  >
+const ComponentsGridContent = ({ theme }: any) => (
+  <div {...theme.container}>
     <Components components={components} />
   </div>
 )
 
+const ThemedComponentsGridContent = Theme('ComponentsGridContent', {
+  container: {
+    overflow: 'scroll',
+    paddingLeft: Spacing.small,
+    paddingTop: Spacing.small,
+    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+      paddingLeft: 0,
+    },
+  },
+})(ComponentsGridContent)
+
 storiesOf('AppShell', module)
   .add('ComponentsGrid', () => (
-    <AppShell sections={{ content: componentsGridContent, header, leftNav }} />
+    <AppShell sections={{ content: <ThemedComponentsGridContent />, header, leftNav }} />
   ))
   .add('LiveView', () => (
     <AppShell sections={{ bottomPanel, header, leftPanel, rightPanel }} />
