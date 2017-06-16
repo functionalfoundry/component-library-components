@@ -22,6 +22,7 @@ const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
 const OrganizationChooser = require('./components/OrganizationChooser')
+const OrganizationSignIn = require('./components/OrganizationSignIn')
 const Preferences = require('./components/Preferences')
 const RepoPreferences = require('./components/RepoPreferences')
 const ThemePreferences = require('./components/ThemePreferences')
@@ -70,6 +71,7 @@ const WorkfloComponents = {
   MultiPropertiesTable,
   OrganizationChooser,
   ProjectPane,
+  OrganizationSignIn,
   Preferences,
   RepoPreferences,
   ThemePreferences,
