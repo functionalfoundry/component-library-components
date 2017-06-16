@@ -36,6 +36,11 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
                 }
                 close()
               }}
+              theme={{
+                listItem: {
+                  ...darkHoverAndActive,
+                },
+              }}
             >
               {branch.name}
             </ListItem>
@@ -58,6 +63,16 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
       </View>
     </AlignedTrigger>
   )
+}
+
+const darkHoverAndActive = {
+  ':hover': {
+    backgroundColor: Colors.grey800,
+  },
+  ':active': {
+    backgroundColor: Colors.grey700,
+  },
+  cursor: 'pointer',
 }
 
 const defaultTheme = {
@@ -84,15 +99,13 @@ const defaultTheme = {
   },
   dropdownPanel: {
     width: 155,
+    backgroundColor: Colors.grey900,
+    border: `1px solid ${Colors.grey800}`,
+    color: 'white',
+    marginTop: -4,
   },
   innerContainer: {
-    ':hover': {
-      backgroundColor: Colors.grey800,
-    },
-    ':active': {
-      backgroundColor: Colors.grey700,
-    },
-    cursor: 'pointer',
+    ...darkHoverAndActive,
     paddingTop: Spacing.micro,
     paddingBottom: Spacing.micro,
     paddingLeft: Spacing.tiny,
