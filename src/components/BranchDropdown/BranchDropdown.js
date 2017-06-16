@@ -3,7 +3,8 @@ import Theme from 'js-theme'
 import { find } from 'lodash'
 
 import { Colors, Fonts, Spacing } from '@workflo/styles'
-import { View } from '@workflo/components'
+import { AlignedTrigger, View } from '@workflo/components'
+import List, { ListItem } from '@workflo/components/lib/List'
 
 export type BranchT = {
   id: string,
@@ -20,18 +21,42 @@ type Props = {
 const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: Props) => {
   const selectedBranch = find(branches, branch => branch.id === selectedBranchId)
   return (
-    <View {...theme.container} inline>
-      <View {...theme.innerContainer}>
-        <View {...theme.leftBlock}>
-          <View {...theme.label}>
-            {'CURRENT BRANCH'}
+    <AlignedTrigger
+      closeTriggers={['Click outside']}
+      gravity="Bottom"
+      horizontalOffset={-8}
+      openTriggers={['Click inside']}
+      portal={({ close }) => (
+        <List {...theme.dropdownPanel}>
+          {branches.map(branch => (
+            <ListItem
+              onClick={() => {
+                if (typeof onSelectBranch === 'function') {
+                  onSelectBranch(branch.id)
+                }
+                close()
+              }}
+            >
+              {branch.name}
+            </ListItem>
+          ))}
+        </List>
+      )}
+      position="Bottom"
+    >
+      <View {...theme.container} inline>
+        <View {...theme.innerContainer}>
+          <View {...theme.leftBlock}>
+            <View {...theme.label}>
+              {'CURRENT BRANCH'}
+            </View>
+            <View {...theme.branch}>{selectedBranch ? selectedBranch.name : null}</View>
           </View>
-          <View {...theme.branch}>{selectedBranch ? selectedBranch.name : null}</View>
+          <View {...theme.caret}>▼</View>
         </View>
-        <View {...theme.caret}>▼</View>
+        <View {...theme.separator} inline />
       </View>
-      <View {...theme.separator} inline />
-    </View>
+    </AlignedTrigger>
   )
 }
 
@@ -56,6 +81,9 @@ const defaultTheme = {
     flexDirection: 'row',
     flexGrow: 0,
     height: 60,
+  },
+  dropdownPanel: {
+    width: 155,
   },
   innerContainer: {
     ':hover': {
