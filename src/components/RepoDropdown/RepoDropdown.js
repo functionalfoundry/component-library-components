@@ -3,7 +3,8 @@ import Theme from 'js-theme'
 import { find } from 'lodash'
 
 import { Colors, Fonts, Spacing } from '@workflo/styles'
-import { Align, List, View, Icon, Tooltip, Trigger } from '@workflo/components'
+import { AlignedTrigger, View, Icon, Tooltip } from '@workflo/components'
+import List, { ListItem } from '@workflo/components/lib/List'
 
 export type RepoT = {
   id: string,
@@ -45,8 +46,9 @@ class RepoDropdown extends React.Component {
   render() {
     const { onClickRepoGithub, repos, selectedRepoId, theme } = this.props
     const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
+    if (!repos) return <div />
     return (
-      <View {...theme.container}>
+      <div {...theme.container}>
         {selectedRepo &&
           <Icon
             {...theme.icon}
@@ -55,42 +57,71 @@ class RepoDropdown extends React.Component {
             size="base"
             ref={this.saveRefToGithubIcon}
           />}
-        <div
-          {...theme.dropdownTarget}
-          onClick={() => this.setState(prevState => ({ isOpen: !prevState.isOpen }))}
-          ref={this.saveRefToDropdownTarget}
-        >
-          <View {...theme.repoTitle}>
-            {selectedRepo ? selectedRepo.name : '<All Repos>'}
-          </View>
-          <View {...theme.caret}>▼</View>
-        </div>
-        <Align
-          isOpen={this.state.isOpen}
-          portal={
-            <Trigger triggerOn={['Click outside']} onTrigger={this.close}>
-              <View {...theme.dropdownPanel}>
-                <List
-                  data={repos ? repos.map(repo => repo.name) : []}
-                  isKeyboardFocused={this.state.isOpen}
-                  onSelect={this.handleSelectRepo}
-                />
-              </View>
-            </Trigger>
-          }
+        {/* Horizontal offset is for the github icon*/}
+
+        <AlignedTrigger
+          closeTriggers={['Click outside']}
           gravity="Bottom"
-          position="Bottom Left"
-          targetRef={this.state.dropdownTargetRef}
-        />
+          openTriggers={['Click inside']}
+          portal={({ close }) => (
+            <List {...theme.dropdownPanel}>
+              {repos.map(repo => (
+                <ListItem
+                  onClick={() => {
+                    if (typeof this.handleSelectRepo === 'function') {
+                      this.handleSelectRepo(repo.id)
+                    }
+                    close()
+                  }}
+                  theme={{
+                    listItem: {
+                      ...darkHoverAndActive,
+                    },
+                  }}
+                >
+                  {repo.name}
+                </ListItem>
+              ))}
+            </List>
+          )}
+          position="Bottom left"
+        >
+          <View {...theme.container} inline>
+            <div
+              {...theme.dropdownTarget}
+              onClick={() => this.setState(prevState => ({ isOpen: !prevState.isOpen }))}
+              ref={this.saveRefToDropdownTarget}
+            >
+              <View {...theme.repoTitle}>
+                {selectedRepo ? selectedRepo.name : '<All Repos>'}
+              </View>
+              <View {...theme.caret}>▼</View>
+            </div>
+          </View>
+        </AlignedTrigger>
         {selectedRepo &&
           <Tooltip
             portal={<span {...theme.tooltip}>{selectedRepo.url}</span>}
-            position="Bottom"
+            position="Bottom left"
+            gravity="Bottom"
+            horizontalOffset={-8}
             targetRef={this.state.githubIconRef}
           />}
-      </View>
+      </div>
     )
   }
+}
+
+const darkHoverAndActive = {
+  cursor: 'pointer',
+  color: 'white',
+  backgroundColor: Colors.grey900,
+  ':hover': {
+    backgroundColor: Colors.grey800,
+  },
+  ':active': {
+    backgroundColor: Colors.grey700,
+  },
 }
 
 const defaultTheme = props => ({
@@ -123,8 +154,9 @@ const defaultTheme = props => ({
     transform: 'scale(1, .75)',
   },
   dropdownPanel: {
-    backgroundColor: 'white',
-    height: 100,
+    ...darkHoverAndActive,
+    border: `1px solid ${Colors.grey700}`,
+    // height: 100,
     width: 300,
   },
   dropdownTarget: {
