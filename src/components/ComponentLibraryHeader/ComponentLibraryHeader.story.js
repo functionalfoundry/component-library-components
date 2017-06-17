@@ -103,7 +103,10 @@ class ComponentLibraryHeaderWrapper extends React.Component {
   render() {
     const { children } = this.props
     return React.cloneElement(React.Children.only(children), {
-      onSelectRepo: id => this.setState({ selectedRepoId: id }),
+      onSelectRepo: id => {
+        action('onSelectRepo')(id)
+        this.setState({ selectedRepoId: id })
+      },
       selectedRepoId: this.state.selectedRepoId,
     })
   }
