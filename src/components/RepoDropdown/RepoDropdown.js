@@ -32,19 +32,11 @@ class RepoDropdown extends React.Component {
   }
   saveRefToGithubIcon = githubIconRef => this.setState({ githubIconRef })
   saveRefToDropdownTarget = dropdownTargetRef => this.setState({ dropdownTargetRef })
-  handleSelectRepo = index => {
-    const { onSelectRepo, repos } = this.props
-    const newSelectedRepo = repos[index]
-    if (typeof onSelectRepo === 'function') {
-      onSelectRepo(newSelectedRepo.id)
-    }
-    this.close()
-  }
 
   close = () => this.setState({ isOpen: false })
 
   render() {
-    const { onClickRepoGithub, repos, selectedRepoId, theme } = this.props
+    const { onClickRepoGithub, onSelectRepo, repos, selectedRepoId, theme } = this.props
     const selectedRepo = find(repos, repo => repo.id === selectedRepoId)
     if (!repos) return <div />
     return (
@@ -68,8 +60,8 @@ class RepoDropdown extends React.Component {
               {repos.map(repo => (
                 <ListItem
                   onClick={() => {
-                    if (typeof this.handleSelectRepo === 'function') {
-                      this.handleSelectRepo(repo.id)
+                    if (typeof onSelectRepo === 'function') {
+                      onSelectRepo(repo.id)
                     }
                     close()
                   }}
