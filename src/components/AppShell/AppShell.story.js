@@ -1,10 +1,12 @@
 /** @flow */
 import React from 'react'
+import Theme from 'js-theme'
+
 import { storiesOf, action } from '@kadira/storybook'
-import { Colors, Spacing } from '@workflo/styles'
+import { BreakPoints, Colors, Spacing } from '@workflo/styles'
 
 import AppShell from './'
-import Components from '../Components'
+import ComponentStates from '../ComponentStates'
 import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
@@ -14,10 +16,10 @@ import {
   // propKeyValues,
   dataCode,
   actionsCode,
-  components,
 } from '../../../mocks/components'
 import { branches, breadCrumbPath, repos } from '../../../mocks/header'
 import { liveViewState } from '../../../mocks/live-view'
+import { stateCards } from '../../../mocks/componentStates'
 
 const header = (
   <ComponentLibraryHeader
@@ -52,22 +54,25 @@ const leftPanel = (
   <div style={{ backgroundColor: Colors.red800, flexGrow: 1 }}>Left Panel</div>
 )
 
-const componentsGridContent = (
-  <div
-    style={{
-      overflow: 'scroll',
-      // flexGrow: 1,
-      paddingLeft: Spacing.base,
-      paddingTop: Spacing.small,
-    }}
-  >
-    <Components components={components} />
+const ComponentsGridContent = ({ theme }: any) => (
+  <div {...theme.container}>
+    <ComponentStates harnessCards={stateCards} />
   </div>
 )
 
+const ThemedComponentsGridContent = Theme('ComponentsGridContent', {
+  container: {
+    backgroundColor: '#f1f1f1',
+    overflow: 'scroll',
+    paddingLeft: Spacing.small,
+    paddingRight: Spacing.small,
+    paddingTop: Spacing.small,
+  },
+})(ComponentsGridContent)
+
 storiesOf('AppShell', module)
   .add('ComponentsGrid', () => (
-    <AppShell sections={{ content: componentsGridContent, header, leftNav }} />
+    <AppShell sections={{ content: <ThemedComponentsGridContent />, header, leftNav }} />
   ))
   .add('LiveView', () => (
     <AppShell sections={{ bottomPanel, header, leftPanel, rightPanel }} />

@@ -2,7 +2,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 
-import { Colors, Spacing } from '@workflo/styles'
+import { BreakPoints, Colors, Spacing } from '@workflo/styles'
 
 import Column from './Column'
 import Row from './Row'
@@ -13,6 +13,7 @@ type Props = {
   header: React.Element<*>,
   showHeader: boolean,
   showLeftNav: boolean,
+  tabletShowLeftNav: boolean,
   theme: Object,
 }
 
@@ -36,9 +37,9 @@ const App = ({
   </Row>
 )
 
-const MAX_WIDTH = 1200
+const LEFT_NAV_WIDTH = 250
 
-const defaultTheme = {
+const defaultTheme = ({ tabletShowLeftNav }) => ({
   container: {
     backgroundColor: Colors.grey900,
     boxSizing: 'border-box',
@@ -57,15 +58,19 @@ const defaultTheme = {
     flexShrink: 0,
   },
   leftNav: {
-    flexBasis: 250,
+    flexBasis: LEFT_NAV_WIDTH,
+    flexShrink: 0,
+    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+      marginLeft: tabletShowLeftNav ? 0 : -1 * (Spacing.small + LEFT_NAV_WIDTH),
+      marginRight: Spacing.small,
+    },
   },
   main: {
     flexGrow: 1,
   },
   page: {
     flexGrow: 1,
-    maxWidth: MAX_WIDTH,
   },
-}
+})
 
 export default Theme('App', defaultTheme)(App)
