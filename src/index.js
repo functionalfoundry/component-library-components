@@ -6,6 +6,7 @@ const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
 const Component = require('./components/Component')
 const Components = require('./components/Components')
+const ComponentsLeftNav = require('./components/ComponentsLeftNav')
 const ComponentEntrance = require('./components/ComponentEntrance')
 const ComponentExit = require('./components/ComponentExit')
 const ComponentLibraryHeader = require('./components/ComponentLibraryHeader')
@@ -47,6 +48,7 @@ const WorkfloComponents = {
   Configuration,
   Component,
   Components,
+  ComponentsLeftNav,
   ComponentEntrance,
   ComponentExit,
   ComponentLibraryHeader,

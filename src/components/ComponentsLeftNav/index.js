@@ -1,3 +1,1 @@
-import ComponentsLeftNav from './ComponentsLeftNav'
-
-export default ComponentsLeftNav
+module.exports = require('./ComponentsLeftNav').default
