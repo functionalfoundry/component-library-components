@@ -12,7 +12,7 @@ import ComponentTree, {
   PropValue,
 } from '../../modules/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
-import { generateTreeLayout, generateTreeLayoutMarkup } from './utils/ComponentTreeLayout'
+import { generateTreeLayoutMarkup, generateTreeLayout } from './utils/ComponentTreeLayout'
 
 const completionData = {
   components: ['List', 'ListItem'],
