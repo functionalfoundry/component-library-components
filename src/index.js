@@ -1,6 +1,7 @@
 const App = require('./components/App')
 const App2 = require('./components/App2')
 const AppShell = require('./components/AppShell')
+const BranchDropdown = require('./components/BranchDropdown')
 const BulkActionBar = require('./components/BulkActionBar')
 const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
@@ -42,6 +43,7 @@ const WorkfloComponents = {
   App,
   App2,
   AppShell,
+  BranchDropdown,
   BulkActionBar,
   Button,
   Code,
