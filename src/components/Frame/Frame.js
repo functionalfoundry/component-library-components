@@ -1,9 +1,8 @@
 // From https://github.com/ryanseddon/react-frame-component/blob/b4437e082dcf4a8521f1ac4218c0b5d2aed81350/src/Frame.jsx
-
 import React from 'react'
 import Theme from 'js-theme'
 
-import { ComponentTree } from '../../utils/CompositeComponents/ComponentTree'
+import ComponentTree from '../../modules/ComponentTree'
 
 type BundlesT = Object<string, string>
 

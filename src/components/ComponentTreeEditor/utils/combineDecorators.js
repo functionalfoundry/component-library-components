@@ -1,5 +1,4 @@
 /* @flow */
-
 const Slate = require('slate')
 
 const combineDecorators = (decorators: Array<Function>, options: any) => (
@@ -16,4 +15,4 @@ const combineDecorators = (decorators: Array<Function>, options: any) => (
   }
 }
 
-export { combineDecorators }
+export default combineDecorators

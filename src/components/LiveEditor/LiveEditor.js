@@ -4,12 +4,13 @@ import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
 import { Colors, Spacing, Fonts } from '@workflo/styles'
 import Slate from 'slate'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import ComponentTreeEditor from '../ComponentTreeEditor'
+import ComponentTreeEditor, {
+  ComponentTreeLayout as TreeLayout,
+} from '../ComponentTreeEditor'
 import Data from '../Data'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
-const TreeLayout = require('../../utils/CompositeComponents/ComponentTreeLayout')
-const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+import { Helpers as TreeHelpers } from '../../modules/ComponentTree'
 
 type DataT = {
   /* Passed in on initial load to seed the editor state */
@@ -83,7 +84,7 @@ class LiveEditor extends React.Component {
 
   handleTreeChange = tree => {
     const { onChangeComponentTree } = this.props
-    const rawTreeData = TreeUtils.getRawTreeData(tree)
+    const rawTreeData = TreeHelpers.getRawTreeData(tree)
     onChangeComponentTree && onChangeComponentTree(rawTreeData)
   }
 
@@ -116,7 +117,7 @@ class LiveEditor extends React.Component {
     } = this.props
     const { copied } = this.state
 
-    const properTree = TreeUtils.createTree(componentTree)
+    const properTree = TreeHelpers.createTree(componentTree)
     const treeLayout = TreeLayout.generateTreeLayout(properTree)
     const treeMarkup = TreeLayout.generateTreeLayoutMarkup(treeLayout)
 

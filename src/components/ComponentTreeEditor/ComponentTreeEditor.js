@@ -1,27 +1,21 @@
 /* @flow */
-
 import React from 'react'
 import Theme from 'js-theme'
 import { Editor, Raw, State } from 'slate'
 
+import type { InteractionStateT } from './types'
 import type {
   Component,
   ComponentTree,
   NodeIdentifierT,
-} from '../../utils/CompositeComponents/ComponentTree'
-import {
-  type InteractionStateT,
-  ComponentTreeEditorPlugin,
-  InteractionState,
-} from '../../utils/CompositeComponents/ComponentTreeEditorPlugin'
-import ComponentTreeSyntaxPlugin
-  from '../../utils/CompositeComponents/ComponentTreeSyntaxPlugin'
-import {
-  ComponentTreeLayout,
+} from '../../modules/ComponentTree'
+import InteractionPlugin, { InteractionState } from './utils/InteractionPlugin'
+import SyntaxPlugin from './utils/SyntaxPlugin'
+import ComponentTreeLayout, {
   generateTreeLayout,
   generateTreeLayoutMarkup,
-} from '../../utils/CompositeComponents/ComponentTreeLayout'
-import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
+} from './utils/ComponentTreeLayout'
+import type { CompletionDataT } from '../../types/Completion'
 
 /**
  * Props
@@ -86,7 +80,7 @@ const getComponentTreeEditorPlugins = (
   completionData: CompletionDataT,
   interactionState: InteractionStateT
 ) => [
-  ComponentTreeEditorPlugin({
+  InteractionPlugin({
     tree,
     completionData,
     interactionState,
@@ -100,7 +94,7 @@ const getComponentTreeEditorPlugins = (
     onSelectComponent: editor.handleSelectComponent,
     onSelectNode: editor.handleSelectNode,
   }),
-  ComponentTreeSyntaxPlugin({
+  SyntaxPlugin({
     tree,
     layout,
   }),

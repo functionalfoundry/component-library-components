@@ -6,9 +6,9 @@ import { Colors, Fonts } from '@workflo/styles'
 
 const Slate = require('slate')
 
-import { ComponentTree } from './ComponentTree'
-import { ComponentTreeLayout } from './ComponentTreeLayout'
-import { combineDecorators } from './DecoratorUtils'
+import ComponentTree from '../../../modules/ComponentTree'
+import ComponentTreeLayout from './ComponentTreeLayout'
+import combineDecorators from './combineDecorators'
 
 /**
  * Plugin options
@@ -139,10 +139,11 @@ const makeLayoutTagDecorator = (tag: string, mark: string) => (characters, optio
 }
 
 /**
- * ComponentTreeSyntaxPlugin implementation
+ * Slate plugin for rendering the JSX markup with syntax highlighting in the
+ * ComponentTreeEditor.
  */
 
-const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
+const SyntaxPlugin = (options: PluginOptionsT) => ({
   schema: {
     nodes: {
       code: {
@@ -177,4 +178,4 @@ const ComponentTreeSyntaxPlugin = (options: PluginOptionsT) => ({
   },
 })
 
-export default ComponentTreeSyntaxPlugin
+export default SyntaxPlugin

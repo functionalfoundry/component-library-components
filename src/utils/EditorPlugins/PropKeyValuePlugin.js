@@ -12,8 +12,6 @@ import { Colors } from '@workflo/styles'
 
 const acorn = require('acorn-jsx')
 
-import type PropKeyValueT from '../../types/PropKeyValueT'
-
 /**
  * Helpers
  */
@@ -305,13 +303,13 @@ const combineDecorators = (decorators: Array<Function>, options) => {
  * CodeEditorPlugin
  */
 
-type PluginOptions = {
+type PluginOptionsT = {
   propKeyValues: Array<CodePropKeyValueT>,
   onRemoveProp: Function,
   onChange: Function,
 }
 
-const PropKeyValuePlugin = (options: PluginOptions) => {
+const PropKeyValuePlugin = (options: PluginOptionsT) => {
   return {
     schema: {
       nodes: {

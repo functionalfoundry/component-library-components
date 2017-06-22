@@ -2,11 +2,7 @@
 
 import { List, Record } from 'immutable'
 
-import type {
-  ComponentTreeNodeT,
-  ComponentTreePathT,
-  NodeIdentifierT,
-} from './ComponentTree'
+import type { ComponentTreeNodeT, ComponentTreePathT, NodeIdentifierT } from './types'
 import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 
 /**
@@ -22,14 +18,6 @@ const TraverseResult = Record({
   tree: null,
   data: null,
 })
-
-type TraverseContextT = {
-  tree: ?ComponentTree,
-  node: ?ComponentTreeNodeT,
-  path: ComponentTreePathT,
-  data: ?any,
-  visitor: ?Function,
-}
 
 const TraverseContext = Record({
   tree: null,
@@ -360,7 +348,7 @@ const createTree = (data: Object): ComponentTree => {
 
 const getRawTreeData = (tree: ComponentTree) => tree.toJS()
 
-export {
+export default {
   // Generic tree operations
   traverse,
   findNodeById,
