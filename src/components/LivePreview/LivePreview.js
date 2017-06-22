@@ -7,7 +7,7 @@ import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
 import Frame from '../Frame'
 
-const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+import { Helpers as TreeHelpers } from '../../modules/ComponentTree'
 
 /**
  * Props
@@ -147,7 +147,7 @@ class LivePreview extends React.Component {
             >
               <Frame
                 name={name}
-                tree={TreeUtils.createTree(tree)}
+                tree={TreeHelpers.createTree(tree)}
                 bundles={bundles}
                 React={React}
                 ReactDOM={ReactDOM}

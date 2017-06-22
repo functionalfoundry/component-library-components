@@ -1,7 +1,6 @@
 import React from 'react'
 const Slate = require('slate')
-import ComponentTree from '../../utils/ComponentTree'
-import type { NodeIdentifierT } from '../../modules/ComponentTree'
+import ComponentTree, { type NodeIdentifierT } from '../../modules/ComponentTree'
 import type { CompletionDataT } from '../../types/Completion'
 
 /**
