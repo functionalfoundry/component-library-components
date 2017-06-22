@@ -4,17 +4,15 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import { List } from 'immutable'
-import {
+import ComponentTree, {
   type NodeIdentifierT,
   Component,
-  ComponentTree,
+  Helpers,
   Prop,
   PropValue,
-} from '../../utils/CompositeComponents/ComponentTree'
+} from '../../modules/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
-
-const Utils = require('../../utils/CompositeComponents/ComponentTreeUtils')
-const TreeLayout = require('../../utils/CompositeComponents/ComponentTreeLayout')
+import { default as TreeLayout } from './utils/ComponentTreeLayout'
 
 const completionData = {
   components: ['List', 'ListItem'],
@@ -118,7 +116,7 @@ const regularTree = ComponentTree({
   }),
 })
 
-const treeFromRaw = Utils.createTree({
+const treeFromRaw = Helpers.createTree({
   id: 'list',
   name: 'List',
   props: [
@@ -177,25 +175,25 @@ class TreeEditorContainer extends React.Component {
       value: PropValue({ value: 'new prop value' }),
     })
     this.setState({
-      tree: Utils.insertProp(this.state.tree, 'list-item-1', prop),
+      tree: Helpers.insertProp(this.state.tree, 'list-item-1', prop),
     })
   }
 
   removeProp = () => {
     this.setState({
-      tree: Utils.removeNodeById(this.state.tree, 'list-width-prop'),
+      tree: Helpers.removeNodeById(this.state.tree, 'list-width-prop'),
     })
   }
 
   setPropName = () => {
     this.setState({
-      tree: Utils.setPropName(this.state.tree, 'list-title-prop', 'newNameOfTitleProp'),
+      tree: Helpers.setPropName(this.state.tree, 'list-title-prop', 'newNameOfTitleProp'),
     })
   }
 
   setPropValue = () => {
     this.setState({
-      tree: Utils.setPropValue(
+      tree: Helpers.setPropValue(
         this.state.tree,
         'list-title-prop',
         PropValue({
@@ -208,7 +206,7 @@ class TreeEditorContainer extends React.Component {
 
   insertComponentAsFirst = () => {
     this.setState({
-      tree: Utils.insertComponent(
+      tree: Helpers.insertComponent(
         this.state.tree,
         'list',
         0,
@@ -222,7 +220,7 @@ class TreeEditorContainer extends React.Component {
 
   insertComponentAsThird = () => {
     this.setState({
-      tree: Utils.insertComponent(
+      tree: Helpers.insertComponent(
         this.state.tree,
         'list',
         2,
@@ -236,7 +234,7 @@ class TreeEditorContainer extends React.Component {
 
   insertComponentInThird = () => {
     this.setState({
-      tree: Utils.insertComponent(
+      tree: Helpers.insertComponent(
         this.state.tree,
         'new-component-as-third',
         0,
@@ -250,31 +248,31 @@ class TreeEditorContainer extends React.Component {
 
   removeComponent = () => {
     this.setState({
-      tree: Utils.removeComponent(this.state.tree, 'list-item-2'),
+      tree: Helpers.removeComponent(this.state.tree, 'list-item-2'),
     })
   }
 
   setComponentName = () => {
     this.setState({
-      tree: Utils.setComponentName(this.state.tree, 'list-item-3', 'NewListItem'),
+      tree: Helpers.setComponentName(this.state.tree, 'list-item-3', 'NewListItem'),
     })
   }
 
   setComponentText = () => {
     this.setState({
-      tree: Utils.setComponentText(this.state.tree, 'list-item-3', 'New text'),
+      tree: Helpers.setComponentText(this.state.tree, 'list-item-3', 'New text'),
     })
   }
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
     action('onRemoveProp')(nodeId)
-    const tree = Utils.removeProp(this.state.tree, nodeId)
+    const tree = Helpers.removeProp(this.state.tree, nodeId)
     this.setState({ tree })
   }
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
     action('onRemoveComponent')(nodeId)
-    const tree = Utils.removeComponent(this.state.tree, nodeId)
+    const tree = Helpers.removeComponent(this.state.tree, nodeId)
     this.setState({ tree })
   }
 
@@ -284,7 +282,7 @@ class TreeEditorContainer extends React.Component {
     component: Component
   ) => {
     action('onInsertComponent')(parentId, index, component)
-    const tree = Utils.insertComponent(this.state.tree, parentId, index, component)
+    const tree = Helpers.insertComponent(this.state.tree, parentId, index, component)
     this.setState({ tree })
   }
 
@@ -294,13 +292,13 @@ class TreeEditorContainer extends React.Component {
     name: string
   ) => {
     action('onChangePropName')(componentId, nodeId, name)
-    const tree = Utils.setPropName(this.state.tree, nodeId, name)
+    const tree = Helpers.setPropName(this.state.tree, nodeId, name)
     this.setState({ tree })
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     action('onChangeComponentName')(nodeId, name)
-    const tree = Utils.setComponentName(this.state.tree, nodeId, name)
+    const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
     this.setState({ tree })
   }
 

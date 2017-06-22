@@ -1,5 +1,4 @@
 /* @flow */
-
 import type { PropValueTypeT } from './ComponentTree'
 
 /**

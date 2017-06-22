@@ -1,9 +1,11 @@
 /** @flow */
-
 import { List, Map, Record, Set } from 'immutable'
-import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
-
-import type { ComponentTreeNodeT, PropValueTypeT } from './ComponentTree'
+import ComponentTree, {
+  Component,
+  Prop,
+  PropValue,
+  type ComponentTreeNodeT,
+} from '../../../modules/ComponentTree'
 
 type ComponentTreeLayoutTagsT = Set<?string>
 type ComponentTreeLayoutDataT = Map<string, any>
@@ -40,17 +42,9 @@ const ComponentTreeLayout = Record({
   elements: List(),
 })
 
-export { ComponentTreeLayout }
-
 /**
  * Layout generation
  */
-
-type LayoutContextT = {
-  layout: ComponentTreeLayoutT,
-  indent: string,
-  position: number,
-}
 
 const LayoutContext = Record({
   layout: null,
@@ -522,3 +516,5 @@ const generateTreeLayoutMarkup = (layout: ComponentTreeLayoutT) =>
   layout.elements.reduce((markup, element) => markup + element.text, '')
 
 export { generateTreeLayoutMarkup }
+
+export default ComponentTreeLayout

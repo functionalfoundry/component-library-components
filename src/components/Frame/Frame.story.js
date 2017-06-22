@@ -4,7 +4,7 @@ import { storiesOf } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import Frame from './Frame'
 
-const TreeUtils = require('../../utils/CompositeComponents/ComponentTreeUtils')
+import { Helpers as ComponentTreeHelpers } from '../../modules/ComponentTree'
 
 storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
 
@@ -39,7 +39,7 @@ export const rawExampleTree = {
   ],
 }
 
-export const exampleTree = TreeUtils.createTree(rawExampleTree)
+export const exampleTree = ComponentTreeHelpers.createTree(rawExampleTree)
 
 export const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
 export const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'

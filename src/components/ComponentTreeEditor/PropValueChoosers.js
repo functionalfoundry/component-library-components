@@ -1,14 +1,9 @@
 /* @flow */
-
 import React from 'react'
-import Theme from 'js-theme'
-import { EditableText, RadioGroup, Radio, View } from '@workflo/components'
+import { EditableText, RadioGroup, Radio } from '@workflo/components'
 import { Fonts } from '@workflo/styles'
-import { Prop, PropValue } from '../../utils/CompositeComponents/ComponentTree'
-import type {
-  GlobalOptionsDataT,
-  PropCompletionDataT,
-} from '../../utils/CompositeComponents/Completion'
+import { Prop, PropValue } from '../../modules/ComponentTree'
+import type { GlobalOptionsDataT, PropCompletionDataT } from '../../types/Completion'
 
 export type PropValueChooserPropsT = {
   prop: Prop,

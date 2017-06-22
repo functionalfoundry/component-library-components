@@ -2,7 +2,6 @@
 import React from 'react'
 import Slate from 'slate'
 import Theme from 'js-theme'
-import { Colors } from '@workflo/styles'
 
 const acorn = require('acorn/dist/acorn_loose')
 
@@ -17,12 +16,6 @@ const defaultTheme = {
   keyword: {
     color: '#00719e',
   },
-}
-
-type DecoratorPropsT = {
-  theme: Object,
-  children: React.Children,
-  mark: Slate.Mark,
 }
 
 /**
