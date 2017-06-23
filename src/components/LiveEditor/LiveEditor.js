@@ -4,9 +4,11 @@ import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
 import { Colors, Spacing, Fonts } from '@workflo/styles'
 import Slate from 'slate'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import ComponentTreeEditor, {
-  ComponentTreeLayout as TreeLayout,
-} from '../ComponentTreeEditor'
+import ComponentTreeEditor from '../ComponentTreeEditor'
+import {
+  generateTreeLayout,
+  generateTreeLayoutMarkup,
+} from '../ComponentTreeEditor/utils/ComponentTreeLayout'
 import Data from '../Data'
 import type { CompletionDataT } from '../../utils/CompositeComponents/Completion'
 
@@ -118,8 +120,8 @@ class LiveEditor extends React.Component {
     const { copied } = this.state
 
     const properTree = TreeHelpers.createTree(componentTree)
-    const treeLayout = TreeLayout.generateTreeLayout(properTree)
-    const treeMarkup = TreeLayout.generateTreeLayoutMarkup(treeLayout)
+    const treeLayout = generateTreeLayout(properTree)
+    const treeMarkup = generateTreeLayoutMarkup(treeLayout)
 
     return (
       <View {...theme.liveEditor} data-walkthrough-id="live-editor">
