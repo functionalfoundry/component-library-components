@@ -2,16 +2,14 @@
 import React from 'react'
 import { List } from 'immutable'
 import { action } from '@kadira/storybook'
-import {
+import Helpers, {
   type NodeIdentifierT,
   Component,
   ComponentTree,
   Prop,
   PropValue,
-} from '../src/utils/CompositeComponents/ComponentTree'
+} from '../src/modules/ComponentTree'
 import ComponentTreeEditor from '../src/components/ComponentTreeEditor'
-
-const Utils = require('../src/utils/CompositeComponents/ComponentTreeUtils')
 
 const completionData = {
   components: ['List', 'ListItem'],
@@ -133,13 +131,13 @@ export class TreeEditorContainer extends React.Component {
 
   handleRemoveProp = (nodeId: NodeIdentifierT) => {
     action('onRemoveProp')(nodeId)
-    const tree = Utils.removeProp(this.state.tree, nodeId)
+    const tree = Helpers.removeProp(this.state.tree, nodeId)
     this.setState({ tree })
   }
 
   handleRemoveComponent = (nodeId: NodeIdentifierT) => {
     action('onRemoveComponent')(nodeId)
-    const tree = Utils.removeComponent(this.state.tree, nodeId)
+    const tree = Helpers.removeComponent(this.state.tree, nodeId)
     this.setState({ tree })
   }
 
@@ -149,13 +147,13 @@ export class TreeEditorContainer extends React.Component {
     component: Component
   ) => {
     action('onInsertComponent')(parentId, index, component)
-    const tree = Utils.insertComponent(this.state.tree, parentId, index, component)
+    const tree = Helpers.insertComponent(this.state.tree, parentId, index, component)
     this.setState({ tree })
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     action('onChangeComponentName')(nodeId, name)
-    const tree = Utils.setComponentName(this.state.tree, nodeId, name)
+    const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
     this.setState({ tree })
   }
 
