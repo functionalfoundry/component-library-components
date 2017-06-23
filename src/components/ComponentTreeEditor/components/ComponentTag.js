@@ -19,7 +19,10 @@ class ComponentTagRenderer extends React.Component {
     const { children, mark, marks, theme } = this.props
     const node = mark.getIn(['data', 'element', 'node'])
     const tree = mark.getIn(['data', 'tree'])
-    const markNames = marks.reduce((out, mark) => out.add(mark.get('type')), Set())
+    const markNames = marks.reduce(
+      (out, mark) => out.add(mark.get('type')),
+      Immutable.Set()
+    )
 
     const isRoot = Immutable.is(tree.root, node)
     const showAddChild = markNames.contains('component-open-tag-end')
