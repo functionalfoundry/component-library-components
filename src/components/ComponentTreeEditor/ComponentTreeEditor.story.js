@@ -12,7 +12,7 @@ import ComponentTree, {
   PropValue,
 } from '../../modules/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
-import { default as TreeLayout } from './utils/ComponentTreeLayout'
+import { generateTreeLayout, generateTreeLayoutMarkup } from './utils/ComponentTreeLayout'
 
 const completionData = {
   components: ['List', 'ListItem'],
@@ -303,8 +303,8 @@ class TreeEditorContainer extends React.Component {
   }
 
   render() {
-    const layout = TreeLayout.generateTreeLayout(this.state.tree)
-    const markup = TreeLayout.generateTreeLayoutMarkup(layout)
+    const layout = generateTreeLayout(this.state.tree)
+    const markup = generateTreeLayoutMarkup(layout)
     return (
       <div>
         <ComponentTreeEditor
