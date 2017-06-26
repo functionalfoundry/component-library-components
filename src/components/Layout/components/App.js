@@ -42,6 +42,7 @@ const LEFT_NAV_WIDTH = 250
 const defaultTheme = ({ tabletShowLeftNav }) => ({
   container: {
     backgroundColor: Colors.grey900,
+    color: 'white',
     boxSizing: 'border-box',
     height: '100%',
     justifyContent: 'center',
