@@ -2,10 +2,7 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
-import {
-  FilledTextInput,
-  Select,
-} from '@workflo/components'
+import { FilledTextInput, Select } from '@workflo/components'
 import QuickAction from './QuickAction'
 import { Colors, Spacing } from '@workflo/styles'
 
@@ -68,9 +65,7 @@ storiesOf('Quick Action', module).add('Regular', () => (
         label="Size"
         input={{
           type: 'Custom',
-          element: (
-            <CustomContainer />
-          )
+          element: <CustomContainer />,
         }}
       />
     </Preview>
@@ -96,54 +91,48 @@ class CustomContainer extends React.Component {
     }
   }
 
-  handleChangeWidth = (width) => {
+  handleChangeWidth = width => {
     this.setState({ width })
   }
 
-  handleChangeHeight = (height) => {
+  handleChangeHeight = height => {
     this.setState({ height })
   }
 
-  handleChangePreset = (preset) => {
+  handleChangePreset = preset => {
     this.setState({ preset })
   }
 
   render() {
     const { width, height, preset } = this.state
     return (
-      <div
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <div
-          style={{ display: 'flex', marginBottom: Spacing.tiny }}
-        >
-          <div
-            style={{ marginRight: Spacing.tiny, display: 'flex' }}
-          >
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', marginBottom: Spacing.tiny }}>
+          <div style={{ marginRight: Spacing.tiny, display: 'flex' }}>
             <FilledTextInput
-              label='Width'
+              label="Width"
               onChange={this.handleChangeWidth}
               value={width}
               width={60}
             />
           </div>
-          <div
-            style={{ display: 'flex' }}
-          >
+          <div style={{ display: 'flex' }}>
             <FilledTextInput
-              label='Height'
+              label="Height"
               onChange={this.handleChangeHeight}
               value={height}
               width={60}
             />
           </div>
         </div>
+        {/*
         <Select
           options={items}
           value={preset}
           onChange={this.handleChangePreset}
           width={88}
         />
+        */}
       </div>
     )
   }
