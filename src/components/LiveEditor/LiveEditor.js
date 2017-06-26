@@ -133,8 +133,8 @@ class LiveEditor extends React.Component {
           <TabList>
             {/* TODO: Rename Code -> Markup in code */}
             <Tab data-walkthrough-id="markup-tab">Markup</Tab>
-            <Tab data-walkthrough-id="data-tab">Data</Tab>
-            <Tab data-walkthrough-id="actions-tab">Actions</Tab>
+            <Tab data-walkthrough-id="data-tab">Mock Data</Tab>
+            <Tab data-walkthrough-id="actions-tab">Handlers</Tab>
           </TabList>
           <TabPanel>
             <ComponentTreeEditor
