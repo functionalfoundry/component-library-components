@@ -1,6 +1,6 @@
 import App from './components/App'
 import LiveView from './components/LiveView'
-import ScrollableContent from './components/ScrollableContent'
+const ScrollableContent = require('../ScrollableContent')
 
 export default {
   App,

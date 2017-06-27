@@ -36,6 +36,7 @@
   "RepoPreferences",
   "RepositoryChooser",
   "RotateFade",
+  "ScrollableContent",
   "Search",
   "StaggerChildren",
   "SubHeader",
