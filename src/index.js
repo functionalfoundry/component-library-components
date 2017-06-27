@@ -17,6 +17,7 @@ const ComponentTreeEditor = require('./components/ComponentTreeEditor')
 const Data = require('./components/Data')
 const ErrorView = require('./components/ErrorView')
 const Header = require('./components/Header')
+import Layout from './components/Layout'
 const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
@@ -60,6 +61,7 @@ const WorkfloComponents = {
   Data,
   ErrorView,
   Header,
+  Layout,
   LiveEditor,
   LivePreview,
   RotateFade,
