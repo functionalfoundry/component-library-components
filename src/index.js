@@ -29,6 +29,7 @@ const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RepositoryChooser = require('./components/RepositoryChooser')
 const RotateFade = require('./components/RotateFade')
+const ScrollableContent = require('./components/ScrollableContent')
 const Search = require('./components/Search')
 const StaggerChildren = require('./components/StaggerChildren')
 const SubHeader = require('./components/SubHeader')
@@ -73,6 +74,7 @@ const WorkfloComponents = {
   Properties,
   QuickAction,
   RepositoryChooser,
+  ScrollableContent,
   Search,
   StaggerChildren,
   SubHeader,
