@@ -3,9 +3,10 @@ import React from 'react'
 import Theme from 'js-theme'
 
 import { storiesOf, action } from '@kadira/storybook'
-import { BreakPoints, Colors, Spacing } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 
 import AppShell from './'
+import Layout from '../Layout'
 import ComponentStates from '../ComponentStates'
 import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
@@ -54,25 +55,28 @@ const leftPanel = (
   <div style={{ backgroundColor: Colors.red800, flexGrow: 1 }}>Left Panel</div>
 )
 
-const ComponentsGridContent = ({ theme }: any) => (
-  <div {...theme.container}>
-    <ComponentStates harnessCards={stateCards} />
-  </div>
-)
-
-const ThemedComponentsGridContent = Theme('ComponentsGridContent', {
+const scrollableContentTheme = {
   container: {
     backgroundColor: '#f1f1f1',
-    overflow: 'scroll',
     paddingLeft: Spacing.small,
     paddingRight: Spacing.small,
     paddingTop: Spacing.small,
   },
-})(ComponentsGridContent)
+}
 
 storiesOf('AppShell', module)
   .add('ComponentsGrid', () => (
-    <AppShell sections={{ content: <ThemedComponentsGridContent />, header, leftNav }} />
+    <AppShell
+      sections={{
+        content: (
+          <Layout.ScrollableContent theme={scrollableContentTheme}>
+            <ComponentStates harnessCards={stateCards} />
+          </Layout.ScrollableContent>
+        ),
+        header,
+        leftNav,
+      }}
+    />
   ))
   .add('LiveView', () => (
     <AppShell sections={{ bottomPanel, header, leftPanel, rightPanel }} />
