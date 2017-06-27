@@ -79,7 +79,33 @@ class ComponentsLeftNav extends React.Component {
         <div
           style={{ paddingLeft: Spacing.tiny, paddingTop: Spacing.tiny, width: '100%' }}
         >
-          <TextInput label="Filter" onChange={onChangeFilter} value={filterValue} />
+          <TextInput
+            disableUnderline
+            placeholder="Filter"
+            onChange={onChangeFilter}
+            theme={{
+              inputContain: {
+                backgroundColor: '#23292b',
+                // borderStyle: 'solid',
+                // borderWidth: 0.5,
+                // borderColor: Colors.grey700,
+                padding: 3,
+              },
+              textInput: {
+                color: 'white',
+                paddingLeft: Spacing.tiny,
+                paddingBottom: 5,
+                '::placeholder': {
+                  color: Colors.grey300,
+                },
+              },
+              inputLabel: {
+                color: Colors.grey200,
+                paddingLeft: Spacing.tiny,
+              },
+            }}
+            value={filterValue}
+          />
         </div>
         <List
           onSelect={this.handleSelect}

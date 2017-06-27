@@ -114,9 +114,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.99":
-  version "0.8.99"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.99.tgz#1122c25a624d39fcc92ee6fce2bc6454be5e0a0a"
+"@workflo/components@^0.8.104":
+  version "0.8.104"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.104.tgz#c73c02ff4a9a64b489b6db67d0818a877aa53731"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
@@ -3447,16 +3447,7 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
-js-theme@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.0.tgz#bcdab135efc1c43b12b80839c5506448d1c8ca85"
-  dependencies:
-    "@workflo/aphrodite" "0.7.4"
-    "@workflo/css-shorthand-expand" "1.1.0"
-    invariant "^2.2.1"
-    lodash "^4.15.0"
-
-js-theme@^0.8.1:
+js-theme@^0.8.0, js-theme@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.1.tgz#b85f69863855c363d348867ce4c6af51279cf346"
   dependencies:
