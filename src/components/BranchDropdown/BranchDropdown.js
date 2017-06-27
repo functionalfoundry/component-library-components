@@ -18,28 +18,45 @@ type Props = {
   theme: Object,
 }
 
+const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
+  const base = {
+    cursor: 'pointer',
+    color: 'white',
+    backgroundColor: Colors.grey900,
+    ':hover': {
+      backgroundColor: Colors.grey800,
+    },
+  }
+  if (isKeyboardFocused) {
+    return {
+      ...base,
+      backgroundColor: Colors.grey800,
+    }
+  }
+  return base
+}
+
 const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: Props) => {
   const selectedBranch = find(branches, branch => branch.id === selectedBranchId)
   return (
     <AlignedTrigger
-      closeTriggers={['Click outside']}
+      closeTriggers={['Click outside', 'Hit Escape']}
       gravity="Bottom"
       openTriggers={['Click inside']}
       portal={({ close }) => (
         <List {...theme.dropdownPanel}>
           {branches.map(branch => (
             <ListItem
+              key={branch.id}
               onClick={() => {
                 if (typeof onSelectBranch === 'function') {
                   onSelectBranch(branch.id)
                 }
                 close()
               }}
-              theme={{
-                listItem: {
-                  ...darkHoverAndActive,
-                },
-              }}
+              theme={props => ({
+                listItem: darkHoverAndActive(props),
+              })}
             >
               {branch.name}
             </ListItem>
@@ -62,16 +79,6 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
       </View>
     </AlignedTrigger>
   )
-}
-
-const darkHoverAndActive = {
-  ':hover': {
-    backgroundColor: Colors.grey800,
-  },
-  ':active': {
-    backgroundColor: Colors.grey700,
-  },
-  cursor: 'pointer',
 }
 
 const defaultTheme = {

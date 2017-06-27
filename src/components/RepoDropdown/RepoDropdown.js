@@ -21,6 +21,24 @@ type Props = {
   theme: Object,
 }
 
+const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
+  const base = {
+    cursor: 'pointer',
+    color: 'white',
+    backgroundColor: Colors.grey900,
+    ':hover': {
+      backgroundColor: Colors.grey800,
+    },
+  }
+  if (isKeyboardFocused) {
+    return {
+      ...base,
+      backgroundColor: Colors.grey800,
+    }
+  }
+  return base
+}
+
 class RepoDropdown extends React.Component {
   props: Props
   constructor(props) {
@@ -52,24 +70,21 @@ class RepoDropdown extends React.Component {
         {/* Horizontal offset is for the github icon*/}
 
         <AlignedTrigger
-          closeTriggers={['Click outside']}
+          closeTriggers={['Click outside', 'Hit Escape']}
           gravity="Bottom"
           openTriggers={['Click inside']}
           portal={({ close }) => (
             <List {...theme.dropdownPanel}>
               {repos.map(repo => (
                 <ListItem
+                  key={repo.id}
                   onClick={() => {
                     if (typeof onSelectRepo === 'function') {
                       onSelectRepo(repo.id)
                     }
                     close()
                   }}
-                  theme={{
-                    listItem: {
-                      ...darkHoverAndActive,
-                    },
-                  }}
+                  theme={props => ({ listItem: darkHoverAndActive(props) })}
                 >
                   {repo.name}
                 </ListItem>
@@ -103,19 +118,6 @@ class RepoDropdown extends React.Component {
     )
   }
 }
-
-const darkHoverAndActive = {
-  cursor: 'pointer',
-  color: 'white',
-  backgroundColor: Colors.grey900,
-  ':hover': {
-    backgroundColor: Colors.grey800,
-  },
-  ':active': {
-    backgroundColor: Colors.grey700,
-  },
-}
-
 const defaultTheme = props => ({
   container: {
     alignItems: 'center',
@@ -146,7 +148,6 @@ const defaultTheme = props => ({
     transform: 'scale(1, .75)',
   },
   dropdownPanel: {
-    ...darkHoverAndActive,
     border: `1px solid ${Colors.grey700}`,
     // height: 100,
     maxWidth: 300,

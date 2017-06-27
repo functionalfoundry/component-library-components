@@ -1,5 +1,6 @@
 import React from 'react'
-import { List, TextInput } from '@workflo/components'
+import { TextInput } from '@workflo/components'
+import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
 type Props = {
@@ -35,6 +36,23 @@ const theme = {
   },
 }
 
+const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
+  const base = {
+    cursor: 'pointer',
+    color: 'white',
+    ':hover': {
+      backgroundColor: Colors.grey600,
+    },
+  }
+  if (isKeyboardFocused) {
+    return {
+      ...base,
+      backgroundColor: Colors.grey600,
+    }
+  }
+  return base
+}
+
 class ComponentsLeftNav extends React.Component {
   props: Props
   static defaultProps = {
@@ -47,10 +65,10 @@ class ComponentsLeftNav extends React.Component {
     return selectedIndex === -1 ? null : selectedIndex
   }
 
-  handleSelect = index => {
-    const { items, onSelect } = this.props
+  handleSelect = itemId => {
+    const { onSelect } = this.props
     if (onSelect) {
-      onSelect(items[index].id)
+      onSelect(itemId)
     }
   }
 
@@ -64,11 +82,25 @@ class ComponentsLeftNav extends React.Component {
           <TextInput label="Filter" onChange={onChangeFilter} value={filterValue} />
         </div>
         <List
-          data={items.map(item => item.label)}
           onSelect={this.handleSelect}
           selectedIndex={ComponentsLeftNav.getSelectedIndex({ items, selectedId })}
           theme={theme}
-        />
+        >
+          {items.map(item => (
+            <ListItem
+              key={item.id}
+              onClick={() => {
+                this.handleSelect(item.id)
+              }}
+              theme={props => ({
+                listItem: darkHoverAndActive(props),
+              })}
+            >
+              {item.label}
+            </ListItem>
+          ))}
+
+        </List>
       </div>
     )
   }
