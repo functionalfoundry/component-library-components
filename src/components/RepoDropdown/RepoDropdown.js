@@ -149,7 +149,7 @@ const defaultTheme = props => ({
     ...darkHoverAndActive,
     border: `1px solid ${Colors.grey700}`,
     // height: 100,
-    width: 300,
+    maxWidth: 300,
   },
   dropdownTarget: {
     alignItems: 'center',

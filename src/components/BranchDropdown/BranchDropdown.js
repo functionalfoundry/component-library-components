@@ -24,7 +24,6 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
     <AlignedTrigger
       closeTriggers={['Click outside']}
       gravity="Bottom"
-      horizontalOffset={-8}
       openTriggers={['Click inside']}
       portal={({ close }) => (
         <List {...theme.dropdownPanel}>
@@ -47,7 +46,7 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
           ))}
         </List>
       )}
-      position="Bottom"
+      position="Bottom Right"
     >
       <View {...theme.container} inline>
         <View {...theme.innerContainer}>
@@ -98,7 +97,7 @@ const defaultTheme = {
     height: 60,
   },
   dropdownPanel: {
-    width: 155,
+    maxWidth: 300,
     backgroundColor: Colors.grey900,
     border: `1px solid ${Colors.grey800}`,
     color: 'white',
