@@ -5,7 +5,7 @@ import Theme from 'js-theme'
 import { View } from '@workflo/components'
 
 import { MarkRendererPropsT } from '../types'
-import Helpers from '../../../modules/ComponentTree'
+import { Helpers } from '../../../modules/ComponentTree'
 
 /**
  * Component start renderer
