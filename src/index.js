@@ -25,6 +25,7 @@ const OrganizationChooser = require('./components/OrganizationChooser')
 const Preferences = require('./components/Preferences')
 const RepoPreferences = require('./components/RepoPreferences')
 const ThemePreferences = require('./components/ThemePreferences')
+const ProjectPane = require('./components/ProjectPane')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const RepositoryChooser = require('./components/RepositoryChooser')
@@ -68,6 +69,7 @@ const WorkfloComponents = {
   RotateFade,
   MultiPropertiesTable,
   OrganizationChooser,
+  ProjectPane,
   Preferences,
   RepoPreferences,
   ThemePreferences,
