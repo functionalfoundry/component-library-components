@@ -1,11 +1,16 @@
 import React from 'react'
 import InfoTableRow from './InfoTableRow'
-import RepoDropdown, { RepoT } from '../RepoDropdown'
 import Theme from 'js-theme'
-import { Colors, Fonts, Spacing } from '@workflo/styles'
+import { Colors, Fonts } from '@workflo/styles'
 
-type PropsT = {}
+type PropsT = {
+  /* Array of InfoTableRow's to display in the table */
+  children: any,
+  /* The JS Theme */
+  theme: Object,
+}
 
+/** Displays a simple table with a single header column */
 const InfoTable = ({ children, theme }: PropsT) => (
   <table {...theme.table}>
     <tbody>
