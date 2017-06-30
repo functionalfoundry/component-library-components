@@ -517,4 +517,10 @@ const generateTreeLayoutMarkup = (layout: ComponentTreeLayoutT) =>
 
 export { generateTreeLayoutMarkup }
 
-export default ComponentTreeLayout
+export { ComponentTreeLayout }
+
+export default {
+  ComponentTreeLayout,
+  generateTreeLayoutMarkup,
+  generateTreeLayout,
+}

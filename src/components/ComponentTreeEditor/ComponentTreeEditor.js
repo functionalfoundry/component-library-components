@@ -23,7 +23,7 @@ import type { CompletionDataT } from '../../types/Completion'
 
 type PropsT = {
   tree: ComponentTree,
-  layout: ComponentTreeLayout,
+  layout: ComponentTreeLayout.ComponentTreeLayout,
   markup: string,
   completionData: CompletionDataT,
   nodeIdGenerator: Function,
@@ -46,7 +46,7 @@ const defaultProps = {}
 type StateT = {
   tree: ComponentTree,
   markup: string,
-  layout: ComponentTreeLayout,
+  layout: ComponentTreeLayout.ComponentTreeLayout,
   plugins: Array<Object>,
   editorState: State,
   interactionState: InteractionState,
@@ -76,7 +76,7 @@ const getComponentTreeEditorState = (tree: ComponentTree, treeMarkup: string) =>
 const getComponentTreeEditorPlugins = (
   editor: ComponentTreeEditor,
   tree: ComponentTree,
-  layout: ComponentTreeLayout,
+  layout: ComponentTreeLayout.ComponentTreeLayout,
   completionData: CompletionDataT,
   interactionState: InteractionStateT
 ) => [
