@@ -64,7 +64,7 @@ class RepoDropdown extends React.Component {
             {...theme.icon}
             name="github"
             onClick={onClickRepoGithub}
-            size="base"
+            size="small"
             ref={this.saveRefToGithubIcon}
           />}
         {/* Horizontal offset is for the github icon*/}
@@ -159,14 +159,13 @@ const defaultTheme = props => ({
     flexGrow: 0,
   },
   repoTitle: {
-    ...Fonts.large,
+    ...Fonts.base,
     ':hover': {
       color: Colors.grey100,
       textDecoration: 'underline',
     },
     color: Colors.grey300,
     flex: '0 auto',
-    fontSize: 26, // TODO: FIXX
     justifyContent: 'flex-start',
     marginBottom: 0,
   },

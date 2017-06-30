@@ -12,14 +12,19 @@ export type BranchT = {
 }
 
 type Props = {
+  /** All branches to display in the dropdown */
   branches: Array<BranchT>,
+  /* Called when a branch is selected */
   onSelectBranch: Function,
+  /* The ID of the selected branch */
   selectedBranchId: string,
+  /* The JS Theme */
   theme: Object,
 }
 
 const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
   const base = {
+    ...Fonts.small,
     cursor: 'pointer',
     color: 'white',
     backgroundColor: Colors.grey900,
@@ -67,15 +72,9 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
     >
       <View {...theme.container} inline>
         <View {...theme.innerContainer}>
-          <View {...theme.leftBlock}>
-            <View {...theme.label}>
-              {'CURRENT BRANCH'}
-            </View>
-            <View {...theme.branch}>{selectedBranch ? selectedBranch.name : null}</View>
-          </View>
+          <View {...theme.branch}>{selectedBranch ? selectedBranch.name : null}</View>
           <View {...theme.caret}>▼</View>
         </View>
-        <View {...theme.separator} inline />
       </View>
     </AlignedTrigger>
   )
@@ -83,7 +82,7 @@ const BranchDropdown = ({ branches, onSelectBranch, selectedBranchId, theme }: P
 
 const defaultTheme = {
   branch: {
-    ...Fonts.base,
+    ...Fonts.small,
   },
   caret: {
     ...Fonts.tiny,
@@ -91,17 +90,18 @@ const defaultTheme = {
       color: Colors.grey100,
     },
     color: Colors.grey300,
-    paddingLeft: Spacing.small,
-    paddingTop: Spacing.tiny,
+    paddingLeft: 2,
+    paddingTop: 2,
     marginLeft: Spacing.tiny,
-    transform: 'scale(1, .75)',
+    transform: 'scale(.8, .6)',
   },
   container: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 0,
-    height: 60,
+    // height: 60,
+    cursor: 'pointer',
   },
   dropdownPanel: {
     maxWidth: 300,
