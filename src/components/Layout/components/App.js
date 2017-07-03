@@ -27,10 +27,11 @@ const App = ({
   theme,
 }: Props) => (
   <Row {...theme.container}>
+    {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
     <Column {...theme.page}>
       {showHeader && header && <Row {...theme.header}>{header}</Row>}
       <Row {...theme.main}>
-        {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
+
         <Column {...theme.content}>{children}</Column>
       </Row>
     </Column>
