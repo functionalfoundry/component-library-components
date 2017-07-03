@@ -31,6 +31,7 @@ const ProjectPane = ({
   selectedRepoId,
   onClickRepoGithub,
   onSelectRepo,
+  onSelectBranch,
   branches,
   selectedBranchId,
   buildStatus,
@@ -45,7 +46,13 @@ const ProjectPane = ({
     <InfoTable>
       <InfoTableRow
         title="Branch"
-        info={<BranchDropdown branches={branches} selectedBranchId={selectedBranchId} />}
+        info={
+          <BranchDropdown
+            branches={branches}
+            selectedBranchId={selectedBranchId}
+            onSelectBranch={onSelectBranch}
+          />
+        }
       />
       <InfoTableRow
         title="Status"
