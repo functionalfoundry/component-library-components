@@ -21,18 +21,18 @@ type Props = {
 
 const theme = {
   list: {
-    backgroundColor: '#34393C',
+    backgroundColor: Colors.grey900,
     color: 'white',
   },
   listItem: {
     ':hover': {
-      backgroundColor: Colors.grey700,
+      backgroundColor: Colors.grey800,
     },
     cursor: 'pointer',
     transition: `background-color ${Animations.Timing.t2.animationDuration}s ${Animations.Eases.entrance.animationTimingFunction}`, // eslint-disable-line
   },
   selectedListItem: {
-    backgroundColor: Colors.grey400,
+    backgroundColor: Colors.grey600,
   },
 }
 
@@ -75,7 +75,7 @@ class ComponentsLeftNav extends React.Component {
   render() {
     const { filterValue, items, onChangeFilter, selectedId } = this.props
     return (
-      <div style={{ backgroundColor: '#34393C', height: '100%', width: '100%' }}>
+      <div style={{ height: '100%', width: '100%' }}>
         <div
           style={{ paddingLeft: Spacing.tiny, paddingTop: Spacing.tiny, width: '100%' }}
         >
@@ -94,7 +94,8 @@ class ComponentsLeftNav extends React.Component {
               textInput: {
                 color: 'white',
                 paddingLeft: Spacing.tiny,
-                paddingBottom: 5,
+                paddingTop: 8,
+                paddingBottom: 4,
                 '::placeholder': {
                   color: Colors.grey300,
                 },
