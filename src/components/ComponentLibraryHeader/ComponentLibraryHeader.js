@@ -52,42 +52,55 @@ const ComponentLibraryHeader = ({
 }: Props) => {
   return (
     <View {...theme.header}>
-      <View {...theme.titleRow}>
-        <View {...theme.leftBlock}>
-          <Icon name="logo" size="large" {...theme.backButton} />
-          <View {...theme.separator} inline />
-          <RepoDropdown {...{ onClickRepoGithub, onSelectRepo, repos, selectedRepoId }} />
-        </View>
-        <View {...theme.rightBlock}>
-          <Actions profile={profile} search={search} theme={theme} />
-        </View>
-      </View>
       <View {...theme.subtitleRow}>
-        {branches && branches.length
-          ? <BranchDropdown {...{ branches, selectedBranchId }} />
-          : null}
         <BreadCrumb breadCrumbPath={breadCrumbPath} />
-      </View>
-      <View {...theme.subHeaderContainer}>
-        {bulkActions &&
-          <BulkActionBar
-            numberSelected={bulkActions.numberSelected}
-            onClearSelection={bulkActions.onClearSelection}
-          >
-            {bulkActions.quickActions}
-          </BulkActionBar>}
-        {!bulkActions &&
-          <View {...theme.rightBlock}>
-            <SubHeader
-              primaryAction={primaryAction}
-              secondaryActions={secondaryActions}
-              quickActions={quickActions}
-            />
-          </View>}
       </View>
     </View>
   )
 }
+
+// <View {...theme.titleRow}>
+//   <View {...theme.leftBlock}>
+//     <Icon name="logo" size="large" {...theme.backButton} />
+//     <View {...theme.separator} inline />
+//     <RepoDropdown {...{ onClickRepoGithub, onSelectRepo, repos, selectedRepoId }} />
+//   </View>
+//   <View {...theme.rightBlock}>
+//     <Actions profile={profile} search={search} theme={theme} />
+//   </View>
+// </View>
+
+// <View {...theme.subtitleRow}>
+//   {branches && branches.length
+//     ? <BranchDropdown {...{ branches, selectedBranchId }} />
+//     : null}
+//   <BreadCrumb breadCrumbPath={breadCrumbPath} />
+// </View>
+
+// <View {...theme.subtitleRow}>
+//   {branches && branches.length
+//     ? <BranchDropdown {...{ branches, selectedBranchId }} />
+//     : null}
+//   <BreadCrumb breadCrumbPath={breadCrumbPath} />
+// </View>
+
+// <View {...theme.subHeaderContainer}>
+//   {bulkActions &&
+//     <BulkActionBar
+//       numberSelected={bulkActions.numberSelected}
+//       onClearSelection={bulkActions.onClearSelection}
+//     >
+//       {bulkActions.quickActions}
+//     </BulkActionBar>}
+//   {!bulkActions &&
+//     <View {...theme.rightBlock}>
+//       <SubHeader
+//         primaryAction={primaryAction}
+//         secondaryActions={secondaryActions}
+//         quickActions={quickActions}
+//       />
+//     </View>}
+// </View>
 
 type ActionsPropsT = {
   profile: Object,
@@ -107,6 +120,16 @@ const Actions = ({ profile = {}, actions = [], search, theme }: ActionsPropsT) =
 const SEPARATOR_MARGIN = Spacing.small
 
 const defaultTheme = {
+  subtitleRow: {
+    ...Fonts.large,
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    color: 'white',
+    height: 40,
+    justifyContent: 'flex-start',
+    marginBottom: Spacing.micro,
+  },
   actions: {
     flex: 1,
     display: 'flex',
@@ -140,23 +163,6 @@ const defaultTheme = {
     height: 40, // Make line-size height
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
-  },
-  subHeaderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    backgroundColor: '#23292b',
-    color: Colors.grey300,
-    height: 56,
-  },
-  subtitleRow: {
-    ...Fonts.large,
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    color: 'white',
-    height: 80,
-    justifyContent: 'flex-start',
-    marginBottom: Spacing.micro,
   },
   titleRow: {
     flexDirection: 'row',

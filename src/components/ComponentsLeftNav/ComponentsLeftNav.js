@@ -1,8 +1,10 @@
 import React from 'react'
-import { TextInput } from '@workflo/components'
+import { TextInput, Icon } from '@workflo/components'
 import List, { ListItem } from '@workflo/components/lib/List'
-import { Colors, Spacing } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
+import Theme from 'js-theme'
+import RepoDropdown from '../RepoDropdown'
 type Props = {
   /** Filter state to display in left nav */
   filterValue: string,
@@ -19,7 +21,7 @@ type Props = {
   selectedId: string,
 }
 
-const theme = {
+const listTheme = {
   list: {
     backgroundColor: Colors.grey900,
     color: 'white',
@@ -29,6 +31,7 @@ const theme = {
       backgroundColor: Colors.grey800,
     },
     cursor: 'pointer',
+    paddingTop: 2,
     transition: `background-color ${Animations.Timing.t2.animationDuration}s ${Animations.Eases.entrance.animationTimingFunction}`, // eslint-disable-line
   },
   selectedListItem: {
@@ -38,6 +41,7 @@ const theme = {
 
 const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
   const base = {
+    ...Fonts.base,
     cursor: 'pointer',
     color: 'white',
     ':hover': {
@@ -73,12 +77,29 @@ class ComponentsLeftNav extends React.Component {
   }
 
   render() {
-    const { filterValue, items, onChangeFilter, selectedId } = this.props
+    const { filterValue, items, onChangeFilter, selectedId, theme } = this.props
     return (
       <div style={{ height: '100%', width: '100%' }}>
-        <div
-          style={{ paddingLeft: Spacing.tiny, paddingTop: Spacing.tiny, width: '100%' }}
-        >
+        <div style={{ width: '100%' }}>
+          <div {...theme.titleRow}>
+            <div {...theme.leftBlock}>
+              <Icon
+                name="logo"
+                size="base"
+                theme={{
+                  svg: {
+                    width: 28,
+                    height: 28,
+                  },
+                }}
+              />
+              <div {...theme.separator} inline />
+            </div>
+            <div {...theme.rightBlock}>
+              Component Library
+              {/* <Actions profile={profile} search={search} theme={theme} />  */}
+            </div>
+          </div>
           <TextInput
             disableUnderline
             placeholder="Filter"
@@ -90,12 +111,18 @@ class ComponentsLeftNav extends React.Component {
                 // borderWidth: 0.5,
                 // borderColor: Colors.grey700,
                 padding: 3,
+                display: 'flex',
+                flex: 1,
+                maxWidth: 'none',
+                width: 'auto',
               },
               textInput: {
                 color: 'white',
                 paddingLeft: Spacing.tiny,
+                paddingRight: Spacing.tiny,
                 paddingTop: 8,
                 paddingBottom: 4,
+                ...Fonts.small,
                 '::placeholder': {
                   color: Colors.grey300,
                 },
@@ -103,6 +130,7 @@ class ComponentsLeftNav extends React.Component {
               inputLabel: {
                 color: Colors.grey200,
                 paddingLeft: Spacing.tiny,
+                paddingRight: Spacing.tiny,
               },
             }}
             value={filterValue}
@@ -111,7 +139,7 @@ class ComponentsLeftNav extends React.Component {
         <List
           onSelect={this.handleSelect}
           selectedIndex={ComponentsLeftNav.getSelectedIndex({ items, selectedId })}
-          theme={theme}
+          theme={listTheme}
         >
           {items.map(item => (
             <ListItem
@@ -133,4 +161,43 @@ class ComponentsLeftNav extends React.Component {
   }
 }
 
-export default ComponentsLeftNav
+const SEPARATOR_MARGIN = 6
+
+const defaultTheme = {
+  titleRow: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: Spacing.tiny,
+    height: 36,
+  },
+  leftBlock: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    // flex: '0 1 100',
+  },
+  rightBlock: {
+    ...Fonts.base,
+    paddingTop: 4,
+    fontSize: 22,
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flex: '0 auto',
+  },
+  separator: {
+    flex: '0 1 auto',
+    // borderLeftWidth: 1,
+    // borderLeftStyle: 'solid',
+    // borderLeftColor: Colors.grey500,
+    height: 34, // Make line-size height
+    marginRight: SEPARATOR_MARGIN,
+    marginLeft: SEPARATOR_MARGIN,
+  },
+}
+
+export default Theme('ComponentsLeftname', defaultTheme)(ComponentsLeftNav)
