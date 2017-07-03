@@ -66,72 +66,27 @@ const Content = ({
   switch (input.type) {
     case 'Radio':
       return (
-        <AlignedPointer
-          position="Top"
-          openTriggers={['Mouse enter']}
-          closeTriggers={['Mouse leave']}
+        <BaseQuickAction
           onOpen={onOpen}
           onClose={onClose}
-          portal={
-            <View
-              theme={{
-                view: {
-                  alignItems: 'center',
-                },
-              }}
-            >
-              {!showLabelInButton &&
-                <Text
-                  theme={{
-                    text: {
-                      textTransform: 'uppercase',
-                      marginBottom: 4,
-                    },
-                  }}
-                >
-                  {label}
-                </Text>}
-              <Radios
-                options={input.options}
-                value={input.value}
-                onChange={value => onChange(value)}
-                theme={{
-                  radios: {
-                    marginRight: 40,
-                  },
-                }}
-              />
-            </View>
-          }
+          showLabelInButton={showLabelInButton}
+          label={label}
+          shade={shade}
+          iconKind={iconKind}
+          icon={icon}
+          onClick={onClick}
         >
-          <View
+          <Radios
+            options={input.options}
+            value={input.value}
+            onChange={value => onChange(value)}
             theme={{
-              view: getButtonWrapperStyle(false, true),
+              radios: {
+                marginRight: 40,
+              },
             }}
-          >
-            <Icon
-              name={icon}
-              size="large"
-              onClick={onClick}
-              stroke={getColor(shade, iconKind)}
-              fill={getColor(shade, iconKind)}
-              theme={{
-                icon: {
-                  display: 'inline-block',
-                },
-              }}
-            />
-            {showLabelInButton &&
-              <Text
-                size="small"
-                theme={{
-                  text: buttonTextStyle,
-                }}
-              >
-                {label}
-              </Text>}
-          </View>
-        </AlignedPointer>
+          />
+        </BaseQuickAction>
       )
     case 'Button':
       const iconElement = (
@@ -215,69 +170,109 @@ const Content = ({
       )
     case 'Icon':
       return (
-        <AlignedPointer
-          position="Top"
-          openTriggers={['Mouse enter']}
-          closeTriggers={['Mouse leave']}
+        <BaseQuickAction
           onOpen={onOpen}
           onClose={onClose}
-          portal={
-            <View
-              theme={{
-                view: {
-                  alignItems: 'center',
-                },
-              }}
-            >
-              {!showLabelInButton &&
-                <Text
-                  theme={{
-                    text: baseTextStyle,
-                  }}
-                >
-                  {label}
-                </Text>}
-              <IconButtonGroup
-                onChange={value => onChange(value)}
-                icons={input.options}
-                selectedIconName={input.value}
-              />
-            </View>
-          }
+          showLabelInButton={showLabelInButton}
+          label={label}
+          shade={shade}
+          iconKind={iconKind}
+          icon={icon}
+          onClick={onClick}
         >
-          <View
-            theme={{
-              view: getButtonWrapperStyle(),
-            }}
-          >
-            <Icon
-              name={icon}
-              size="large"
-              onClick={onClick}
-              stroke={getColor(shade, iconKind)}
-              fill={getColor(shade, iconKind)}
-              theme={{
-                icon: {
-                  display: 'inline-block',
-                },
-              }}
-            />
-            {showLabelInButton &&
-              <Text
-                size="small"
-                theme={{
-                  text: buttonTextStyle,
-                }}
-              >
-                {label}
-              </Text>}
-          </View>
-        </AlignedPointer>
+          <IconButtonGroup
+            onChange={value => onChange(value)}
+            icons={input.options}
+            selectedIconName={input.value}
+          />
+        </BaseQuickAction>
       )
+      case 'Custom':
+        return (
+          <BaseQuickAction
+            onOpen={onOpen}
+            onClose={onClose}
+            showLabelInButton={showLabelInButton}
+            label={label}
+            shade={shade}
+            iconKind={iconKind}
+            icon={icon}
+            onClick={onClick}
+          >
+            {input.element}
+          </BaseQuickAction>
+        )
     default:
       console.error('Invalid input type set for QuickAction')
   }
 }
+
+const BaseQuickAction = ({
+  onOpen,
+  onClose,
+  showLabelInButton,
+  label,
+  children,
+  shade,
+  iconKind,
+  icon,
+  onClick,
+}) => (
+  <AlignedPointer
+    position="Top"
+    openTriggers={['Mouse enter']}
+    closeTriggers={['Mouse leave']}
+    onOpen={onOpen}
+    onClose={onClose}
+    portal={
+      <View
+        theme={{
+          view: {
+            alignItems: 'center',
+          },
+        }}
+      >
+        {!showLabelInButton &&
+          <Text
+            theme={{
+              text: baseTextStyle,
+            }}
+          >
+            {label}
+          </Text>}
+        {children}
+      </View>
+    }
+  >
+    <View
+      theme={{
+        view: getButtonWrapperStyle(),
+      }}
+    >
+      <Icon
+        name={icon}
+        size="large"
+        onClick={onClick}
+        stroke={getColor(shade, iconKind)}
+        fill={getColor(shade, iconKind)}
+        theme={{
+          icon: {
+            display: 'inline-block',
+          },
+        }}
+      />
+      {showLabelInButton &&
+        <Text
+          size="small"
+          theme={{
+            text: buttonTextStyle,
+          }}
+        >
+          {label}
+        </Text>}
+    </View>
+  </AlignedPointer>
+)
 
 const baseTextStyle = {
   textTransform: 'uppercase',

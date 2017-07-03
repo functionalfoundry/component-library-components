@@ -2,8 +2,9 @@ import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import Preview from '@workflo/components/lib/Preview'
 import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
+import { FilledTextInput, Select } from '@workflo/components'
 import QuickAction from './QuickAction'
-import { Colors } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 
 storiesOf('Quick Action', module).add('Regular', () => (
   <PreviewContainer>
@@ -57,6 +58,17 @@ storiesOf('Quick Action', module).add('Regular', () => (
         onClick={action('onClick')}
       />
     </Preview>
+    <Preview theme={previewTheme} label="Custom Element">
+      <QuickAction
+        icon="align-center"
+        shade="Light"
+        label="Size"
+        input={{
+          type: 'Custom',
+          element: <CustomContainer />,
+        }}
+      />
+    </Preview>
   </PreviewContainer>
 ))
 
@@ -68,3 +80,67 @@ const previewTheme = {
     backgroundColor: Colors.grey900,
   },
 }
+
+class CustomContainer extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      width: '768',
+      height: 400,
+      preset: 'Apple',
+    }
+  }
+
+  handleChangeWidth = width => {
+    this.setState({ width })
+  }
+
+  handleChangeHeight = height => {
+    this.setState({ height })
+  }
+
+  handleChangePreset = preset => {
+    this.setState({ preset })
+  }
+
+  render() {
+    const { width, height, preset } = this.state
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', marginBottom: Spacing.tiny }}>
+          <div style={{ marginRight: Spacing.tiny, display: 'flex' }}>
+            <FilledTextInput
+              label="Width"
+              onChange={this.handleChangeWidth}
+              value={width}
+              width={60}
+            />
+          </div>
+          <div style={{ display: 'flex' }}>
+            <FilledTextInput
+              label="Height"
+              onChange={this.handleChangeHeight}
+              value={height}
+              width={60}
+            />
+          </div>
+        </div>
+        {/*
+        <Select
+          options={items}
+          value={preset}
+          onChange={this.handleChangePreset}
+          width={88}
+        />
+        */}
+      </div>
+    )
+  }
+}
+
+const items = [
+  { id: 'apple', label: 'Apple' },
+  { id: 'apricot', label: 'Apricot' },
+  { id: 'banana', label: 'Banana' },
+  { id: 'cherry', label: 'Cherry' },
+]
