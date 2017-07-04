@@ -43,22 +43,31 @@ const ProjectPane = ({
       onClickRepoGithub={onClickRepoGithub}
       onSelectRepo={onSelectRepo}
     />
-    <InfoTable>
-      <InfoTableRow
-        title="Branch"
-        info={
-          <BranchDropdown
-            branches={branches}
-            selectedBranchId={selectedBranchId}
-            onSelectBranch={onSelectBranch}
-          />
-        }
-      />
-      <InfoTableRow
-        title="Status"
-        info={<div style={{ marginLeft: 8 }}><BranchStatus status={buildStatus} /></div>}
-      />
-    </InfoTable>
+    <div
+      style={{
+        marginTop: 4,
+        marginLeft: 30,
+      }}
+    >
+      <InfoTable>
+        <InfoTableRow
+          title="Branch"
+          info={
+            <BranchDropdown
+              branches={branches}
+              selectedBranchId={selectedBranchId}
+              onSelectBranch={onSelectBranch}
+            />
+          }
+        />
+        <InfoTableRow
+          title="Status"
+          info={
+            <div style={{ marginLeft: 8 }}><BranchStatus status={buildStatus} /></div>
+          }
+        />
+      </InfoTable>
+    </div>
   </div>
 )
 
