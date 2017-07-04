@@ -1,6 +1,7 @@
 import React from 'react'
-import { storiesOf } from '@kadira/storybook'
+import { storiesOf, action } from '@kadira/storybook'
 import ComponentsLeftNav from './ComponentsLeftNav'
+import { branches, repos } from '../../../mocks/header'
 
 const items = [
   {
@@ -41,6 +42,7 @@ class Container extends React.Component {
     return items.filter(item => item.label.indexOf(this.state.filterValue) !== -1)
   }
   render() {
+    console.log('branches: ', branches)
     return (
       <ComponentsLeftNav
         filterValue={this.state.filterValue}
@@ -48,6 +50,13 @@ class Container extends React.Component {
         onChangeFilter={this.handleChangeFilter}
         onSelect={this.handleSelect}
         selectedId={this.state.selectedId}
+        repos={repos}
+        branches={branches}
+        selectedRepoId={repos[0].id}
+        selectedBranchId={branches[0].id}
+        onClickRepoGithub={action('clickRepoGithub')}
+        onSelectRepo={action('onSelectRepo')}
+        buildStatus="Success"
       />
     )
   }

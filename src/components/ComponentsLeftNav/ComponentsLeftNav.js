@@ -4,7 +4,8 @@ import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
 import Theme from 'js-theme'
-import RepoDropdown from '../RepoDropdown'
+import ProjectPane from '../ProjectPane'
+import HorizontalSeparator from '../HorizontalSeparator'
 type Props = {
   /** Filter state to display in left nav */
   filterValue: string,
@@ -77,29 +78,65 @@ class ComponentsLeftNav extends React.Component {
   }
 
   render() {
-    const { filterValue, items, onChangeFilter, selectedId, theme } = this.props
+    const {
+      filterValue,
+      items,
+      onChangeFilter,
+      selectedId,
+      repos,
+      branches,
+      selectedRepoId,
+      selectedBranchId,
+      onClickRepoGithub,
+      onSelectRepo,
+      buildStatus,
+      theme,
+    } = this.props
     return (
-      <div style={{ height: '100%', width: '100%' }}>
+      <div {...theme.componentsLeftNav}>
         <div style={{ width: '100%' }}>
           <div {...theme.titleRow}>
             <div {...theme.leftBlock}>
-              <Icon
-                name="logo"
-                size="base"
-                theme={{
-                  svg: {
-                    width: 28,
-                    height: 28,
-                  },
-                }}
-              />
-              <div {...theme.separator} inline />
-            </div>
-            <div {...theme.rightBlock}>
-              Component Library
-              {/* <Actions profile={profile} search={search} theme={theme} />  */}
+              <div {...theme.logoAndTitle}>
+                <Icon
+                  name="logo"
+                  size="base"
+                  theme={{
+                    svg: {
+                      width: 28,
+                      height: 28,
+                    },
+                  }}
+                />
+                <div {...theme.separator} inline />
+              </div>
+              <div {...theme.rightBlock}>
+                Component Library
+                {/* <Actions profile={profile} search={search} theme={theme} />  */}
+              </div>
             </div>
           </div>
+          <div {...theme.projectPane}>
+            <ProjectPane
+              repos={repos}
+              branches={branches}
+              selectedRepoId={selectedRepoId}
+              selectedBranchId={selectedBranchId}
+              onClickRepoGithub={onClickRepoGithub}
+              onSelectRepo={onSelectRepo}
+              buildStatus={buildStatus}
+            />
+          </div>
+          <HorizontalSeparator
+            theme={{
+              horizontalSeparator: {
+                width: `100%`,
+                // Extend to full width
+                // marginLeft: -12,
+                // marginRight: 12,
+              },
+            }}
+          />
           <TextInput
             disableUnderline
             placeholder="Filter"
@@ -164,6 +201,12 @@ class ComponentsLeftNav extends React.Component {
 const SEPARATOR_MARGIN = 6
 
 const defaultTheme = {
+  componentsLeftNav: {
+    backgroundColor: Colors.grey900,
+    color: 'white',
+    height: '100%',
+    width: '100%',
+  },
   titleRow: {
     display: 'flex',
     flex: 1,
@@ -172,6 +215,10 @@ const defaultTheme = {
     alignItems: 'center',
     marginBottom: Spacing.tiny,
     height: 36,
+  },
+  logoAndTitle: {
+    display: 'flex',
+    alignItems: 'center',
   },
   leftBlock: {
     display: 'flex',

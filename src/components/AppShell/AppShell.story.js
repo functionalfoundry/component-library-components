@@ -37,6 +37,13 @@ const leftNav = (
       { id: 2, label: 'button' },
       { id: 3, label: 'card' },
     ]}
+    repos={repos}
+    branches={branches}
+    selectedRepoId={repos[0].id}
+    selectedBranchId={branches[0].id}
+    onClickRepoGithub={action('clickRepoGithub')}
+    onSelectRepo={action('onSelectRepo')}
+    buildStatus="Success"
   />
 )
 
