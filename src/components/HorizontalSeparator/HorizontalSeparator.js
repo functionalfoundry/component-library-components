@@ -32,7 +32,7 @@ const defaultTheme = ({ color, marginTop, marginBottom, width }) => {
       borderBottomWidth: 1,
       borderBottomStyle: 'solid',
       borderBottomColor: color,
-      width: width, // Make line-size width
+      width, // Make line-size width
       marginTop,
       marginBottom,
     },
