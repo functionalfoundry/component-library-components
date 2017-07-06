@@ -1,3 +1,4 @@
+const ActionButton = require('./components/ActionButton')
 const App = require('./components/App')
 const App2 = require('./components/App2')
 const AppShell = require('./components/AppShell')
@@ -23,12 +24,16 @@ const LivePreview = require('./components/LivePreview')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
 const OrganizationChooser = require('./components/OrganizationChooser')
 const OrganizationSignIn = require('./components/OrganizationSignIn')
+const Panel = require('./components/Panel')
+const PanelHeader = require('./components/PanelHeader')
+const PanelContent = require('./components/PanelContent')
 const Preferences = require('./components/Preferences')
 const RepoPreferences = require('./components/RepoPreferences')
 const ThemePreferences = require('./components/ThemePreferences')
 const ProjectPane = require('./components/ProjectPane')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
+const QuickActionButton = require('./components/QuickActionButton')
 const RepositoryChooser = require('./components/RepositoryChooser')
 const RotateFade = require('./components/RotateFade')
 const ScrollableContent = require('./components/ScrollableContent')
@@ -44,6 +49,7 @@ import actionsPlugin from './utils/ActionsBabelPlugin'
 import dataPlugin from './utils/DataBabelPlugin'
 
 const WorkfloComponents = {
+  ActionButton,
   App,
   App2,
   AppShell,
@@ -70,6 +76,9 @@ const WorkfloComponents = {
   RotateFade,
   MultiPropertiesTable,
   OrganizationChooser,
+  Panel,
+  PanelHeader,
+  PanelContent,
   ProjectPane,
   OrganizationSignIn,
   Preferences,
@@ -77,6 +86,7 @@ const WorkfloComponents = {
   ThemePreferences,
   Properties,
   QuickAction,
+  QuickActionButton,
   RepositoryChooser,
   ScrollableContent,
   Search,
