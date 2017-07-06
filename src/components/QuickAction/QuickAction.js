@@ -261,10 +261,11 @@ const BaseQuickAction = ({
         stroke={getColor(shade, iconKind)}
         fill={getColor(shade, iconKind)}
         theme={{
-          icon: {
+          svg: {
             display: 'inline-block',
             width: 24,
             height: 24,
+            marginRight: 3,
           },
         }}
       />
@@ -312,6 +313,9 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
     buttonWrapperStyle[':active'] = {
       backgroundColor: 'rgba(100, 100, 100, .3)',
     }
+  }
+  if (!isButton) {
+    buttonWrapperStyle.top = 3 // Hack because AlignedTrigger offsets the height
   }
   buttonWrapperStyle.padding = '4px 10px 4px 4px'
   return buttonWrapperStyle

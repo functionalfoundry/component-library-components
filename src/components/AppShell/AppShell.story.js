@@ -101,10 +101,30 @@ storiesOf('AppShell', module)
                 label="Delete"
                 onClick={action('onClick')}
               />
-              <QuickActionButton
-                icon="delete"
-                label="Delete"
+              <QuickAction
+                icon="alignment"
+                label="Alignment"
+                shade="Light"
+                input={{
+                  type: 'Icon',
+                  value: 'align-left',
+                  options: [
+                    {
+                      name: 'align-left',
+                      hint: 'Left',
+                    },
+                    {
+                      name: 'align-center',
+                      hint: 'Center',
+                    },
+                    {
+                      name: 'align-right',
+                      hint: 'Right',
+                    },
+                  ],
+                }}
                 onClick={action('onClick')}
+                showLabelInButton
               />
             </PanelHeader>
             <Layout.ScrollableContent theme={scrollableContentTheme}>
