@@ -5,9 +5,10 @@ type PropsT = {}
 
 const PanelHeader = ({ children, theme }: PropsT) => {
   if (!children) return <div />
+  let actions = children.length ? children : [children]
   return (
     <div {...theme.panelHeader}>
-      {children.map((child, index) => (
+      {actions.map((child, index) => (
         <div key={index} {...theme.quickActionWrapper}>
           {child}
         </div>
