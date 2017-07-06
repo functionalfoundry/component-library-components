@@ -34,7 +34,7 @@ const BreadCrumb = ({ breadCrumbPath = [], theme }: Props) => {
                 <View {...theme.parentSegementText} inline>
                   {pathSegment.value || null}
                 </View>
-                {index < breadCrumbPath.length - 1 ? <span>/&nbsp;</span> : null}
+                {index < breadCrumbPath.length - 1 ? <span>&nbsp;/&nbsp;</span> : null}
               </View>
             : <EditableText
                 isEditing={pathSegment.isEditing}
