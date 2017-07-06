@@ -3,15 +3,18 @@ import Theme from 'js-theme'
 
 type PropsT = {}
 
-const PanelHeader = ({ children, theme }: PropsT) => (
-  <div {...theme.panelHeader}>
-    {children.map((child, index) => (
-      <div key={index} {...theme.quickActionWrapper}>
-        {child}
-      </div>
-    ))}
-  </div>
-)
+const PanelHeader = ({ children, theme }: PropsT) => {
+  if (!children) return <div />
+  return (
+    <div {...theme.panelHeader}>
+      {children.map((child, index) => (
+        <div key={index} {...theme.quickActionWrapper}>
+          {child}
+        </div>
+      ))}
+    </div>
+  )
+}
 
 const defaultTheme = {
   panelHeader: {
