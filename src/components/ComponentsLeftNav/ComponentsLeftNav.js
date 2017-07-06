@@ -6,6 +6,7 @@ import Animations from '@workflo/styles/lib/Animations'
 import Theme from 'js-theme'
 import ProjectPane from '../ProjectPane'
 import HorizontalSeparator from '../HorizontalSeparator'
+
 type Props = {
   /** Filter state to display in left nav */
   filterValue: string,
@@ -244,6 +245,9 @@ const defaultTheme = {
     height: 34, // Make line-size height
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
+  },
+  projectPane: {
+    marginTop: Spacing.large + 4,
   },
 }
 
