@@ -25,8 +25,9 @@ export default class BulkActionBar extends React.Component {
   handleClick = () => {}
 
   render() {
-    const { children, onClearSelection, numberSelected } = this.props
+    const { children = [], onClearSelection, numberSelected } = this.props
     const { isHovering } = this.state
+    let actions = children.length ? children : [children]
     return (
       <View
         theme={{
@@ -81,7 +82,7 @@ export default class BulkActionBar extends React.Component {
             marginRight: Spacing.small,
           }}
         />
-        {children.map((child, index) => (
+        {actions.map((child, index) => (
           <div
             key={index}
             style={{

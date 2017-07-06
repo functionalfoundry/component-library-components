@@ -2,7 +2,7 @@ import React from 'react'
 import RepoDropdown, { RepoT } from '../RepoDropdown'
 import BranchDropdown, { BranchT } from '../BranchDropdown'
 import Theme from 'js-theme'
-import BranchStatus, { BuildStatusT } from '../BranchStatus'
+import BranchStatus from '../BranchStatus'
 import InfoTable from '../InfoTable'
 import InfoTableRow from '../InfoTable/InfoTableRow'
 
@@ -21,8 +21,6 @@ type PropsT = {
   onSelectBranch: Function,
   /** The currently selected branch ID to display in the branch dropdown */
   selectedBranchId: string,
-  /** The status for the currently selected branch */
-  buildStatus: BuildStatusT,
 }
 
 /** Shows the repo dropdown, branch dropdown, and build status in the left navbar */
@@ -34,7 +32,6 @@ const ProjectPane = ({
   onSelectBranch,
   branches,
   selectedBranchId,
-  buildStatus,
 }: PropsT) => (
   <div>
     <RepoDropdown
@@ -63,13 +60,18 @@ const ProjectPane = ({
         <InfoTableRow
           title="Status"
           info={
-            <div style={{ marginLeft: 8 }}><BranchStatus status={buildStatus} /></div>
+            <div style={{ marginLeft: 8 }}>
+              <BranchStatus status={getCurrentBranchStatus(branches, selectedBranchId)} />
+            </div>
           }
         />
       </InfoTable>
     </div>
   </div>
 )
+
+const getCurrentBranchStatus = (branches, selectedBranchId) =>
+  (branches.find(branch => branch.id === selectedBranchId) || {}).status
 
 const defaultTheme = {}
 

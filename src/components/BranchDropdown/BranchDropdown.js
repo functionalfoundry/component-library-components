@@ -5,10 +5,13 @@ import { find } from 'lodash'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import { AlignedTrigger, View } from '@workflo/components'
 import List, { ListItem } from '@workflo/components/lib/List'
+import { BuildStatusT } from '../BranchStatus'
 
 export type BranchT = {
   id: string,
   name: string,
+  /** The status for the currently selected branch */
+  status: BuildStatusT,
 }
 
 type Props = {

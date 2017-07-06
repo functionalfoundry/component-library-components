@@ -22,14 +22,17 @@ export const branches = [
   {
     id: 1,
     name: 'master',
+    status: 'Success',
   },
   {
     id: 2,
     name: 'develop',
+    status: 'Success',
   },
   {
     id: 3,
     name: 'refs/zerim/ant-design',
+    status: 'Success',
   },
 ]
 
