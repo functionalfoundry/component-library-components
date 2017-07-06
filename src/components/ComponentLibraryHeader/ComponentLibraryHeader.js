@@ -10,7 +10,7 @@ import RepoDropdown, { type RepoT } from '../RepoDropdown'
 import BranchDropdown, { type BranchT } from '../BranchDropdown'
 import BreadCrumb, { type BreadCrumbSegmentT } from '../BreadCrumb'
 import ActionButton from '../ActionButton'
-console.log('actionButton: ', ActionButton)
+
 type Props = {
   branches: BranchT,
   breadCrumbPath: Array<BreadCrumbSegmentT>,
@@ -61,6 +61,8 @@ const ComponentLibraryHeader = ({
           </div>
         </div>
         <div {...theme.rightBlock}>
+          {secondaryActions &&
+            <SecondaryActions secondaryActions={secondaryActions} theme={theme} />}
           {primaryAction && <PrimaryAction primaryAction={primaryAction} theme={theme} />}
         </div>
       </View>
@@ -169,6 +171,9 @@ const defaultTheme = {
   quickActionWrapper: {
     display: 'flex',
   },
+  secondaryActions: {
+    display: 'flex',
+  },
   header: {
     display: 'flex',
     flexGrow: 1,
@@ -184,6 +189,7 @@ const defaultTheme = {
     flex: '3 1 auto',
   },
   rightBlock: {
+    display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'center',
     flex: '0 auto',

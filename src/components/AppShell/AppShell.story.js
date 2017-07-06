@@ -39,6 +39,12 @@ const header = (
       icon: 'share',
       onClick: action('onShare'),
     }}
+    secondaryActions={[
+      {
+        label: 'Cancel',
+        onClick: action('onCancel'),
+      },
+    ]}
   />
 )
 
