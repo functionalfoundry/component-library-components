@@ -12,6 +12,7 @@ import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
 import Properties from '../Properties'
+import QuickAction from '../QuickAction'
 import {
   componentTree,
   // propKeyValues,
@@ -27,6 +28,51 @@ const header = (
     {...{ branches, breadCrumbPath, repos }}
     selectedBranchId={1}
     selectedRepoId={1}
+    quickActions={[
+      <QuickAction
+        key="delete"
+        icon="delete"
+        iconKind="Secondary"
+        label="Delete"
+        input={{
+          type: 'Button',
+        }}
+        shade="Light"
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
+    ]}
+    secondaryActions={[
+      <QuickAction
+        key="delete"
+        icon="delete"
+        iconKind="Secondary"
+        label="Delete"
+        input={{
+          type: 'Button',
+        }}
+        shade="Light"
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
+      <QuickAction
+        key="delete"
+        icon="delete"
+        iconKind="Secondary"
+        label="Delete"
+        input={{
+          type: 'Button',
+        }}
+        shade="Light"
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
+    ]}
+    primaryAction={{
+      label: 'Share',
+      icon: 'share',
+      onClick: action('onShare'),
+    }}
   />
 )
 

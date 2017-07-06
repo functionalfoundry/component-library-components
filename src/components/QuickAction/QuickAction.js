@@ -92,13 +92,17 @@ const Content = ({
       const iconElement = (
         <Icon
           name={icon}
-          size="large"
+          size="base"
           stroke={getColor(shade, iconKind)}
           fill={getColor(shade, iconKind)}
           theme={{
             icon: {
               display: 'inline-block',
               cursor: 'pointer',
+            },
+            svg: {
+              width: 30,
+              height: 30,
             },
           }}
         />
@@ -120,7 +124,9 @@ const Content = ({
                 <Text
                   theme={{
                     text: {
-                      textTransform: 'uppercase',
+                      marginTop: 4,
+                      marginLeft: 2,
+                      fontSize: 14,
                     },
                   }}
                 >
@@ -187,21 +193,21 @@ const Content = ({
           />
         </BaseQuickAction>
       )
-      case 'Custom':
-        return (
-          <BaseQuickAction
-            onOpen={onOpen}
-            onClose={onClose}
-            showLabelInButton={showLabelInButton}
-            label={label}
-            shade={shade}
-            iconKind={iconKind}
-            icon={icon}
-            onClick={onClick}
-          >
-            {input.element}
-          </BaseQuickAction>
-        )
+    case 'Custom':
+      return (
+        <BaseQuickAction
+          onOpen={onOpen}
+          onClose={onClose}
+          showLabelInButton={showLabelInButton}
+          label={label}
+          shade={shade}
+          iconKind={iconKind}
+          icon={icon}
+          onClick={onClick}
+        >
+          {input.element}
+        </BaseQuickAction>
+      )
     default:
       console.error('Invalid input type set for QuickAction')
   }
@@ -251,13 +257,14 @@ const BaseQuickAction = ({
     >
       <Icon
         name={icon}
-        size="large"
         onClick={onClick}
         stroke={getColor(shade, iconKind)}
         fill={getColor(shade, iconKind)}
         theme={{
           icon: {
             display: 'inline-block',
+            width: 24,
+            height: 24,
           },
         }}
       />
@@ -282,9 +289,9 @@ const baseTextStyle = {
 
 const buttonTextStyle = {
   color: Colors.grey200,
-  marginLeft: Spacing.tiny,
-  marginTop: 2,
-  textTransform: 'uppercase',
+  marginTop: 4,
+  marginLeft: 2,
+  fontSize: 14,
   userSelect: 'none',
 }
 
