@@ -9,7 +9,8 @@ import BulkActionBar from '../BulkActionBar'
 import RepoDropdown, { type RepoT } from '../RepoDropdown'
 import BranchDropdown, { type BranchT } from '../BranchDropdown'
 import BreadCrumb, { type BreadCrumbSegmentT } from '../BreadCrumb'
-
+import ActionButton from '../ActionButton'
+console.log('actionButton: ', ActionButton)
 type Props = {
   branches: BranchT,
   breadCrumbPath: Array<BreadCrumbSegmentT>,
@@ -63,9 +64,6 @@ const ComponentLibraryHeader = ({
           {primaryAction && <PrimaryAction primaryAction={primaryAction} theme={theme} />}
         </div>
       </View>
-      <div {...theme.secondaryActions}>
-        <QuickActions quickActions={secondaryActions} theme={theme} />
-      </div>
     </View>
   )
 }
@@ -127,36 +125,6 @@ const Actions = ({ profile = {}, actions = [], search, theme }: ActionsPropsT) =
     {}
   </View>
 )
-
-const ActionButton = ({ label, onClick, icon, kind = 'secondary', theme }) => {
-  if (!label) return null
-  return (
-    <div {...theme.primaryAction}>
-      <Button
-        onClick={onClick}
-        kind={kind}
-        icon={name}
-        theme={{
-          button: primaryStyle,
-        }}
-      >
-        {icon &&
-          <Icon
-            name={icon}
-            stroke="white"
-            theme={{
-              icon: {
-                alignItems: 'center',
-                marginRight: 10,
-                marginBottom: 4,
-              },
-            }}
-          />}
-        {label}
-      </Button>
-    </div>
-  )
-}
 
 const PrimaryAction = ({ primaryAction, theme }) => (
   <ActionButton {...primaryAction} theme={theme} kind="regular" />

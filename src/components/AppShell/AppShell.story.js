@@ -13,6 +13,9 @@ import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
 import Properties from '../Properties'
 import QuickAction from '../QuickAction'
+import Panel from '../Panel'
+import QuickActionButton from '../QuickActionButton'
+import PanelHeader from '../PanelHeader'
 import {
   componentTree,
   // propKeyValues,
@@ -29,44 +32,7 @@ const header = (
     selectedBranchId={1}
     selectedRepoId={1}
     quickActions={[
-      <QuickAction
-        key="delete"
-        icon="delete"
-        iconKind="Secondary"
-        label="Delete"
-        input={{
-          type: 'Button',
-        }}
-        shade="Light"
-        onClick={action('onClick')}
-        showLabelInButton
-      />,
-    ]}
-    secondaryActions={[
-      <QuickAction
-        key="delete"
-        icon="delete"
-        iconKind="Secondary"
-        label="Delete"
-        input={{
-          type: 'Button',
-        }}
-        shade="Light"
-        onClick={action('onClick')}
-        showLabelInButton
-      />,
-      <QuickAction
-        key="delete"
-        icon="delete"
-        iconKind="Secondary"
-        label="Delete"
-        input={{
-          type: 'Button',
-        }}
-        shade="Light"
-        onClick={action('onClick')}
-        showLabelInButton
-      />,
+      <QuickActionButton icon="delete" label="Delete" onClick={action('onClick')} />,
     ]}
     primaryAction={{
       label: 'Share',
@@ -122,9 +88,23 @@ storiesOf('AppShell', module)
     <AppShell
       sections={{
         content: (
-          <Layout.ScrollableContent theme={scrollableContentTheme}>
-            <ComponentStates harnessCards={stateCards} />
-          </Layout.ScrollableContent>
+          <Panel>
+            <PanelHeader>
+              <QuickActionButton
+                icon="delete"
+                label="Delete"
+                onClick={action('onClick')}
+              />
+              <QuickActionButton
+                icon="delete"
+                label="Delete"
+                onClick={action('onClick')}
+              />
+            </PanelHeader>
+            <Layout.ScrollableContent theme={scrollableContentTheme}>
+              <ComponentStates harnessCards={stateCards} />
+            </Layout.ScrollableContent>
+          </Panel>
         ),
         header,
         leftNav,
