@@ -130,7 +130,7 @@ const Content = ({
                     text: {
                       marginTop: 4,
                       marginLeft: 2,
-                      fontSize: 14,
+                      fontSize: 15,
                     },
                   }}
                 >
@@ -297,7 +297,7 @@ const buttonTextStyle = {
   color: Colors.grey200,
   marginTop: 4,
   marginLeft: 2,
-  fontSize: 14,
+  fontSize: 15,
   userSelect: 'none',
 }
 
