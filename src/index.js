@@ -34,6 +34,7 @@ const ProjectPane = require('./components/ProjectPane')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const QuickActionButton = require('./components/QuickActionButton')
+const QuickActionSelection = require('./components/QuickActionSelection')
 const RepositoryChooser = require('./components/RepositoryChooser')
 const RotateFade = require('./components/RotateFade')
 const ScrollableContent = require('./components/ScrollableContent')
@@ -87,6 +88,7 @@ const WorkfloComponents = {
   Properties,
   QuickAction,
   QuickActionButton,
+  QuickActionSelection,
   RepositoryChooser,
   ScrollableContent,
   Search,
