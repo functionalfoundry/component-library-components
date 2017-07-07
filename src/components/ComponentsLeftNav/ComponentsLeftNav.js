@@ -253,7 +253,7 @@ const defaultTheme = {
     marginLeft: SEPARATOR_MARGIN,
   },
   projectPane: {
-    marginTop: Spacing.large + 4,
+    // marginTop: Spacing.large + 4,
   },
 }
 

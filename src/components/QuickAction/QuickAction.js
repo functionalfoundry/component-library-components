@@ -230,6 +230,7 @@ const BaseQuickAction = ({
     closeTriggers={['Mouse leave']}
     onOpen={onOpen}
     onClose={onClose}
+    verticalOffset={10}
     portal={
       <View
         theme={{
