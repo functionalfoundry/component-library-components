@@ -1,6 +1,6 @@
 import React from 'react'
 import { Icon, RadioGroup, Radio, View, Text } from '@workflo/components'
-import { Colors, Spacing } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import AlignedPointer from '@workflo/components/lib/AlignedPointer'
 import IconButtonGroup from '@workflo/components/lib/IconButtonGroup/IconButtonGroup'
 
@@ -332,7 +332,19 @@ const Radios = ({ options, value, onChange }) => (
       },
     }}
   >
-    {options.map((option, index) => <Radio key={index} label={option} value={option} />)}
+    {options.map((option, index) => (
+      <Radio
+        key={index}
+        label={option}
+        value={option}
+        theme={{
+          container: {
+            ...Fonts.small,
+            height: 24,
+          },
+        }}
+      />
+    ))}
   </RadioGroup>
 )
 
