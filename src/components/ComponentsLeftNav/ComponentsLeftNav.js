@@ -220,8 +220,8 @@ const defaultTheme = {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: Spacing.tiny,
-    height: 36,
+    height: 46,
+    marginBottom: 10,
   },
   logoAndTitle: {
     display: 'flex',
@@ -252,9 +252,7 @@ const defaultTheme = {
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
   },
-  projectPane: {
-    // marginTop: Spacing.large + 4,
-  },
+  projectPane: {},
 }
 
 export default Theme('ComponentsLeftname', defaultTheme)(ComponentsLeftNav)

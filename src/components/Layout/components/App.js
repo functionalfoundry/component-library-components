@@ -57,6 +57,8 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
   header: {
     // flexBasis: 100,
     flexShrink: 0,
+    height: 56,
+    alignItems: 'center',
   },
   leftNav: {
     flexBasis: LEFT_NAV_WIDTH,
