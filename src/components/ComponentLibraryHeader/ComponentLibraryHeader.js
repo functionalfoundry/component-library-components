@@ -168,13 +168,13 @@ const defaultTheme = {
   },
   quickActionsWrapper: {
     marginLeft: 30,
+    marginRight: 30,
   },
   quickActionWrapper: {
     display: 'flex',
   },
   secondaryActions: {
     display: 'flex',
-    marginLeft: 24,
   },
   header: {
     display: 'flex',
