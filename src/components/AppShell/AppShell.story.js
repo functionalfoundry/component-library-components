@@ -33,6 +33,36 @@ const header = (
     selectedRepoId={1}
     quickActions={[
       <QuickActionButton icon="delete" label="Delete" onClick={action('onClick')} />,
+      <QuickActionButton
+        icon="duplicate"
+        label="Duplicate"
+        onClick={action('onClick')}
+      />,
+      <QuickAction
+        icon="alignment"
+        label="Alignment"
+        shade="Light"
+        input={{
+          type: 'Icon',
+          value: 'align-left',
+          options: [
+            {
+              name: 'align-left',
+              hint: 'Left',
+            },
+            {
+              name: 'align-center',
+              hint: 'Center',
+            },
+            {
+              name: 'align-right',
+              hint: 'Right',
+            },
+          ],
+        }}
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
     ]}
     primaryAction={{
       label: 'Share',
@@ -95,38 +125,7 @@ storiesOf('AppShell', module)
       sections={{
         content: (
           <Panel>
-            <PanelHeader>
-              <QuickAction
-                icon="alignment"
-                label="Alignment"
-                shade="Light"
-                input={{
-                  type: 'Icon',
-                  value: 'align-left',
-                  options: [
-                    {
-                      name: 'align-left',
-                      hint: 'Left',
-                    },
-                    {
-                      name: 'align-center',
-                      hint: 'Center',
-                    },
-                    {
-                      name: 'align-right',
-                      hint: 'Right',
-                    },
-                  ],
-                }}
-                onClick={action('onClick')}
-                showLabelInButton
-              />
-              <QuickActionButton
-                icon="delete"
-                label="Delete"
-                onClick={action('onClick')}
-              />
-            </PanelHeader>
+            <PanelHeader />
             <Layout.ScrollableContent theme={scrollableContentTheme}>
               <ComponentStates harnessCards={stateCards} />
             </Layout.ScrollableContent>
