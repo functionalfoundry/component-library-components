@@ -164,6 +164,7 @@ const defaultTheme = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   quickActionsWrapper: {
     marginLeft: 30,
@@ -173,6 +174,7 @@ const defaultTheme = {
   },
   secondaryActions: {
     display: 'flex',
+    marginLeft: 24,
   },
   header: {
     display: 'flex',
@@ -190,8 +192,9 @@ const defaultTheme = {
   },
   rightBlock: {
     display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     flex: '0 auto',
   },
   separator: {
