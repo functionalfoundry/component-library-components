@@ -63,6 +63,18 @@ const header = (
         onClick={action('onClick')}
         showLabelInButton
       />,
+      <QuickAction
+        icon="theme"
+        label="Theme"
+        shade="Light"
+        input={{
+          type: 'Radio',
+          value: 'Light',
+          options: ['Light', 'Grey', 'Dark'],
+        }}
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
     ]}
     primaryAction={{
       label: 'Share',
