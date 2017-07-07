@@ -14,6 +14,7 @@ import LiveEditor from '../LiveEditor'
 import Properties from '../Properties'
 import QuickAction from '../QuickAction'
 import Panel from '../Panel'
+import QuickActionSelection from '../QuickActionSelection'
 import QuickActionButton from '../QuickActionButton'
 import PanelHeader from '../PanelHeader'
 import {
@@ -32,6 +33,7 @@ const header = (
     selectedBranchId={1}
     selectedRepoId={1}
     quickActions={[
+      <QuickActionSelection numberSelected={10} onDeselect={action('onDeselect')} />,
       <QuickActionButton icon="delete" label="Delete" onClick={action('onClick')} />,
       <QuickActionButton
         icon="duplicate"
