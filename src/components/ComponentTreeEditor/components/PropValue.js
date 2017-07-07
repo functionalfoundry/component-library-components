@@ -8,6 +8,7 @@ import { EditableText, Popover, View } from '@workflo/components'
 import { Helpers } from '../../../modules/ComponentTree'
 import { MarkRendererPropsT } from '../types'
 import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
+import stripQuotes from '../utils/stripQuotes'
 
 type State = {
   displayValue: string,
@@ -44,9 +45,9 @@ class PropValueRenderer extends React.Component {
 
   getDisplayValue(props: MarkRendererPropsT, state: any) {
     const propValueNode = this.getNode(props)
-    if (!state.isFocused) {
+    if (!state.isFocused || propValueNode.type === 'string') {
       const { open, close } = getPropValueTypeBoundaries(propValueNode)
-      return `${open}${propValueNode.value}${close}`
+      return `${open}${stripQuotes(propValueNode.value)}${close}`
     } else {
       return propValueNode.value
     }
@@ -59,6 +60,14 @@ class PropValueRenderer extends React.Component {
 
   getValue = props => {
     return this.getNode(props).get('value')
+  }
+
+  resolveValueType = valueString => {
+    let type = 'expression'
+    try {
+      type = typeof eval(valueString) // eslint-disable-line
+    } catch (e) {}
+    return type
   }
 
   handleChange = (value: string) => this.setState({ value: value })
@@ -85,7 +94,10 @@ class PropValueRenderer extends React.Component {
     )
   }
 
-  /** We call onChange when the user has finished editing */
+  /**
+   * We call onChange when the user has finished editing, updating the value and type
+   * of the PropValue node.
+   */
   handleStopEdit = () => {
     const { mark, options } = this.props
     const prop = mark.getIn(['data', 'element', 'data', 'prop'])
@@ -93,7 +105,9 @@ class PropValueRenderer extends React.Component {
     const tree = Helpers.setPropValue(
       options.tree,
       prop.id,
-      propValue.set('value', this.state.value)
+      propValue
+        .set('value', this.state.value)
+        .set('type', this.resolveValueType(this.state.value))
     )
     options.onChange && options.onChange(tree)
     options.onChangePropValue && options.onChangePropValue(prop.id, this.state.value)
