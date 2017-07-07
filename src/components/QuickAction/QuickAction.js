@@ -225,12 +225,12 @@ const BaseQuickAction = ({
   onClick,
 }) => (
   <AlignedPointer
-    position="Top"
+    position="Bottom"
     openTriggers={['Mouse enter']}
     closeTriggers={['Mouse leave']}
     onOpen={onOpen}
     onClose={onClose}
-    verticalOffset={10}
+    verticalOffset={-12}
     portal={
       <View
         theme={{
