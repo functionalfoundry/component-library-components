@@ -4,10 +4,11 @@ import { Colors, Fonts, Spacing } from '@workflo/styles'
 import AlignedPointer from '@workflo/components/lib/AlignedPointer'
 import IconButtonGroup from '@workflo/components/lib/IconButtonGroup/IconButtonGroup'
 
-type InputTypeT = 'Radio' | 'Button'
+type InputTypeT = 'Radio' | 'Button' | 'Custom' | 'SuperCustom'
 type IconKindT = 'Primary' | 'Secondary'
 
 type PropsT = {
+  children: React.Children,
   icon: string,
   iconKind: IconKindT,
   showLabelInButton: boolean,
@@ -51,6 +52,7 @@ class QuickAction extends React.Component {
 }
 
 const Content = ({
+  children,
   input,
   icon,
   iconKind,
@@ -64,6 +66,8 @@ const Content = ({
 }: PropsT) => {
   if (!input && !input.type) return null
   switch (input.type) {
+    case 'SuperCustom':
+      return children
     case 'Radio':
       return (
         <BaseQuickAction
