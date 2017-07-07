@@ -56,11 +56,11 @@ const ComponentLibraryHeader = ({
       <View {...theme.subtitleRow}>
         <div {...theme.leftBlock}>
           <BreadCrumb breadCrumbPath={breadCrumbPath} />
+        </div>
+        <div {...theme.rightBlock}>
           <div {...theme.quickActionsWrapper}>
             <QuickActions quickActions={quickActions} theme={theme} />
           </div>
-        </div>
-        <div {...theme.rightBlock}>
           {secondaryActions &&
             <SecondaryActions secondaryActions={secondaryActions} theme={theme} />}
           {primaryAction && <PrimaryAction primaryAction={primaryAction} theme={theme} />}
