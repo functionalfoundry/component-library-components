@@ -14,7 +14,7 @@ const QuickActionSelection = ({ numberSelected, onClearSelection }: PropsT) => {
       key="selection"
       label={`${numberSelected} selected`}
       input={{
-        type: 'Custom',
+        type: 'SuperCustom',
       }}
       shade="Light"
     >
