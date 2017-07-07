@@ -320,7 +320,8 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
     }
   }
   if (!isButton) {
-    buttonWrapperStyle.top = 3 // Hack because AlignedTrigger offsets the height
+    buttonWrapperStyle.top = 4 // Hack because AlignedTrigger offsets the height
+    buttonWrapperStyle.height = 40
   }
   buttonWrapperStyle.padding = '4px 10px 4px 4px'
   return buttonWrapperStyle
