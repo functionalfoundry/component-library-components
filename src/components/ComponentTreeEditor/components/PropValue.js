@@ -13,6 +13,7 @@ type State = {
   displayValue: string,
   isFocused: boolean,
   isHovering: boolean,
+  value: string,
 }
 
 const editableTextTheme = {
@@ -34,15 +35,15 @@ class PropValueRenderer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      displayValue: this.getDisplayValue(props, ({}: any)),
+      displayValue: this.getDisplayValue(props, { isFocused: false }) || '',
       isFocused: false,
       isHovering: false,
+      value: this.getValue(props) || '',
     }
   }
 
-  getDisplayValue(props: MarkRendererPropsT, state: State) {
-    const { mark } = props
-    const propValueNode = mark.getIn(['data', 'element', 'node'])
+  getDisplayValue(props: MarkRendererPropsT, state: any) {
+    const propValueNode = this.getNode(props)
     if (!state.isFocused) {
       const { open, close } = getPropValueTypeBoundaries(propValueNode)
       return `${open}${propValueNode.value}${close}`
@@ -50,6 +51,17 @@ class PropValueRenderer extends React.Component {
       return propValueNode.value
     }
   }
+
+  getNode = props => {
+    const { mark } = props
+    return mark.getIn(['data', 'element', 'node'])
+  }
+
+  getValue = props => {
+    return this.getNode(props).get('value')
+  }
+
+  handleChange = (value: string) => this.setState({ value: value })
 
   /**
    * When user focuses, we change the display value and highlight the text
@@ -63,7 +75,7 @@ class PropValueRenderer extends React.Component {
     this.setState(
       prevState => ({
         isFocused: true,
-        displayValue: this.getDisplayValue(this.props, { isFocused: true }),
+        displayValue: this.getDisplayValue(this.props, { isFocused: true }) || '',
       }),
       () => {
         if (shouldFocusAndSelect) {
@@ -73,12 +85,19 @@ class PropValueRenderer extends React.Component {
     )
   }
 
-  /** We only show the ending characters in the displayValue when the user is done editing */
-  handleStopEdit = () =>
-    this.setState({
-      displayValue: this.getDisplayValue(this.props, { isFocused: false }),
-      isFocused: false,
-    })
+  /** We call onChange when the user has finished editing */
+  handleStopEdit = () => {
+    const { mark, options } = this.props
+    const prop = mark.getIn(['data', 'element', 'data', 'prop'])
+    const propValue = this.getNode(this.props)
+    const tree = Helpers.setPropValue(
+      options.tree,
+      prop.id,
+      propValue.set('value', this.state.value)
+    )
+    options.onChange && options.onChange(tree)
+    options.onChangePropValue && options.onChangePropValue(prop.id, this.state.value)
+  }
 
   saveRefToEditableText = ref => (this.editableText = ref)
 
@@ -109,6 +128,7 @@ class PropValueRenderer extends React.Component {
         onMouseLeave={this.toggleHover}
       >
         <EditableText
+          onChange={this.handleChange}
           onStopEdit={this.handleStopEdit}
           ref={this.saveRefToEditableText}
           theme={editableTextTheme}
@@ -116,19 +136,6 @@ class PropValueRenderer extends React.Component {
         />
       </span>
     )
-  }
-
-  handleChange = (value: string) => {
-    const { mark, options } = this.props
-    const prop = mark.getIn(['data', 'element', 'data', 'prop'])
-    const propValue = mark.getIn(['data', 'element', 'node'])
-    const tree = Helpers.setPropValue(
-      options.tree,
-      prop.id,
-      propValue.set('value', value)
-    )
-    options.onChange && options.onChange(tree)
-    options.onChangePropValue && options.onChangePropValue(prop.id, value)
   }
 }
 
