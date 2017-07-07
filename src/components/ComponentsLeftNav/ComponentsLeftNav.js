@@ -41,7 +41,7 @@ const listTheme = {
   },
 }
 
-const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
+const darkHoverAndActive = ({ isKeyboardFocused }, isSelected) => {
   const base = {
     ...Fonts.base,
     cursor: 'pointer',
@@ -50,10 +50,16 @@ const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
       backgroundColor: Colors.grey600,
     },
   }
+
   if (isKeyboardFocused) {
     return {
       ...base,
       backgroundColor: Colors.grey600,
+    }
+  } else if (isSelected) {
+    return {
+      ...base,
+      backgroundColor: Colors.grey700,
     }
   }
   return base
@@ -186,7 +192,7 @@ class ComponentsLeftNav extends React.Component {
                 this.handleSelect(item.id)
               }}
               theme={props => ({
-                listItem: darkHoverAndActive(props),
+                listItem: darkHoverAndActive(props, item.id === selectedId),
               })}
             >
               {item.label}

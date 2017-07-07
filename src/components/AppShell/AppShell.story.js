@@ -61,6 +61,7 @@ const leftNav = (
     selectedBranchId={branches[0].id}
     onClickRepoGithub={action('clickRepoGithub')}
     onSelectRepo={action('onSelectRepo')}
+    selectedId={2}
   />
 )
 
