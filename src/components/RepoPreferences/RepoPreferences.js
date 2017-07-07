@@ -12,10 +12,18 @@ import { Button, Heading, TextInput, Tab, TabList, Tabs, View } from '@workflo/c
 
 const defaultTheme = {
   repoPreferences: {
-    marginTop: Spacing.large,
+    display: 'flex',
+    flex: '1 auto',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   individualRepoPreferences: {
-    marginBottom: Spacing.huge,
+    display: 'flex',
+    flex: '1 1 auto',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   repoName: {
     ...Fonts.large,
