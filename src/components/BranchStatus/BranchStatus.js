@@ -20,7 +20,9 @@ const BranchStatus = ({ status, theme }: PropsT) => {
     case 'Failed':
       return <div {...theme.label}>Failed <div {...theme.circle} /></div>
     case 'Building':
-      return <Building />
+      return (
+        <div {...theme.label}>Building <div {...theme.circle}><Building /></div></div>
+      )
     default:
       return <div />
   }
@@ -35,14 +37,18 @@ const defaultTheme = ({ status }) => {
   return {
     label: {
       ...Fonts.small,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     circle: {
       borderRadius: '50%',
-      width: 9,
-      height: 9,
-      marginLeft: 2,
+      width: 15,
+      height: 15,
+      marginLeft: 6,
+      marginTop: -4,
       backgroundColor: colorMap[status],
-      display: 'inline-block',
+      display: 'flex',
     },
   }
 }
