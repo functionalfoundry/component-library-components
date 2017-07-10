@@ -26,7 +26,7 @@ const completionData = {
       },
       listWidth: {
         type: 'number',
-        options: [10, 20, 30],
+        options: ['10', '20', '30'],
       },
     },
     ListItem: {

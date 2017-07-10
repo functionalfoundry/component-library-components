@@ -3,12 +3,13 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
 
-import { EditableText, Popover, View } from '@workflo/components'
+import { AlignedPointer, EditableText, Popover, View } from '@workflo/components'
 
 import { Helpers } from '../../../modules/ComponentTree'
 import { MarkRendererPropsT } from '../types'
 import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
 import stripQuotes from '../utils/stripQuotes'
+import PropValueChooser from './PropValueChooser'
 
 type State = {
   displayValue: string,
@@ -140,14 +141,36 @@ class PropValueRenderer extends React.Component {
         onClick={this.handleClick}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
+        name={'foo'}
       >
-        <EditableText
-          onChange={this.handleChange}
-          onStopEdit={this.handleStopEdit}
-          ref={this.saveRefToEditableText}
-          theme={editableTextTheme}
-          value={this.state.displayValue}
-        />
+        <Popover
+          position="Right"
+          horizontalOffset={5}
+          openTriggers={['Click inside']}
+          closeTriggers={[]}
+          verticalOffset={2}
+          portal={
+            <PropValueChooser
+              prop={prop}
+              value={this.state.value}
+              completionData={propCompletionData}
+              options={globalOptions}
+              onChange={value => {
+                console.log('changing to value: ', value)
+                this.handleChange(value)
+                this.handleStopEdit()
+              }}
+            />
+          }
+        >
+          <EditableText
+            onChange={this.handleChange}
+            onStopEdit={this.handleStopEdit}
+            ref={this.saveRefToEditableText}
+            theme={editableTextTheme}
+            value={this.state.displayValue}
+          />
+        </Popover>
       </span>
     )
   }
