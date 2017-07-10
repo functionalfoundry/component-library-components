@@ -1,7 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
-
-type PropsT = {}
+import { Linear, TweenMax } from 'gsap'
 
 class Building extends React.Component {
   componentDidMount() {
@@ -10,41 +9,22 @@ class Building extends React.Component {
       repeat: -1,
       ease: Linear.easeNone,
     })
-
-    TweenMax.fromTo(
-      '#pulse-poly',
-      3,
-      {
-        drawSVG: '-10% 0%',
-      },
-      {
-        drawSVG: '100% 110%',
-        repeat: -1,
-      }
-    )
   }
   render() {
     return (
-      <svg width="70" height="70" viewBox="0 0 160 147">
+      <svg width="15" height="15" viewBox="0 0 138 138">
         <defs>
-          <clipPath id="clip-path" transform="translate(12 0)">
-            <circle cx="74" cy="76" r="61" fill="none" />
+          <clipPath id="clip-path">
+            <circle cx="65" cy="65" r="61" fill="none" />
           </clipPath>
           <pattern id="pulse" width="7%" height="100%">
             <polyline
+              transform="translate(0, -12)"
               points="0 80 66 80 79 41 89 108 102 66 107 80 200 80"
               fill="none"
               stroke="#ffe621"
               strokeMiterlimit="10"
-              strokeWidth="6"
-            />
-            <polyline
-              id="pulse-poly"
-              points="0 80 66 80 79 41 89 108 102 66 107 80 200 80"
-              fill="none"
-              stroke="#000"
-              strokeMiterlimit="10"
-              strokeWidth="6"
+              strokeWidth="8"
             />
           </pattern>
         </defs>
@@ -53,13 +33,13 @@ class Building extends React.Component {
           <rect id="pulse-move" width="1800" height="147.46" fill="url(#pulse)" />
         </g>
         <circle
-          cx="86"
-          cy="76"
+          cx="65"
+          cy="65"
           r="61"
           fill="none"
           stroke="#ffe618"
           strokeMiterlimit="10"
-          strokeWidth="6"
+          strokeWidth="8"
         />
       </svg>
     )
