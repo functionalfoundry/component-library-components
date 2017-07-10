@@ -12,6 +12,8 @@ export type BranchT = {
   name: string,
   /** The status for the currently selected branch */
   status: BuildStatusT,
+  /** Function to be called when the status icon is clicked */
+  onStatusIconClick: Function,
 }
 
 type Props = {
