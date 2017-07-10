@@ -4,36 +4,41 @@ import { Colors, Fonts } from '@workflo/styles'
 
 import Building from './Building'
 
-export type BuildStatusT = 'Success' | 'Failed' | 'Building'
+export type BuildStatusT = 'Success' | 'Failed' | 'Building' | 'SetupRequired'
 
 type PropsT = {
+  /* Function property to be called when the status icon is clicked */
+  onIconClick?: Function,
   /* One of three possible states */
   status: BuildStatusT,
   /* The JS Theme */
   theme: Object,
 }
 
-const BranchStatus = ({ status, theme }: PropsT) => {
+const BranchStatus = ({ onIconClick, status, theme }: PropsT) => {
+  const icon = status === 'Building'
+    ? <div {...theme.circle} onClick={onIconClick}><Building /></div>
+    : <div {...theme.circle} onClick={onIconClick} />
+
   switch (status) {
     case 'Success':
-      return <div {...theme.label}>Success <div {...theme.circle} /></div>
+      return <div {...theme.label}>Success {icon}</div>
     case 'Failed':
-      return <div {...theme.label}>Failed <div {...theme.circle} /></div>
+      return <div {...theme.label}>Failed {icon}</div>
     case 'Building':
-      return (
-        <div {...theme.label}>Building <div {...theme.circle}><Building /></div></div>
-      )
+      return <div {...theme.label}>Building {icon}</div>
     default:
-      return <div />
+      return <div {...theme.label}>Setup required {icon}</div>
   }
 }
 
 const colorMap = {
   Success: Colors.green,
   Failed: Colors.red,
+  SetupRequired: Colors.grey500,
 }
 
-const defaultTheme = ({ status }) => {
+const defaultTheme = ({ onIconClick, status }: PropsT) => {
   return {
     label: {
       ...Fonts.small,
@@ -49,6 +54,7 @@ const defaultTheme = ({ status }) => {
       marginTop: -4,
       backgroundColor: colorMap[status],
       display: 'flex',
+      ...(typeof onIconClick === 'function' ? { cursor: 'pointer' } : {}),
     },
   }
 }
