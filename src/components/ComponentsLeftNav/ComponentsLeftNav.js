@@ -1,8 +1,12 @@
 import React from 'react'
-import { TextInput } from '@workflo/components'
+import { TextInput, Icon } from '@workflo/components'
 import List, { ListItem } from '@workflo/components/lib/List'
-import { Colors, Spacing } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
+import Theme from 'js-theme'
+import ProjectPane from '../ProjectPane'
+import HorizontalSeparator from '../HorizontalSeparator'
+
 type Props = {
   /** Filter state to display in left nav */
   filterValue: string,
@@ -19,35 +23,43 @@ type Props = {
   selectedId: string,
 }
 
-const theme = {
+const listTheme = {
   list: {
-    backgroundColor: '#34393C',
+    backgroundColor: Colors.grey900,
     color: 'white',
   },
   listItem: {
     ':hover': {
-      backgroundColor: Colors.grey700,
+      backgroundColor: Colors.grey800,
     },
     cursor: 'pointer',
+    paddingTop: 2,
     transition: `background-color ${Animations.Timing.t2.animationDuration}s ${Animations.Eases.entrance.animationTimingFunction}`, // eslint-disable-line
   },
   selectedListItem: {
-    backgroundColor: Colors.grey400,
+    backgroundColor: Colors.grey600,
   },
 }
 
-const darkHoverAndActive = ({ isKeyboardFocused, isSelected }) => {
+const darkHoverAndActive = ({ isKeyboardFocused }, isSelected) => {
   const base = {
+    ...Fonts.base,
     cursor: 'pointer',
     color: 'white',
     ':hover': {
       backgroundColor: Colors.grey600,
     },
   }
+
   if (isKeyboardFocused) {
     return {
       ...base,
       backgroundColor: Colors.grey600,
+    }
+  } else if (isSelected) {
+    return {
+      ...base,
+      backgroundColor: Colors.grey700,
     }
   }
   return base
@@ -73,12 +85,65 @@ class ComponentsLeftNav extends React.Component {
   }
 
   render() {
-    const { filterValue, items, onChangeFilter, selectedId } = this.props
+    const {
+      filterValue,
+      items,
+      onChangeFilter,
+      selectedId,
+      repos,
+      branches,
+      selectedRepoId,
+      selectedBranchId,
+      onClickRepoGithub,
+      onSelectRepo,
+      buildStatus,
+      theme,
+    } = this.props
     return (
-      <div style={{ backgroundColor: '#34393C', height: '100%', width: '100%' }}>
-        <div
-          style={{ paddingLeft: Spacing.tiny, paddingTop: Spacing.tiny, width: '100%' }}
-        >
+      <div {...theme.componentsLeftNav}>
+        <div style={{ width: '100%' }}>
+          <div {...theme.titleRow}>
+            <div {...theme.leftBlock}>
+              <div {...theme.logoAndTitle}>
+                <Icon
+                  name="logo"
+                  size="base"
+                  theme={{
+                    svg: {
+                      width: 28,
+                      height: 28,
+                    },
+                  }}
+                />
+                <div {...theme.separator} inline />
+              </div>
+              <div {...theme.rightBlock}>
+                Component Library
+                {/* <Actions profile={profile} search={search} theme={theme} />  */}
+              </div>
+            </div>
+          </div>
+          <div {...theme.projectPane}>
+            <ProjectPane
+              repos={repos}
+              branches={branches}
+              selectedRepoId={selectedRepoId}
+              selectedBranchId={selectedBranchId}
+              onClickRepoGithub={onClickRepoGithub}
+              onSelectRepo={onSelectRepo}
+              buildStatus={buildStatus}
+            />
+          </div>
+          <HorizontalSeparator
+            theme={{
+              horizontalSeparator: {
+                width: `100%`,
+                // Extend to full width
+                // marginLeft: -12,
+                // marginRight: 12,
+              },
+            }}
+          />
           <TextInput
             disableUnderline
             placeholder="Filter"
@@ -90,11 +155,18 @@ class ComponentsLeftNav extends React.Component {
                 // borderWidth: 0.5,
                 // borderColor: Colors.grey700,
                 padding: 3,
+                display: 'flex',
+                flex: 1,
+                maxWidth: 'none',
+                width: 'auto',
               },
               textInput: {
                 color: 'white',
                 paddingLeft: Spacing.tiny,
-                paddingBottom: 5,
+                paddingRight: Spacing.tiny,
+                paddingTop: 8,
+                paddingBottom: 4,
+                ...Fonts.small,
                 '::placeholder': {
                   color: Colors.grey300,
                 },
@@ -102,6 +174,7 @@ class ComponentsLeftNav extends React.Component {
               inputLabel: {
                 color: Colors.grey200,
                 paddingLeft: Spacing.tiny,
+                paddingRight: Spacing.tiny,
               },
             }}
             value={filterValue}
@@ -110,7 +183,7 @@ class ComponentsLeftNav extends React.Component {
         <List
           onSelect={this.handleSelect}
           selectedIndex={ComponentsLeftNav.getSelectedIndex({ items, selectedId })}
-          theme={theme}
+          theme={listTheme}
         >
           {items.map(item => (
             <ListItem
@@ -119,7 +192,7 @@ class ComponentsLeftNav extends React.Component {
                 this.handleSelect(item.id)
               }}
               theme={props => ({
-                listItem: darkHoverAndActive(props),
+                listItem: darkHoverAndActive(props, item.id === selectedId),
               })}
             >
               {item.label}
@@ -132,4 +205,54 @@ class ComponentsLeftNav extends React.Component {
   }
 }
 
-export default ComponentsLeftNav
+const SEPARATOR_MARGIN = 6
+
+const defaultTheme = {
+  componentsLeftNav: {
+    backgroundColor: Colors.grey900,
+    color: 'white',
+    height: '100%',
+    width: '100%',
+  },
+  titleRow: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: 46,
+    marginBottom: 10,
+  },
+  logoAndTitle: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  leftBlock: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    // flex: '0 1 100',
+  },
+  rightBlock: {
+    ...Fonts.base,
+    paddingTop: 4,
+    fontSize: 22,
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flex: '0 auto',
+  },
+  separator: {
+    flex: '0 1 auto',
+    // borderLeftWidth: 1,
+    // borderLeftStyle: 'solid',
+    // borderLeftColor: Colors.grey500,
+    height: 34, // Make line-size height
+    marginRight: SEPARATOR_MARGIN,
+    marginLeft: SEPARATOR_MARGIN,
+  },
+  projectPane: {},
+}
+
+export default Theme('ComponentsLeftname', defaultTheme)(ComponentsLeftNav)

@@ -1,13 +1,14 @@
 import React from 'react'
 import { Icon, RadioGroup, Radio, View, Text } from '@workflo/components'
-import { Colors, Spacing } from '@workflo/styles'
+import { Colors, Fonts, Spacing } from '@workflo/styles'
 import AlignedPointer from '@workflo/components/lib/AlignedPointer'
 import IconButtonGroup from '@workflo/components/lib/IconButtonGroup/IconButtonGroup'
 
-type InputTypeT = 'Radio' | 'Button'
+type InputTypeT = 'Radio' | 'Button' | 'Custom' | 'SuperCustom'
 type IconKindT = 'Primary' | 'Secondary'
 
 type PropsT = {
+  children: React.Children,
   icon: string,
   iconKind: IconKindT,
   showLabelInButton: boolean,
@@ -51,6 +52,7 @@ class QuickAction extends React.Component {
 }
 
 const Content = ({
+  children,
   input,
   icon,
   iconKind,
@@ -64,6 +66,8 @@ const Content = ({
 }: PropsT) => {
   if (!input && !input.type) return null
   switch (input.type) {
+    case 'SuperCustom':
+      return children
     case 'Radio':
       return (
         <BaseQuickAction
@@ -92,13 +96,17 @@ const Content = ({
       const iconElement = (
         <Icon
           name={icon}
-          size="large"
+          size="base"
           stroke={getColor(shade, iconKind)}
           fill={getColor(shade, iconKind)}
           theme={{
             icon: {
               display: 'inline-block',
               cursor: 'pointer',
+            },
+            svg: {
+              width: 30,
+              height: 30,
             },
           }}
         />
@@ -120,7 +128,9 @@ const Content = ({
                 <Text
                   theme={{
                     text: {
-                      textTransform: 'uppercase',
+                      marginTop: 4,
+                      marginLeft: 2,
+                      fontSize: 15,
                     },
                   }}
                 >
@@ -187,21 +197,21 @@ const Content = ({
           />
         </BaseQuickAction>
       )
-      case 'Custom':
-        return (
-          <BaseQuickAction
-            onOpen={onOpen}
-            onClose={onClose}
-            showLabelInButton={showLabelInButton}
-            label={label}
-            shade={shade}
-            iconKind={iconKind}
-            icon={icon}
-            onClick={onClick}
-          >
-            {input.element}
-          </BaseQuickAction>
-        )
+    case 'Custom':
+      return (
+        <BaseQuickAction
+          onOpen={onOpen}
+          onClose={onClose}
+          showLabelInButton={showLabelInButton}
+          label={label}
+          shade={shade}
+          iconKind={iconKind}
+          icon={icon}
+          onClick={onClick}
+        >
+          {input.element}
+        </BaseQuickAction>
+      )
     default:
       console.error('Invalid input type set for QuickAction')
   }
@@ -219,11 +229,12 @@ const BaseQuickAction = ({
   onClick,
 }) => (
   <AlignedPointer
-    position="Top"
+    position="Bottom"
     openTriggers={['Mouse enter']}
     closeTriggers={['Mouse leave']}
     onOpen={onOpen}
     onClose={onClose}
+    verticalOffset={-12}
     portal={
       <View
         theme={{
@@ -251,13 +262,15 @@ const BaseQuickAction = ({
     >
       <Icon
         name={icon}
-        size="large"
         onClick={onClick}
         stroke={getColor(shade, iconKind)}
         fill={getColor(shade, iconKind)}
         theme={{
-          icon: {
+          svg: {
             display: 'inline-block',
+            width: 24,
+            height: 24,
+            marginRight: 3,
           },
         }}
       />
@@ -282,9 +295,9 @@ const baseTextStyle = {
 
 const buttonTextStyle = {
   color: Colors.grey200,
-  marginLeft: Spacing.tiny,
-  marginTop: 2,
-  textTransform: 'uppercase',
+  marginTop: 4,
+  marginLeft: 2,
+  fontSize: 15,
   userSelect: 'none',
 }
 
@@ -306,6 +319,10 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
       backgroundColor: 'rgba(100, 100, 100, .3)',
     }
   }
+  if (!isButton) {
+    buttonWrapperStyle.top = 4 // Hack because AlignedTrigger offsets the height
+    buttonWrapperStyle.height = 40
+  }
   buttonWrapperStyle.padding = '4px 10px 4px 4px'
   return buttonWrapperStyle
 }
@@ -320,7 +337,19 @@ const Radios = ({ options, value, onChange }) => (
       },
     }}
   >
-    {options.map((option, index) => <Radio key={index} label={option} value={option} />)}
+    {options.map((option, index) => (
+      <Radio
+        key={index}
+        label={option}
+        value={option}
+        theme={{
+          container: {
+            ...Fonts.small,
+            height: 24,
+          },
+        }}
+      />
+    ))}
   </RadioGroup>
 )
 

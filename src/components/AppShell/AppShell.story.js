@@ -12,6 +12,11 @@ import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
 import Properties from '../Properties'
+import QuickAction from '../QuickAction'
+import Panel from '../Panel'
+import QuickActionSelection from '../QuickActionSelection'
+import QuickActionButton from '../QuickActionButton'
+import PanelHeader from '../PanelHeader'
 import {
   componentTree,
   // propKeyValues,
@@ -27,6 +32,63 @@ const header = (
     {...{ branches, breadCrumbPath, repos }}
     selectedBranchId={1}
     selectedRepoId={1}
+    quickActions={[
+      <QuickActionSelection numberSelected={10} onDeselect={action('onDeselect')} />,
+      <QuickActionButton icon="delete" label="Delete" onClick={action('onClick')} />,
+      <QuickActionButton
+        icon="duplicate"
+        label="Duplicate"
+        onClick={action('onClick')}
+      />,
+      <QuickAction
+        icon="alignment"
+        label="Alignment"
+        shade="Light"
+        input={{
+          type: 'Icon',
+          value: 'align-left',
+          options: [
+            {
+              name: 'align-left',
+              hint: 'Left',
+            },
+            {
+              name: 'align-center',
+              hint: 'Center',
+            },
+            {
+              name: 'align-right',
+              hint: 'Right',
+            },
+          ],
+        }}
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
+      <QuickAction
+        icon="theme"
+        label="Theme"
+        shade="Light"
+        input={{
+          type: 'Radio',
+          value: 'Light',
+          options: ['Light', 'Grey', 'Dark'],
+        }}
+        onClick={action('onClick')}
+        showLabelInButton
+      />,
+    ]}
+    primaryAction={{
+      label: 'Share',
+      icon: 'share',
+      onClick: action('onShare'),
+    }}
+    secondaryActions={[
+      {
+        label: 'Cancel',
+        onClick: action('onCancel'),
+      },
+    ]}
   />
 )
 
@@ -37,6 +99,13 @@ const leftNav = (
       { id: 2, label: 'button' },
       { id: 3, label: 'card' },
     ]}
+    repos={repos}
+    branches={branches}
+    selectedRepoId={repos[0].id}
+    selectedBranchId={branches[0].id}
+    onClickRepoGithub={action('clickRepoGithub')}
+    onSelectRepo={action('onSelectRepo')}
+    selectedId={2}
   />
 )
 
@@ -69,9 +138,12 @@ storiesOf('AppShell', module)
     <AppShell
       sections={{
         content: (
-          <Layout.ScrollableContent theme={scrollableContentTheme}>
-            <ComponentStates harnessCards={stateCards} />
-          </Layout.ScrollableContent>
+          <Panel>
+            <PanelHeader />
+            <Layout.ScrollableContent theme={scrollableContentTheme}>
+              <ComponentStates harnessCards={stateCards} />
+            </Layout.ScrollableContent>
+          </Panel>
         ),
         header,
         leftNav,

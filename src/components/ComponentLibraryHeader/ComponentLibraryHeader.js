@@ -1,6 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
-import { View, Icon } from '@workflo/components'
+import { Button, View, Icon } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 
 import { ActionT, ActionsT } from '../../types/Action'
@@ -9,6 +9,7 @@ import BulkActionBar from '../BulkActionBar'
 import RepoDropdown, { type RepoT } from '../RepoDropdown'
 import BranchDropdown, { type BranchT } from '../BranchDropdown'
 import BreadCrumb, { type BreadCrumbSegmentT } from '../BreadCrumb'
+import ActionButton from '../ActionButton'
 
 type Props = {
   branches: BranchT,
@@ -52,42 +53,65 @@ const ComponentLibraryHeader = ({
 }: Props) => {
   return (
     <View {...theme.header}>
-      <View {...theme.titleRow}>
-        <View {...theme.leftBlock}>
-          <Icon name="logo" size="large" {...theme.backButton} />
-          <View {...theme.separator} inline />
-          <RepoDropdown {...{ onClickRepoGithub, onSelectRepo, repos, selectedRepoId }} />
-        </View>
-        <View {...theme.rightBlock}>
-          <Actions profile={profile} search={search} theme={theme} />
-        </View>
-      </View>
       <View {...theme.subtitleRow}>
-        {branches && branches.length
-          ? <BranchDropdown {...{ branches, selectedBranchId }} />
-          : null}
-        <BreadCrumb breadCrumbPath={breadCrumbPath} />
-      </View>
-      <View {...theme.subHeaderContainer}>
-        {bulkActions &&
-          <BulkActionBar
-            numberSelected={bulkActions.numberSelected}
-            onClearSelection={bulkActions.onClearSelection}
-          >
-            {bulkActions.quickActions}
-          </BulkActionBar>}
-        {!bulkActions &&
-          <View {...theme.rightBlock}>
-            <SubHeader
-              primaryAction={primaryAction}
-              secondaryActions={secondaryActions}
-              quickActions={quickActions}
-            />
-          </View>}
+        <div {...theme.leftBlock}>
+          <BreadCrumb breadCrumbPath={breadCrumbPath} />
+        </div>
+        <div {...theme.rightBlock}>
+          <div {...theme.quickActionsWrapper}>
+            <QuickActions quickActions={quickActions} theme={theme} />
+          </div>
+          {secondaryActions &&
+            <SecondaryActions secondaryActions={secondaryActions} theme={theme} />}
+          {primaryAction && <PrimaryAction primaryAction={primaryAction} theme={theme} />}
+        </div>
       </View>
     </View>
   )
 }
+
+// <View {...theme.titleRow}>
+//   <View {...theme.leftBlock}>
+//     <Icon name="logo" size="large" {...theme.backButton} />
+//     <View {...theme.separator} inline />
+//     <RepoDropdown {...{ onClickRepoGithub, onSelectRepo, repos, selectedRepoId }} />
+//   </View>
+//   <View {...theme.rightBlock}>
+//     <Actions profile={profile} search={search} theme={theme} />
+//   </View>
+// </View>
+
+// <View {...theme.subtitleRow}>
+//   {branches && branches.length
+//     ? <BranchDropdown {...{ branches, selectedBranchId }} />
+//     : null}
+//   <BreadCrumb breadCrumbPath={breadCrumbPath} />
+// </View>
+
+// <View {...theme.subtitleRow}>
+//   {branches && branches.length
+//     ? <BranchDropdown {...{ branches, selectedBranchId }} />
+//     : null}
+//   <BreadCrumb breadCrumbPath={breadCrumbPath} />
+// </View>
+
+// <View {...theme.subHeaderContainer}>
+//   {bulkActions &&
+//     <BulkActionBar
+//       numberSelected={bulkActions.numberSelected}
+//       onClearSelection={bulkActions.onClearSelection}
+//     >
+//       {bulkActions.quickActions}
+//     </BulkActionBar>}
+//   {!bulkActions &&
+//     <View {...theme.rightBlock}>
+//       <SubHeader
+//         primaryAction={primaryAction}
+//         secondaryActions={secondaryActions}
+//         quickActions={quickActions}
+//       />
+//     </View>}
+// </View>
 
 type ActionsPropsT = {
   profile: Object,
@@ -104,14 +128,53 @@ const Actions = ({ profile = {}, actions = [], search, theme }: ActionsPropsT) =
   </View>
 )
 
+const PrimaryAction = ({ primaryAction, theme }) => (
+  <ActionButton {...primaryAction} theme={theme} kind="regular" />
+)
+
+const SecondaryAction = ({ action, theme }) => (
+  <ActionButton {...action} theme={theme} kind="secondary" />
+)
+
+const SecondaryActions = ({ secondaryActions = [], theme }) => {
+  if (secondaryActions.length < 1) return null
+  return (
+    <div {...theme.secondaryActions}>
+      {secondaryActions.map((action, index) => (
+        <SecondaryAction key={index} action={action} theme={theme} />
+      ))}
+    </div>
+  )
+}
+
 const SEPARATOR_MARGIN = Spacing.small
 
 const defaultTheme = {
-  actions: {
-    flex: 1,
+  subtitleRow: {
+    ...Fonts.large,
+    alignItems: 'center',
     display: 'flex',
+    flexDirection: 'row',
+    color: 'white',
+    height: 40,
+    justifyContent: 'flex-start',
+    marginBottom: Spacing.micro,
+  },
+  actions: {
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingLeft: Spacing.tiny,
+    alignItems: 'center',
+  },
+  quickActionsWrapper: {
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  quickActionWrapper: {
+    display: 'flex',
+  },
+  secondaryActions: {
+    display: 'flex',
   },
   header: {
     display: 'flex',
@@ -128,8 +191,10 @@ const defaultTheme = {
     flex: '3 1 auto',
   },
   rightBlock: {
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     flex: '0 auto',
   },
   separator: {
@@ -141,27 +206,34 @@ const defaultTheme = {
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
   },
-  subHeaderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    backgroundColor: '#23292b',
-    color: Colors.grey300,
-    height: 56,
-  },
-  subtitleRow: {
-    ...Fonts.large,
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    color: 'white',
-    height: 80,
-    justifyContent: 'flex-start',
-    marginBottom: Spacing.micro,
-  },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  primaryActionWrapper: {
+    display: 'flex',
+    alignSelf: 'flex-end',
+  },
+}
+
+const primaryStyle = {
+  ...Fonts.small,
+  borderRadius: 0,
+  height: 'auto',
+  letterSpacing: 2,
+}
+
+const QuickActions = ({ quickActions = [], theme }: ActionsPropsT) => {
+  if (quickActions.length < 1) return null
+  return (
+    <div {...theme.actions}>
+      {quickActions.map((action, index) => (
+        <div key={index} onClick={action.onClick} {...theme.quickActionWrapper}>
+          {action}
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default Theme('ComponentLibraryHeader', defaultTheme)(ComponentLibraryHeader)

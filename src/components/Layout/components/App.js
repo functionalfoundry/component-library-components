@@ -27,10 +27,11 @@ const App = ({
   theme,
 }: Props) => (
   <Row {...theme.container}>
+    {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
     <Column {...theme.page}>
       {showHeader && header && <Row {...theme.header}>{header}</Row>}
       <Row {...theme.main}>
-        {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
+
         <Column {...theme.content}>{children}</Column>
       </Row>
     </Column>
@@ -46,17 +47,18 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
     boxSizing: 'border-box',
     height: '100%',
     justifyContent: 'center',
-    paddingLeft: Spacing.small,
-    paddingRight: Spacing.small,
-    paddingTop: Spacing.small,
+    padding: Spacing.tiny + Spacing.micro,
     width: '100%',
   },
   content: {
     flexGrow: 1,
+    paddingTop: 4,
   },
   header: {
-    flexBasis: 188,
+    // flexBasis: 100,
     flexShrink: 0,
+    height: 56,
+    alignItems: 'center',
   },
   leftNav: {
     flexBasis: LEFT_NAV_WIDTH,
@@ -65,6 +67,7 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
       marginLeft: tabletShowLeftNav ? 0 : -1 * (Spacing.small + LEFT_NAV_WIDTH),
       marginRight: Spacing.small,
     },
+    paddingRight: Spacing.tiny + Spacing.micro,
   },
   main: {
     flexGrow: 1,

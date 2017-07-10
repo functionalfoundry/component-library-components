@@ -39,7 +39,9 @@ const defaultTheme = {
     color: Colors.grey400,
     fontWeight: 300,
   },
-  info: {},
+  info: {
+    color: 'white',
+  },
 }
 
 const ThemedInfoTable = Theme('InfoTable', defaultTheme)(InfoTable)

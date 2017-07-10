@@ -64,8 +64,13 @@ class RepoDropdown extends React.Component {
             {...theme.icon}
             name="github"
             onClick={onClickRepoGithub}
-            size="small"
             ref={this.saveRefToGithubIcon}
+            theme={{
+              svg: {
+                width: 24,
+                height: 24,
+              },
+            }}
           />}
         {/* Horizontal offset is for the github icon*/}
 
@@ -99,9 +104,9 @@ class RepoDropdown extends React.Component {
               onClick={() => this.setState(prevState => ({ isOpen: !prevState.isOpen }))}
               ref={this.saveRefToDropdownTarget}
             >
-              <View {...theme.repoTitle}>
+              <div {...theme.repoTitle}>
                 {selectedRepo ? selectedRepo.name : '<All Repos>'}
-              </View>
+              </div>
               <View {...theme.caret}>▼</View>
             </div>
           </View>
@@ -134,7 +139,6 @@ const defaultTheme = props => ({
       fill: Colors.grey200,
     },
     fill: Colors.grey300,
-    marginLeft: Spacing.tiny,
     marginRight: Spacing.tiny,
     paddingBottom: Spacing.pico,
   },
@@ -168,6 +172,16 @@ const defaultTheme = props => ({
     flex: '0 auto',
     justifyContent: 'flex-start',
     marginBottom: 0,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    width: 200,
+  },
+  repoTitleWrapper: {
+    // width: 250px;
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   tooltip: {
     ...Fonts.small,
