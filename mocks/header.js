@@ -23,16 +23,19 @@ export const branches = [
     id: 1,
     name: 'master',
     status: 'Success',
+    onStatusIconClick: () => action('onStatusIconClick')(),
   },
   {
     id: 2,
     name: 'develop',
     status: 'Success',
+    onStatusIconClick: () => action('onStatusIconClick')(),
   },
   {
     id: 3,
     name: 'refs/zerim/ant-design',
     status: 'Success',
+    onStatusIconClick: () => action('onStatusIconClick')(),
   },
 ]
 

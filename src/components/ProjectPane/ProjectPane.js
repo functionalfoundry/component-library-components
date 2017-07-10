@@ -61,7 +61,12 @@ const ProjectPane = ({
           title="Status"
           info={
             <div style={{ marginLeft: 8 }}>
-              <BranchStatus status={getCurrentBranchStatus(branches, selectedBranchId)} />
+              <BranchStatus
+                status={getCurrentBranch(branches, selectedBranchId).status}
+                onIconClick={
+                  getCurrentBranch(branches, selectedBranchId).onStatusIconClick
+                }
+              />
             </div>
           }
         />
@@ -70,8 +75,8 @@ const ProjectPane = ({
   </div>
 )
 
-const getCurrentBranchStatus = (branches, selectedBranchId) =>
-  (branches.find(branch => branch.id === selectedBranchId) || {}).status
+const getCurrentBranch = (branches, selectedBranchId) =>
+  branches.find(branch => branch.id === selectedBranchId) || {}
 
 const defaultTheme = {}
 
