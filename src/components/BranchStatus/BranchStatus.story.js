@@ -17,7 +17,10 @@ storiesOf('BranchStatus', module).add('Regular', () => (
       <BranchStatus status="Failed" />
     </Preview>
     <Preview label="Building">
-      <BranchStatus status="Building" />
+      <BranchStatus status="Building" onIconClick={action('onIconClick')} />
+    </Preview>
+    <Preview label="SetupRequired">
+      <BranchStatus status="SetupRequired" onIconClick={action('onIconClick')} />
     </Preview>
   </PreviewContainer>
 ))
