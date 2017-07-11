@@ -167,6 +167,7 @@ class PropValueRenderer extends React.Component {
           }
         > */}
         <EditableText
+          inline
           onChange={this.handleChange}
           onStopEdit={this.handleStopEdit}
           ref={this.saveRefToEditableText}
@@ -181,8 +182,7 @@ class PropValueRenderer extends React.Component {
 
 const defaultTheme = {
   propValueContainer: {
-    display: 'inline-block',
-    flexGrow: 1,
+    display: 'inline',
     textAlign: 'left',
   },
 }
