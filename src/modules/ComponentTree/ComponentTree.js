@@ -46,7 +46,6 @@ const defaultComponent: ComponentT = {
   name: null,
   props: List(),
   children: List(),
-  text: null,
 }
 
 const Component = Record(defaultComponent)
