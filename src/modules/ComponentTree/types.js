@@ -50,7 +50,6 @@ type ComponentT = {
   name: ?string,
   props: ?List<PropT>,
   children: ?List<ComponentT>,
-  text: ?string,
 }
 
 export type ComponentTreeNodeT = ComponentT | PropT | PropValueT
