@@ -14,6 +14,10 @@ import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
 
 const defaultPropValue: PropValueT = {
   id: null,
+  status: {
+    isValid: true,
+    message: '',
+  },
   nodeType: 'prop-value',
   value: null,
   type: null,
