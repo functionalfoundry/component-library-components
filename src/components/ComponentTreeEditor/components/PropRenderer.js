@@ -12,12 +12,7 @@ type Props = {
 
 const PropRenderer = ({ indentLevel, propNode, theme }: Props) => {
   return propNode.get('value') && propNode.get('name')
-    ? <Line
-        indentLevel={indentLevel}
-        theme={{
-          line: { display: 'flex' },
-        }}
-      >
+    ? <Line indentLevel={indentLevel}>
         <span style={{ whiteSpace: 'pre' }}>{propNode.get('name')}{'='}</span>
         <PropValueRenderer propValueNode={propNode.get('value')} />
       </Line>
