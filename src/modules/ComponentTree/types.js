@@ -27,8 +27,12 @@ type PropValueValueT = any
 type PropValueT = {
   id: ?NodeIdentifierT,
   nodeType: PropValueNodeTypeT,
-  value: ?PropValueValueT,
+  status: {
+    isValid: boolean,
+    message: string,
+  },
   type: ?PropValueTypeT,
+  value: ?PropValueValueT,
 }
 
 type PropNodeTypeT = 'prop'
