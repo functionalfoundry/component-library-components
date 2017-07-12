@@ -2,7 +2,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 
-import { Fonts } from '@workflo/styles'
+import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../types/Completion'
 import type { InteractionStateT } from './types'
@@ -138,6 +138,8 @@ class ComponentTreeEditor extends React.Component {
 const defaultTheme = {
   componentTreeEditor: {
     ...Fonts.code,
+    color: Colors.grey300,
+    backgroundColor: Colors.grey900,
   },
 }
 
