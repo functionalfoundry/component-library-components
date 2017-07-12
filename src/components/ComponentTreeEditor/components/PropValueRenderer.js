@@ -3,7 +3,7 @@ import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
 
-import { AlignedPointer, EditableText, Popover, View } from '@workflo/components'
+import { EditableText, Popover } from '@workflo/components'
 
 import { Helpers } from '../../../modules/ComponentTree'
 import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
@@ -11,6 +11,7 @@ import stripQuotes from '../utils/stripQuotes'
 import PropValueChooser from './PropValueChooser'
 
 type Props = {
+  completionOptions: Array<Object>,
   propValueNode: Object,
   theme: Object,
 }
@@ -36,7 +37,9 @@ const editableTextTheme = {
 class PropValueRenderer extends React.Component {
   props: Props
   state: State
+  /** refs */
   editableText: any
+  container: any
 
   // constructor(props) {
   //   super(props)
@@ -120,25 +123,15 @@ class PropValueRenderer extends React.Component {
 
   saveRefToEditableText = ref => (this.editableText = ref)
 
+  saveRefToContainer = ref => (this.container = ref)
+
   // toggleHover = () => this.setState(prevState => ({ isHovering: !prevState.isHovering }))
   toggleHover = () => {}
 
   render() {
-    const { propValueNode, theme } = this.props
+    const { completionOptions, propValueNode, theme } = this.props
     // const prop = mark.getIn(['data', 'element', 'data', 'prop'])
     // const component = mark.getIn(['data', 'element', 'data', 'component'])
-
-    // const propCompletionData = (options &&
-    //   options.completionData &&
-    //   options.completionData.props &&
-    //   options.completionData.props[component.name] &&
-    //   options.completionData.props[component.name][prop.name]) || {
-    //   type: 'any',
-    //   options: [],
-    // }
-
-    // const globalOptions =
-    //   options && options.completionData && options.completionData.globalOptions
 
     return (
       <span
@@ -146,26 +139,8 @@ class PropValueRenderer extends React.Component {
         onClick={this.handleClick}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
+        ref={this.saveRefToContainer}
       >
-        {/* <Popover
-          position="Right"
-          horizontalOffset={5}
-          openTriggers={['Click inside']}
-          closeTriggers={[]}
-          verticalOffset={2}
-          portal={
-            <PropValueChooser
-              prop={prop}
-              value={this.state.value}
-              completionData={propCompletionData}
-              options={globalOptions}
-              onChange={value => {
-                this.handleChange(value)
-                this.handleStopEdit()
-              }}
-            />
-          }
-        > */}
         <EditableText
           inline
           onChange={this.handleChange}
@@ -174,7 +149,26 @@ class PropValueRenderer extends React.Component {
           theme={editableTextTheme}
           value={propValueNode.get('value')}
         />
-        {/* </Popover> */}
+        <Popover
+          closeTriggers={[]}
+          horizontalOffset={5}
+          openTriggers={['Click inside']}
+          portal={
+            // <div style={{ width: 100, height: 100, backgroundColor: 'white' }} />
+            <PropValueChooser
+              propValueNode={propValueNode}
+              // value={this.state.value}
+              completionOptions={completionOptions}
+              onChange={value => {
+                this.handleChange(value)
+                this.handleStopEdit()
+              }}
+            />
+          }
+          position="Bottom"
+          targetRef={this.container}
+          verticalOffset={2}
+        />
       </span>
     )
   }

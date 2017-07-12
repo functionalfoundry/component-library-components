@@ -3,10 +3,13 @@ import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
 
+import getCompletionOptions from '../utils/getCompletionOptions'
+
 import PropRenderer from './PropRenderer'
 import Line from './Line'
 
 type Props = {
+  completionData: Object,
   componentNode: Object,
   indentLevel: number,
   theme: Object,
@@ -14,7 +17,12 @@ type Props = {
 
 const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
 
-const ComponentRenderer = ({ componentNode, indentLevel = 0, theme }: Props) => {
+const ComponentRenderer = ({
+  completionData,
+  componentNode,
+  indentLevel = 0,
+  theme,
+}: Props) => {
   const componentName = componentNode.get('name')
   const componentProps = componentNode.get('props')
   const childComponents = componentNode.get('children')
@@ -28,8 +36,17 @@ const ComponentRenderer = ({ componentNode, indentLevel = 0, theme }: Props) => 
           : ''}
       </Line>
       {componentProps
-        .map(propNode => (
-          <PropRenderer indentLevel={indentLevel + 1} propNode={propNode} />
+        .map((propNode, index) => (
+          <PropRenderer
+            completionOptions={getCompletionOptions({
+              completionData,
+              propNode,
+              componentNode,
+            })}
+            key={index}
+            indentLevel={indentLevel + 1}
+            propNode={propNode}
+          />
         ))
         .toArray()}
       {componentProps.count() > 0 &&
@@ -37,8 +54,9 @@ const ComponentRenderer = ({ componentNode, indentLevel = 0, theme }: Props) => 
           {getStartTagClosingCharacters(childComponents)}
         </Line>}
       {childComponents
-        .map(childComponent => (
+        .map((childComponent, index) => (
           <ThemedComponentRenderer
+            key={index}
             componentNode={childComponent}
             indentLevel={indentLevel + 1}
           />

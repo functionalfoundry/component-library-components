@@ -7,17 +7,21 @@ import Line from './Line'
 import PropValueRenderer from './PropValueRenderer'
 
 type Props = {
+  completionOptions: Object,
   propNode: Object,
   indentLevel: number,
   theme: Object,
 }
 
-const PropRenderer = ({ indentLevel, propNode, theme }: Props) => {
+const PropRenderer = ({ completionOptions, indentLevel, propNode, theme }: Props) => {
   return propNode.get('value') && propNode.get('name')
     ? <Line indentLevel={indentLevel}>
         <span {...theme.propName}>{propNode.get('name')}</span>
         {'='}
-        <PropValueRenderer propValueNode={propNode.get('value')} />
+        <PropValueRenderer
+          completionOptions={completionOptions}
+          propValueNode={propNode.get('value')}
+        />
       </Line>
     : null
 }
