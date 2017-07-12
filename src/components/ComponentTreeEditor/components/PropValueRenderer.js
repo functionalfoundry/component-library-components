@@ -182,6 +182,7 @@ class PropValueRenderer extends React.Component {
 
 const defaultTheme = {
   propValueContainer: {
+    color: Colors.yellow200,
     display: 'inline',
     textAlign: 'left',
   },
