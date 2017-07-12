@@ -4,57 +4,8 @@ import Theme from 'js-theme'
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
 
-import { Prop, PropValue } from '../../../modules/ComponentTree'
-import type { GlobalOptionsDataT, PropCompletionDataT } from '../../types/Completion'
-
-const unifyOptions = (
-  completionData: ?PropCompletionDataT,
-  options: ?GlobalOptionsDataT
-) => {
-  const result = []
-
-  if (completionData && completionData.options) {
-    completionData.options.map(option =>
-      result.push({
-        name: option,
-        value: option,
-        source: null,
-      })
-    )
-  }
-
-  if (options && Object.keys(options)) {
-    Object.keys(options).map(key =>
-      result.push({
-        name: options && options[key] && options[key].name,
-        value: options && options[key] && options[key].value,
-        source: options && options[key] && options[key].source,
-      })
-    )
-  }
-
-  return result
-}
-
-const isOptionAppropriateForProp = (option, prop: Prop, value: PropValue) => {
-  if (prop.value.type === 'function') {
-    return (
-      option.source === 'actions' && option.name !== 'setState' && option.name !== 'state'
-    )
-  } else {
-    return (
-      option.source !== 'actions' &&
-      option.name !== 'initialState' &&
-      option.name !== 'state'
-    )
-  }
-}
-
 export type Props = {
-  prop: Prop,
-  value: PropValue,
-  completionData: ?PropCompletionDataT,
-  options: ?GlobalOptionsDataT,
+  completionOptions: Array<Object>,
   onChange: Function,
   theme: Object,
 }
@@ -67,20 +18,18 @@ class PropValueChooser extends React.Component {
   }
 
   render() {
-    const { completionData, options, prop, value, theme } = this.props
+    const { completionOptions, theme } = this.props
     return (
       <List {...theme.list}>
-        {unifyOptions(completionData, options)
-          .filter(option => isOptionAppropriateForProp(option, prop, value))
-          .map(option => (
-            <ListItem
-              key={option.name}
-              onClick={event => this.handleSelect(event, option.value)}
-              theme={listItemTheme}
-            >
-              {option.value}
-            </ListItem>
-          ))}
+        {completionOptions.map(option => (
+          <ListItem
+            key={option.name}
+            onClick={event => this.handleSelect(event, option.value)}
+            theme={listItemTheme}
+          >
+            {option.value}
+          </ListItem>
+        ))}
       </List>
     )
   }

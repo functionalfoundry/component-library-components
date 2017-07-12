@@ -68,14 +68,14 @@ class ComponentTreeEditor extends React.Component {
   }
 
   render() {
-    const { theme } = this.props
+    const { completionData, theme } = this.props
     const { tree } = this.state
     const rootNode = tree.get('root')
 
     return (
       rootNode &&
       <div {...theme.componentTreeEditor}>
-        <ComponentRenderer componentNode={rootNode} />
+        <ComponentRenderer completionData={completionData} componentNode={rootNode} />
       </div>
     )
   }
