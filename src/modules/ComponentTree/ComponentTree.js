@@ -1,4 +1,4 @@
-/* @flow */
+/** @flow */
 import { List, Record } from 'immutable'
 import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
 

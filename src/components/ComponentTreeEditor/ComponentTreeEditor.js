@@ -1,16 +1,11 @@
-/* @flow */
+/** @flow */
 import React from 'react'
 import Theme from 'js-theme'
 
 import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../types/Completion'
-import type { InteractionStateT } from './types'
-import type {
-  Component,
-  ComponentTree,
-  NodeIdentifierT,
-} from '../../modules/ComponentTree'
+import type { ComponentTree } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 
 /**
@@ -19,8 +14,6 @@ import ComponentRenderer from './components/ComponentRenderer'
 
 type PropsT = {
   tree: ComponentTree,
-  layout: ComponentTreeLayout.ComponentTreeLayout,
-  markup: string,
   completionData: CompletionDataT,
   nodeIdGenerator: Function,
   onChange?: Function,

@@ -1,3 +1,4 @@
+/** @flow */
 import React from 'react'
 import Theme from 'js-theme'
 
