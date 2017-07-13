@@ -1,9 +1,16 @@
-import type { GlobalOptionsDataT, PropCompletionDataT } from '../../types/Completion'
+/** @flow */
+import type {
+  CompletionDataT,
+  CompletionOptionT,
+  GlobalOptionsDataT,
+  PropCompletionDataT,
+} from '../../../types/Completion'
+import type { Component, Prop } from '../../../modules/ComponentTree'
 
 const unifyOptions = (
   completionData: ?PropCompletionDataT,
   options: ?GlobalOptionsDataT
-) => {
+): Array<CompletionOptionT> => {
   const result = []
 
   if (completionData && completionData.options) {
@@ -19,7 +26,7 @@ const unifyOptions = (
   if (options && Object.keys(options)) {
     Object.keys(options).map(key =>
       result.push({
-        name: options && options[key] && options[key].name,
+        name: (options && options[key] && options[key].name) || '',
         value: options && options[key] && options[key].value,
         source: options && options[key] && options[key].source,
       })
@@ -50,7 +57,16 @@ const isOptionAppropriateForProp = (option, propValueNode: Object) => {
  * This utility *does not* filter the options based on any specific value that the
  * user has inputed.
  */
-const getCompletionOptions = ({ completionData, propNode, componentNode }) => {
+type GetCompletionOptionsT = ({
+  completionData: CompletionDataT,
+  propNode: Prop,
+  componentNode: Component,
+}) => Array<CompletionOptionT>
+const getCompletionOptions: GetCompletionOptionsT = ({
+  completionData,
+  propNode,
+  componentNode,
+}) => {
   const componentName = componentNode.get('name')
   const propName = propNode.get('name')
   const propValueNode = propNode.get('value')
