@@ -1,5 +1,5 @@
 /* @flow */
-import type { PropValueTypeT } from './ComponentTree'
+import type { PropValueTypeT } from '../modules/ComponentTree/types'
 
 /**
  * Completion data types
@@ -21,6 +21,12 @@ export type GlobalOptionDataT = {
   value: any,
   type: PropValueTypeT,
   source: OptionSourceT,
+}
+
+export type CompletionOptionT = {
+  name: string,
+  value: any,
+  source: ?OptionSourceT,
 }
 
 export type GlobalOptionsDataT = {

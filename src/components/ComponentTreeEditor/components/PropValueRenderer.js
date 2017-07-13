@@ -2,17 +2,19 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
-
 import { EditableText, Popover } from '@workflo/components'
 
-import { Helpers } from '../../../modules/ComponentTree'
-import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
-import stripQuotes from '../utils/stripQuotes'
+import type { CompletionOptionT } from '../../../types/Completion'
+import type { PropValue } from '../../../modules/ComponentTree'
+
+// import { Helpers } from '../../../modules/ComponentTree'
+// import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
+// import stripQuotes from '../utils/stripQuotes'
 import PropValueChooser from './PropValueChooser'
 
 type Props = {
-  completionOptions: Array<Object>,
-  propValueNode: Object,
+  completionOptions: Array<CompletionOptionT>,
+  propValueNode: PropValue,
   theme: Object,
 }
 
@@ -154,7 +156,6 @@ class PropValueRenderer extends React.Component {
           horizontalOffset={5}
           openTriggers={['Click inside']}
           portal={
-            // <div style={{ width: 100, height: 100, backgroundColor: 'white' }} />
             <PropValueChooser
               propValueNode={propValueNode}
               // value={this.state.value}

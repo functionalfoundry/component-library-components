@@ -1,16 +1,19 @@
+/** @flow */
 import React from 'react'
 import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
 
+import type { Component } from '../../../modules/ComponentTree'
+import type { CompletionDataT } from '../../../types/Completion'
 import getCompletionOptions from '../utils/getCompletionOptions'
 
 import PropRenderer from './PropRenderer'
 import Line from './Line'
 
 type Props = {
-  completionData: Object,
-  componentNode: Object,
+  completionData: CompletionDataT,
+  componentNode: Component,
   indentLevel: number,
   theme: Object,
 }

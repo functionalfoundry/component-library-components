@@ -4,8 +4,10 @@ import Theme from 'js-theme'
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
 
+import type { CompletionOptionT } from '../../../types/Completion'
+
 export type Props = {
-  completionOptions: Array<Object>,
+  completionOptions: Array<CompletionOptionT>,
   onChange: Function,
   theme: Object,
 }
