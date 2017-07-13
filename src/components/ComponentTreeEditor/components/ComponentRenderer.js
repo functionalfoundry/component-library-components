@@ -4,7 +4,7 @@ import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
 
-import type { Component } from '../../../modules/ComponentTree'
+import type { Component, ComponentTree } from '../../../modules/ComponentTree'
 import type { CompletionDataT } from '../../../types/Completion'
 import getCompletionOptions from '../utils/getCompletionOptions'
 
@@ -14,7 +14,10 @@ import Line from './Line'
 type Props = {
   completionData: CompletionDataT,
   componentNode: Component,
+  componentTree: ComponentTree,
   indentLevel: number,
+  onChange: Function,
+  onChangePropValue: Function,
   theme: Object,
 }
 
@@ -23,7 +26,10 @@ const getStartTagClosingCharacters = childComponents => `${childComponents.count
 const ComponentRenderer = ({
   completionData,
   componentNode,
+  componentTree,
   indentLevel = 0,
+  onChange,
+  onChangePropValue,
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
@@ -46,8 +52,11 @@ const ComponentRenderer = ({
               propNode,
               componentNode,
             })}
+            componentTree={componentTree}
             key={index}
             indentLevel={indentLevel + 1}
+            onChange={onChange}
+            onChangePropValue={onChangePropValue}
             propNode={propNode}
           />
         ))
@@ -61,7 +70,10 @@ const ComponentRenderer = ({
           <ThemedComponentRenderer
             key={index}
             componentNode={childComponent}
+            componentTree={componentTree}
             indentLevel={indentLevel + 1}
+            onChange={onChange}
+            onChangePropValue={onChangePropValue}
           />
         ))
         .toArray()}

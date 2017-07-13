@@ -5,15 +5,23 @@ import { Colors, Fonts } from '@workflo/styles'
 import { EditableText, Popover } from '@workflo/components'
 
 import type { CompletionOptionT } from '../../../types/Completion'
-import type { PropValue } from '../../../modules/ComponentTree'
+import {
+  type ComponentTree,
+  Helpers,
+  type PropValue,
+  type Prop,
+} from '../../../modules/ComponentTree'
 
-// import { Helpers } from '../../../modules/ComponentTree'
-// import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
-// import stripQuotes from '../utils/stripQuotes'
+import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
+import stripQuotes from '../utils/stripQuotes'
 import PropValueChooser from './PropValueChooser'
 
 type Props = {
   completionOptions: Array<CompletionOptionT>,
+  componentTree: ComponentTree,
+  onChange: Function,
+  onChangePropValue: Function,
+  propNode: Prop,
   propValueNode: PropValue,
   theme: Object,
 }
@@ -21,7 +29,6 @@ type Props = {
 type State = {
   displayValue: string,
   isFocused: boolean,
-  isHovering: boolean,
   value: string,
 }
 
@@ -43,34 +50,33 @@ class PropValueRenderer extends React.Component {
   editableText: any
   container: any
 
-  // constructor(props) {
-  //   super(props)
-  // this.state = {
-  //   displayValue: this.getDisplayValue(props, { isFocused: false }) || '',
-  //   isFocused: false,
-  //   isHovering: false,
-  //   value: this.getValue(props) || '',
-  // }
-  // }
+  constructor(props) {
+    const { propValueNode } = props
+    super(props)
+    this.state = {
+      displayValue: this.getDisplayValue(props, { isFocused: false }) || '',
+      isFocused: false,
+      value: propValueNode.get('value') || '',
+    }
+  }
 
-  // getDisplayValue(props: Props, state: any) {
-  //   const propValueNode = this.getNode(props)
-  //   if (!state.isFocused || propValueNode.type === 'string') {
-  //     const { open, close } = getPropValueTypeBoundaries(propValueNode)
-  //     return `${open}${stripQuotes(propValueNode.value)}${close}`
-  //   } else {
-  //     return propValueNode.value
-  //   }
-  // }
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.propValueNode !== this.props.propValueNode) {
+      this.setState({
+        displayValue: this.getDisplayValue(nextProps, { isFocused: false }),
+      })
+    }
+  }
 
-  // getNode = props => {
-  //   const { mark } = props
-  //   return mark.getIn(['data', 'element', 'node'])
-  // }
-
-  // getValue = props => {
-  //   return this.getNode(props).get('value')
-  // }
+  getDisplayValue(props: Props, state: any) {
+    const { propValueNode } = props
+    if (!state.isFocused || propValueNode.type === 'string') {
+      const { open, close } = getPropValueTypeBoundaries(propValueNode)
+      return `${open}${stripQuotes(propValueNode.value)}${close}`
+    } else {
+      return propValueNode.value
+    }
+  }
 
   resolveValueType = valueString => {
     let type = 'expression'
@@ -90,18 +96,18 @@ class PropValueRenderer extends React.Component {
      * Only highlight the field the first time the user selects the field since the
      * last time they were focused on the field.
      */
-    // const shouldFocusAndSelect = !this.state.isFocused
-    // this.setState(
-    //   prevState => ({
-    //     isFocused: true,
-    //     displayValue: this.getDisplayValue(this.props, { isFocused: true }) || '',
-    //   }),
-    //   () => {
-    //     if (shouldFocusAndSelect) {
-    //       this.editableText.refs.wrappedInstance.focusAndSelect()
-    //     }
-    //   }
-    // )
+    const shouldFocusAndSelect = !this.state.isFocused
+    this.setState(
+      prevState => ({
+        isFocused: true,
+        displayValue: this.getDisplayValue(this.props, { isFocused: true }) || '',
+      }),
+      () => {
+        if (shouldFocusAndSelect) {
+          this.editableText.refs.wrappedInstance.focusAndSelect()
+        }
+      }
+    )
   }
 
   /**
@@ -109,38 +115,36 @@ class PropValueRenderer extends React.Component {
    * of the PropValue node.
    */
   handleStopEdit = () => {
-    // const { mark, options } = this.props
-    // const prop = mark.getIn(['data', 'element', 'data', 'prop'])
-    // const propValue = this.getNode(this.props)
-    // const tree = Helpers.setPropValue(
-    //   options.tree,
-    //   prop.id,
-    //   propValue
-    //     .set('value', this.state.value)
-    //     .set('type', this.resolveValueType(this.state.value))
-    // )
-    // options.onChange && options.onChange(tree)
-    // options.onChangePropValue && options.onChangePropValue(prop.id, this.state.value)
+    const {
+      componentTree,
+      onChange,
+      onChangePropValue,
+      propNode,
+      propValueNode,
+    } = this.props
+    const tree = Helpers.setPropValue(
+      componentTree,
+      propNode.get('id'),
+      propValueNode
+        .set('value', this.state.value)
+        .set('type', this.resolveValueType(this.state.value))
+    )
+    this.setState({ isFocused: false })
+    onChange && onChange(tree)
+    onChangePropValue && onChangePropValue(propNode.get('id'), this.state.value)
   }
 
   saveRefToEditableText = ref => (this.editableText = ref)
 
   saveRefToContainer = ref => (this.container = ref)
 
-  // toggleHover = () => this.setState(prevState => ({ isHovering: !prevState.isHovering }))
-  toggleHover = () => {}
-
   render() {
     const { completionOptions, propValueNode, theme } = this.props
-    // const prop = mark.getIn(['data', 'element', 'data', 'prop'])
-    // const component = mark.getIn(['data', 'element', 'data', 'component'])
 
     return (
       <span
         {...theme.propValueContainer}
         onClick={this.handleClick}
-        onMouseEnter={this.toggleHover}
-        onMouseLeave={this.toggleHover}
         ref={this.saveRefToContainer}
       >
         <EditableText
@@ -149,16 +153,15 @@ class PropValueRenderer extends React.Component {
           onStopEdit={this.handleStopEdit}
           ref={this.saveRefToEditableText}
           theme={editableTextTheme}
-          value={propValueNode.get('value')}
+          value={this.state.displayValue}
         />
         <Popover
           closeTriggers={[]}
-          horizontalOffset={5}
           openTriggers={['Click inside']}
           portal={
             <PropValueChooser
               propValueNode={propValueNode}
-              // value={this.state.value}
+              value={this.state.value}
               completionOptions={completionOptions}
               onChange={value => {
                 this.handleChange(value)
