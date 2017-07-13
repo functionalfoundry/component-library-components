@@ -8,7 +8,7 @@ import type { CompletionOptionT } from '../../../types/Completion'
 
 export type Props = {
   completionOptions: Array<CompletionOptionT>,
-  onChange: Function,
+  onSelect: Function,
   theme: Object,
 }
 
@@ -16,7 +16,7 @@ class PropValueChooser extends React.Component {
   props: Props
 
   handleSelect = (event, value) => {
-    this.props.onChange && this.props.onChange(value)
+    this.props.onSelect && this.props.onSelect(value)
   }
 
   render() {
