@@ -61,16 +61,20 @@ class PropValueRenderer extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.propValueNode !== this.props.propValueNode) {
+    if (
+      nextProps.propValueNode !== this.props.propValueNode ||
+      nextState.isFocused !== this.state.isFocused
+    ) {
       this.setState({
-        displayValue: this.getDisplayValue(nextProps, { isFocused: false }),
+        displayValue: this.getDisplayValue(nextProps, nextState),
       })
     }
   }
 
   getDisplayValue(props: Props, state: any) {
     const { propValueNode } = props
-    if (!state.isFocused || propValueNode.type === 'string') {
+    const type = this.resolveValueType(propValueNode.value)
+    if (!state.isFocused || type === 'string') {
       const { open, close } = getPropValueTypeBoundaries(propValueNode)
       return `${open}${stripQuotes(propValueNode.value)}${close}`
     } else {
@@ -86,7 +90,8 @@ class PropValueRenderer extends React.Component {
     return type
   }
 
-  handleChange = (value: string) => this.setState({ value: value })
+  handleChange = (value: string, callback) =>
+    this.setState(prevState => ({ value: value }), callback)
 
   /**
    * When user focuses, we change the display value and highlight the text
@@ -125,9 +130,8 @@ class PropValueRenderer extends React.Component {
     const tree = Helpers.setPropValue(
       componentTree,
       propNode.get('id'),
-      propValueNode
-        .set('value', this.state.value)
-        .set('type', this.resolveValueType(this.state.value))
+      propValueNode.set('value', this.state.value)
+      // .set('type', this.resolveValueType(this.state.value))
     )
     this.setState({ isFocused: false })
     onChange && onChange(tree)
@@ -136,7 +140,8 @@ class PropValueRenderer extends React.Component {
 
   saveRefToEditableText = ref => (this.editableText = ref)
 
-  saveRefToContainer = ref => (this.container = ref)
+  saveRefToContainer = ref =>
+    (this.container = ref) && console.log('saving new container ref')
 
   render() {
     const { completionOptions, propValueNode, theme } = this.props
@@ -145,7 +150,7 @@ class PropValueRenderer extends React.Component {
       <span
         {...theme.propValueContainer}
         onClick={this.handleClick}
-        ref={this.saveRefToContainer}
+        ref={ref => this.saveRefToContainer(ref)}
       >
         <EditableText
           inline
@@ -158,17 +163,17 @@ class PropValueRenderer extends React.Component {
         <Popover
           closeTriggers={[]}
           openTriggers={['Click inside']}
-          portal={
+          portal={({ close }) => (
             <PropValueChooser
               propValueNode={propValueNode}
               value={this.state.value}
               completionOptions={completionOptions}
-              onChange={value => {
-                this.handleChange(value)
-                this.handleStopEdit()
+              onSelect={value => {
+                this.handleChange(value, this.handleStopEdit)
+                close()
               }}
             />
-          }
+          )}
           position="Bottom"
           targetRef={this.container}
           verticalOffset={2}
