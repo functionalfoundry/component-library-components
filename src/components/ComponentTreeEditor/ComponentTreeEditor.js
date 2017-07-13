@@ -5,7 +5,7 @@ import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../types/Completion'
-import type { ComponentTree } from '../../modules/ComponentTree'
+import type { ComponentTree, NodeIdentifierT } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 
 /**
@@ -68,16 +68,21 @@ class ComponentTreeEditor extends React.Component {
     return (
       rootNode &&
       <div {...theme.componentTreeEditor}>
-        <ComponentRenderer completionData={completionData} componentNode={rootNode} />
+        <ComponentRenderer
+          onChange={this.handleChange}
+          onChangePropValue={this.handleChangePropValue}
+          completionData={completionData}
+          componentNode={rootNode}
+          componentTree={tree}
+        />
       </div>
     )
   }
 
-  // handleChange = (editorState: State) => this.setState({ editorState })
-  //
-  // handleTreeChange = (tree: ComponentTree) => {
-  //   this.props.onChange && this.props.onChange(tree)
-  // }
+  handleChange = (tree: ComponentTree) => {
+    this.setState({ tree })
+    this.props.onChange && this.props.onChange(tree)
+  }
   //
   // handleRemoveProp = (nodeId: NodeIdentifierT) => {
   //   this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
@@ -107,10 +112,10 @@ class ComponentTreeEditor extends React.Component {
   //   onChangePropName && onChangePropName(componentId, nodeId, name)
   // }
   //
-  // handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
-  //   const { onChangePropValue } = this.props
-  //   onChangePropValue && onChangePropValue(nodeId, value)
-  // }
+  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
+    const { onChangePropValue } = this.props
+    onChangePropValue && onChangePropValue(nodeId, value)
+  }
   //
   // handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
   //   const { onChangeComponentName } = this.props
