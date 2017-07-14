@@ -1,8 +1,8 @@
 /** @flow */
 import React from 'react'
 
-import { Colors, Fonts } from '@workflo/styles'
-import { EditableText, Popover } from '@workflo/components'
+import { Fonts } from '@workflo/styles'
+import { EditableText, AlignedPointer } from '@workflo/components'
 
 import type { InteractionStateT } from '../types'
 import OptionChooser from './OptionChooser'
@@ -74,23 +74,21 @@ class EditableFieldContainer extends React.Component {
     this.editableText.refs.wrappedInstance.focusAndSelect()
   }
 
-  handleClick = () => {
+  handleStartEdit = () => {
     const { onFocus, nodeId } = this.props
-    if (!this.state.isFocused) {
-      this.setState(
-        prevState => ({
-          isFocused: true,
-        }),
-        /**
+    this.setState(
+      prevState => ({
+        isFocused: true,
+      }),
+      /**
          * We do this in the callback so we only interact w/ EditableText after
          * it has been passed the lastest formatted value by formatValue.
          */
-        () => {
-          this.focus()
-          onFocus && onFocus(nodeId)
-        }
-      )
-    }
+      () => {
+        this.focus()
+        onFocus && onFocus(nodeId)
+      }
+    )
   }
 
   handleStopEdit = () => {
@@ -112,16 +110,17 @@ class EditableFieldContainer extends React.Component {
       <span ref={this.saveRefToContainer}>
         <EditableField
           editableTextRef={this.saveRefToEditableText}
+          onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}
           onChange={onChange}
-          onClick={this.handleClick}
           options={options}
           value={formatValue({ isFocused, value })}
         />
         {options &&
-          <Popover
-            closeTriggers={[]}
-            openTriggers={['Click inside']}
+          <AlignedPointer
+            closeTriggers={['Blur']}
+            gravity="Bottom"
+            openTriggers={['Focus']}
             portal={({ close }) => {
               return (
                 <OptionChooser
@@ -145,22 +144,23 @@ class EditableFieldContainer extends React.Component {
 type Props = {
   editableTextRef: Function,
   onChange: Function,
-  onClick: Function,
+  onStartEdit: Function,
   onStopEdit: Function,
   value: string,
 }
 
 const EditableField = ({
   editableTextRef,
-  onClick,
   onChange,
+  onStartEdit,
   onStopEdit,
   value,
 }: Props) => (
-  <span onClick={onClick}>
+  <span>
     <EditableText
       inline
       onChange={onChange}
+      onStartEdit={onStartEdit}
       onStopEdit={onStopEdit}
       ref={editableTextRef}
       theme={editableTextTheme}
