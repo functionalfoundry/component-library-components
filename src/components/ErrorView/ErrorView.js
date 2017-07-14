@@ -16,12 +16,8 @@ const defaultProps = {
 }
 
 class ErrorView extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount(callback) {
-    const eBorder = this.errorborder
+    const eBorder = this.errorBorder
     const timeDelay = 0.2
     TweenMax.to(eBorder, timeDelay, {
       boxShadow: `0px 0px 0px 3px ${Colors.red400}`,
@@ -47,24 +43,32 @@ class ErrorView extends React.Component {
   }
 
   render() {
-    const { message, stacktrace, theme } = this.props
     return (
-      <div ref={c => (this.errorborder = c)}>
-        <View {...theme.errorView}>
-          <View {...theme.errorMessage}>
-            {message}
-          </View>
-          <View {...theme.errorStacktrace}>
-            {stacktrace}
-          </View>
-        </View>
+      <div ref={c => (this.errorBorder = c)}>
+        <ThemedInnerErrorView {...this.props} />
       </div>
     )
   }
 }
 
+/**
+ *  JS Theme special cases the case where the outter most element matches
+ *  the component name. Since errorBorder needs to be on the outside we need
+ *  this to be a separate component with matching top level element and component name
+ */
+const InnerErrorView = ({ message, stacktrace, theme }: PropsT) => (
+  <View {...theme.innerErrorView}>
+    <View {...theme.errorMessage}>
+      {message}
+    </View>
+    <View {...theme.errorStacktrace}>
+      {stacktrace}
+    </View>
+  </View>
+)
+
 const defaultTheme = {
-  errorView: {
+  innerErrorView: {
     ...Fonts.base,
     color: Colors.red400,
     backgroundColor: 'white',
@@ -83,5 +87,5 @@ const defaultTheme = {
   },
 }
 
-const ThemedErrorView = Theme('ErrorView', defaultTheme)(ErrorView)
-export default ThemedErrorView
+const ThemedInnerErrorView = Theme('InnerErrorView', defaultTheme)(InnerErrorView)
+export default ErrorView
