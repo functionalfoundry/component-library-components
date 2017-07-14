@@ -60,6 +60,7 @@ const regularTree = ComponentTree({
         id: 'list-title-prop',
         name: 'title',
         value: PropValue({
+          id: 'list-title-prop-value',
           value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
@@ -67,12 +68,13 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({ value: '10' }),
+        value: PropValue({ id: 'list-width-prop-value', value: '10' }),
       }),
       Prop({
         id: 'list-on-select-prop',
         name: 'onSelect',
         value: PropValue({
+          id: 'list-on-select-prop-value',
           value: 'handleSelect',
           type: 'function',
         }),

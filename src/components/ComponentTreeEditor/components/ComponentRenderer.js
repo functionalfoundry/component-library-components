@@ -7,17 +7,22 @@ import { Colors } from '@workflo/styles'
 import type { Component, ComponentTree } from '../../../modules/ComponentTree'
 import type { CompletionDataT } from '../../../types/Completion'
 import getCompletionOptions from '../utils/getCompletionOptions'
+import type { InteractionStateT } from '../types'
 
 import PropRenderer from './PropRenderer'
 import Line from './Line'
+import EditableField from './EditableField'
 
 type Props = {
   completionData: CompletionDataT,
   componentNode: Component,
   componentTree: ComponentTree,
   indentLevel: number,
+  interactionState: InteractionStateT,
+  onBlur: Function,
   onChange: Function,
   onChangePropValue: Function,
+  onFocus: Function,
   theme: Object,
 }
 
@@ -28,8 +33,11 @@ const ComponentRenderer = ({
   componentNode,
   componentTree,
   indentLevel = 0,
+  interactionState,
+  onBlur,
   onChange,
   onChangePropValue,
+  onFocus,
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
@@ -39,7 +47,15 @@ const ComponentRenderer = ({
     <div>
       <Line indentLevel={indentLevel}>
         {'<'}
-        <span {...theme.componentName}>{componentName}</span>
+        <span {...theme.componentName}>
+          <EditableField
+            onFocus={onFocus}
+            onBlur={onBlur}
+            nodeId={componentNode.get('id')}
+            interactionState={interactionState}
+            value={componentName}
+          />
+        </span>
         {componentProps.count() === 0
           ? getStartTagClosingCharacters(childComponents)
           : ''}
@@ -55,8 +71,11 @@ const ComponentRenderer = ({
             componentTree={componentTree}
             key={index}
             indentLevel={indentLevel + 1}
+            interactionState={interactionState}
+            onBlur={onBlur}
             onChange={onChange}
             onChangePropValue={onChangePropValue}
+            onFocus={onFocus}
             propNode={propNode}
           />
         ))
@@ -72,6 +91,7 @@ const ComponentRenderer = ({
             componentNode={childComponent}
             componentTree={componentTree}
             indentLevel={indentLevel + 1}
+            interactionState={interactionState}
             onChange={onChange}
             onChangePropValue={onChangePropValue}
           />

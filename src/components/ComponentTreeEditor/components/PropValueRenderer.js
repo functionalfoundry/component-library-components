@@ -140,8 +140,7 @@ class PropValueRenderer extends React.Component {
 
   saveRefToEditableText = ref => (this.editableText = ref)
 
-  saveRefToContainer = ref =>
-    (this.container = ref) && console.log('saving new container ref')
+  saveRefToContainer = ref => (this.container = ref)
 
   render() {
     const { completionOptions, propValueNode, theme } = this.props

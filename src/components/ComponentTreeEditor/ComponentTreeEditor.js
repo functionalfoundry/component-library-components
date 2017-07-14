@@ -7,6 +7,7 @@ import { Colors, Fonts } from '@workflo/styles'
 import type { CompletionDataT } from '../../types/Completion'
 import type { ComponentTree, NodeIdentifierT } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
+import type { InteractionStateT } from './types'
 
 /**
  * Props
@@ -34,7 +35,8 @@ const defaultProps = {}
  */
 
 type StateT = {
-  tree: ComponentTree,
+  componentTree: ComponentTree,
+  interactionState: InteractionStateT,
 }
 
 /**
@@ -50,20 +52,23 @@ class ComponentTreeEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tree: props.tree,
+      componentTree: props.tree,
+      interactionState: {
+        focusedNodeId: null,
+      },
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.tree !== this.props.tree) {
-      this.setState({ tree: nextProps.tree })
+      this.setState({ componentTree: nextProps.tree })
     }
   }
 
   render() {
     const { completionData, theme } = this.props
-    const { tree } = this.state
-    const rootNode = tree.get('root')
+    const { componentTree, interactionState } = this.state
+    const rootNode = componentTree.get('root')
 
     return (
       rootNode &&
@@ -71,17 +76,32 @@ class ComponentTreeEditor extends React.Component {
         <ComponentRenderer
           onChange={this.handleChange}
           onChangePropValue={this.handleChangePropValue}
+          onFocus={this.handleFocus}
           completionData={completionData}
           componentNode={rootNode}
-          componentTree={tree}
+          componentTree={componentTree}
+          interactionState={interactionState}
         />
       </div>
     )
   }
 
-  handleChange = (tree: ComponentTree) => {
-    this.setState({ tree })
-    this.props.onChange && this.props.onChange(tree)
+  handleChange = (componentTree: ComponentTree) => {
+    this.setState({ componentTree })
+    this.props.onChange && this.props.onChange(componentTree)
+  }
+
+  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
+    const { onChangePropValue } = this.props
+    onChangePropValue && onChangePropValue(nodeId, value)
+  }
+
+  handleFocus = id => {
+    this.setState({
+      interactionState: {
+        focusedNodeId: id,
+      },
+    })
   }
   //
   // handleRemoveProp = (nodeId: NodeIdentifierT) => {
@@ -112,10 +132,6 @@ class ComponentTreeEditor extends React.Component {
   //   onChangePropName && onChangePropName(componentId, nodeId, name)
   // }
   //
-  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
-    const { onChangePropValue } = this.props
-    onChangePropValue && onChangePropValue(nodeId, value)
-  }
   //
   // handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
   //   const { onChangeComponentName } = this.props
