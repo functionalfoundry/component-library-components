@@ -14,7 +14,11 @@ storiesOf('BranchStatus', module).add('Regular', () => (
       <BranchStatus status="Success" />
     </Preview>
     <Preview label="Failed">
-      <BranchStatus status="Failed" />
+      <BranchStatus
+        status="Failed"
+        error="ERROR in ./src/components/BranchStatus/BranchStatus.js
+Module build failed: SyntaxError: Unexpected token, expected { (27:4)"
+      />
     </Preview>
     <Preview label="Building">
       <BranchStatus status="Building" onIconClick={action('onIconClick')} />
