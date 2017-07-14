@@ -6,17 +6,22 @@ import { Colors } from '@workflo/styles'
 
 import type { CompletionOptionT } from '../../../types/Completion'
 import type { ComponentTree, Prop } from '../../../modules/ComponentTree'
+import type { InteractionStateT } from '../types'
 
 import Line from './Line'
-import PropValueRenderer from './PropValueRenderer'
+// import PropValueRenderer from './PropValueRenderer'
+import EditableField from './EditableField'
 
 type Props = {
   completionOptions: Array<CompletionOptionT>,
   componentTree: ComponentTree,
+  onBlur: Function,
   onChange: Function,
   onChangePropValue: Function,
+  onFocus: Function,
   propNode: Prop,
   indentLevel: number,
+  interactionState: InteractionStateT,
   theme: Object,
 }
 
@@ -24,23 +29,42 @@ const PropRenderer = ({
   completionOptions,
   componentTree,
   indentLevel,
+  interactionState,
+  onBlur,
   onChange,
   onChangePropValue,
+  onFocus,
   propNode,
   theme,
 }: Props) => {
-  return propNode.get('value') && propNode.get('name')
+  const propValue = propNode.get('value')
+  return propValue && propNode.get('name')
     ? <Line indentLevel={indentLevel}>
-        <span {...theme.propName}>{propNode.get('name')}</span>
+        <span {...theme.propName}>
+          <EditableField
+            interactionState={interactionState}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            nodeId={propNode.get('id')}
+            value={propNode.get('name')}
+          />
+        </span>
         {'='}
-        <PropValueRenderer
+        <EditableField
+          interactionState={interactionState}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          nodeId={propValue.get('id')}
+          value={propValue.get('value')}
+        />
+        {/* <PropValueRenderer
           completionOptions={completionOptions}
           componentTree={componentTree}
           onChange={onChange}
           onChangePropValue={onChangePropValue}
           propValueNode={propNode.get('value')}
           propNode={propNode}
-        />
+        /> */}
       </Line>
     : null
 }
