@@ -32,6 +32,8 @@ type PropsT = {
   onChangeZoom: Function,
   /* Horizontal and vertical alignments that get rendered with flexbox */
   alignment: AlignmentT,
+  /* Optionally pass in an error */
+  error?: string,
 }
 
 /**
@@ -81,6 +83,7 @@ class LivePreview extends React.Component {
     this.state = {
       canvasWidth: undefined,
       canvasHeight: undefined,
+      error: props.error,
     }
   }
 
@@ -109,6 +112,12 @@ class LivePreview extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error !== this.props.error) {
+      this.setState({ error: nextProps.error })
+    }
   }
 
   render() {
