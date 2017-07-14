@@ -4,32 +4,31 @@ import Theme from 'js-theme'
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
 
-import type { CompletionOptionT } from '../../../types/Completion'
-
 export type Props = {
-  completionOptions: Array<CompletionOptionT>,
+  options: Array<any>,
   onSelect: Function,
+  optionRenderer?: Function,
   theme: Object,
 }
 
 class PropValueChooser extends React.Component {
   props: Props
 
-  handleSelect = (event, value) => {
-    this.props.onSelect && this.props.onSelect(value)
+  handleSelect = index => {
+    this.props.onSelect && this.props.onSelect(index)
   }
 
   render() {
-    const { completionOptions, theme } = this.props
+    const { optionRenderer, options, theme } = this.props
     return (
       <List {...theme.list}>
-        {completionOptions.map(option => (
+        {options.map((option, index) => (
           <ListItem
-            key={option.name}
-            onClick={event => this.handleSelect(event, option.value)}
+            key={index}
+            onClick={() => this.handleSelect(index)}
             theme={listItemTheme}
           >
-            {option.value}
+            {optionRenderer ? optionRenderer(option) : option}
           </ListItem>
         ))}
       </List>

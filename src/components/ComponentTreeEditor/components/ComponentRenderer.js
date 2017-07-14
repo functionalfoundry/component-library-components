@@ -6,7 +6,6 @@ import { Colors } from '@workflo/styles'
 
 import type { Component, ComponentTree } from '../../../modules/ComponentTree'
 import type { CompletionDataT } from '../../../types/Completion'
-import getCompletionOptions from '../utils/getCompletionOptions'
 import type { InteractionStateT } from '../types'
 
 import PropRenderer from './PropRenderer'
@@ -49,8 +48,10 @@ const ComponentRenderer = ({
         {'<'}
         <span {...theme.componentName}>
           <EditableField
+            onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
+            options={completionData.components}
             nodeId={componentNode.get('id')}
             interactionState={interactionState}
             value={componentName}
@@ -63,12 +64,9 @@ const ComponentRenderer = ({
       {componentProps
         .map((propNode, index) => (
           <PropRenderer
-            completionOptions={getCompletionOptions({
-              completionData,
-              propNode,
-              componentNode,
-            })}
+            completionData={completionData}
             componentTree={componentTree}
+            componentNode={componentNode}
             key={index}
             indentLevel={indentLevel + 1}
             interactionState={interactionState}
@@ -88,6 +86,7 @@ const ComponentRenderer = ({
         .map((childComponent, index) => (
           <ThemedComponentRenderer
             key={index}
+            completionData={completionData}
             componentNode={childComponent}
             componentTree={componentTree}
             indentLevel={indentLevel + 1}

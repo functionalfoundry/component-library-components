@@ -5,8 +5,8 @@ const typeValueBoundaries = {
   string: "''",
 }
 
-const getPropValueTypeBoundaries = (value: PropValue) => {
-  const text = typeValueBoundaries[value.type] || typeValueBoundaries['any']
+const getPropValueTypeBoundaries = (type: string) => {
+  const text = typeValueBoundaries[type] || typeValueBoundaries['any']
   return {
     open: text[0],
     close: text[1],
