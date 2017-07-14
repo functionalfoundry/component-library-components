@@ -7,7 +7,7 @@ import type { CompletionDataT } from '../../types/Completion'
  * Interaction state
  */
 export type InteractionStateT = {
-  editingNodeId?: NodeIdentifierT,
+  focusedNodeId?: NodeIdentifierT,
 }
 
 /**
