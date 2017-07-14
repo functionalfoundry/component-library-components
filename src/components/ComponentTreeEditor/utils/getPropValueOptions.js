@@ -57,12 +57,12 @@ const isOptionAppropriateForProp = (option, propValueNode: Object) => {
  * This utility *does not* filter the options based on any specific value that the
  * user has inputed.
  */
-type GetCompletionOptionsT = ({
+type GetPropValueOptionsT = ({
   completionData: CompletionDataT,
   propNode: Prop,
   componentNode: Component,
 }) => Array<CompletionOptionT>
-const getCompletionOptions: GetCompletionOptionsT = ({
+const getPropValueOptions: GetPropValueOptionsT = ({
   completionData,
   propNode,
   componentNode,
@@ -86,4 +86,4 @@ const getCompletionOptions: GetCompletionOptionsT = ({
   )
 }
 
-export default getCompletionOptions
+export default getPropValueOptions
