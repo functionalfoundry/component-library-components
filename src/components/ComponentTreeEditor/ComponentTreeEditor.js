@@ -5,7 +5,11 @@ import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../types/Completion'
-import type { ComponentTree, NodeIdentifierT } from '../../modules/ComponentTree'
+import {
+  type ComponentTree,
+  Helpers,
+  type NodeIdentifierT,
+} from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
 
@@ -22,7 +26,7 @@ type PropsT = {
   onRemoveComponent?: Function,
   onInsertComponent?: Function,
   onChangePropName?: Function,
-  onChangePropValue?: Function,
+  // onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
   theme: Object,
@@ -74,8 +78,7 @@ class ComponentTreeEditor extends React.Component {
       rootNode &&
       <div {...theme.componentTreeEditor}>
         <ComponentRenderer
-          onChange={this.handleChange}
-          onChangePropValue={this.handleChangePropValue}
+          onChangeNode={this.handleChangeNode}
           onFocus={this.handleFocus}
           completionData={completionData}
           componentNode={rootNode}
@@ -86,14 +89,26 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  handleChange = (componentTree: ComponentTree) => {
-    this.setState({ componentTree })
-    this.props.onChange && this.props.onChange(componentTree)
-  }
+  handleChangeNode = ({
+    nodeId,
+    path,
+    value,
+  }: {
+    nodeId: NodeIdentifierT,
+    path: Array<string> | string,
+    value: string,
+  }) => {
+    const { componentTree } = this.state
 
-  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
-    const { onChangePropValue } = this.props
-    onChangePropValue && onChangePropValue(nodeId, value)
+    const modifiedComponentTree = Helpers.setNodeAttribute({
+      tree: componentTree,
+      path,
+      nodeId,
+      value,
+    })
+
+    this.props.onChange && this.props.onChange(modifiedComponentTree)
+    this.setState({ componentTree: modifiedComponentTree })
   }
 
   handleFocus = id => {

@@ -13,7 +13,7 @@ import type { InteractionStateT } from '../types'
 
 import Line from './Line'
 // import PropValueRenderer from './PropValueRenderer'
-import EditableField from './EditableField'
+import EditableNodeAttribute from './EditableNodeAttribute'
 
 const resolveValueType = valueString => {
   let type = 'expression'
@@ -38,8 +38,7 @@ type Props = {
   componentNode: Component,
   componentTree: ComponentTree,
   onBlur: Function,
-  onChange: Function,
-  onChangePropValue: Function,
+  onChangeNode: Function,
   onFocus: Function,
   propNode: Prop,
   indentLevel: number,
@@ -54,8 +53,7 @@ const PropRenderer = ({
   indentLevel,
   interactionState,
   onBlur,
-  onChange,
-  onChangePropValue,
+  onChangeNode,
   onFocus,
   propNode,
   theme,
@@ -63,35 +61,38 @@ const PropRenderer = ({
   const propValue = propNode.get('value')
   const propName = propNode.get('name')
   const componentName = componentNode.get('name')
+  const propValueOptions = getPropValueOptions({
+    completionData,
+    propNode,
+    componentNode,
+  })
   return propValue && propName
     ? <Line indentLevel={indentLevel}>
         <span {...theme.propName}>
-          <EditableField
+          <EditableNodeAttribute
             interactionState={interactionState}
             onBlur={onBlur}
-            onChange={onChange}
+            onChangeNode={onChangeNode}
             onFocus={onFocus}
-            options={Object.keys(completionData.props[componentName])}
+            options={Object.keys(completionData.props[componentName] || {})}
             nodeId={propNode.get('id')}
+            path="name"
             value={propNode.get('name')}
           />
         </span>
         {'='}
-        <EditableField
+        <EditableNodeAttribute
           formatValue={displayPropValue}
           interactionState={interactionState}
           onBlur={onBlur}
-          onChange={onChange}
+          onChangeNode={onChangeNode}
           onFocus={onFocus}
-          optionRenderer={(option: CompletionOptionT) => option.value}
-          options={getPropValueOptions({
-            completionData,
-            propNode,
-            componentNode,
-          })}
+          options={propValueOptions.map(option => option.value)}
           nodeId={propValue.get('id')}
+          path="value"
           value={propValue.get('value')}
         />
+        <span>&nbsp;</span>
       </Line>
     : null
 }

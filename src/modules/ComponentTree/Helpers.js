@@ -281,6 +281,29 @@ const removeProp = (tree: ComponentTree, propId: NodeIdentifierT): ComponentTree
   return propPath ? tree.deleteIn(propPath) : tree
 }
 
+/** Helping for setting an arbitrary attribute on any node in the ComponentTree */
+type SetNodeAttributeT = ({
+  nodeId: NodeIdentifierT,
+  /** A string representing the attribute key, or an array of strings for nested maps */
+  path: Array<string> | string,
+  tree: ComponentTree,
+  value: any,
+}) => ComponentTree
+const setNodeAttribute: SetNodeAttributeT = ({ nodeId, path, tree, value }) => {
+  const basePath = findNodeById(tree, nodeId)
+  const attributePath = Array.isArray(path) ? path : [path]
+  if (basePath) {
+    return tree.setIn(basePath.concat(attributePath), value)
+  } else {
+    throw new Error(
+      'Failed to set a node attribute in the component tree: ' +
+        'Node with ID "' +
+        nodeId +
+        '" not found'
+    )
+  }
+}
+
 const setPropName = (
   tree: ComponentTree,
   propId: NodeIdentifierT,
@@ -361,6 +384,7 @@ export default {
   setComponentText,
   insertProp,
   removeProp,
+  setNodeAttribute,
   setPropName,
   setPropValue,
   // Tree construction from raw data

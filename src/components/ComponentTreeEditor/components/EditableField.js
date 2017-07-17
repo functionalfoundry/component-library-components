@@ -4,7 +4,6 @@ import React from 'react'
 import { Fonts } from '@workflo/styles'
 import { EditableText, AlignedPointer } from '@workflo/components'
 
-import type { InteractionStateT } from '../types'
 import OptionChooser from './OptionChooser'
 
 const editableTextTheme = {
@@ -23,7 +22,11 @@ type ContainerPropsT = {
    * and `isFocused` as named parameters.
    */
   formatValue: Function,
-  interactionState: InteractionStateT,
+  /**
+   * Indicates whether the editableField focused. Is merged in with local isFocused state
+   * for faster local updates when the focus is triggered from the "inside".
+   */
+  isFocused: boolean,
   onBlur: Function,
   onChange: Function,
   onFocus: Function,
@@ -34,6 +37,7 @@ type ContainerPropsT = {
 }
 
 type ContainerStateT = {
+  containerRef: any,
   isFocused: boolean,
 }
 
@@ -55,26 +59,26 @@ class EditableFieldContainer extends React.Component {
   constructor(props: ContainerPropsT) {
     super(props)
     this.state = {
+      containerRef: null,
       isFocused: false,
     }
   }
 
+  shouldComponentUpdate(nextProps: ContainerPropsT, nextState: ContainerStateT) {
+    /** Do not update while the component is being edited */
+    if (nextState.isFocused && this.state.isFocused) {
+      return false
+    }
+    return true
+  }
+
   componentDidUpdate(prevProps: ContainerPropsT) {
-    if (
-      prevProps.interactionState.focusedNodeId !==
-        this.props.interactionState.focusedNodeId &&
-      this.props.interactionState.focusedNodeId === this.props.nodeId &&
-      !this.state.isFocused
-    ) {
+    if (!prevProps.isFocused && this.props.isFocused && !this.state.isFocused) {
       this.focus()
     }
   }
 
   focus() {
-    this.editableText.refs.wrappedInstance.focusAndSelect()
-  }
-
-  handleStartEdit = () => {
     const { onFocus, nodeId } = this.props
     this.setState(
       prevState => ({
@@ -85,10 +89,23 @@ class EditableFieldContainer extends React.Component {
          * it has been passed the lastest formatted value by formatValue.
          */
       () => {
-        this.focus()
         onFocus && onFocus(nodeId)
+        this.editableText.refs.wrappedInstance.focusAndSelect()
       }
     )
+  }
+
+  handleSelect = (index: number) => {
+    const { onChange, options } = this.props
+    if (options) {
+      this.setState({ isFocused: false })
+      onChange && onChange(options[index])
+      this.editableText.refs.wrappedInstance.blur()
+    }
+  }
+
+  handleStartEdit = () => {
+    this.focus()
   }
 
   handleStopEdit = () => {
@@ -99,7 +116,7 @@ class EditableFieldContainer extends React.Component {
     onBlur && onBlur(nodeId)
   }
 
-  saveRefToContainer = (ref: any) => (this.container = ref)
+  saveRefToContainer = (ref: any) => this.setState({ containerRef: ref })
 
   saveRefToEditableText = (ref: any) => (this.editableText = ref)
 
@@ -110,30 +127,31 @@ class EditableFieldContainer extends React.Component {
       <span ref={this.saveRefToContainer}>
         <EditableField
           editableTextRef={this.saveRefToEditableText}
+          onChange={onChange}
           onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}
-          onChange={onChange}
           options={options}
           value={formatValue({ isFocused, value })}
         />
         {options &&
+          options.length > 0 &&
           <AlignedPointer
-            closeTriggers={['Blur']}
+            forceOpen={this.state.isFocused}
             gravity="Bottom"
-            openTriggers={['Focus']}
+            openTriggers={[]}
             portal={({ close }) => {
               return (
                 <OptionChooser
-                  onSelect={index => {
-                    close()
-                  }}
+                  onSelect={this.handleSelect}
                   options={options}
                   optionRenderer={optionRenderer}
+                  preventFocus
                 />
               )
             }}
             position="Bottom"
-            targetRef={this.container}
+            targetCloseTriggers={[]}
+            targetRef={this.state.containerRef}
             verticalOffset={2}
           />}
       </span>

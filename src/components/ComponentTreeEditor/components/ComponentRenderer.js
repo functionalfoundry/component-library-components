@@ -10,7 +10,7 @@ import type { InteractionStateT } from '../types'
 
 import PropRenderer from './PropRenderer'
 import Line from './Line'
-import EditableField from './EditableField'
+import EditableNodeAttribute from './EditableNodeAttribute'
 
 type Props = {
   completionData: CompletionDataT,
@@ -19,7 +19,7 @@ type Props = {
   indentLevel: number,
   interactionState: InteractionStateT,
   onBlur: Function,
-  onChange: Function,
+  onChangeNode: Function,
   onChangePropValue: Function,
   onFocus: Function,
   theme: Object,
@@ -34,7 +34,7 @@ const ComponentRenderer = ({
   indentLevel = 0,
   interactionState,
   onBlur,
-  onChange,
+  onChangeNode,
   onChangePropValue,
   onFocus,
   theme,
@@ -47,19 +47,21 @@ const ComponentRenderer = ({
       <Line indentLevel={indentLevel}>
         {'<'}
         <span {...theme.componentName}>
-          <EditableField
-            onChange={onChange}
+          <EditableNodeAttribute
+            onChangeNode={onChangeNode}
             onFocus={onFocus}
             onBlur={onBlur}
             options={completionData.components}
             nodeId={componentNode.get('id')}
             interactionState={interactionState}
+            path="name"
             value={componentName}
           />
         </span>
         {componentProps.count() === 0
           ? getStartTagClosingCharacters(childComponents)
           : ''}
+        <span>&nbsp;</span>
       </Line>
       {componentProps
         .map((propNode, index) => (
@@ -71,7 +73,7 @@ const ComponentRenderer = ({
             indentLevel={indentLevel + 1}
             interactionState={interactionState}
             onBlur={onBlur}
-            onChange={onChange}
+            onChangeNode={onChangeNode}
             onChangePropValue={onChangePropValue}
             onFocus={onFocus}
             propNode={propNode}
@@ -91,7 +93,7 @@ const ComponentRenderer = ({
             componentTree={componentTree}
             indentLevel={indentLevel + 1}
             interactionState={interactionState}
-            onChange={onChange}
+            onChangeNode={onChangeNode}
             onChangePropValue={onChangePropValue}
           />
         ))
