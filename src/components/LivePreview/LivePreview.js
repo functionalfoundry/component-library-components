@@ -15,6 +15,11 @@ import { Helpers as TreeHelpers } from '../../modules/ComponentTree'
 
 type BundlesT = Object
 
+type ErrorT = {
+  message: string,
+  stacktrace: string,
+}
+
 type PropsT = {
   /** * A raw component tree */
   tree: Object,
@@ -33,7 +38,7 @@ type PropsT = {
   /* Horizontal and vertical alignments that get rendered with flexbox */
   alignment: AlignmentT,
   /* Optionally pass in an error */
-  error?: string,
+  error?: ErrorT,
 }
 
 /**
@@ -83,7 +88,6 @@ class LivePreview extends React.Component {
     this.state = {
       canvasWidth: undefined,
       canvasHeight: undefined,
-      error: props.error,
     }
   }
 
@@ -114,12 +118,6 @@ class LivePreview extends React.Component {
     window.removeEventListener('resize', this.updateDimensions)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error !== this.props.error) {
-      this.setState({ error: nextProps.error })
-    }
-  }
-
   render() {
     const {
       name,
@@ -131,18 +129,35 @@ class LivePreview extends React.Component {
       onChangeZoom,
       backgroundColor,
       alignment,
+      error,
     } = this.props
 
     const { canvasWidth, canvasHeight } = this.state
-
     const harnessElement = (
-      <Harness key="harness" backgroundColor={backgroundColor} alignment={alignment} />
+      <Harness
+        key="harness"
+        backgroundColor={backgroundColor}
+        alignment={alignment}
+        error={error}
+        width={canvasWidth}
+        height={canvasHeight}
+      />
     )
+    if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
+      return (
+        <div style={{ width: `100%`, height: `100%`, position: 'absolute' }}>
+          {harnessElement}
+        </div>
+      )
+    }
 
     return (
-      <View
+      <div
         style={{
           backgroundColor,
+          width: `100%`,
+          height: `100%`,
+          position: 'absolute',
         }}
       >
         {canvasWidth !== undefined && canvasHeight !== undefined
@@ -170,7 +185,7 @@ class LivePreview extends React.Component {
               />
             </LiveCanvas>
           : null}
-      </View>
+      </div>
     )
   }
 }
@@ -198,60 +213,69 @@ class Harness extends React.Component {
   props: HarnessPropsT
   static defaultProps = defaultProps
 
-  state = {
-    error: null,
+  constructor(props: PropsT) {
+    super(props)
+
+    this.state = {
+      error: props.error,
+    }
   }
 
   unstable_handleError(error) {
     this.setState({ error })
   }
 
-  render() {
-    const { children, backgroundColor, alignment } = this.props
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error !== this.props.error) {
+      this.setState({ error: nextProps.error })
+    }
+  }
 
-    if (this.state.error) {
+  render() {
+    const { children, backgroundColor, alignment, width, height } = this.props
+    const { error } = this.state
+
+    if (error) {
       return (
-        <View style={getHarnessStyle(backgroundColor)}>
-          <View style={errorContainerStyle}>
+        <div style={getHarnessStyle(backgroundColor, true)}>
+          <div style={errorContainerStyle}>
             <ErrorView
-              message={this.state.error.message}
-              stacktrace={this.state.error.stack}
+              message={error.message}
+              stacktrace={error.stacktrace}
+              width={width}
+              height={height}
             />
-          </View>
-        </View>
+          </div>
+        </div>
       )
     } else {
       try {
         return (
-          <View style={getHarnessStyle(backgroundColor)}>
-            <View style={getPreviewContainerStyle(alignment)}>
+          <div style={getHarnessStyle(backgroundColor)}>
+            <div style={getPreviewContainerStyle(alignment)}>
               {children}
-            </View>
-          </View>
+            </div>
+          </div>
         )
       } catch (error) {
         return (
-          <View style={getHarnessStyle(backgroundColor)}>
-            <View style={errorContainerStyle}>
-              <ErrorView message={error.message} stacktrace={error.stack} />
-            </View>
-          </View>
+          <div style={getHarnessStyle(backgroundColor)}>
+            <div style={errorContainerStyle}>
+              <ErrorView message={error.message} stacktrace={error.stacktrace} />
+            </div>
+          </div>
         )
       }
     }
   }
 }
 
-const getHarnessStyle = backgroundColor => ({
+const getHarnessStyle = (backgroundColor, hasError) => ({
   backgroundColor,
   boxSizing: 'border-box',
-  padding: Spacing.small,
-  display: 'flex',
-  flexDirection: 'row',
-  flex: '1 1 auto',
   position: 'relative',
-  width: '100vw',
-  height: '100vh',
+  width: hasError ? '100%' : '100vw',
+  height: hasError ? '100%' : '100vh',
 })
 
 const getPreviewContainerStyle = alignment =>
@@ -261,17 +285,13 @@ const getPreviewContainerStyle = alignment =>
       display: 'flex',
       flex: '1 1 auto',
       flexDirection: 'row',
+      height: `100%`,
     },
     getVerticalAlignment(alignment.vertical),
     getHorizontalAlignment(alignment.horizontal)
   )
 
-const errorContainerStyle = {
-  display: 'flex',
-  flex: '1 1 auto',
-  flexDirection: 'row',
-  justifyContent: 'center',
-}
+const errorContainerStyle = {}
 
 const getVerticalAlignment = verticalAlignment => {
   switch (verticalAlignment) {

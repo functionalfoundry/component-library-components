@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { storiesOf } from '@kadira/storybook'
 import LivePreview from './LivePreview'
+import Preview from '@workflo/components/lib/Preview'
+import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 
 import { BADGE_URL, LOADER_URL, rawExampleTree } from '../Frame/Frame.story'
 
@@ -50,14 +52,16 @@ class FetchAndRender extends React.Component {
 
   render() {
     const { badge, loader, zoom } = this.state
+    const { error } = this.props
     return (
       <div
         style={{
-          height: '400px',
+          height: '300px',
           width: '400px',
           border: 'thin solid grey',
           display: 'flex',
           margin: '2em',
+          position: 'absolute',
         }}
       >
         <LivePreview
@@ -73,6 +77,7 @@ class FetchAndRender extends React.Component {
           backgroundColor="cyan"
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
+          error={error}
         />
       </div>
     )
@@ -86,7 +91,7 @@ class FetchAndRender extends React.Component {
 // )
 
 // class MyFailingComponent extends React.Component {
-//   render () {
+//   render() {
 //     throw Error('This failed')
 //   }
 // }
@@ -119,20 +124,7 @@ class FetchAndRender extends React.Component {
 //       </div>
 //     </PreviewContainer>
 //   ))
-//   .add('Failing component', () => (
-//     <PreviewContainer>
-//       <div
-//         style={previewStyle}
-//         label='Failing component'
-//       >
-//         <LivePreview
-//           element={failingElement}
-//           alignment='Center'
-//           backgroundColor='cyan'
-//         />
-//       </div>
-//     </PreviewContainer>
-//   ))
+
 //   .add('No props', () => (
 //     <PreviewContainer>
 //       <div
@@ -151,4 +143,32 @@ class FetchAndRender extends React.Component {
 //   flexDirection: 'column',
 // }
 
-storiesOf('LivePreview', module).add('Default', () => <FetchAndRender />)
+storiesOf('LivePreview', module)
+  .add('Default', () => <FetchAndRender />)
+  .add('With error', () => (
+    <FetchAndRender
+      error={{
+        message: "Cannot read property 'length' of undefined and other errors happening",
+        stacktrace: `TypeError: Cannot read property 'length' of undefined
+at Steps.render (eval at evaluateBundle (:6:31), <anonymous>:13079:29)
+at p._renderValidatedComponentWithoutOwnerOrContext (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:10750)
+at p._renderValidatedComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:10877)
+at performInitialMount (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:6696)
+at p.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:5742)
+at Object.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:92:18733)
+at performInitialMount (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:6856)
+at p.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:5742)
+at Object.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:92:18733)
+at h.mountChildren (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:92:15330)
+at h._createInitialChildren (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:19457)
+at h.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:17601)`,
+      }}
+    />
+  ))
+// .add('Failing component', () => (
+//   <PreviewContainer>
+//     <div style={previewStyle} label="Failing component">
+//       <LivePreview element={failingElement} alignment="Center" backgroundColor="cyan" />
+//     </div>
+//   </PreviewContainer>
+// ))
