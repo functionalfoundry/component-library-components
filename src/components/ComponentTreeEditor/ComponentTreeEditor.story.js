@@ -320,7 +320,7 @@ class TreeEditorContainer extends React.Component {
           onRemoveComponent={this.handleRemoveComponent}
           onInsertComponent={this.handleInsertComponent}
           onChangePropName={this.handleChangePropName}
-          onChangePropValue={action('onChangePropValue')}
+          // onChangePropValue={action('onChangePropValue')}
           onChangeComponentName={this.handleChangeComponentName}
           onSelectComponent={action('onSelectComponent')}
         />
