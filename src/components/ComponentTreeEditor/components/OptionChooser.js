@@ -8,11 +8,22 @@ export type Props = {
   options: Array<any>,
   onSelect: Function,
   optionRenderer?: Function,
+  /**
+   * When set to true, OptionChooser will not steal focus from other elements.
+   */
+  preventFocus?: boolean,
   theme: Object,
 }
 
 class PropValueChooser extends React.Component {
   props: Props
+
+  handleMouseDown = e => {
+    const { preventFocus } = this.props
+    if (preventFocus) {
+      e.preventDefault()
+    }
+  }
 
   handleSelect = index => {
     this.props.onSelect && this.props.onSelect(index)
@@ -21,14 +32,14 @@ class PropValueChooser extends React.Component {
   render() {
     const { optionRenderer, options, theme } = this.props
     return (
-      <List {...theme.list}>
+      <List {...theme.list} onMouseDown={this.handleMouseDown}>
         {options.map((option, index) => (
           <ListItem
             key={index}
             onClick={() => this.handleSelect(index)}
             theme={listItemTheme}
           >
-            {optionRenderer ? optionRenderer(option) : option}
+            {optionRenderer ? optionRenderer(option, index) : option}
           </ListItem>
         ))}
       </List>
