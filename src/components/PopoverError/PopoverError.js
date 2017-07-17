@@ -16,13 +16,11 @@ const PopoverError = ({ error, theme }: PropsT) => {
 
 const defaultTheme = {
   panelHeader: {
-    maxWidth: 400,
+    maxWidth: 500,
+    maxHeight: 200,
     whiteSpace: 'pre',
     overflow: 'scroll',
     padding: 12,
-    // '::-webkit-scrollbar-thumb:horizontal': {
-    //   height: 20,
-    // },
   },
 }
 
