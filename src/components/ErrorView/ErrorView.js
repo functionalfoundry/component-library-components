@@ -8,25 +8,35 @@ type PropsT = {
   message: string,
   stacktrace: string,
   theme: Object,
+  width: number,
+  height: number,
 }
 
 const defaultProps = {
   message: '',
   stacktrace: '',
+  width: 0,
+  height: 0,
 }
 
 class ErrorView extends React.Component {
   componentDidMount(callback) {
     const eBorder = this.errorBorder
     const timeDelay = 0.2
+    const { width, height } = this.props
+
     TweenMax.to(eBorder, timeDelay, {
       boxShadow: `0px 0px 0px 3px ${Colors.red400}`,
       ease: Sine.easeOut,
+      width,
+      height,
     })
     TweenMax.to(eBorder, 0.1, {
       x: -2,
       delay: timeDelay,
       ease: Quad.easeInOut,
+      width,
+      height,
     })
     TweenMax.to(eBorder, 0.1, {
       repeat: 6,
@@ -34,11 +44,15 @@ class ErrorView extends React.Component {
       yoyo: true,
       delay: timeDelay + 0.1,
       ease: Quad.easeInOut,
+      width,
+      height,
     })
     TweenMax.to(eBorder, 0.1, {
       x: 0,
       delay: timeDelay + 0.1 * 6,
       onComplete: callback,
+      width,
+      height,
     })
   }
 
@@ -73,17 +87,16 @@ const defaultTheme = {
     color: Colors.red400,
     backgroundColor: 'white',
     padding: Spacing.tiny,
-    minWidth: 350,
-    display: 'flex',
     overflow: 'auto',
     height: '100%',
   },
   errorMessage: {
     fontWeight: 'bold',
     marginBottom: Spacing.small,
+    whiteSpace: 'pre-wrap',
   },
   errorStacktrace: {
-    whiteSpace: 'pre-wrap',
+    whiteSpace: 'pre',
   },
 }
 
