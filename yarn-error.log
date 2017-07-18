@@ -1,14 +1,14 @@
 Arguments: 
-  /usr/local/Cellar/node/7.3.0/bin/node /usr/local/bin/yarn add @worklo/components@latest
+  /Users/yaniv/.nvm/versions/node/v7.10.0/bin/node /Users/yaniv/.nvm/versions/node/v7.10.0/bin/yarn add @workfloapp/components@0.8.112
 
 PATH: 
-  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /Users/yaniv/Downloads/google-cloud-sdk/bin:/Users/yaniv/.nvm/versions/node/v7.10.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
-  0.23.3
+  0.24.4
 
 Node version: 
-  7.3.0
+  7.10.0
 
 Platform: 
   darwin x64
@@ -49,8 +49,8 @@ npm manifest:
       "babel": "inherit"
     },
     "dependencies": {
-      "@workflo/components": "^0.8.84",
-      "@workflo/styles": "^0.7.10",
+      "@workflo/components": "0.8.114",
+      "@workflo/styles": "^0.7.11",
       "acorn": "^4.0.3",
       "acorn-jsx": "^3.0.1",
       "aphrodite": "^0.5.0",
@@ -64,13 +64,15 @@ npm manifest:
       "babylon": "^6.13.1",
       "grommet": "^0.6.10",
       "gsap": "^1.19.1",
-      "js-theme": "^0.8.0",
+      "js-theme": "^0.8.1",
       "lodash": "^4.13.1",
       "prop-types": "^15.5.8",
       "react": "15.4.2",
+      "react-copy-to-clipboard": "^5.0.0",
       "react-dom": "15.4.2",
       "react-transition-group": "^1.1.3",
       "recompose": "^0.23.1",
+      "shallow-equal": "^1.0.0",
       "slate": "^0.19.3"
     },
     "devDependencies": {
@@ -235,9 +237,9 @@ Lockfile:
       babel-traverse "^6.18.0"
       babylon "^6.11.0"
   
-  "@workflo/components@^0.8.84":
-    version "0.8.84"
-    resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.84.tgz#cc2685ad38833296e0cd0b6c2c7646248f9ae177"
+  "@workflo/components@0.8.114":
+    version "0.8.114"
+    resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.114.tgz#0723a028ef6910f82ea0b53c0dab9d7b657c7414"
     dependencies:
       "@workflo/babel-standalone" "6.18.2"
       "@workflo/styles" "^0.7.10"
@@ -260,7 +262,7 @@ Lockfile:
       rc-util "^4.0.0"
       react-timeout "^1.0.0"
       shallow-equal "^1.0.0"
-      slate "^0.19.3"
+      slate "^0.20.1"
   
   "@workflo/css-shorthand-expand@1.1.0":
     version "1.1.0"
@@ -277,9 +279,9 @@ Lockfile:
       rgba-regex "^1.0.0"
       xtend "^4.0.0"
   
-  "@workflo/styles@^0.7.10":
-    version "0.7.10"
-    resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.10.tgz#eb625e8af10da70a56dae1ee9784d72ef149ffc3"
+  "@workflo/styles@^0.7.10", "@workflo/styles@^0.7.11":
+    version "0.7.11"
+    resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.11.tgz#9def2229c86a549d3840ee0b452f3fcc9e8d6b90"
   
   abbrev@1:
     version "1.1.0"
@@ -1851,6 +1853,12 @@ Lockfile:
   cookiejar@^2.0.6:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.1.tgz#41ad57b1b555951ec171412a81942b1e8200d34a"
+  
+  copy-to-clipboard@^3:
+    version "3.0.6"
+    resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.0.6.tgz#13c09bfea0408a5dc5bb987fee3b3986518c9d69"
+    dependencies:
+      toggle-selection "^1.0.3"
   
   core-js@^1.0.0:
     version "1.2.7"
@@ -3495,6 +3503,10 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/is-whitespace-character/-/is-whitespace-character-1.0.0.tgz#bbf4a83764ead0d451bec2a55218e91961adc275"
   
+  is-window@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/is-window/-/is-window-1.0.2.tgz#2c896ca53db97de45d3c33133a65d8c9f563480d"
+  
   is-word-character@^1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/is-word-character/-/is-word-character-1.0.0.tgz#a3a9e5ddad70c5c2ee36f4a9cfc9a53f44535247"
@@ -3558,9 +3570,9 @@ Lockfile:
     version "2.1.9"
     resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
   
-  js-theme@^0.8.0:
-    version "0.8.0"
-    resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.0.tgz#bcdab135efc1c43b12b80839c5506448d1c8ca85"
+  js-theme@^0.8.0, js-theme@^0.8.1:
+    version "0.8.1"
+    resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.1.tgz#b85f69863855c363d348867ce4c6af51279cf346"
     dependencies:
       "@workflo/aphrodite" "0.7.4"
       "@workflo/css-shorthand-expand" "1.1.0"
@@ -4866,6 +4878,13 @@ Lockfile:
       fbjs "^0.8.4"
       object-assign "^4.1.0"
   
+  react-copy-to-clipboard@^5.0.0:
+    version "5.0.0"
+    resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.0.tgz#23ccdd7c4d9ec2cc763839e2a55b1220aeb4f33d"
+    dependencies:
+      copy-to-clipboard "^3"
+      prop-types "^15.5.8"
+  
   react-docgen@^2.12.1:
     version "2.14.1"
     resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-2.14.1.tgz#29810af1b181957c989390f18048a12c11812169"
@@ -4959,7 +4978,7 @@ Lockfile:
       lodash.assign "^4.2.0"
       prop-types "^15.5.7"
   
-  react-portal@^3.0.0:
+  react-portal@^3.0.0, react-portal@^3.1.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.1.0.tgz#865c44fb72a1da106c649206936559ce891ee899"
     dependencies:
@@ -5436,6 +5455,26 @@ Lockfile:
       selection-is-backward "^1.0.0"
       type-of "^2.0.1"
   
+  slate@^0.20.1:
+    version "0.20.1"
+    resolved "https://registry.yarnpkg.com/slate/-/slate-0.20.1.tgz#d60842c0aa32c1c08e1a2e439ca091ba73e85bdb"
+    dependencies:
+      cheerio "^0.22.0"
+      debug "^2.3.2"
+      direction "^0.1.5"
+      es6-map "^0.1.4"
+      esrever "^0.2.0"
+      get-window "^1.1.1"
+      immutable "^3.8.1"
+      is-empty "^1.0.0"
+      is-in-browser "^1.1.3"
+      is-window "^1.0.2"
+      keycode "^2.1.2"
+      prop-types "^15.5.8"
+      react-portal "^3.1.0"
+      selection-is-backward "^1.0.0"
+      type-of "^2.0.1"
+  
   slice-ansi@0.0.4:
     version "0.0.4"
     resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
@@ -5752,6 +5791,10 @@ Lockfile:
   to-fast-properties@^1.0.1:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.2.tgz#f3f5c0c3ba7299a7ef99427e44633257ade43320"
+  
+  toggle-selection@^1.0.3:
+    version "1.0.5"
+    resolved "https://registry.yarnpkg.com/toggle-selection/-/toggle-selection-1.0.5.tgz#726c703de607193a73c32c7df49cd24950fc574f"
   
   tough-cookie@~2.3.0:
     version "2.3.2"
@@ -6176,14 +6219,14 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@worklo%2fcomponents: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/util/request-manager.js:326:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/node_modules/request/request.js:188:22)
+  Error: https://registry.yarnpkg.com/@workfloapp%2fcomponents: Not found
+      at Request.params.callback [as _callback] (/Users/yaniv/.nvm/versions/node/v7.10.0/lib/node_modules/yarn/lib/util/request-manager.js:326:18)
+      at Request.self.callback (/Users/yaniv/.nvm/versions/node/v7.10.0/lib/node_modules/yarn/node_modules/request/request.js:188:22)
       at emitTwo (events.js:106:13)
-      at Request.emit (events.js:191:7)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/node_modules/request/request.js:1171:10)
+      at Request.emit (events.js:194:7)
+      at Request.<anonymous> (/Users/yaniv/.nvm/versions/node/v7.10.0/lib/node_modules/yarn/node_modules/request/request.js:1171:10)
       at emitOne (events.js:96:13)
-      at Request.emit (events.js:188:7)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/node_modules/request/request.js:1091:12)
-      at IncomingMessage.g (events.js:292:16)
+      at Request.emit (events.js:191:7)
+      at IncomingMessage.<anonymous> (/Users/yaniv/.nvm/versions/node/v7.10.0/lib/node_modules/yarn/node_modules/request/request.js:1091:12)
+      at Object.onceWrapper (events.js:293:19)
       at emitNone (events.js:91:20)
