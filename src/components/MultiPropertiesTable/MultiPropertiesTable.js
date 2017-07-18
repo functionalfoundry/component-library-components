@@ -20,7 +20,7 @@ type PropsT = {
 
 const getSelectedComponentIndex = (components, id) => {
   for (var index = 0; index < components.length; index++) {
-    if (components[index].id == id) {
+    if (components[index].id === id) {
       return index
     }
   }
@@ -70,7 +70,16 @@ export default class MultiPropertiesTable extends React.Component {
           ))}
         </TabList>
         {components.map((component, index) => (
-          <TabPanel key={`panel-${index}`}>
+          <TabPanel
+            key={`panel-${index}`}
+            theme={{
+              tabPanel: {
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+              },
+            }}
+          >
             <Properties
               forceHoverRowIndex={forceHoverRowIndex}
               properties={component.properties}

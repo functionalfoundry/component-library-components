@@ -11,7 +11,7 @@ import ComponentStates from '../ComponentStates'
 import ComponentLibraryHeader from '../ComponentLibraryHeader'
 import ComponentsLeftNav from '../ComponentsLeftNav'
 import LiveEditor from '../LiveEditor'
-import Properties from '../Properties'
+import MultiPropertiesTable from '../MultiPropertiesTable'
 import QuickAction from '../QuickAction'
 import Panel from '../Panel'
 import QuickActionSelection from '../QuickActionSelection'
@@ -109,7 +109,17 @@ const leftNav = (
   />
 )
 
-const bottomPanel = <Properties properties={liveViewState.component.properties} />
+const bottomPanel = (
+  <MultiPropertiesTable
+    components={[
+      {
+        id: '1',
+        name: 'FirstComponent',
+        properties: liveViewState.component.properties,
+      },
+    ]}
+  />
+)
 const rightPanel = (
   <LiveEditor
     componentTree={componentTree}

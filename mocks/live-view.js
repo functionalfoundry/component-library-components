@@ -32,6 +32,24 @@ export const liveViewState = {
         default: '',
         description: 'A list of topic objects to display.',
       },
+      {
+        name: 'anotherTime',
+        type: 'Date',
+        default: '',
+        description: 'The date the comment was made. Displayed as time ago.',
+      },
+      {
+        name: 'anotherDescription',
+        type: 'String',
+        default: '',
+        description: 'The actual comment text.',
+      },
+      {
+        name: 'moreTopics',
+        type: 'Array<Topic>',
+        default: '',
+        description: 'A list of topic objects to display.',
+      },
     ],
   },
   componentState: {
@@ -43,7 +61,7 @@ export const liveViewState = {
         options: ['description1', 'description2'],
         value: 'description1',
         inputType: 'Radio',
-      }
+      },
     ],
   },
 }
