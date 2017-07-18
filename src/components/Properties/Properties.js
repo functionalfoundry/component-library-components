@@ -17,6 +17,11 @@ type PropsT = {
   onClickMinus: Function,
 }
 
+const typeWidth = '30%'
+const defaultWidth = '10%'
+const propWidth = '20%'
+const descriptionWidth = '40%'
+
 class PropertiesContainer extends React.Component {
   props: PropsT
 
@@ -101,35 +106,33 @@ class Properties extends React.Component {
     } = this.props
 
     return (
-      <table {...theme.properties} cellSpacing="0" data-walkthrough-id="properties-table">
-        <thead>
-          <tr {...theme.headerRow}>
-            <th {...theme.firstHeader}>
-              Prop
-              <Icon
-                name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
-                theme={{
-                  icon: {
-                    marginTop: 2,
-                    marginLeft: 6,
-                    cursor: 'pointer',
-                  },
-                }}
-                onClick={onSortChange}
-              />
-            </th>
-            <th {...theme.headerCell}>
-              Type
-            </th>
-            <th {...theme.headerCell}>
-              Default
-            </th>
-            <th {...theme.lastHeader}>
-              Description
-            </th>
-          </tr>
-        </thead>
-        <tbody onMouseLeave={this.handleMouseLeave}>
+      <div {...theme.properties} cellSpacing="0" data-walkthrough-id="properties-table">
+        <div {...theme.headerRow}>
+          <div {...theme.propHeader}>
+            Prop
+            <Icon
+              name={sortAsc ? 'column-sort-asc' : 'column-sort-desc'}
+              theme={{
+                icon: {
+                  marginTop: 2,
+                  marginLeft: 6,
+                  cursor: 'pointer',
+                },
+              }}
+              onClick={onSortChange}
+            />
+          </div>
+          <div {...theme.typeHeader}>
+            Type
+          </div>
+          <div {...theme.defaultHeader}>
+            Default
+          </div>
+          <div {...theme.descriptionHeader}>
+            Description
+          </div>
+        </div>
+        <div {...theme.body} onMouseLeave={this.handleMouseLeave}>
           {this.sort(properties).map((property, index) => {
             const isHovering = this.props.hoveredIndex === index
 
@@ -146,8 +149,8 @@ class Properties extends React.Component {
               />
             )
           })}
-        </tbody>
-      </table>
+        </div>
+      </div>
     )
   }
 }
@@ -162,13 +165,13 @@ const Row = ({
   forceHoverRowIndex,
   index,
 }) => (
-  <tr
+  <div
     {...theme.row}
     style={isHovering ? selectedStyle : {}}
     onMouseEnter={getHandleMouseEnter(index)}
     key={index}
   >
-    <td {...theme.prop}>
+    <div {...theme.propCell}>
       <div {...theme.nameCellInner}>
         {isHovering &&
           !property.isUsedByTreeEditor &&
@@ -208,17 +211,17 @@ const Row = ({
           {property.name}
         </span>
       </div>
-    </td>
-    <td {...theme.column}>
+    </div>
+    <div {...theme.typeCell}>
       {property.type}
-    </td>
-    <td {...theme.column}>
+    </div>
+    <div {...theme.defaultCell}>
       {property.default}
-    </td>
-    <td {...theme.description}>
+    </div>
+    <div {...theme.descriptionCell}>
       {property.description}
-    </td>
-  </tr>
+    </div>
+  </div>
 )
 
 const getDataAttributeForRow = (index, forceHoverRowIndex) => {
@@ -243,26 +246,40 @@ const headerCellBase = Object.assign({}, cellBorder, {
   textAlign: 'left',
   color: Colors.grey200,
   userSelect: 'none',
+  display: 'flex',
 })
 
 const selectedStyle = {
   backgroundColor: 'rgba(73,79,82, .2)',
 }
 
+const centerCell = {
+  ...cellBorder,
+  color: Colors.grey200,
+  paddingLeft: Spacing.small,
+  display: 'flex',
+}
+
 const defaultRowTheme = ({ property, isHovering }) => ({
   row: {
     borderBottom: `1px solid ${Colors.grey800}`,
+    flexDirection: 'row',
+    display: 'flex',
+    flexGrow: 1,
   },
-  prop: {
+  propCell: {
     ...Object.assign({}, cellBorder, {
       paddingLeft: Spacing.small,
-      paddingRight: Spacing.large,
+      // paddingRight: Spacing.large,
     }),
     color: !property.isUsedByTreeEditor ? 'white' : '#02c95d',
+    flexBasis: propWidth,
+    display: 'flex',
   },
   nameCellInner: {
     display: 'flex',
     alignItems: 'center',
+    position: 'relative',
   },
   propName: {
     // Sync with Component State Checkbox animation
@@ -271,22 +288,31 @@ const defaultRowTheme = ({ property, isHovering }) => ({
       : `translate3d(0, 0, 0)`,
     transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
   },
-  description: {
+  typeCell: {
+    ...centerCell,
+    flexBasis: typeWidth,
+  },
+  defaultCell: {
+    ...centerCell,
+    flexBasis: defaultWidth,
+  },
+  descriptionCell: {
     ...cellBorder,
+    display: 'flex',
     color: Colors.grey400,
+    flexBasis: descriptionWidth,
     '@media (max-width: 800px)': {
       display: 'none',
     },
-  },
-  column: {
-    ...cellBorder,
-    color: Colors.grey200,
-    paddingLeft: Spacing.small,
   },
   plus: {
     ...cellBorder,
   },
 })
+
+const middleCell = {
+  paddingLeft: Spacing.small,
+}
 
 const ThemedRow = Theme('PropertiesRow', defaultRowTheme)(Row)
 
@@ -298,25 +324,39 @@ const defaultTheme = {
     width: '100%',
     maxWidth: '100%',
     borderCollapse: 'collapse',
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
   },
   headerRow: {
     borderBottom: `1px solid ${Colors.grey800}`,
+    flexDirection: 'row',
+    display: 'flex',
+    flexGrow: 1,
   },
-  headerCell: Object.assign({}, headerCellBase, {
-    paddingLeft: Spacing.small,
+  typeHeader: Object.assign({}, headerCellBase, middleCell, {
+    flexBasis: typeWidth,
   }),
-  firstHeader: Object.assign({}, headerCellBase, {
+  defaultHeader: Object.assign({}, headerCellBase, middleCell, {
+    flexBasis: defaultWidth,
+  }),
+  propHeader: Object.assign({}, headerCellBase, {
     paddingLeft: Spacing.small,
     color: 'white',
     display: 'flex',
     alignItems: 'center',
+    flexBasis: propWidth,
   }),
-  lastHeader: Object.assign({}, headerCellBase, {
+  descriptionHeader: Object.assign({}, headerCellBase, {
+    flexBasis: descriptionWidth,
     paddingLeft: Spacing.tiny,
     '@media (max-width: 800px)': {
       display: 'none',
     },
   }),
+  body: {
+    overflowY: 'scroll',
+  },
 }
 
 const ThemedProperties = Theme('Properties', defaultTheme)(PropertiesContainer)
