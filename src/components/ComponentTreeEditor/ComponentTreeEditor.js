@@ -32,8 +32,6 @@ type PropsT = {
   theme: Object,
 }
 
-const defaultProps = {}
-
 /**
  * State
  */
@@ -50,10 +48,9 @@ type StateT = {
 class ComponentTreeEditor extends React.Component {
   props: PropsT
   state: StateT
+  blurTimeoutId: ?number
 
-  static defaultProps = defaultProps
-
-  constructor(props) {
+  constructor(props: PropsT) {
     super(props)
     this.state = {
       componentTree: props.tree,
@@ -79,7 +76,9 @@ class ComponentTreeEditor extends React.Component {
       <div {...theme.componentTreeEditor}>
         <ComponentRenderer
           onChangeNode={this.handleChangeNode}
+          onBlur={this.handleBlur}
           onFocus={this.handleFocus}
+          onFocusNext={this.handleFocusNext}
           completionData={completionData}
           componentNode={rootNode}
           componentTree={componentTree}
@@ -89,15 +88,23 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  handleChangeNode = ({
-    nodeId,
-    path,
-    value,
-  }: {
-    nodeId: NodeIdentifierT,
-    path: Array<string> | string,
-    value: string,
-  }) => {
+  focusNode(id) {
+    /**
+     *  If a blur event is immediately followed by a focus event, we cancel the
+     *  blur timeout callback from firing, since it is redundant and can cause
+     *  extra intermediate updates which can cause perceived bugginess in UI.
+     */
+    if (this.blurTimeoutId) {
+      clearTimeout(this.blurTimeoutId)
+    }
+    this.setState({
+      interactionState: {
+        focusedNodeId: id,
+      },
+    })
+  }
+
+  handleChangeNode = ({ nodeId, path, value }) => {
     const { componentTree } = this.state
 
     const modifiedComponentTree = Helpers.setNodeAttribute({
@@ -111,12 +118,72 @@ class ComponentTreeEditor extends React.Component {
     this.setState({ componentTree: modifiedComponentTree })
   }
 
-  handleFocus = id => {
-    this.setState({
-      interactionState: {
-        focusedNodeId: id,
-      },
-    })
+  handleBlur = id => {
+    /**
+     * If the node being blurred is the node being focused then the focused node
+     * should be set to null. If another node has alreadty been focused in the meantime,
+     * as is likely to happen, then do nothing.
+     */
+    this.blurTimeoutId = setTimeout(() => {
+      this.setState(
+        prevState =>
+          prevState.interactionState.focusedNodeId === id
+            ? {
+                interactionState: {
+                  focusedNodeId: null,
+                },
+              }
+            : {}
+      )
+    }, 100)
+    this.blurTimeoutId = null
+  }
+
+  handleFocus = id => this.focusNode(id)
+
+  /**
+   * This determines logically how the user will advance through parts of the ComponentTreeEditor
+   * using keyboard navigation.
+   */
+  handleFocusNext = id => {
+    const { componentTree } = this.state
+    const sourceNode = Helpers.getNodeById(componentTree, id)
+    const sourceNodeType = sourceNode.get('nodeType')
+    if (sourceNodeType === 'prop-value') {
+      /**
+       * Should check if there is another sibling prop. If yes, move to that
+       * prop value. If not, then create an empty sibling prop-value.
+       *
+       * If the current sibling prop-value is already an empty, then move to next target.
+       */
+      const currentPropId = Helpers.getParent(componentTree, id).get('id')
+      const targetProp = Helpers.getNextSibling(componentTree, currentPropId)
+      if (targetProp) {
+        this.focusNode(targetProp.get('id'))
+      } else {
+        // TODO: Createw a new prop and focus it.
+      }
+    }
+    if (sourceNodeType === 'component') {
+      /**
+       * Should move to first prop name if there is one.
+       *
+       * If there isn't it should create a prop and move to that.
+       */
+      const firstProp = sourceNode.get('props').first()
+      if (firstProp) {
+        this.focusNode(firstProp.get('id'))
+      } else {
+        // TODO: Createw a new prop and focus it.
+      }
+    }
+    if (sourceNodeType === 'prop') {
+      /**
+       * Should move to the prop-value corresponding to this prop.
+       */
+      const propValueNode = sourceNode.get('value')
+      this.focusNode(propValueNode.get('id'))
+    }
   }
   //
   // handleRemoveProp = (nodeId: NodeIdentifierT) => {

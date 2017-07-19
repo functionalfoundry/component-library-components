@@ -1,5 +1,5 @@
 /** @flow */
-import React from 'react'
+import React, { PureComponent } from 'react'
 import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
@@ -22,6 +22,7 @@ type Props = {
   onChangeNode: Function,
   onChangePropValue: Function,
   onFocus: Function,
+  onFocusNext: Function,
   theme: Object,
 }
 
@@ -37,6 +38,7 @@ const ComponentRenderer = ({
   onChangeNode,
   onChangePropValue,
   onFocus,
+  onFocusNext,
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
@@ -50,6 +52,7 @@ const ComponentRenderer = ({
           <EditableNodeAttribute
             onChangeNode={onChangeNode}
             onFocus={onFocus}
+            onFocusNext={onFocusNext}
             onBlur={onBlur}
             options={completionData.components}
             nodeId={componentNode.get('id')}
@@ -76,6 +79,7 @@ const ComponentRenderer = ({
             onChangeNode={onChangeNode}
             onChangePropValue={onChangePropValue}
             onFocus={onFocus}
+            onFocusNext={onFocusNext}
             propNode={propNode}
           />
         ))
@@ -95,6 +99,8 @@ const ComponentRenderer = ({
             interactionState={interactionState}
             onChangeNode={onChangeNode}
             onChangePropValue={onChangePropValue}
+            onFocus={onFocus}
+            onFocusNext={onFocusNext}
           />
         ))
         .toArray()}
@@ -110,8 +116,14 @@ const defaultTheme = {
   },
 }
 
+class PureComponentRenderer extends PureComponent {
+  render() {
+    return <ComponentRenderer {...this.props} />
+  }
+}
+
 const ThemedComponentRenderer = Theme('ComponentRenderer', defaultTheme)(
-  ComponentRenderer
+  PureComponentRenderer
 )
 
 export default ThemedComponentRenderer

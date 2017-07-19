@@ -29,7 +29,21 @@ type ContainerPropsT = {
   isFocused: boolean,
   onBlur: Function,
   onChange: Function,
+  /**
+   * Fired when the EditableField is focused from within (not through props),
+   * either through mouse (clicking) or keyboard (tabbing) interactions.
+   */
   onFocus: Function,
+  /**
+   * Fired when user interacts with the EditableField in such a way that should
+   * cause focus to move to the next EditableField in the UI.
+   */
+  onFocusNext: Function,
+  /**
+   * Fired when user interacts with the EditableField in such a way that should
+   * cause focus to move to the previous EditableField in the UI.
+   */
+  onFocusPrevious: Function,
   options?: Array<any>,
   optionRenderer: Function,
   nodeId: string,
@@ -72,6 +86,12 @@ class EditableFieldContainer extends React.Component {
     return true
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.isFocused !== this.props.isFocused) {
+  //     this.setState({ isFocused: nextProps.isFocused })
+  //   }
+  // }
+
   componentDidUpdate(prevProps: ContainerPropsT) {
     if (!prevProps.isFocused && this.props.isFocused && !this.state.isFocused) {
       this.focus()
@@ -95,13 +115,16 @@ class EditableFieldContainer extends React.Component {
     )
   }
 
-  handleSelect = (index: number) => {
-    const { onChange, options } = this.props
+  handleSelect = (index: number, params: Object) => {
+    const { onChange, onFocusNext, options } = this.props
     if (options) {
       this.setState({ isFocused: false })
       onChange && onChange(options[index])
-      this.editableText.refs.wrappedInstance.blur()
     }
+    if (params.type === 'enter' && onFocusNext) {
+      onFocusNext()
+    }
+    this.editableText.refs.wrappedInstance.blur()
   }
 
   handleStartEdit = () => {
