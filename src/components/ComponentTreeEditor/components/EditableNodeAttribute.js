@@ -1,9 +1,11 @@
-import React from 'react'
+/** @flow */
+import React, { PureComponent } from 'react'
 
 import type { InteractionStateT } from '../types'
 import EditableField from './EditableField'
 
 type Props = {
+  focusNextNode: Function,
   /**
    * An optional function to be applied to value before rendering. It is passed `value`
    * and `isFocused` as named parameters.
@@ -15,6 +17,16 @@ type Props = {
   /** A callback for updating*/
   onChangeNode: Function,
   onFocus: Function,
+  /**
+   * Fired to indicate that the "next" node in the ComponentTree should be selected.
+   * Called with the current nodeId as a parameter.
+   */
+  onFocusNext: Function,
+  /**
+   * Fired to indicate that the "previous" node in the ComponentTree should be selected.
+   * Called with the current nodeId as a parameter.
+   */
+  onFocusPrevious: Function,
   options?: Array<any>,
   optionRenderer: Function,
   /** The ID of the componentTree node being modififed */
@@ -25,15 +37,20 @@ type Props = {
   value: string,
 }
 
-class EditableNodeAttribute extends React.Component {
+class EditableNodeAttribute extends PureComponent {
   props: Props
 
   computeIsFocused = ({ interactionState, nodeId }: Props) =>
     interactionState.focusedNodeId === nodeId
 
-  handleChange = value => {
+  handleChange = (value: string) => {
     const { nodeId, onChangeNode, path } = this.props
     onChangeNode({ nodeId, path, value })
+  }
+
+  handleFocusNext = () => {
+    const { nodeId, onFocusNext } = this.props
+    onFocusNext && onFocusNext(nodeId)
   }
 
   render() {
@@ -42,6 +59,7 @@ class EditableNodeAttribute extends React.Component {
         {...this.props}
         isFocused={this.computeIsFocused(this.props)}
         onChange={this.handleChange}
+        onFocusNext={this.handleFocusNext}
       />
     )
   }

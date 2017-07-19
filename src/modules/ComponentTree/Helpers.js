@@ -138,6 +138,9 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
  * Node lookup
  */
 
+/**
+ * Returns path of node with the given ID
+ */
 const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
   const result = traverse(tree, null, (ctx: TraverseContext) => {
     if (ctx.node.id == id) {
@@ -147,6 +150,29 @@ const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePa
     }
   })
   return result.data
+}
+
+/**
+ * Returns node with the given id
+ */
+const getNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path)
+}
+
+const getParent = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path.pop(), null)
+}
+
+/**
+ * Returns the next sibling if it exists, or returns null otherwise.
+ */
+const getNextSibling = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const nodePath = findNodeById(tree, id)
+  const nodeIndex = nodePath.last()
+  const siblingPath = nodePath.pop().push(nodeIndex + 1)
+  return tree.getIn(siblingPath, null)
 }
 
 /**
@@ -375,6 +401,9 @@ export default {
   // Generic tree operations
   traverse,
   findNodeById,
+  getNodeById,
+  getParent,
+  getNextSibling,
   removeNodeById,
   updateNodesAtPath,
   // Higher-level, semantic tree operations

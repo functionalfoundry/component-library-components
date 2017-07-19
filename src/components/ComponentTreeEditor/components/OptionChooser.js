@@ -6,6 +6,7 @@ import { Colors } from '@workflo/styles'
 
 export type Props = {
   options: Array<any>,
+  onKeyboardSelect: Function,
   onSelect: Function,
   optionRenderer?: Function,
   /**
@@ -25,18 +26,27 @@ class PropValueChooser extends React.Component {
     }
   }
 
+  handleClick = index => {
+    this.props.onSelect && this.props.onSelect(index, { type: 'click' })
+  }
+
   handleSelect = index => {
-    this.props.onSelect && this.props.onSelect(index)
+    this.props.onSelect && this.props.onSelect(index, { type: 'enter' })
   }
 
   render() {
     const { optionRenderer, options, theme } = this.props
     return (
-      <List {...theme.list} onMouseDown={this.handleMouseDown}>
+      <List
+        {...theme.list}
+        isKeyboardFocused
+        onMouseDown={this.handleMouseDown}
+        onSelect={this.handleSelect}
+      >
         {options.map((option, index) => (
           <ListItem
             key={index}
-            onClick={() => this.handleSelect(index)}
+            onClick={() => this.handleClick(index)}
             theme={listItemTheme}
           >
             {optionRenderer ? optionRenderer(option, index) : option}
@@ -47,7 +57,7 @@ class PropValueChooser extends React.Component {
   }
 }
 
-const listItemTheme = {
+const listItemTheme = ({ isKeyboardFocused }) => ({
   listItem: {
     ':hover': {
       backgroundColor: Colors.grey800,
@@ -55,9 +65,10 @@ const listItemTheme = {
     ':active': {
       backgroundColor: Colors.grey700,
     },
+    backgroundColor: isKeyboardFocused ? Colors.grey800 : Colors.grey900,
     cursor: 'pointer',
   },
-}
+})
 
 const defaultTheme = {
   list: {
