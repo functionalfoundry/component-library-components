@@ -1,5 +1,5 @@
 /** @flow */
-import React from 'react'
+import React, { PureComponent } from 'react'
 import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
@@ -40,6 +40,7 @@ type Props = {
   onBlur: Function,
   onChangeNode: Function,
   onFocus: Function,
+  onFocusNext: Function,
   propNode: Prop,
   indentLevel: number,
   interactionState: InteractionStateT,
@@ -55,6 +56,7 @@ const PropRenderer = ({
   onBlur,
   onChangeNode,
   onFocus,
+  onFocusNext,
   propNode,
   theme,
 }: Props) => {
@@ -74,6 +76,7 @@ const PropRenderer = ({
             onBlur={onBlur}
             onChangeNode={onChangeNode}
             onFocus={onFocus}
+            onFocusNext={onFocusNext}
             options={Object.keys(completionData.props[componentName] || {})}
             nodeId={propNode.get('id')}
             path="name"
@@ -87,6 +90,7 @@ const PropRenderer = ({
           onBlur={onBlur}
           onChangeNode={onChangeNode}
           onFocus={onFocus}
+          onFocusNext={onFocusNext}
           options={propValueOptions.map(option => option.value)}
           nodeId={propValue.get('id')}
           path="value"
@@ -103,4 +107,10 @@ const defaultTheme = {
   },
 }
 
-export default Theme('PropRenderer', defaultTheme)(PropRenderer)
+class PurePropRenderer extends PureComponent {
+  render() {
+    return <PropRenderer {...this.props} />
+  }
+}
+
+export default Theme('PropRenderer', defaultTheme)(PurePropRenderer)

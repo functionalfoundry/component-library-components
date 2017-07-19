@@ -59,8 +59,10 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-title-prop',
         name: 'title',
+        nodeType: 'prop',
         value: PropValue({
           id: 'list-title-prop-value',
+          nodeType: 'prop-value',
           value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
@@ -68,15 +70,22 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({ id: 'list-width-prop-value', value: '10' }),
+        nodeType: 'prop',
+        value: PropValue({
+          id: 'list-width-prop-value',
+          nodeType: 'prop-value',
+          value: '10',
+        }),
       }),
       Prop({
         id: 'list-on-select-prop',
         name: 'onSelect',
+        nodeType: 'prop',
         value: PropValue({
           id: 'list-on-select-prop-value',
-          value: 'handleSelect',
+          nodeType: 'prop-value',
           type: 'function',
+          value: 'handleSelect',
         }),
       }),
     ]),
@@ -88,7 +97,11 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
-            value: PropValue({ value: '0', type: 'string' }),
+            value: PropValue({
+              id: 'list-item-1-key-prop-value',
+              type: 'string',
+              value: '0',
+            }),
           }),
         ]),
         text: 'First list item',
@@ -100,7 +113,11 @@ const regularTree = ComponentTree({
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
-            value: PropValue({ value: '1', type: 'string' }),
+            value: PropValue({
+              id: 'list-item-2-key-prop-value',
+              value: '1',
+              type: 'string',
+            }),
           }),
         ]),
         text: 'Second list item',
