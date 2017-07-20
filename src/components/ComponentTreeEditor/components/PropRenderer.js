@@ -61,6 +61,7 @@ const PropRenderer = ({
   onFocusPrevious,
   propNode,
   theme,
+  ...restProps
 }: Props) => {
   const propValue = propNode.get('value')
   const propName = propNode.get('name')
@@ -71,7 +72,7 @@ const PropRenderer = ({
     componentNode,
   })
   return propValue || propName
-    ? <Line indentLevel={indentLevel}>
+    ? <Line {...restProps} indentLevel={indentLevel}>
         <span {...theme.propName}>
           <EditableNodeAttribute
             interactionState={interactionState}

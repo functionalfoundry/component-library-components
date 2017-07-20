@@ -19,23 +19,26 @@ type Props = {
   componentTree: ComponentTree,
   indentLevel: number,
   interactionState: InteractionStateT,
+  isHovered: boolean,
   onBlur: Function,
   onChangeNode: Function,
   onChangePropValue: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
+  onMouseEnter: Function,
+  onMouseLeave: Function,
   theme: Object,
 }
 
 const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
 
-const renderStartTagEnding = ({ componentNode }: any) => {
+const renderStartTagEnding = ({ componentNode, isHovered }: any) => {
   const childComponents = componentNode.get('children')
   return (
     <span>
       {getStartTagClosingCharacters(childComponents)}
-      <AddNodeButton />
+      <AddNodeButton isVisible={isHovered} />
     </span>
   )
 }
@@ -46,12 +49,15 @@ const ComponentRenderer = ({
   componentTree,
   indentLevel = 0,
   interactionState,
+  isHovered,
   onBlur,
   onChangeNode,
   onChangePropValue,
   onFocus,
   onFocusNext,
   onFocusPrevious,
+  onMouseEnter,
+  onMouseLeave,
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
@@ -59,7 +65,11 @@ const ComponentRenderer = ({
   const childComponents = componentNode.get('children')
   return (
     <div>
-      <Line indentLevel={indentLevel}>
+      <Line
+        indentLevel={indentLevel}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
         {'<'}
         <span {...theme.componentName}>
           <EditableNodeAttribute
@@ -75,7 +85,8 @@ const ComponentRenderer = ({
             value={componentName}
           />
         </span>
-        {componentProps.count() === 0 && renderStartTagEnding({ componentNode })}
+        {componentProps.count() === 0 &&
+          renderStartTagEnding({ componentNode, isHovered })}
         <span>&nbsp;</span>
       </Line>
       {componentProps
@@ -93,13 +104,19 @@ const ComponentRenderer = ({
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             propNode={propNode}
           />
         ))
         .toArray()}
       {componentProps.count() > 0 &&
-        <Line indentLevel={indentLevel}>
-          {renderStartTagEnding({ componentNode })}
+        <Line
+          indentLevel={indentLevel}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {renderStartTagEnding({ componentNode, isHovered })}
         </Line>}
       {childComponents
         .map((childComponent, index) => (
@@ -132,14 +149,31 @@ const defaultTheme = {
   },
 }
 
-class PureComponentRenderer extends PureComponent {
+class ComponentRendererContainer extends PureComponent {
+  props: any
+  state: any
+  constructor(props: any) {
+    super(props)
+    this.state = {
+      isHovered: false,
+    }
+  }
+  handleMouseEnter = () => this.setState({ isHovered: true })
+  handleMouseLeave = () => this.setState({ isHovered: false })
   render() {
-    return <ComponentRenderer {...this.props} />
+    return (
+      <ComponentRenderer
+        {...this.props}
+        isHovered={this.state.isHovered}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      />
+    )
   }
 }
 
 const ThemedComponentRenderer = Theme('ComponentRenderer', defaultTheme)(
-  PureComponentRenderer
+  ComponentRendererContainer
 )
 
 export default ThemedComponentRenderer
