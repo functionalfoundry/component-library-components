@@ -8,6 +8,8 @@ import type { CompletionDataT } from '../../types/Completion'
 import {
   type ComponentTree,
   Helpers,
+  Prop,
+  PropValue,
   type NodeIdentifierT,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
@@ -118,7 +120,7 @@ class ComponentTreeEditor extends React.Component {
     this.setState({ componentTree: modifiedComponentTree })
   }
 
-  handleBlur = id => {
+  handleBlur = (id: NodeIdentifierT) => {
     /**
      * If the node being blurred is the node being focused then the focused node
      * should be set to null. If another node has alreadty been focused in the meantime,
@@ -139,15 +141,16 @@ class ComponentTreeEditor extends React.Component {
     this.blurTimeoutId = null
   }
 
-  handleFocus = id => this.focusNode(id)
+  handleFocus = (id: NodeIdentifierT) => this.focusNode(id)
 
   /**
    * This determines logically how the user will advance through parts of the ComponentTreeEditor
    * using keyboard navigation.
    */
-  handleFocusNext = id => {
+  handleFocusNext = (id: NodeIdentifierT) => {
     const { componentTree } = this.state
     const sourceNode = Helpers.getNodeById(componentTree, id)
+    const sourceNodePath = Helpers.findNodeById(componentTree, id)
     const sourceNodeType = sourceNode.get('nodeType')
     if (sourceNodeType === 'prop-value') {
       /**
@@ -161,7 +164,23 @@ class ComponentTreeEditor extends React.Component {
       if (targetProp) {
         this.focusNode(targetProp.get('id'))
       } else {
-        // TODO: Createw a new prop and focus it.
+        const componentNode = componentTree.getIn(sourceNodePath.pop().pop().pop())
+        const propCount = componentNode.get('props').count()
+        const componentNodeId = componentNode.get('id')
+        const newPropId = `new-prop-${propCount}`
+        const emptyProp = Prop({
+          id: newPropId,
+          name: '',
+          value: PropValue({ id: `${newPropId}-value`, value: '' }),
+        })
+        const modifiedTree = Helpers.insertProp(componentTree, componentNodeId, emptyProp)
+        /** Add the new prop to the tree, and then focus it */
+        this.setState(
+          prevState => ({ componentTree: modifiedTree }),
+          () => {
+            this.focusNode(newPropId)
+          }
+        )
       }
     }
     if (sourceNodeType === 'component') {
@@ -174,7 +193,23 @@ class ComponentTreeEditor extends React.Component {
       if (firstProp) {
         this.focusNode(firstProp.get('id'))
       } else {
-        // TODO: Createw a new prop and focus it.
+        const componentNode = sourceNode
+        const propCount = componentNode.get('props').count()
+        const componentNodeId = componentNode.get('id')
+        const newPropId = `new-prop-${propCount}`
+        const emptyProp = Prop({
+          id: newPropId,
+          name: '',
+          value: PropValue({ id: `${newPropId}-value`, value: '' }),
+        })
+        const modifiedTree = Helpers.insertProp(componentTree, componentNodeId, emptyProp)
+        /** Add the new prop to the tree, and then focus it */
+        this.setState(
+          prevState => ({ componentTree: modifiedTree }),
+          () => {
+            this.focusNode(newPropId)
+          }
+        )
       }
     }
     if (sourceNodeType === 'prop') {
