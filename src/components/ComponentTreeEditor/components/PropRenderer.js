@@ -41,6 +41,7 @@ type Props = {
   onChangeNode: Function,
   onFocus: Function,
   onFocusNext: Function,
+  onFocusPrevious: Function,
   propNode: Prop,
   indentLevel: number,
   interactionState: InteractionStateT,
@@ -57,6 +58,7 @@ const PropRenderer = ({
   onChangeNode,
   onFocus,
   onFocusNext,
+  onFocusPrevious,
   propNode,
   theme,
 }: Props) => {
@@ -77,6 +79,7 @@ const PropRenderer = ({
             onChangeNode={onChangeNode}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
+            onFocusPrevious={onFocusPrevious}
             options={Object.keys(completionData.props[componentName] || {})}
             nodeId={propNode.get('id')}
             path="name"
@@ -91,6 +94,7 @@ const PropRenderer = ({
           onChangeNode={onChangeNode}
           onFocus={onFocus}
           onFocusNext={onFocusNext}
+          onFocusPrevious={onFocusPrevious}
           options={propValueOptions.map(option => option.value)}
           nodeId={propValue.get('id')}
           path="value"
