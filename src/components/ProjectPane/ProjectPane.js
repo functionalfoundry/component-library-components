@@ -32,48 +32,53 @@ const ProjectPane = ({
   onSelectBranch,
   branches,
   selectedBranchId,
-}: PropsT) => (
-  <div>
-    <RepoDropdown
-      repos={repos}
-      selectedRepoId={selectedRepoId}
-      onClickRepoGithub={onClickRepoGithub}
-      onSelectRepo={onSelectRepo}
-    />
-    <div
-      style={{
-        marginTop: 4,
-        marginLeft: 30,
-      }}
-    >
-      <InfoTable>
-        <InfoTableRow
-          title="Branch"
-          info={
-            <BranchDropdown
-              branches={branches}
-              selectedBranchId={selectedBranchId}
-              onSelectBranch={onSelectBranch}
-            />
-          }
-        />
-        <InfoTableRow
-          title="Status"
-          info={
-            <div style={{ marginLeft: 8 }}>
-              <BranchStatus
-                status={getCurrentBranch(branches, selectedBranchId).status}
-                onIconClick={
-                  getCurrentBranch(branches, selectedBranchId).onStatusIconClick
-                }
+}: PropsT) => {
+  const selectedBranch = getCurrentBranch(branches, selectedBranchId)
+
+  return (
+    <div>
+      <RepoDropdown
+        repos={repos}
+        selectedRepoId={selectedRepoId}
+        onClickRepoGithub={onClickRepoGithub}
+        onSelectRepo={onSelectRepo}
+      />
+      <div
+        style={{
+          marginTop: 4,
+          marginLeft: 30,
+        }}
+      >
+        <InfoTable>
+          <InfoTableRow
+            title="Branch"
+            info={
+              <BranchDropdown
+                branches={branches}
+                selectedBranchId={selectedBranchId}
+                onSelectBranch={onSelectBranch}
               />
-            </div>
-          }
-        />
-      </InfoTable>
+            }
+          />
+          <InfoTableRow
+            title="Status"
+            info={
+              <div style={{ marginLeft: 8 }}>
+                <BranchStatus
+                  status={selectedBranch.status}
+                  onIconClick={
+                    getCurrentBranch(branches, selectedBranchId).onStatusIconClick
+                  }
+                  error={selectedBranch.error}
+                />
+              </div>
+            }
+          />
+        </InfoTable>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 const getCurrentBranch = (branches, selectedBranchId) =>
   branches.find(branch => branch.id === selectedBranchId) || {}

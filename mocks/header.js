@@ -22,8 +22,9 @@ export const branches = [
   {
     id: 1,
     name: 'master',
-    status: 'Success',
+    status: 'Failed',
     onStatusIconClick: () => action('onStatusIconClick')(),
+    error: 'Showing an error',
   },
   {
     id: 2,
