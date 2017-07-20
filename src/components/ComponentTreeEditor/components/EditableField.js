@@ -115,6 +115,16 @@ class EditableFieldContainer extends React.Component {
     )
   }
 
+  handleKeyDown = event => {
+    const { onFocusPrevious, value } = this.props
+    if (event.keyCode === 46 || event.keyCode === 8) {
+      /** This allows the user to repeatedly hit delete to clear fields */
+      if (value === '') {
+        onFocusPrevious()
+      }
+    }
+  }
+
   handleSelect = (index: number, params: Object) => {
     const { onChange, onFocusNext, options } = this.props
     if (options) {
@@ -147,7 +157,7 @@ class EditableFieldContainer extends React.Component {
     const { formatValue, onChange, options, optionRenderer, value } = this.props
     const { isFocused } = this.state
     return (
-      <span ref={this.saveRefToContainer}>
+      <span ref={this.saveRefToContainer} onKeyDown={this.handleKeyDown}>
         <EditableField
           editableTextRef={this.saveRefToEditableText}
           onChange={onChange}

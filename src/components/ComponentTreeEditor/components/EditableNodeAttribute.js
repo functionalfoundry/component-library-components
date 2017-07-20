@@ -53,6 +53,11 @@ class EditableNodeAttribute extends PureComponent {
     onFocusNext && onFocusNext(nodeId)
   }
 
+  handleFocusPrevious = () => {
+    const { nodeId, onFocusPrevious } = this.props
+    onFocusPrevious && onFocusPrevious(nodeId)
+  }
+
   render() {
     return (
       <EditableField
@@ -60,6 +65,7 @@ class EditableNodeAttribute extends PureComponent {
         isFocused={this.computeIsFocused(this.props)}
         onChange={this.handleChange}
         onFocusNext={this.handleFocusNext}
+        onFocusPrevious={this.handleFocusPrevious}
       />
     )
   }
