@@ -16,8 +16,10 @@ type Props = {
   indentLevel: number,
   theme: Object,
 }
-const Line = ({ children, indentLevel = 0, theme }: Props) => (
-  <div {...theme.line}><span>{getIndentSpacing(indentLevel)}</span>{children}</div>
+const Line = ({ children, indentLevel = 0, theme, ...props }: Props) => (
+  <div {...theme.line} {...props}>
+    <span>{getIndentSpacing(indentLevel)}</span>{children}
+  </div>
 )
 
 const defaultTheme = ({ indentLevel }) => ({
