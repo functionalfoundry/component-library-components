@@ -1,5 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
+import { Fonts } from '@workflo/styles'
 
 type PropsT = {
   error: string,
@@ -13,6 +14,7 @@ const PopoverError = ({ error, theme }: PropsT) => {
 
 const defaultTheme = {
   panelHeader: {
+    ...Fonts.code,
     maxWidth: 500,
     maxHeight: 200,
     whiteSpace: 'pre',
