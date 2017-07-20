@@ -15,6 +15,7 @@ const PopoverError = ({ error, theme }: PropsT) => {
 const defaultTheme = {
   panelHeader: {
     ...Fonts.code,
+    fontSize: 13,
     maxWidth: 500,
     maxHeight: 200,
     whiteSpace: 'pre',
