@@ -10,6 +10,12 @@ import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
  * ComponentTree implementation
  */
 
+/**
+ * Path used for getting and setting nested children in ComponentTree
+ */
+const Path = List
+export { Path }
+
 // PropValue
 
 const defaultPropValue: PropValueT = {
