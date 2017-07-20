@@ -8,12 +8,12 @@ import type { CompletionDataT } from '../../types/Completion'
 import {
   type ComponentTree,
   Helpers,
-  Prop,
-  PropValue,
   type NodeIdentifierT,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
+import generateTraversalMap from './utils/generateTraversalMap'
+import createEmptyProp from './utils/createEmptyProp'
 
 /**
  * Props
@@ -149,75 +149,35 @@ class ComponentTreeEditor extends React.Component {
    */
   handleFocusNext = (id: NodeIdentifierT) => {
     const { componentTree } = this.state
-    const sourceNode = Helpers.getNodeById(componentTree, id)
-    const sourceNodePath = Helpers.findNodeById(componentTree, id)
-    const sourceNodeType = sourceNode.get('nodeType')
-    if (sourceNodeType === 'prop-value') {
-      /**
-       * Should check if there is another sibling prop. If yes, move to that
-       * prop value. If not, then create an empty sibling prop-value.
-       *
-       * If the current sibling prop-value is already an empty, then move to next target.
-       */
-      const currentPropId = Helpers.getParent(componentTree, id).get('id')
-      const targetProp = Helpers.getNextSibling(componentTree, currentPropId)
-      if (targetProp) {
-        this.focusNode(targetProp.get('id'))
-      } else {
-        const componentNode = componentTree.getIn(sourceNodePath.pop().pop().pop())
-        const propCount = componentNode.get('props').count()
-        const componentNodeId = componentNode.get('id')
-        const newPropId = `new-prop-${propCount}`
-        const emptyProp = Prop({
-          id: newPropId,
-          name: '',
-          value: PropValue({ id: `${newPropId}-value`, value: '' }),
-        })
-        const modifiedTree = Helpers.insertProp(componentTree, componentNodeId, emptyProp)
-        /** Add the new prop to the tree, and then focus it */
-        this.setState(
-          prevState => ({ componentTree: modifiedTree }),
-          () => {
-            this.focusNode(newPropId)
-          }
-        )
-      }
+    const path = Helpers.findNodeById(componentTree, id)
+    const traversalMap = generateTraversalMap(componentTree)
+    const currentNode = traversalMap.get(path)
+    const nextPath = currentNode.next
+    const nextNode = nextPath ? componentTree.getIn(nextPath, null) : null
+
+    /**
+     * If there is a nextPath in the traversal map and that node exists in the
+     * componentTree, then focus that node.
+     */
+    if (nextPath && nextNode) {
+      this.focusNode(nextNode.id)
     }
-    if (sourceNodeType === 'component') {
-      /**
-       * Should move to first prop name if there is one.
-       *
-       * If there isn't it should create a prop and move to that.
-       */
-      const firstProp = sourceNode.get('props').first()
-      if (firstProp) {
-        this.focusNode(firstProp.get('id'))
-      } else {
-        const componentNode = sourceNode
-        const propCount = componentNode.get('props').count()
-        const componentNodeId = componentNode.get('id')
-        const newPropId = `new-prop-${propCount}`
-        const emptyProp = Prop({
-          id: newPropId,
-          name: '',
-          value: PropValue({ id: `${newPropId}-value`, value: '' }),
-        })
-        const modifiedTree = Helpers.insertProp(componentTree, componentNodeId, emptyProp)
-        /** Add the new prop to the tree, and then focus it */
-        this.setState(
-          prevState => ({ componentTree: modifiedTree }),
-          () => {
-            this.focusNode(newPropId)
-          }
-        )
-      }
-    }
-    if (sourceNodeType === 'prop') {
-      /**
-       * Should move to the prop-value corresponding to this prop.
-       */
-      const propValueNode = sourceNode.get('value')
-      this.focusNode(propValueNode.get('id'))
+
+    /**
+     * If there is a nextPath in the traversal map and that node exists in the
+     * componentTree, then first create the node, then focus it.
+     */
+    if (nextPath && !nextNode) {
+      const newProp = createEmptyProp()
+      this.setState(
+        prevState => ({
+          componentTree: componentTree.setIn(nextPath, newProp),
+        }),
+        () => {
+          /** Only after the node has been created do we focus it */
+          this.focusNode(newProp.id)
+        }
+      )
     }
   }
   //
