@@ -68,7 +68,7 @@ const PropRenderer = ({
     propNode,
     componentNode,
   })
-  return propValue && propName
+  return propValue || propName
     ? <Line indentLevel={indentLevel}>
         <span {...theme.propName}>
           <EditableNodeAttribute
