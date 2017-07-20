@@ -9,6 +9,7 @@ import OptionChooser from './OptionChooser'
 type ContainerPropsT = {
   isFocused: boolean,
   isVisible: boolean,
+  theme: Object,
 }
 
 type ContainerStateT = {
@@ -48,8 +49,10 @@ class AddNodeButtonContainer extends React.Component {
   storeContainer = ref => this.setState({ container: ref })
 
   render() {
+    const { theme } = this.props
     return (
       <span
+        {...theme.container}
         ref={this.storeContainer}
         onBlur={this.handleBlur}
         onClick={this.handleClick}
@@ -116,6 +119,14 @@ const defaultTheme = {
   },
 }
 
+const containerDefaultTheme = ({ isVisible }) => ({
+  container: {
+    visibility: isVisible ? 'visible' : 'hidden',
+  },
+})
+
 const ThemedAddNodeButton = Theme('AddNodeButton', defaultTheme)(AddNodeButton)
 
-export default AddNodeButtonContainer
+export default Theme('AddNodeButtonContainer', containerDefaultTheme)(
+  AddNodeButtonContainer
+)
