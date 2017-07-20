@@ -3,7 +3,7 @@ import { List, Map, Record } from 'immutable'
 
 const TraversalMapNode = Record({ previous: null, next: null })
 
-type TraversalMap = Map<Path, TraversalMapNode>
+export type TraversalMapT = Map<Path, TraversalMapNode>
 
 /**
  * Generates a TraversalMap used for looking up a node in the componentTree, and finding
@@ -15,7 +15,7 @@ type TraversalMap = Map<Path, TraversalMapNode>
  * **Also** Includes nodes with Path's that do not exist in the original componentTree,
  * which represents new nodes that should be created as a result of the keyboard traversal.
  */
-const generateTraversalMap = (componentTree: ComponentTree): TraversalMap => {
+const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
   const traversalResult = Helpers.traverse(componentTree, List(), (ctx, type) => {
     if (type !== 'post') {
       const data = ctx.data.push({ path: ctx.path, type: ctx.node.nodeType })

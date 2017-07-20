@@ -23,6 +23,7 @@ type Props = {
   onChangePropValue: Function,
   onFocus: Function,
   onFocusNext: Function,
+  onFocusPrevious: Function,
   theme: Object,
 }
 
@@ -39,6 +40,7 @@ const ComponentRenderer = ({
   onChangePropValue,
   onFocus,
   onFocusNext,
+  onFocusPrevious,
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
@@ -53,6 +55,7 @@ const ComponentRenderer = ({
             onChangeNode={onChangeNode}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
+            onFocusPrevious={onFocusPrevious}
             onBlur={onBlur}
             options={completionData.components}
             nodeId={componentNode.get('id')}
@@ -80,6 +83,7 @@ const ComponentRenderer = ({
             onChangePropValue={onChangePropValue}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
+            onFocusPrevious={onFocusPrevious}
             propNode={propNode}
           />
         ))
@@ -101,6 +105,7 @@ const ComponentRenderer = ({
             onChangePropValue={onChangePropValue}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
+            onFocusPrevious={onFocusPrevious}
           />
         ))
         .toArray()}

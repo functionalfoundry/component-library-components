@@ -9,10 +9,11 @@ import {
   type ComponentTree,
   Helpers,
   type NodeIdentifierT,
+  Path,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
-import generateTraversalMap from './utils/generateTraversalMap'
+import generateTraversalMap, { type TraversalMapT } from './utils/generateTraversalMap'
 import createEmptyProp from './utils/createEmptyProp'
 
 /**
@@ -41,6 +42,7 @@ type PropsT = {
 type StateT = {
   componentTree: ComponentTree,
   interactionState: InteractionStateT,
+  traversalMap: TraversalMapT,
 }
 
 /**
@@ -53,18 +55,21 @@ class ComponentTreeEditor extends React.Component {
   blurTimeoutId: ?number
 
   constructor(props: PropsT) {
+    const { tree } = props
     super(props)
     this.state = {
-      componentTree: props.tree,
+      componentTree: tree,
       interactionState: {
         focusedNodeId: null,
       },
+      traversalMap: generateTraversalMap(tree),
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.tree !== this.props.tree) {
-      this.setState({ componentTree: nextProps.tree })
+    const { tree } = nextProps
+    if (tree !== this.props.tree) {
+      this.setState({ componentTree: tree, traversalMap: generateTraversalMap(tree) })
     }
   }
 
@@ -81,6 +86,7 @@ class ComponentTreeEditor extends React.Component {
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
+          onFocusPrevious={this.handleFocusPrevious}
           completionData={completionData}
           componentNode={rootNode}
           componentTree={componentTree}
@@ -90,7 +96,10 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  focusNode(id) {
+  focusNode(path: Path) {
+    const { componentTree } = this.state
+    const targetNode = componentTree.getIn(path, null)
+
     /**
      *  If a blur event is immediately followed by a focus event, we cancel the
      *  blur timeout callback from firing, since it is redundant and can cause
@@ -99,11 +108,30 @@ class ComponentTreeEditor extends React.Component {
     if (this.blurTimeoutId) {
       clearTimeout(this.blurTimeoutId)
     }
-    this.setState({
-      interactionState: {
-        focusedNodeId: id,
-      },
-    })
+
+    /** If the targetNode exists we focus it, otherwise we must create it first */
+    if (targetNode) {
+      this.setState({
+        interactionState: {
+          focusedNodeId: targetNode.id,
+        },
+      })
+    } else {
+      const emptyProp = createEmptyProp()
+      this.setState(
+        prevState => ({
+          componentTree: componentTree.setIn(path, emptyProp),
+        }),
+        () => {
+          /** Only after the node has been created do we focus it */
+          this.setState({
+            interactionState: {
+              focusedNodeId: emptyProp.id,
+            },
+          })
+        }
+      )
+    }
   }
 
   handleChangeNode = ({ nodeId, path, value }) => {
@@ -117,7 +145,10 @@ class ComponentTreeEditor extends React.Component {
     })
 
     this.props.onChange && this.props.onChange(modifiedComponentTree)
-    this.setState({ componentTree: modifiedComponentTree })
+    this.setState({
+      componentTree: modifiedComponentTree,
+      traversalMap: generateTraversalMap(modifiedComponentTree),
+    })
   }
 
   handleBlur = (id: NodeIdentifierT) => {
@@ -141,43 +172,40 @@ class ComponentTreeEditor extends React.Component {
     this.blurTimeoutId = null
   }
 
-  handleFocus = (id: NodeIdentifierT) => this.focusNode(id)
+  handleFocus = (id: NodeIdentifierT) => {
+    const path = Helpers.findNodeById(id)
+    if (path) {
+      this.focusNode(path)
+    }
+  }
 
   /**
-   * This determines logically how the user will advance through parts of the ComponentTreeEditor
-   * using keyboard navigation.
+   * Handles traversing forwards in the editor via keyboard navigation.
    */
   handleFocusNext = (id: NodeIdentifierT) => {
-    const { componentTree } = this.state
+    const { componentTree, traversalMap } = this.state
     const path = Helpers.findNodeById(componentTree, id)
-    const traversalMap = generateTraversalMap(componentTree)
     const currentNode = traversalMap.get(path)
-    const nextPath = currentNode.next
-    const nextNode = nextPath ? componentTree.getIn(nextPath, null) : null
+    const nextPath = currentNode && currentNode.next
 
-    /**
-     * If there is a nextPath in the traversal map and that node exists in the
-     * componentTree, then focus that node.
-     */
-    if (nextPath && nextNode) {
-      this.focusNode(nextNode.id)
+    /** If there is a next node in the traversalMap then we focus that node */
+    if (nextPath) {
+      this.focusNode(nextPath)
     }
+  }
 
-    /**
-     * If there is a nextPath in the traversal map and that node exists in the
-     * componentTree, then first create the node, then focus it.
-     */
-    if (nextPath && !nextNode) {
-      const newProp = createEmptyProp()
-      this.setState(
-        prevState => ({
-          componentTree: componentTree.setIn(nextPath, newProp),
-        }),
-        () => {
-          /** Only after the node has been created do we focus it */
-          this.focusNode(newProp.id)
-        }
-      )
+  /**
+   * Handles traversing backwards in the editor via keyboard navigation.
+   */
+  handleFocusPrevious = (id: NodeIdentifierT) => {
+    const { componentTree, traversalMap } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    const currentNode = traversalMap.get(path)
+    const previousPath = currentNode && currentNode.previous
+
+    /** If there is a next node in the traversalMap then we focus that node */
+    if (previousPath) {
+      this.focusNode(previousPath)
     }
   }
   //
