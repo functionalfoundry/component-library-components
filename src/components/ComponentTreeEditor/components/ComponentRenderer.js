@@ -8,6 +8,7 @@ import type { Component, ComponentTree } from '../../../modules/ComponentTree'
 import type { CompletionDataT } from '../../../types/Completion'
 import type { InteractionStateT } from '../types'
 
+import AddNodeButton from './AddNodeButton'
 import PropRenderer from './PropRenderer'
 import Line from './Line'
 import EditableNodeAttribute from './EditableNodeAttribute'
@@ -28,6 +29,16 @@ type Props = {
 }
 
 const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
+
+const renderStartTagEnding = ({ componentNode }: any) => {
+  const childComponents = componentNode.get('children')
+  return (
+    <span>
+      {getStartTagClosingCharacters(childComponents)}
+      <AddNodeButton />
+    </span>
+  )
+}
 
 const ComponentRenderer = ({
   completionData,
@@ -64,9 +75,7 @@ const ComponentRenderer = ({
             value={componentName}
           />
         </span>
-        {componentProps.count() === 0
-          ? getStartTagClosingCharacters(childComponents)
-          : ''}
+        {componentProps.count() === 0 && renderStartTagEnding({ componentNode })}
         <span>&nbsp;</span>
       </Line>
       {componentProps
@@ -90,7 +99,7 @@ const ComponentRenderer = ({
         .toArray()}
       {componentProps.count() > 0 &&
         <Line indentLevel={indentLevel}>
-          {getStartTagClosingCharacters(childComponents)}
+          {renderStartTagEnding({ componentNode })}
         </Line>}
       {childComponents
         .map((childComponent, index) => (
@@ -110,7 +119,9 @@ const ComponentRenderer = ({
         ))
         .toArray()}
       {childComponents.count() > 0 &&
-        <Line>{'<'}<span {...theme.componentName}>{componentName}</span>{'/>'}</Line>}
+        <Line>
+          {'<'}<span {...theme.componentName}>{componentName}</span>{'/>'}
+        </Line>}
     </div>
   )
 }
