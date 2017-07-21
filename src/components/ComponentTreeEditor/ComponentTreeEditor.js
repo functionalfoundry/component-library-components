@@ -293,9 +293,15 @@ class ComponentTreeEditor extends React.Component {
     }
 
     if (newNode) {
-      this.setState({
-        componentTree: modifiedTree,
-      })
+      const newPath = Helpers.findNodeById(modifiedTree, newNode.id)
+      this.setState(
+        {
+          componentTree: modifiedTree,
+        },
+        () => {
+          this.focusNode(newPath)
+        }
+      )
     }
   }
   //
