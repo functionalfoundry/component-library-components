@@ -1,5 +1,6 @@
 /** @flow */
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 
 import { storiesOf, action } from '@kadira/storybook'
@@ -19,6 +20,7 @@ import QuickActionButton from '../QuickActionButton'
 import PanelHeader from '../PanelHeader'
 import {
   componentTree,
+  components,
   // propKeyValues,
   dataCode,
   actionsCode,
@@ -26,6 +28,10 @@ import {
 import { branches, breadCrumbPath, repos } from '../../../mocks/header'
 import { liveViewState } from '../../../mocks/live-view'
 import { stateCards } from '../../../mocks/componentStates'
+import LiveCanvas from '../LiveCanvas'
+import Components from '../Components'
+import { BADGE_URL, LOADER_URL, rawExampleTree } from '../Frame/Frame.story'
+import LivePreview from '../LivePreview'
 
 const header = (
   <ComponentLibraryHeader
@@ -33,7 +39,6 @@ const header = (
     selectedBranchId={1}
     selectedRepoId={1}
     quickActions={[
-      <QuickActionSelection numberSelected={10} onDeselect={action('onDeselect')} />,
       <QuickActionButton icon="delete" label="Delete" onClick={action('onClick')} />,
       <QuickActionButton
         icon="duplicate"
@@ -143,6 +148,111 @@ const scrollableContentTheme = {
   },
 }
 
+class LiveCanvasContainer extends React.Component {
+  constructor(props) {
+    super()
+    this.state = {
+      bundle: '',
+      zoom: props.zoom,
+    }
+  }
+
+  handleChangeZoom = zoom => {
+    this.setState(() => ({
+      zoom,
+    }))
+  }
+
+  render() {
+    const { bundle, zoom, panX, panY } = this.state
+
+    return (
+      <LiveCanvas
+        zoom={zoom}
+        onChangeZoom={this.handleChangeZoom}
+        panX={panX}
+        panY={panY}
+      >
+        <Components components={components} />
+      </LiveCanvas>
+    )
+  }
+}
+
+class FetchAndRender extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      badge: null,
+      loader: null,
+      zoom: 100,
+    }
+  }
+
+  handleChangeZoom = zoom => {
+    this.setState(() => ({
+      zoom,
+    }))
+  }
+
+  fetchBadge = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ badge: xhr.responseText })
+      }
+    }
+    xhr.open('GET', BADGE_URL, true)
+    xhr.send()
+  }
+
+  fetchLoader = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ loader: xhr.responseText })
+      }
+    }
+    xhr.open('GET', LOADER_URL, true)
+    xhr.send()
+  }
+
+  componentWillMount() {
+    this.fetchBadge()
+    this.fetchLoader()
+  }
+
+  render() {
+    const { badge, loader, zoom } = this.state
+    const { error } = this.props
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <LivePreview
+          name="frame-1"
+          tree={rawExampleTree}
+          bundles={{ badge, loader }}
+          React={React}
+          ReactDOM={ReactDOM}
+          alignment={{
+            horizontal: 'Center',
+            vertical: 'Center',
+          }}
+          backgroundColor="cyan"
+          zoom={zoom}
+          onChangeZoom={this.handleChangeZoom}
+          error={error}
+        />
+      </div>
+    )
+  }
+}
+
 storiesOf('AppShell', module)
   .add('ComponentsGrid', () => (
     <AppShell
@@ -161,5 +271,13 @@ storiesOf('AppShell', module)
     />
   ))
   .add('LiveView', () => (
-    <AppShell sections={{ bottomPanel, header, leftPanel, rightPanel }} />
+    <AppShell
+      sections={{
+        bottomPanel,
+        header,
+        leftNav,
+        content: <FetchAndRender />,
+        rightPanel,
+      }}
+    />
   ))

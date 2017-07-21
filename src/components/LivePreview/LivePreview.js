@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 import { View } from '@workflo/components'
-import { Spacing } from '@workflo/styles'
+import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
 import Frame from '../Frame'
@@ -21,23 +21,29 @@ type ErrorT = {
 }
 
 type PropsT = {
-  /** * A raw component tree */
+  /** A raw component tree */
   tree: Object,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
-  /* The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
+  /** The user-specified pixel width of the contianer that is then scaled */
+  containerWidth: number,
+  /** The user-specified pixel height of the contianer that is then scaled */
+  containerHeight: number,
+  /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
   React?: any,
-  /* The ReactDOM object to use inside the iFrame */
+  /** The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
-  /* A unique ID for the iFrame */
+  /** A unique ID for the iFrame */
   name: string,
-  /* The background color for the harness */
+  /** The background color for the harness */
   backgroundColor: string,
+  /** Less than 100 means shrink more than 100 means zoom in */
   zoom: number,
+  /** Called quickly while the user is performing a continuous zoom action */
   onChangeZoom: Function,
-  /* Horizontal and vertical alignments that get rendered with flexbox */
+  /** Horizontal and vertical alignments that get rendered with flexbox */
   alignment: AlignmentT,
-  /* Optionally pass in an error */
+  /** Optionally pass in an error */
   error?: ErrorT,
 }
 
@@ -51,6 +57,8 @@ const defaultProps = {
     horizontal: 'Center',
     vertical: 'Center',
   },
+  containerWidth: 600,
+  containerHeight: 250,
 }
 
 /**
@@ -120,6 +128,8 @@ class LivePreview extends React.Component {
 
   render() {
     const {
+      containerWidth,
+      containerHeight,
       name,
       tree,
       bundles,
@@ -154,7 +164,7 @@ class LivePreview extends React.Component {
     return (
       <div
         style={{
-          backgroundColor,
+          backgroundColor: Colors.grey100,
           width: `100%`,
           height: `100%`,
           position: 'absolute',
@@ -163,8 +173,10 @@ class LivePreview extends React.Component {
         {canvasWidth !== undefined && canvasHeight !== undefined
           ? <LiveCanvas
               ref={c => (this.liveCanvas = c)}
-              width={canvasWidth}
-              height={canvasHeight}
+              canvasWidth={canvasWidth}
+              canvasHeight={canvasHeight}
+              containerWidth={containerWidth}
+              containerHeight={containerHeight}
               zoom={zoom}
               onChangeZoom={onChangeZoom}
               backgroundColor={backgroundColor}

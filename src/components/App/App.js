@@ -105,6 +105,7 @@ const defaultTheme = ({ sections, backgroundColor }: PropsT) => ({
     flex: 1,
     display: 'flex',
     alignItems: 'stretch',
+    position: 'relative',
     backgroundColor: backgroundColor,
     marginLeft: Spacing.large,
     marginRight: Spacing.large,
