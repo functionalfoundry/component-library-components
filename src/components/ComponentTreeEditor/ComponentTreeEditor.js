@@ -120,7 +120,9 @@ class ComponentTreeEditor extends React.Component {
       List(),
       (ctx: TraverseContext, type) => {
         const node = ctx.node
-        if (type === 'post') {
+        const path = ctx.path
+        /** We never remove the root node */
+        if (type === 'post' || path.last() === 'root') {
           return ctx
         }
         if (
