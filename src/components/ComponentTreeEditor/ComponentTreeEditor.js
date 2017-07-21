@@ -14,7 +14,6 @@ import {
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
 import generateTraversalMap, { type TraversalMapT } from './utils/generateTraversalMap'
-import createEmptyProp from './utils/createEmptyProp'
 
 /**
  * Props
@@ -87,6 +86,7 @@ class ComponentTreeEditor extends React.Component {
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
           onFocusPrevious={this.handleFocusPrevious}
+          onInsertNode={this.handleInsertNode}
           completionData={completionData}
           componentNode={rootNode}
           componentTree={componentTree}
@@ -117,7 +117,7 @@ class ComponentTreeEditor extends React.Component {
         },
       })
     } else {
-      const emptyProp = createEmptyProp()
+      const emptyProp = Helpers.createEmptyProp()
       this.setState(
         prevState => ({
           componentTree: componentTree.setIn(path, emptyProp),
@@ -206,6 +206,40 @@ class ComponentTreeEditor extends React.Component {
     /** If there is a next node in the traversalMap then we focus that node */
     if (previousPath) {
       this.focusNode(previousPath)
+    }
+  }
+
+  handleInsertNode = (id, type) => {
+    const { componentTree } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    let targetId = id
+    let newNode = null
+    let modifiedTree = componentTree
+    if (type === 'prop') {
+      newNode = Helpers.createEmptyProp()
+      modifiedTree = Helpers.insertProp(componentTree, targetId, newNode)
+    }
+
+    if (type === 'sibling') {
+      targetId = componentTree.getIn(path.pop().pop()).get('id')
+    }
+
+    if (type === 'child' || type === 'sibling') {
+      newNode = Helpers.createEmptyComponent()
+      const targetNode = Helpers.getNodeById(componentTree, targetId)
+      const insertionIndex = targetNode.children.count()
+      modifiedTree = Helpers.insertComponent(
+        componentTree,
+        targetId,
+        insertionIndex,
+        newNode
+      )
+    }
+
+    if (newNode) {
+      this.setState({
+        componentTree: modifiedTree,
+      })
     }
   }
   //

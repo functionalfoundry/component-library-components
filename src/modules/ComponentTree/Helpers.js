@@ -201,6 +201,18 @@ const updateNodesAtPath = (
  * Component insertion
  */
 
+let newComponentCount = 0
+
+// TODO: What is the best way to generate IDs?
+const createEmptyComponent = () => {
+  const newComponent = Component({
+    id: `new-component-${newComponentCount}`,
+    props: List(),
+  })
+  newComponentCount++
+  return newComponent
+}
+
 const insertComponent = (
   tree: ComponentTree,
   parentId: NodeIdentifierT,
@@ -281,6 +293,16 @@ const setComponentText = (
 /**
  * Prop insertion
  */
+
+let newPropCount = 0
+
+// TODO: What is the best way to generate IDs?
+const createEmptyProp = () => {
+  const newPropValue = PropValue({ id: `new-prop-value-${newPropCount}`, value: '' })
+  const newProp = Prop({ id: `new-prop-${newPropCount}`, value: newPropValue })
+  newPropCount++
+  return newProp
+}
 
 const insertProp = (
   tree: ComponentTree,
@@ -407,10 +429,12 @@ export default {
   removeNodeById,
   updateNodesAtPath,
   // Higher-level, semantic tree operations
+  createEmptyComponent,
   insertComponent,
   removeComponent,
   setComponentName,
   setComponentText,
+  createEmptyProp,
   insertProp,
   removeProp,
   setNodeAttribute,

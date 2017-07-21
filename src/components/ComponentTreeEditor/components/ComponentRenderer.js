@@ -22,10 +22,10 @@ type Props = {
   isHovered: boolean,
   onBlur: Function,
   onChangeNode: Function,
-  onChangePropValue: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
+  onInsertNode: Function,
   onMouseEnter: Function,
   onMouseLeave: Function,
   theme: Object,
@@ -33,12 +33,16 @@ type Props = {
 
 const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
 
-const renderStartTagEnding = ({ componentNode, isHovered }: any) => {
+const renderStartTagEnding = ({ componentNode, isHovered, onInsertNode }: any) => {
   const childComponents = componentNode.get('children')
   return (
     <span>
       {getStartTagClosingCharacters(childComponents)}
-      <AddNodeButton isVisible={isHovered} />
+      <AddNodeButton
+        isVisible={isHovered}
+        nodeId={componentNode.get('id')}
+        onInsertNode={onInsertNode}
+      />
     </span>
   )
 }
@@ -52,10 +56,10 @@ const ComponentRenderer = ({
   isHovered,
   onBlur,
   onChangeNode,
-  onChangePropValue,
   onFocus,
   onFocusNext,
   onFocusPrevious,
+  onInsertNode,
   onMouseEnter,
   onMouseLeave,
   theme,
@@ -86,7 +90,7 @@ const ComponentRenderer = ({
           />
         </span>
         {componentProps.count() === 0 &&
-          renderStartTagEnding({ componentNode, isHovered })}
+          renderStartTagEnding({ componentNode, isHovered, onInsertNode })}
         <span>&nbsp;</span>
       </Line>
       {componentProps
@@ -100,7 +104,6 @@ const ComponentRenderer = ({
             interactionState={interactionState}
             onBlur={onBlur}
             onChangeNode={onChangeNode}
-            onChangePropValue={onChangePropValue}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
@@ -116,7 +119,7 @@ const ComponentRenderer = ({
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {renderStartTagEnding({ componentNode, isHovered })}
+          {renderStartTagEnding({ componentNode, isHovered, onInsertNode })}
         </Line>}
       {childComponents
         .map((childComponent, index) => (
@@ -128,7 +131,7 @@ const ComponentRenderer = ({
             indentLevel={indentLevel + 1}
             interactionState={interactionState}
             onChangeNode={onChangeNode}
-            onChangePropValue={onChangePropValue}
+            onInsertNode={onInsertNode}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
