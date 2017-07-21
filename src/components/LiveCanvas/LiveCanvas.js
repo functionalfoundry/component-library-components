@@ -1,6 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { View } from '@workflo/components'
+import { Colors } from '@workflo/styles'
 
 type PropsT = {
   /* Background color to use for the canvas */
@@ -14,9 +15,13 @@ type PropsT = {
   /* Pan from 0 (aligned top) to 100 (aligned bottom) */
   panY: number,
   /* Width of the canvas in pixels */
-  width: number,
+  canvasWidth: number,
   /* Height of the canvas in pixels */
-  height: number,
+  canvasHeight: number,
+  /* Width of the container in pixels */
+  containerWidth: number,
+  /* Height of the container in pixels */
+  containerHeight: number,
   /* Called with the new zoom value when the user pinches to zoom */
   onChangeZoom: number => void,
 }
@@ -26,8 +31,8 @@ const defaultProps = {
   zoom: 100,
   panX: 0,
   panY: 0,
-  width: 800,
-  height: 400,
+  containerWidth: 800,
+  containerHeight: 400,
   onChangeZoom: () => {},
 }
 
@@ -51,26 +56,37 @@ class LiveCanvas extends React.Component {
 
   // TODO: Implement this once we have a better sense of panning UX
   setScrollPosition = () => {
-    const { panX, panY, width, height } = this.props
+    const { panX, panY, containerWidth, containerHeight } = this.props
     const contentHeight = this.canvas.scrollHeight
   }
 
   render() {
-    const { children, theme, width, height, panX, panY, zoom } = this.props
+    const {
+      children,
+      theme,
+      containerWidth,
+      containerHeight,
+      panX,
+      panY,
+      zoom,
+    } = this.props
     const zoomValue = zoom * 0.01
     return (
-      <View
-        {...theme.liveCanvas}
-        ref={this.storeCanvas}
-        onWheel={this.handleWheel}
-        style={{
-          width: width / zoomValue,
-          height: height / zoomValue,
-          ...getTransformStyle(zoomValue, panX, panY),
-        }}
-      >
-        {children}
-      </View>
+      <div onWheel={this.handleWheel} {...theme.liveCanvas}>
+        <div {...theme.center}>
+          <View
+            {...theme.componentPreviewContainer}
+            ref={this.storeCanvas}
+            style={{
+              // width: containerWidth / zoomValue,
+              // height: containerHeight / zoomValue,
+              ...getTransformStyle(zoomValue, panX, panY),
+            }}
+          >
+            {children}
+          </View>
+        </div>
+      </div>
     )
   }
 }
@@ -78,6 +94,18 @@ class LiveCanvas extends React.Component {
 const defaultTheme = ({ backgroundColor }: PropsT) => {
   return {
     liveCanvas: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      backgroundColor: Colors.grey100,
+    },
+    center: {
+      display: 'flex',
+      flex: '1',
+    },
+    componentPreviewContainer: {
       backgroundColor,
       boxSizing: 'border-box',
       transformOrigin: 'top left',
@@ -100,5 +128,7 @@ const getTransformStyle = (zoom, panX, panY) => {
   }
 }
 
-const ThemedLiveCanvas = Theme('LiveCanvas', defaultTheme, { withRef: true })(LiveCanvas)
+const ThemedLiveCanvas = Theme('LiveCanvas', defaultTheme, {
+  withRef: true,
+})(LiveCanvas)
 export default ThemedLiveCanvas
