@@ -8,7 +8,13 @@ import OptionChooser from './OptionChooser'
 
 type ContainerPropsT = {
   isFocused: boolean,
+  /**
+   * Indicates whether the button should be visible. If the button is currently
+   * in focus, it will be visible regardless of what this prop is set to.
+   */
   isVisible: boolean,
+  nodeId: string,
+  onInsertNode: Function,
   theme: Object,
 }
 
@@ -42,14 +48,21 @@ class AddNodeButtonContainer extends React.Component {
 
   handleFocus = () => this.focus()
 
-  handleSelect = option => {
+  handleSelect = index => {
+    const { nodeId, onInsertNode } = this.props
+    // TODO: Put these in a constants file
+    if (onInsertNode) {
+      index === 0 && onInsertNode(nodeId, 'prop')
+      index === 1 && onInsertNode(nodeId, 'child')
+      index === 2 && onInsertNode(nodeId, 'sibling')
+    }
     this.blur()
   }
 
   storeContainer = ref => this.setState({ container: ref })
 
   render() {
-    const { theme } = this.props
+    const { isVisible, theme } = this.props
     return (
       <span
         {...theme.container}
@@ -61,6 +74,7 @@ class AddNodeButtonContainer extends React.Component {
         <ThemedAddNodeButton
           containerRef={this.state.container}
           isFocused={this.state.isFocused}
+          isVisible={this.state.isFocused || isVisible}
           onSelect={this.handleSelect}
         />
       </span>
@@ -111,18 +125,17 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, theme }: Props) => (
   </span>
 )
 
-const defaultTheme = {
+const defaultTheme = ({ isVisible }) => ({
   container: {
+    visibility: isVisible ? 'visible' : 'hidden',
     ':focus': {
       outline: 'none',
     },
   },
-}
+})
 
 const containerDefaultTheme = ({ isVisible }) => ({
-  container: {
-    visibility: isVisible ? 'visible' : 'hidden',
-  },
+  container: {},
 })
 
 const ThemedAddNodeButton = Theme('AddNodeButton', defaultTheme)(AddNodeButton)
