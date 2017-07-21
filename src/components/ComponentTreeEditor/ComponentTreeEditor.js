@@ -14,6 +14,7 @@ import {
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
 import generateTraversalMap, { type TraversalMapT } from './utils/generateTraversalMap'
+import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants/addPropNode'
 
 /**
  * Props
@@ -81,6 +82,7 @@ class ComponentTreeEditor extends React.Component {
       rootNode &&
       <div {...theme.componentTreeEditor}>
         <ComponentRenderer
+          isRootComponent
           onChangeNode={this.handleChangeNode}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -215,16 +217,16 @@ class ComponentTreeEditor extends React.Component {
     let targetId = id
     let newNode = null
     let modifiedTree = componentTree
-    if (type === 'prop') {
+    if (type === ADD_PROP) {
       newNode = Helpers.createEmptyProp()
       modifiedTree = Helpers.insertProp(componentTree, targetId, newNode)
     }
 
-    if (type === 'sibling') {
+    if (type === ADD_SIBLING) {
       targetId = componentTree.getIn(path.pop().pop()).get('id')
     }
 
-    if (type === 'child' || type === 'sibling') {
+    if (type === ADD_CHILD || type === ADD_SIBLING) {
       newNode = Helpers.createEmptyComponent()
       const targetNode = Helpers.getNodeById(componentTree, targetId)
       const insertionIndex = targetNode.children.count()

@@ -20,6 +20,7 @@ type Props = {
   indentLevel: number,
   interactionState: InteractionStateT,
   isHovered: boolean,
+  isRootComponent: boolean,
   onBlur: Function,
   onChangeNode: Function,
   onFocus: Function,
@@ -33,7 +34,12 @@ type Props = {
 
 const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
 
-const renderStartTagEnding = ({ componentNode, isHovered, onInsertNode }: any) => {
+const renderStartTagEnding = ({
+  componentNode,
+  isHovered,
+  isRootComponent,
+  onInsertNode,
+}: any) => {
   const childComponents = componentNode.get('children')
   return (
     <span>
@@ -42,6 +48,7 @@ const renderStartTagEnding = ({ componentNode, isHovered, onInsertNode }: any) =
         isVisible={isHovered}
         nodeId={componentNode.get('id')}
         onInsertNode={onInsertNode}
+        isRootComponent={isRootComponent}
       />
     </span>
   )
@@ -54,6 +61,7 @@ const ComponentRenderer = ({
   indentLevel = 0,
   interactionState,
   isHovered,
+  isRootComponent,
   onBlur,
   onChangeNode,
   onFocus,
@@ -90,7 +98,12 @@ const ComponentRenderer = ({
           />
         </span>
         {componentProps.count() === 0 &&
-          renderStartTagEnding({ componentNode, isHovered, onInsertNode })}
+          renderStartTagEnding({
+            componentNode,
+            isHovered,
+            isRootComponent,
+            onInsertNode,
+          })}
         <span>&nbsp;</span>
       </Line>
       {componentProps
@@ -119,7 +132,12 @@ const ComponentRenderer = ({
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {renderStartTagEnding({ componentNode, isHovered, onInsertNode })}
+          {renderStartTagEnding({
+            componentNode,
+            isHovered,
+            isRootComponent,
+            onInsertNode,
+          })}
         </Line>}
       {childComponents
         .map((childComponent, index) => (
