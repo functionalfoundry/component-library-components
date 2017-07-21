@@ -4,10 +4,15 @@ import Theme from 'js-theme'
 import { Colors } from '@workflo/styles'
 import { Icon, AlignedPointer } from '@workflo/components'
 
+import { options, ADD_SIBLING } from '../constants/addPropNode'
 import OptionChooser from './OptionChooser'
 
 type ContainerPropsT = {
   isFocused: boolean,
+  /**
+   * Indicates whether the 'Add Sibling' option should be available.
+   */
+  isRootComponent: boolean,
   /**
    * Indicates whether the button should be visible. If the button is currently
    * in focus, it will be visible regardless of what this prop is set to.
@@ -51,12 +56,15 @@ class AddNodeButtonContainer extends React.Component {
   handleSelect = index => {
     const { nodeId, onInsertNode } = this.props
     // TODO: Put these in a constants file
-    if (onInsertNode) {
-      index === 0 && onInsertNode(nodeId, 'prop')
-      index === 1 && onInsertNode(nodeId, 'child')
-      index === 2 && onInsertNode(nodeId, 'sibling')
-    }
+    onInsertNode(nodeId, this.getOptions()[index].type)
     this.blur()
+  }
+
+  getOptions = () => {
+    const { isRootComponent } = this.props
+    return isRootComponent
+      ? options.filter(option => option.type !== ADD_SIBLING)
+      : options
   }
 
   storeContainer = ref => this.setState({ container: ref })
@@ -76,6 +84,7 @@ class AddNodeButtonContainer extends React.Component {
           isFocused={this.state.isFocused}
           isVisible={this.state.isFocused || isVisible}
           onSelect={this.handleSelect}
+          options={this.getOptions().map(option => option.label)}
         />
       </span>
     )
@@ -87,9 +96,10 @@ type Props = {
   containerRef: any,
   isFocused: boolean,
   onSelect: Function,
+  options: Array<string>,
   theme: Object,
 }
-const AddNodeButton = ({ containerRef, isFocused, onSelect, theme }: Props) => (
+const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Props) => (
   <span {...theme.container} tabIndex="0">
     <Icon
       name="add-example"
@@ -110,13 +120,7 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, theme }: Props) => (
       forceOpen={isFocused}
       gravity="Bottom Right"
       portal={({ close }) => {
-        return (
-          <OptionChooser
-            onSelect={onSelect}
-            options={['Add Prop', 'Add Child Component', 'Add Sibling Component']}
-            preventFocus
-          />
-        )
+        return <OptionChooser onSelect={onSelect} options={options} preventFocus />
       }}
       position="Bottom"
       targetRef={containerRef}
