@@ -443,4 +443,6 @@ export default {
   // Tree construction from raw data
   createTree,
   getRawTreeData,
+  // data types
+  TraverseContext,
 }
