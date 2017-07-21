@@ -142,6 +142,7 @@ class ComponentTreeEditor extends React.Component {
       componentTree
     )
 
+    // console.dir(modifiedComponentTree)
     onChange && onChange(modifiedComponentTree)
     this.setState({ componentTree: modifiedComponentTree })
   }
@@ -252,11 +253,15 @@ class ComponentTreeEditor extends React.Component {
     const { componentTree, traversalMap } = this.state
     const path = Helpers.findNodeById(componentTree, id)
     const currentNode = traversalMap.get(path)
-    const previousPath = currentNode && currentNode.previous
+    let previousPath = currentNode && currentNode.previous
 
-    /** If there is a next node in the traversalMap then we focus that node */
-    if (previousPath) {
-      this.focusNode(previousPath)
+    /** This prevents us from creating new nodes while traversing backwards */
+    while (previousPath) {
+      if (componentTree.hasIn(previousPath)) {
+        this.focusNode(previousPath)
+        return
+      }
+      previousPath = traversalMap.get(previousPath).previous
     }
   }
 
