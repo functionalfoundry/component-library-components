@@ -1,6 +1,7 @@
 /** @flow */
 import React from 'react'
 import Theme from 'js-theme'
+import { List } from 'immutable'
 
 import { Colors, Fonts } from '@workflo/styles'
 
@@ -10,6 +11,7 @@ import {
   Helpers,
   type NodeIdentifierT,
   Path,
+  type TraverseContext,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
@@ -73,6 +75,15 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.interactionState.focusedNodeId !==
+      prevState.interactionState.focusedNodeId
+    ) {
+      this.clearEmptyNodes()
+    }
+  }
+
   render() {
     const { completionData, theme } = this.props
     const { componentTree, interactionState } = this.state
@@ -96,6 +107,43 @@ class ComponentTreeEditor extends React.Component {
         />
       </div>
     )
+  }
+
+  /** Deletes empty nodes that are currently not in focus */
+  clearEmptyNodes = () => {
+    const { onChange } = this.props
+    const { componentTree, interactionState } = this.state
+    const focusedNodeId = interactionState.focusedNodeId
+    /** Find empty nodes */
+    const traverseResult = Helpers.traverse(
+      componentTree,
+      List(),
+      (ctx: TraverseContext, type) => {
+        const node = ctx.node
+        if (type === 'post') {
+          return ctx
+        }
+        if (
+          (node.nodeType === 'prop' && !node.get('name')) ||
+          (node.nodeType === 'component' && !node.get('name'))
+        ) {
+          return ctx.set('data', ctx.data.push(node.id))
+        }
+        return ctx
+      }
+    )
+
+    const nodesToRemove = traverseResult.data
+
+    /** Only clear empty nodes if they are not currently being edited */
+    const modifiedComponentTree = nodesToRemove.reduce(
+      (tree, nodeId) =>
+        nodeId === focusedNodeId ? tree : Helpers.removeNodeById(tree, nodeId),
+      componentTree
+    )
+
+    onChange && onChange(modifiedComponentTree)
+    this.setState({ componentTree: modifiedComponentTree })
   }
 
   focusNode(path: Path) {
@@ -175,7 +223,8 @@ class ComponentTreeEditor extends React.Component {
   }
 
   handleFocus = (id: NodeIdentifierT) => {
-    const path = Helpers.findNodeById(id)
+    const { componentTree } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
     if (path) {
       this.focusNode(path)
     }
