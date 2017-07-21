@@ -119,7 +119,7 @@ class EditableFieldContainer extends React.Component {
     const { onFocusPrevious, value } = this.props
     if (event.keyCode === 46 || event.keyCode === 8) {
       /** This allows the user to repeatedly hit delete to clear fields */
-      if (value === '') {
+      if (value === '' || value === null) {
         onFocusPrevious()
       }
     }

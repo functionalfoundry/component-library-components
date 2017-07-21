@@ -142,7 +142,6 @@ class ComponentTreeEditor extends React.Component {
       componentTree
     )
 
-    // console.dir(modifiedComponentTree)
     onChange && onChange(modifiedComponentTree)
     this.setState({ componentTree: modifiedComponentTree })
   }
@@ -297,6 +296,7 @@ class ComponentTreeEditor extends React.Component {
       this.setState(
         {
           componentTree: modifiedTree,
+          traversalMap: generateTraversalMap(modifiedTree),
         },
         () => {
           this.focusNode(newPath)
