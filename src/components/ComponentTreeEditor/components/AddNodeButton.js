@@ -78,6 +78,7 @@ class AddNodeButtonContainer extends React.Component {
         onBlur={this.handleBlur}
         onClick={this.handleClick}
         onFocus={this.handleFocus}
+        tabIndex="0"
       >
         <ThemedAddNodeButton
           containerRef={this.state.container}
@@ -100,7 +101,7 @@ type Props = {
   theme: Object,
 }
 const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Props) => (
-  <span {...theme.container} tabIndex="0">
+  <span {...theme.container}>
     <Icon
       name="add-example"
       size="base"
@@ -132,14 +133,15 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
 const defaultTheme = ({ isVisible }) => ({
   container: {
     visibility: isVisible ? 'visible' : 'hidden',
-    ':focus': {
-      outline: 'none',
-    },
   },
 })
 
 const containerDefaultTheme = ({ isVisible }) => ({
-  container: {},
+  container: {
+    ':focus': {
+      outline: 'none',
+    },
+  },
 })
 
 const ThemedAddNodeButton = Theme('AddNodeButton', defaultTheme)(AddNodeButton)
