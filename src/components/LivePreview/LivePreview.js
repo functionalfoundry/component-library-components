@@ -98,6 +98,7 @@ class LivePreview extends React.Component {
       canvasHeight: undefined,
       zoom: 100,
       zoomHasBeenChangedByUser: false,
+      isContainerFocused: false,
     }
   }
 
@@ -133,7 +134,11 @@ class LivePreview extends React.Component {
     })
   }
 
+  handleChangeContainerFocused = isContainerFocused =>
+    this.setState({ isContainerFocused })
+
   handleWheel = e => {
+    if (this.state.isContainerFocused) return
     const { containerWidth, containerHeight } = this.props
     const { canvasWidth, canvasHeight } = this.state
     if (e.ctrlKey) {
@@ -175,7 +180,7 @@ class LivePreview extends React.Component {
       error,
     } = this.props
 
-    const { canvasWidth, canvasHeight, zoom } = this.state
+    const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
     const harnessElement = (
       <Harness
         key="harness"
@@ -185,6 +190,8 @@ class LivePreview extends React.Component {
         width={canvasWidth}
         height={canvasHeight}
         onWheel={this.handleWheel}
+        onChangeContainerFocused={this.handleChangeContainerFocused}
+        isContainerFocused={isContainerFocused}
       />
     )
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
@@ -256,6 +263,8 @@ type HarnessPropsT = {
   backgroundColor: string,
   children: React.Children,
   onWheel: Function,
+  onChangeContainerFocused: Function,
+  isContainerFocused: boolean,
   theme: any,
 }
 
@@ -268,7 +277,6 @@ class Harness extends React.Component {
 
     this.state = {
       error: props.error,
-      isFocused: false,
     }
   }
 
@@ -283,15 +291,23 @@ class Harness extends React.Component {
   }
 
   handleClick = () => {
-    this.setState({ isFocused: true })
+    this.props.onChangeContainerFocused(true)
   }
 
   handleClickOutside = () => {
-    this.setState({ isFocused: false })
+    this.props.onChangeContainerFocused(false)
   }
 
   render() {
-    const { children, backgroundColor, alignment, width, height, onWheel } = this.props
+    const {
+      children,
+      backgroundColor,
+      alignment,
+      width,
+      height,
+      onWheel,
+      isContainerFocused,
+    } = this.props
     const { error } = this.state
 
     if (error) {
@@ -312,7 +328,7 @@ class Harness extends React.Component {
         return (
           <Trigger triggerOn={['Click outside']} onTrigger={this.handleClickOutside}>
             <div
-              style={getHarnessStyle(backgroundColor)}
+              style={getHarnessStyle(backgroundColor, false, isContainerFocused)}
               onClick={this.handleClick}
               onWheel={onWheel}
             >
@@ -335,12 +351,13 @@ class Harness extends React.Component {
   }
 }
 
-const getHarnessStyle = (backgroundColor, hasError) => ({
+const getHarnessStyle = (backgroundColor, hasError, isContainerFocused) => ({
   backgroundColor,
   boxSizing: 'border-box',
   position: 'relative',
   width: hasError ? '100%' : '100vw',
   height: hasError ? '100%' : '100vh',
+  border: isContainerFocused ? `1px solid ${Colors.grey200}` : 'none',
 })
 
 const getPreviewContainerStyle = alignment =>
