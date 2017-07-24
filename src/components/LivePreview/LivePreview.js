@@ -84,6 +84,8 @@ const defaultTheme = ({ backgroundColor }: Props) => ({
  */
 
 const minPadding = Spacing.base
+const minContainerWidth = 60
+const minContainerHeight = 60
 
 class LivePreview extends React.Component {
   props: PropsT
@@ -146,12 +148,15 @@ class LivePreview extends React.Component {
       // This is a mac pinch to zoom event (looks like ctl scroll)
       const nextZoom = this.state.zoom - e.deltaY
 
-      // if (
-      //   nextZoom * containerWidth / 100 <= canvasWidth &&
-      //   nextZoom * containerHeight / 100 <= canvasHeight
-      // ) {
+      if (
+        (nextZoom * containerWidth / 100 < minContainerWidth ||
+          nextZoom * containerHeight / 100 < minContainerHeight) &&
+        nextZoom > 0
+      ) {
+        return
+      }
+
       this.setState({ zoom: nextZoom, zoomHasBeenChangedByUser: true })
-      // }
     }
   }
 
