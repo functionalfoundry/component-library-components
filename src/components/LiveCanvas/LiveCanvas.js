@@ -59,12 +59,22 @@ class LiveCanvas extends React.Component {
       theme,
       containerWidth,
       containerHeight,
+      canvasWidth,
+      canvasHeight,
       onWheel,
       panX,
       panY,
       zoom,
     } = this.props
     const zoomValue = zoom * 0.01
+    const actualContainerWidth = containerWidth * zoomValue
+    const actualContainerHeight = containerHeight * zoomValue
+    /** Currently the panning values are calculated to center the container
+     *  inside the canvas.
+     *  TODO: Apply the original pan values ontop to achieve the desired offset
+     */
+    const newPanX = (canvasWidth - actualContainerWidth) / 2
+    const newPanY = (canvasHeight - actualContainerHeight) / 2
     return (
       <div onWheel={onWheel} {...theme.liveCanvas}>
         <div {...theme.center}>
@@ -74,7 +84,7 @@ class LiveCanvas extends React.Component {
             style={{
               width: containerWidth,
               height: containerHeight,
-              ...getTransformStyle(zoomValue, panX, panY),
+              ...getTransformStyle(zoomValue, newPanX, newPanY),
             }}
           >
             {children}
@@ -115,8 +125,8 @@ const defaultTheme = ({ backgroundColor }: PropsT) => {
 const getTransformStyle = (zoom, panX, panY) => {
   let transforms = []
   zoom && transforms.push(`scale(${zoom})`)
-  panX && transforms.push(`translateX(${panX}px)`)
-  panY && transforms.push(`translateY(${panY}px)`)
+  panX && transforms.push(`translateX(${panX / zoom}px)`)
+  panY && transforms.push(`translateY(${panY / zoom}px)`)
   if (transforms.length === 0) return {}
   return {
     transform: transforms.join(' '),
