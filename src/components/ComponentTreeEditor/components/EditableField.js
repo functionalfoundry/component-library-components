@@ -86,13 +86,15 @@ class EditableFieldContainer extends React.Component {
     return true
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.isFocused !== this.props.isFocused) {
-  //     this.setState({ isFocused: nextProps.isFocused })
-  //   }
-  // }
+  componentWillReceiveProps(nextProps: ContainerPropsT) {
+    /** Only update isFocused to false immediately, otherwise wait for update */
+    if (nextProps.isFocused !== this.props.isFocused && !nextProps.isFocused) {
+      this.setState({ isFocused: nextProps.isFocused })
+    }
+  }
 
   componentDidUpdate(prevProps: ContainerPropsT) {
+    /** Focus after the update so we have a chance to format value first */
     if (!prevProps.isFocused && this.props.isFocused && !this.state.isFocused) {
       this.focus()
     }
