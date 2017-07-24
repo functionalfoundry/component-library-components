@@ -110,7 +110,6 @@ class Frame extends React.Component {
 
             Object.keys(newBundles).forEach(function (name) {
               if (bundles[name] !== newBundles[name]) {
-                console.log('Bundle for', name, 'changed')
                 implementations[name] = evaluateBundle(newBundles[name])
                 bundles[name] = newBundles[name]
               }

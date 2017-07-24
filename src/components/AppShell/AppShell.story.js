@@ -30,7 +30,7 @@ import { liveViewState } from '../../../mocks/live-view'
 import { stateCards } from '../../../mocks/componentStates'
 import LiveCanvas from '../LiveCanvas'
 import Components from '../Components'
-import { BADGE_URL, LOADER_URL, rawExampleTree } from '../Frame/Frame.story'
+import { BADGE_URL, LOADER_URL, SLIDER_URL, rawExampleTree } from '../Frame/Frame.story'
 import LivePreview from '../LivePreview'
 
 const header = (
@@ -148,6 +148,12 @@ const scrollableContentTheme = {
   },
 }
 
+const sliderTree = {
+  id: 'slider',
+  name: 'Slider',
+  props: [],
+}
+
 class LiveCanvasContainer extends React.Component {
   constructor(props) {
     super()
@@ -185,6 +191,7 @@ class FetchAndRender extends React.Component {
     this.state = {
       badge: null,
       loader: null,
+      slider: null,
       zoom: 100,
     }
   }
@@ -217,13 +224,25 @@ class FetchAndRender extends React.Component {
     xhr.send()
   }
 
+  fetchSlider = () => {
+    let xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        this.setState({ slider: xhr.responseText })
+      }
+    }
+    xhr.open('GET', SLIDER_URL, true)
+    xhr.send()
+  }
+
   componentWillMount() {
     this.fetchBadge()
     this.fetchLoader()
+    this.fetchSlider()
   }
 
   render() {
-    const { badge, loader, zoom } = this.state
+    const { badge, loader, slider, zoom } = this.state
     const { error } = this.props
     return (
       <div
@@ -235,15 +254,15 @@ class FetchAndRender extends React.Component {
       >
         <LivePreview
           name="frame-1"
-          tree={rawExampleTree}
-          bundles={{ badge, loader }}
+          tree={sliderTree}
+          bundles={{ badge, loader, slider }}
           React={React}
           ReactDOM={ReactDOM}
           alignment={{
             horizontal: 'Center',
             vertical: 'Center',
           }}
-          backgroundColor="cyan"
+          backgroundColor="white"
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
           error={error}

@@ -43,6 +43,7 @@ export const exampleTree = ComponentTreeHelpers.createTree(rawExampleTree)
 
 export const BADGE_URL = 'https://storage.googleapis.com/component-bundles/Badge.js'
 export const LOADER_URL = 'https://storage.googleapis.com/component-bundles/Loader.js'
+export const SLIDER_URL = 'https://storage.googleapis.com/component-bundles/Slider.js'
 
 class FetchAndRender extends React.Component {
   constructor() {

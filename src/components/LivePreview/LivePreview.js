@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
-import { View } from '@workflo/components'
+import { Trigger, View } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
@@ -68,6 +68,7 @@ const defaultProps = {
 type StateT = {
   canvasWidth: ?number,
   canvasHeight: ?number,
+  zoom: number,
 }
 
 /**
@@ -86,8 +87,6 @@ class LivePreview extends React.Component {
   props: PropsT
   state: StateT
 
-  defaultProps = defaultProps
-
   liveCanvas = null
 
   constructor(props: PropsT) {
@@ -96,6 +95,7 @@ class LivePreview extends React.Component {
     this.state = {
       canvasWidth: undefined,
       canvasHeight: undefined,
+      zoom: 100,
     }
   }
 
@@ -113,6 +113,23 @@ class LivePreview extends React.Component {
       canvasWidth: dimensions.width,
       canvasHeight: dimensions.height,
     })
+  }
+
+  handleWheel = e => {
+    const { containerWidth, containerHeight } = this.props
+    const { canvasWidth, canvasHeight } = this.state
+    if (e.ctrlKey) {
+      e.preventDefault()
+      // This is a mac pinch to zoom event (looks like ctl scroll)
+      const nextZoom = this.state.zoom - e.deltaY
+
+      // if (
+      //   nextZoom * containerWidth / 100 <= canvasWidth &&
+      //   nextZoom * containerHeight / 100 <= canvasHeight
+      // ) {
+      this.setState({ zoom: nextZoom })
+      // }
+    }
   }
 
   componentDidMount() {
@@ -135,14 +152,12 @@ class LivePreview extends React.Component {
       bundles,
       React,
       ReactDOM,
-      zoom,
-      onChangeZoom,
       backgroundColor,
       alignment,
       error,
     } = this.props
 
-    const { canvasWidth, canvasHeight } = this.state
+    const { canvasWidth, canvasHeight, zoom } = this.state
     const harnessElement = (
       <Harness
         key="harness"
@@ -151,6 +166,7 @@ class LivePreview extends React.Component {
         error={error}
         width={canvasWidth}
         height={canvasHeight}
+        onWheel={this.handleWheel}
       />
     )
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
@@ -168,6 +184,7 @@ class LivePreview extends React.Component {
           width: `100%`,
           height: `100%`,
           position: 'absolute',
+          overflow: 'hidden',
         }}
       >
         {canvasWidth !== undefined && canvasHeight !== undefined
@@ -178,7 +195,7 @@ class LivePreview extends React.Component {
               containerWidth={containerWidth}
               containerHeight={containerHeight}
               zoom={zoom}
-              onChangeZoom={onChangeZoom}
+              onWheel={this.handleWheel}
               backgroundColor={backgroundColor}
             >
               <Frame
@@ -202,6 +219,8 @@ class LivePreview extends React.Component {
   }
 }
 
+LivePreview.defaultProps = defaultProps
+
 const ThemedLivePreview = Theme('LivePreview', defaultTheme)(LivePreview)
 export default ThemedLivePreview
 
@@ -218,6 +237,7 @@ type HarnessPropsT = {
   alignment: AlignmentT,
   backgroundColor: string,
   children: React.Children,
+  onWheel: Function,
   theme: any,
 }
 
@@ -230,6 +250,7 @@ class Harness extends React.Component {
 
     this.state = {
       error: props.error,
+      isFocused: false,
     }
   }
 
@@ -243,8 +264,16 @@ class Harness extends React.Component {
     }
   }
 
+  handleClick = () => {
+    this.setState({ isFocused: true })
+  }
+
+  handleClickOutside = () => {
+    this.setState({ isFocused: false })
+  }
+
   render() {
-    const { children, backgroundColor, alignment, width, height } = this.props
+    const { children, backgroundColor, alignment, width, height, onWheel } = this.props
     const { error } = this.state
 
     if (error) {
@@ -263,11 +292,17 @@ class Harness extends React.Component {
     } else {
       try {
         return (
-          <div style={getHarnessStyle(backgroundColor)}>
-            <div style={getPreviewContainerStyle(alignment)}>
-              {children}
+          <Trigger triggerOn={['Click outside']} onTrigger={this.handleClickOutside}>
+            <div
+              style={getHarnessStyle(backgroundColor)}
+              onClick={this.handleClick}
+              onWheel={onWheel}
+            >
+              <div style={getPreviewContainerStyle(alignment)}>
+                {children}
+              </div>
             </div>
-          </div>
+          </Trigger>
         )
       } catch (error) {
         return (

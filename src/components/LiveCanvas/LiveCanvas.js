@@ -23,7 +23,7 @@ type PropsT = {
   /* Height of the container in pixels */
   containerHeight: number,
   /* Called with the new zoom value when the user pinches to zoom */
-  onChangeZoom: number => void,
+  onWheel: Function,
 }
 
 const defaultProps = {
@@ -43,21 +43,14 @@ class LiveCanvas extends React.Component {
   props: PropsT
   static defaultProps = defaultProps
 
-  handleWheel = e => {
-    const { onChangeZoom, zoom } = this.props
-    if (e.ctrlKey) {
-      e.preventDefault()
-      // This is a mac pinch to zoom event (looks like ctl scroll)
-      onChangeZoom(zoom - e.deltaY * ZOOM_FACTOR)
-    }
+  storeComponentContainer = c => {
+    this.componentContainer = c
   }
-
-  storeCanvas = c => (this.canvas = c)
 
   // TODO: Implement this once we have a better sense of panning UX
   setScrollPosition = () => {
     const { panX, panY, containerWidth, containerHeight } = this.props
-    const contentHeight = this.canvas.scrollHeight
+    const contentHeight = this.componentContainer.scrollHeight
   }
 
   render() {
@@ -66,25 +59,26 @@ class LiveCanvas extends React.Component {
       theme,
       containerWidth,
       containerHeight,
+      onWheel,
       panX,
       panY,
       zoom,
     } = this.props
     const zoomValue = zoom * 0.01
     return (
-      <div onWheel={this.handleWheel} {...theme.liveCanvas}>
+      <div onWheel={onWheel} {...theme.liveCanvas}>
         <div {...theme.center}>
-          <View
+          <div
             {...theme.componentPreviewContainer}
-            ref={this.storeCanvas}
+            ref={this.storeComponentContainer}
             style={{
-              // width: containerWidth / zoomValue,
-              // height: containerHeight / zoomValue,
+              width: containerWidth,
+              height: containerHeight,
               ...getTransformStyle(zoomValue, panX, panY),
             }}
           >
             {children}
-          </View>
+          </div>
         </div>
       </div>
     )
@@ -113,6 +107,7 @@ const defaultTheme = ({ backgroundColor }: PropsT) => {
       top: 0,
       left: 0,
       overflow: 'scroll',
+      zIndex: 0,
     },
   }
 }
