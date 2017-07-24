@@ -83,6 +83,8 @@ const defaultTheme = ({ backgroundColor }: Props) => ({
  * LivePreview component
  */
 
+const minPadding = 30
+
 class LivePreview extends React.Component {
   props: PropsT
   state: StateT
@@ -91,11 +93,11 @@ class LivePreview extends React.Component {
 
   constructor(props: PropsT) {
     super(props)
-
     this.state = {
       canvasWidth: undefined,
       canvasHeight: undefined,
       zoom: 100,
+      zoomHasBeenChangedByUser: false,
     }
   }
 
@@ -107,11 +109,27 @@ class LivePreview extends React.Component {
     }
   }
 
+  getInitialZoom = (canvasWidth, canvasHeight) => {
+    const { containerWidth, containerHeight } = this.props
+    if (containerWidth < canvasWidth && containerHeight < canvasHeight) return 100
+    if (containerWidth / canvasWidth > containerHeight / canvasHeight) {
+      return (canvasWidth - 2 * minPadding) / (containerWidth / 100)
+    } else {
+      return (canvasHeight - 2 * minPadding) / (containerHeight / 100)
+    }
+  }
+
   updateDimensions = () => {
     const dimensions = this.getDimensions()
+    const zoomState = this.state.zoomHasBeenChangedByUser
+      ? {}
+      : {
+          zoom: this.getInitialZoom(dimensions.width, dimensions.height),
+        }
     this.setState({
       canvasWidth: dimensions.width,
       canvasHeight: dimensions.height,
+      ...zoomState,
     })
   }
 
@@ -127,7 +145,7 @@ class LivePreview extends React.Component {
       //   nextZoom * containerWidth / 100 <= canvasWidth &&
       //   nextZoom * containerHeight / 100 <= canvasHeight
       // ) {
-      this.setState({ zoom: nextZoom })
+      this.setState({ zoom: nextZoom, zoomHasBeenChangedByUser: true })
       // }
     }
   }
