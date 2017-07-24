@@ -1,7 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { View } from '@workflo/components'
-import { Colors } from '@workflo/styles'
+import { Fonts, Colors, Spacing } from '@workflo/styles'
 
 type PropsT = {
   /* Background color to use for the canvas */
@@ -89,6 +89,12 @@ class LiveCanvas extends React.Component {
           >
             {children}
           </div>
+          <div
+            {...theme.containerSizeText}
+            style={getTextTransformStyle(zoomValue, newPanX, newPanY, containerHeight)}
+          >
+            {containerWidth}x{containerHeight}
+          </div>
         </div>
       </div>
     )
@@ -119,6 +125,10 @@ const defaultTheme = ({ backgroundColor }: PropsT) => {
       overflow: 'scroll',
       zIndex: 0,
     },
+    containerSizeText: {
+      ...Fonts.small,
+      color: Colors.grey300,
+    },
   }
 }
 
@@ -127,6 +137,18 @@ const getTransformStyle = (zoom, panX, panY) => {
   zoom && transforms.push(`scale(${zoom})`)
   panX && transforms.push(`translateX(${panX / zoom}px)`)
   panY && transforms.push(`translateY(${panY / zoom}px)`)
+  if (transforms.length === 0) return {}
+  return {
+    transform: transforms.join(' '),
+  }
+}
+
+const textSpacing = Spacing.tiny
+
+const getTextTransformStyle = (zoom, panX, panY, containerHeight) => {
+  let transforms = []
+  panX && transforms.push(`translateX(${panX}px)`)
+  panY && transforms.push(`translateY(${panY + containerHeight * zoom + textSpacing}px)`)
   if (transforms.length === 0) return {}
   return {
     transform: transforms.join(' '),

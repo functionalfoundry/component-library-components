@@ -83,7 +83,7 @@ const defaultTheme = ({ backgroundColor }: Props) => ({
  * LivePreview component
  */
 
-const minPadding = 30
+const minPadding = Spacing.base
 
 class LivePreview extends React.Component {
   props: PropsT
