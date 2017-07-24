@@ -52,6 +52,8 @@
     }
   },
   "globals": {
-    "fetch": false
+    "fetch": false,
+    "SyntheticEvent": false,
+    "SyntheticKeyboardEvent": false
   }
 }

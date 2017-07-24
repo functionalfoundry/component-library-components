@@ -115,13 +115,23 @@ class EditableFieldContainer extends React.Component {
     )
   }
 
-  handleKeyDown = event => {
-    const { onFocusPrevious, value } = this.props
+  handleKeyDown = (event: SyntheticKeyboardEvent) => {
+    const { onFocusNext, onFocusPrevious, value } = this.props
     if (event.keyCode === 46 || event.keyCode === 8) {
       /** This allows the user to repeatedly hit delete to clear fields */
       if (value === '' || value === null) {
         onFocusPrevious()
       }
+    }
+
+    if (event.keyCode === 9 && !event.shiftKey) {
+      onFocusNext()
+      event.preventDefault()
+    }
+
+    if (event.keyCode === 9 && event.shiftKey) {
+      onFocusPrevious()
+      event.preventDefault()
     }
   }
 
