@@ -2,7 +2,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 
-import { BreakPoints, Spacing } from '@workflo/styles'
+import { BreakPoints, Colors } from '@workflo/styles'
 
 import Column from './Column'
 import Row from './Row'
@@ -58,6 +58,8 @@ const defaultTheme = ({ tabletShowLeftPanel }) => ({
   bottomPanel: {
     flexShrink: 0,
     flexBasis: 300,
+    backgroundColor: Colors.grey900,
+    zIndex: 10,
   },
   container: {
     flexGrow: 1,
