@@ -45,6 +45,7 @@ const WalkthroughStep = require('./components/WalkthroughStep')
 
 // Components forwarded from @workflo/components
 const Button = require('./components/Button')
+const FilledTextInput = require('./components/FilledTextInput')
 
 import actionsPlugin from './utils/ActionsBabelPlugin'
 import dataPlugin from './utils/DataBabelPlugin'
