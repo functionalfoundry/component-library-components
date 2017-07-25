@@ -171,7 +171,7 @@ const treeFromRaw = Helpers.createTree({
         {
           name: 'key',
           value: {
-            value: 1,
+            value: '1',
             type: 'number',
           },
         },
