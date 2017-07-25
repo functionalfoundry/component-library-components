@@ -71,6 +71,7 @@ const WorkfloComponents = {
   ComponentTreeEditor,
   Data,
   ErrorView,
+  FilledTextInput,
   Header,
   Layout,
   LiveEditor,
