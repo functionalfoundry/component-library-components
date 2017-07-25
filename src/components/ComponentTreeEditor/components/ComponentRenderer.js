@@ -36,19 +36,27 @@ const getStartTagClosingCharacters = childComponents => `${childComponents.count
 
 const renderStartTagEnding = ({
   componentNode,
+  interactionState,
   isHovered,
   isRootComponent,
   onInsertNode,
+  onFocusNext,
+  onFocusPrevious,
+  path,
 }: any) => {
   const childComponents = componentNode.get('children')
   return (
     <span>
       {getStartTagClosingCharacters(childComponents)}
       <AddNodeButton
+        interactionState={interactionState}
+        isRootComponent={isRootComponent}
         isVisible={isHovered}
         nodeId={componentNode.get('id')}
+        onFocusNext={onFocusNext}
+        onFocusPrevious={onFocusPrevious}
         onInsertNode={onInsertNode}
-        isRootComponent={isRootComponent}
+        path={path.push('add-button')}
       />
     </span>
   )
@@ -101,9 +109,13 @@ const ComponentRenderer = ({
         {componentProps.count() === 0 &&
           renderStartTagEnding({
             componentNode,
+            interactionState,
             isHovered,
             isRootComponent,
+            onFocusNext,
+            onFocusPrevious,
             onInsertNode,
+            path: componentPath,
           })}
         <span>&nbsp;</span>
       </Line>
@@ -135,9 +147,13 @@ const ComponentRenderer = ({
         >
           {renderStartTagEnding({
             componentNode,
+            interactionState,
             isHovered,
             isRootComponent,
+            onFocusNext,
+            onFocusPrevious,
             onInsertNode,
+            path: componentPath,
           })}
         </Line>}
       {childComponents
