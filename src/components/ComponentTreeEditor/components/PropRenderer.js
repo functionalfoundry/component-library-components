@@ -65,6 +65,7 @@ const PropRenderer = ({
 }: Props) => {
   const propValue = propNode.get('value')
   const propName = propNode.get('name')
+  const propPath = propNode.get('path')
   const componentName = componentNode.get('name')
   const propValueOptions = getPropValueOptions({
     completionData,
@@ -83,7 +84,7 @@ const PropRenderer = ({
             onFocusPrevious={onFocusPrevious}
             options={Object.keys(completionData.props[componentName] || {})}
             nodeId={propNode.get('id')}
-            path="name"
+            path={propPath.push('name')}
             value={propNode.get('name')}
           />
         </span>
@@ -98,7 +99,7 @@ const PropRenderer = ({
           onFocusPrevious={onFocusPrevious}
           options={propValueOptions.map(option => option.value)}
           nodeId={propValue.get('id')}
-          path="value"
+          path={propPath.push('value').push('value')}
           value={propValue.get('value')}
         />
         <span>&nbsp;</span>

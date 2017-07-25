@@ -2,7 +2,12 @@
 
 import { List, Record } from 'immutable'
 
-import type { ComponentTreeNodeT, ComponentTreePathT, NodeIdentifierT } from './types'
+import type {
+  ComponentTreeNodeT,
+  ComponentTreePathT,
+  NodeIdentifierT,
+  Path,
+} from './types'
 import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
 
 /**
@@ -179,13 +184,12 @@ const getNextSibling = (tree: ComponentTree, id: NodeIdentifierT): Object => {
  * Node removal
  */
 
+const removeNodeByPath = (tree: ComponentTree, path: Path): ComponentTree =>
+  tree.deleteIn(path)
+
 const removeNodeById = (tree: ComponentTree, nodeId: NodeIdentifierT): ComponentTree => {
   const path = findNodeById(tree, nodeId)
-  if (path) {
-    return tree.deleteIn(path)
-  } else {
-    return tree
-  }
+  return removeNodeByPath(tree, path)
 }
 
 /**
@@ -297,9 +301,13 @@ const setComponentText = (
 let newPropCount = 0
 
 // TODO: What is the best way to generate IDs?
-const createEmptyProp = () => {
-  const newPropValue = PropValue({ id: `new-prop-value-${newPropCount}`, value: '' })
-  const newProp = Prop({ id: `new-prop-${newPropCount}`, value: newPropValue })
+const createEmptyProp = (path: Path) => {
+  const newPropValue = PropValue({
+    id: `new-prop-value-${newPropCount}`,
+    path: path.push('value'),
+    value: '',
+  })
+  const newProp = Prop({ id: `new-prop-${newPropCount}`, path, value: newPropValue })
   newPropCount++
   return newProp
 }
@@ -389,31 +397,42 @@ const setPropValue = (
 }
 
 const createTree = (data: Object): ComponentTree => {
-  const createComponent = (data: Object): Component =>
+  const createComponent = (data: Object, path: List<string>): Component =>
     Component({
       id: data.id,
       name: data.name,
-      props: List((data.props || []).map(createProp)),
-      children: List((data.children || []).map(createComponent)),
+      path,
+      props: List(
+        (data.props || [])
+          .map((prop, index) => createProp(prop, path.push('props').push(`${index}`)))
+      ),
+      children: List(
+        (data.children || [])
+          .map((component, index) =>
+            createComponent(component, path.push('children').push(`${index}`))
+          )
+      ),
       text: data.text,
     })
 
-  const createProp = (data: Object): Prop =>
+  const createProp = (data: Object, path: List<string>): Prop =>
     Prop({
       id: data.id,
       name: data.name,
-      value: data.value ? createPropValue(data.value) : null,
+      path,
+      value: data.value ? createPropValue(data.value, path.push('value')) : null,
     })
 
-  const createPropValue = (data: Object): PropValue =>
+  const createPropValue = (data: Object, path: List<string>): PropValue =>
     PropValue({
       id: data.id,
+      path,
       value: data.value,
       type: data.type,
     })
 
   return ComponentTree({
-    root: createComponent(data),
+    root: createComponent(data, List(['root'])),
   })
 }
 
@@ -427,6 +446,7 @@ export default {
   getParent,
   getNextSibling,
   removeNodeById,
+  removeNodeByPath,
   updateNodesAtPath,
   // Higher-level, semantic tree operations
   createEmptyComponent,
