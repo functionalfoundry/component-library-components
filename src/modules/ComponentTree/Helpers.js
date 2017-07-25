@@ -404,12 +404,12 @@ const createTree = (data: Object): ComponentTree => {
       path,
       props: List(
         (data.props || [])
-          .map((prop, index) => createProp(prop, path.push('props').push(`${index}`)))
+          .map((prop, index) => createProp(prop, path.push('props').push(index)))
       ),
       children: List(
         (data.children || [])
           .map((component, index) =>
-            createComponent(component, path.push('children').push(`${index}`))
+            createComponent(component, path.push('children').push(index))
           )
       ),
       text: data.text,
