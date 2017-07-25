@@ -62,7 +62,7 @@ class ComponentTreeEditor extends React.Component {
     this.state = {
       componentTree: tree,
       interactionState: {
-        focusedNodeId: null,
+        focusedNodePath: null,
       },
       traversalMap: generateTraversalMap(tree),
     }
@@ -77,8 +77,8 @@ class ComponentTreeEditor extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.state.interactionState.focusedNodeId !==
-      prevState.interactionState.focusedNodeId
+      this.state.interactionState.focusedNodePath !==
+      prevState.interactionState.focusedNodePath
     ) {
       this.clearEmptyNodes()
     }
@@ -113,7 +113,7 @@ class ComponentTreeEditor extends React.Component {
   clearEmptyNodes = () => {
     const { onChange } = this.props
     const { componentTree, interactionState } = this.state
-    const focusedNodeId = interactionState.focusedNodeId
+    const focusedNodePath = interactionState.focusedNodePath
     /** Find empty nodes */
     const traverseResult = Helpers.traverse(
       componentTree,
@@ -129,7 +129,7 @@ class ComponentTreeEditor extends React.Component {
           (node.nodeType === 'prop' && !node.get('name')) ||
           (node.nodeType === 'component' && !node.get('name'))
         ) {
-          return ctx.set('data', ctx.data.push(node.id))
+          return ctx.set('data', ctx.data.push(node.path))
         }
         return ctx
       }
@@ -139,8 +139,10 @@ class ComponentTreeEditor extends React.Component {
 
     /** Only clear empty nodes if they are not currently being edited */
     const modifiedComponentTree = nodesToRemove.reduce(
-      (tree, nodeId) =>
-        nodeId === focusedNodeId ? tree : Helpers.removeNodeById(tree, nodeId),
+      (tree, nodePath) =>
+        nodePath.isSubset(focusedNodePath)
+          ? tree
+          : Helpers.removeNodeByPath(tree, nodePath),
       componentTree
     )
 
@@ -148,7 +150,7 @@ class ComponentTreeEditor extends React.Component {
     this.setState({ componentTree: modifiedComponentTree })
   }
 
-  focusNode(path: Path) {
+  focusNodeAttribute(path: Path, type?: string) {
     const { componentTree } = this.state
     const targetNode = componentTree.getIn(path, null)
 
@@ -165,20 +167,28 @@ class ComponentTreeEditor extends React.Component {
     if (targetNode) {
       this.setState({
         interactionState: {
-          focusedNodeId: targetNode.id,
+          focusedNodePath: path,
         },
       })
-    } else {
-      const emptyProp = Helpers.createEmptyProp()
+      /** We only create a new node if the type has been specified as a parameter */
+    } else if (type) {
+      let newNode = null
+      /** We convert from the path of the node attribute to the path of the new node */
+      const newPath = path.pop()
+      if (type === 'prop') {
+        newNode = Helpers.createEmptyProp(newPath)
+      }
+      console.log('new path: ', newPath)
+      console.log('new node: ', newNode)
       this.setState(
         prevState => ({
-          componentTree: componentTree.setIn(path, emptyProp),
+          componentTree: componentTree.setIn(newPath, newNode),
         }),
         () => {
           /** Only after the node has been created do we focus it */
           this.setState({
             interactionState: {
-              focusedNodeId: emptyProp.id,
+              focusedNodePath: path,
             },
           })
         }
@@ -186,16 +196,9 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
-  handleChangeNode = ({ nodeId, path, value }) => {
+  handleChangeNode = ({ path, value }) => {
     const { componentTree } = this.state
-
-    const modifiedComponentTree = Helpers.setNodeAttribute({
-      tree: componentTree,
-      path,
-      nodeId,
-      value,
-    })
-
+    const modifiedComponentTree = componentTree.setIn(path, value)
     this.props.onChange && this.props.onChange(modifiedComponentTree)
     this.setState({
       componentTree: modifiedComponentTree,
@@ -203,7 +206,7 @@ class ComponentTreeEditor extends React.Component {
     })
   }
 
-  handleBlur = (id: NodeIdentifierT) => {
+  handleBlur = (path: Path) => {
     /**
      * If the node being blurred is the node being focused then the focused node
      * should be set to null. If another node has alreadty been focused in the meantime,
@@ -212,10 +215,10 @@ class ComponentTreeEditor extends React.Component {
     this.blurTimeoutId = setTimeout(() => {
       this.setState(
         prevState =>
-          prevState.interactionState.focusedNodeId === id
+          prevState.interactionState.focusedNodePath === path
             ? {
                 interactionState: {
-                  focusedNodeId: null,
+                  focusedNodePath: null,
                 },
               }
             : {}
@@ -224,45 +227,37 @@ class ComponentTreeEditor extends React.Component {
     this.blurTimeoutId = null
   }
 
-  handleFocus = (id: NodeIdentifierT) => {
-    const { componentTree } = this.state
-    const path = Helpers.findNodeById(componentTree, id)
-    if (path) {
-      this.focusNode(path)
-    }
-  }
+  handleFocus = (path: Path) => this.focusNodeAttribute(path)
 
   /**
    * Handles traversing forwards in the editor via keyboard navigation.
    */
-  handleFocusNext = (id: NodeIdentifierT) => {
-    const { componentTree, traversalMap } = this.state
-    const path = Helpers.findNodeById(componentTree, id)
+  handleFocusNext = (path: Path) => {
+    const { traversalMap } = this.state
     const currentNode = traversalMap.get(path)
-    const nextPath = currentNode && currentNode.next
+    const nextNode = currentNode && currentNode.next
 
     /** If there is a next node in the traversalMap then we focus that node */
-    if (nextPath) {
-      this.focusNode(nextPath)
+    if (nextNode) {
+      this.focusNodeAttribute(nextNode.path, nextNode.type)
     }
   }
 
   /**
    * Handles traversing backwards in the editor via keyboard navigation.
    */
-  handleFocusPrevious = (id: NodeIdentifierT) => {
+  handleFocusPrevious = path => {
     const { componentTree, traversalMap } = this.state
-    const path = Helpers.findNodeById(componentTree, id)
     const currentNode = traversalMap.get(path)
-    let previousPath = currentNode && currentNode.previous
+    let previousNode = currentNode && currentNode.previous
 
     /** This prevents us from creating new nodes while traversing backwards */
-    while (previousPath) {
-      if (componentTree.hasIn(previousPath)) {
-        this.focusNode(previousPath)
+    while (previousNode) {
+      if (componentTree.hasIn(previousNode.path)) {
+        this.focusNodeAttribute(previousNode.path)
         return
       }
-      previousPath = traversalMap.get(previousPath).previous
+      previousNode = traversalMap.get(previousNode.path).previous
     }
   }
 
@@ -301,7 +296,7 @@ class ComponentTreeEditor extends React.Component {
           traversalMap: generateTraversalMap(modifiedTree),
         },
         () => {
-          this.focusNode(newPath)
+          this.focusNodeAttribute(newPath)
         }
       )
     }

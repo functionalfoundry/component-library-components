@@ -20,13 +20,14 @@ export { Path }
 
 const defaultPropValue: PropValueT = {
   id: null,
+  path: List(),
+  nodeType: 'prop-value',
   status: {
     isValid: true,
     message: '',
   },
-  nodeType: 'prop-value',
-  value: null,
   type: null,
+  value: null,
 }
 
 const PropValue = Record(defaultPropValue)
@@ -38,6 +39,7 @@ const defaultProp: PropT = {
   id: null,
   nodeType: 'prop',
   name: null,
+  path: List(),
   value: null,
 }
 
@@ -50,6 +52,7 @@ const defaultComponent: ComponentT = {
   id: null,
   nodeType: 'component',
   name: null,
+  path: List(),
   props: List(),
   children: List(),
 }

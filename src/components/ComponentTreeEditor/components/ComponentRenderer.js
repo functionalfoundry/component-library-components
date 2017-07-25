@@ -73,6 +73,7 @@ const ComponentRenderer = ({
   theme,
 }: Props) => {
   const componentName = componentNode.get('name')
+  const componentPath = componentNode.get('path')
   const componentProps = componentNode.get('props')
   const childComponents = componentNode.get('children')
   return (
@@ -93,7 +94,7 @@ const ComponentRenderer = ({
             options={completionData.components}
             nodeId={componentNode.get('id')}
             interactionState={interactionState}
-            path="name"
+            path={componentPath.push('name')}
             value={componentName}
           />
         </span>

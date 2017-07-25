@@ -1,5 +1,6 @@
 /** @flow */
 import React, { PureComponent } from 'react'
+import { is, List } from 'immutable'
 
 import type { InteractionStateT } from '../types'
 import EditableField from './EditableField'
@@ -32,7 +33,7 @@ type Props = {
   /** The ID of the componentTree node being modififed */
   nodeId: string,
   /** The path of the attribute being modified within the componentTree node (may be nested) */
-  path: string | Array<string>,
+  path: List<string>,
   /** The current value of the node attribute */
   value: string,
 }
@@ -40,22 +41,26 @@ type Props = {
 class EditableNodeAttribute extends PureComponent {
   props: Props
 
-  computeIsFocused = ({ interactionState, nodeId }: Props) =>
-    interactionState.focusedNodeId === nodeId
+  computeIsFocused = ({ interactionState, path }: Props) =>
+    is(interactionState.focusedNodePath, path)
+
+  handleBlur = () => this.props.onBlur && this.props.onBlur(this.props.path)
 
   handleChange = (value: string) => {
-    const { nodeId, onChangeNode, path } = this.props
-    onChangeNode({ nodeId, path, value })
+    const { onChangeNode, path } = this.props
+    onChangeNode({ path, value })
   }
 
+  handleFocus = () => this.props.onFocus && this.props.onFocus(this.props.path)
+
   handleFocusNext = () => {
-    const { nodeId, onFocusNext } = this.props
-    onFocusNext && onFocusNext(nodeId)
+    const { path, onFocusNext } = this.props
+    onFocusNext && onFocusNext(path)
   }
 
   handleFocusPrevious = () => {
-    const { nodeId, onFocusPrevious } = this.props
-    onFocusPrevious && onFocusPrevious(nodeId)
+    const { path, onFocusPrevious } = this.props
+    onFocusPrevious && onFocusPrevious(path)
   }
 
   render() {
@@ -63,7 +68,9 @@ class EditableNodeAttribute extends PureComponent {
       <EditableField
         {...this.props}
         isFocused={this.computeIsFocused(this.props)}
+        onBlur={this.handleBlur}
         onChange={this.handleChange}
+        onFocus={this.handleFocus}
         onFocusNext={this.handleFocusNext}
         onFocusPrevious={this.handleFocusPrevious}
       />

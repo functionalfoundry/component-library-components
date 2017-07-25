@@ -55,14 +55,17 @@ const regularTree = ComponentTree({
   root: Component({
     id: 'list',
     name: 'List',
+    path: List(['root']),
     props: List([
       Prop({
         id: 'list-title-prop',
         name: 'title',
         nodeType: 'prop',
+        path: List(['root', 'props', 0]),
         value: PropValue({
           id: 'list-title-prop-value',
           nodeType: 'prop-value',
+          path: List(['root', 'props', 0, 'value']),
           value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
@@ -71,9 +74,11 @@ const regularTree = ComponentTree({
         id: 'list-width-prop',
         name: 'listWidth',
         nodeType: 'prop',
+        path: List(['root', 'props', 1]),
         value: PropValue({
           id: 'list-width-prop-value',
           nodeType: 'prop-value',
+          path: List(['root', 'props', 1, 'value']),
           value: '10',
         }),
       }),
@@ -81,9 +86,11 @@ const regularTree = ComponentTree({
         id: 'list-on-select-prop',
         name: 'onSelect',
         nodeType: 'prop',
+        path: List(['root', 'props', 2]),
         value: PropValue({
           id: 'list-on-select-prop-value',
           nodeType: 'prop-value',
+          path: List(['root', 'props', 2, 'value']),
           type: 'function',
           value: 'handleSelect',
         }),
@@ -93,12 +100,15 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-1',
         name: 'ListItem',
+        path: List(['root', 'children', 0]),
         props: List([
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
+            path: List(['root', 'children', 0, 'props', 0]),
             value: PropValue({
               id: 'list-item-1-key-prop-value',
+              path: List(['root', 'children', 0, 'props', 0, 'value']),
               type: 'string',
               value: '0',
             }),
@@ -109,12 +119,15 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-2',
         name: 'ListItem',
+        path: List(['root', 'children', 1]),
         props: List([
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
+            path: List(['root', 'children', 1, 'props', 0]),
             value: PropValue({
               id: 'list-item-2-key-prop-value',
+              path: List(['root', 'children', 1, 'props', 0, 'value']),
               value: '1',
               type: 'string',
             }),
@@ -125,11 +138,13 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-3',
         name: 'ListItem',
+        path: List(['root', 'children', 2]),
         text: 'Third list item',
       }),
       Component({
         id: 'list-item-4',
         name: 'ListItem',
+        path: List(['root', 'children', 3]),
       }),
     ]),
   }),

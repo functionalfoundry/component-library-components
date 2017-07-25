@@ -46,7 +46,6 @@ type ContainerPropsT = {
   onFocusPrevious: Function,
   options?: Array<any>,
   optionRenderer: Function,
-  nodeId: string,
   value: string,
 }
 
@@ -101,7 +100,7 @@ class EditableFieldContainer extends React.Component {
   }
 
   focus() {
-    const { onFocus, nodeId } = this.props
+    const { onFocus } = this.props
     this.setState(
       prevState => ({
         isFocused: true,
@@ -111,7 +110,7 @@ class EditableFieldContainer extends React.Component {
          * it has been passed the lastest formatted value by formatValue.
          */
       () => {
-        onFocus && onFocus(nodeId)
+        onFocus && onFocus()
         if (
           this.editableText &&
           this.editableText.refs &&
@@ -160,11 +159,11 @@ class EditableFieldContainer extends React.Component {
   }
 
   handleStopEdit = () => {
-    const { onBlur, nodeId } = this.props
+    const { onBlur } = this.props
     this.setState({
       isFocused: false,
     })
-    onBlur && onBlur(nodeId)
+    onBlur && onBlur()
   }
 
   saveRefToContainer = (ref: any) => this.setState({ containerRef: ref })

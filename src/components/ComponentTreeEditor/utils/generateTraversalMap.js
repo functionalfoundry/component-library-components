@@ -17,8 +17,16 @@ export type TraversalMapT = Map<Path, TraversalMapNode>
  */
 const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
   const traversalResult = Helpers.traverse(componentTree, List(), (ctx, type) => {
+    const nodeType = ctx.node.nodeType
     if (type !== 'post') {
-      const data = ctx.data.push({ path: ctx.path, type: ctx.node.nodeType })
+      let path = ctx.node.path
+      if (nodeType === 'component' || nodeType === 'prop') {
+        path = path.push('name')
+      }
+      if (nodeType === 'prop-value') {
+        path = path.push('value')
+      }
+      const data = ctx.data.push({ path: path, type: nodeType })
       return ctx.set('data', data)
     }
     return ctx
@@ -38,8 +46,18 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
       const previousNode = acc.last()
       /** previous node will either be a component or a prop value */
       const newPath = previousNode.type === 'component'
-        ? previousNode.path.push('props').push(0)
-        : previousNode.path.pop().pop().push(previousNode.path.pop().last() + 1)
+        ? /** previousNode.path looks like:  ['root', 'children', 0, 'name']*/
+          previousNode.path.pop().push('props').push(0).push('name')
+        : /**
+           * Sets a path as the last sibling of the previous prop node.
+           * In this case previousNode.path looks like: ['root',..., 'props', 0, 'value', 'value']
+           */
+          previousNode.path
+            .pop()
+            .pop()
+            .pop()
+            .push(previousNode.path.pop().pop().last() + 1)
+            .push('name')
       return acc.push({ type: 'prop', path: newPath }).push(node)
     }
     return acc.push(node)
@@ -51,8 +69,8 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     return acc.set(
       node.path,
       TraversalMapNode({
-        previous: previousNode && previousNode.path,
-        next: nextNode && nextNode.path,
+        previous: previousNode,
+        next: nextNode,
       })
     )
   }, Map())
