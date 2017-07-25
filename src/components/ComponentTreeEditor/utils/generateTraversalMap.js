@@ -41,11 +41,11 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     if (index === 0) {
       return acc.push(node)
     }
-    /** All other components should have a "new node" injected before them in the list */
+    /** All other components should have a "new node" as well as an "add-button" injected before them in the list */
     if (node.type === 'component') {
       const previousNode = acc.last()
       /** previous node will either be a component or a prop value */
-      const newPath = previousNode.type === 'component'
+      const newPropPath = previousNode.type === 'component'
         ? /** previousNode.path looks like:  ['root', 'children', 0, 'name']*/
           previousNode.path.pop().push('props').push(0).push('name')
         : /**
@@ -58,7 +58,17 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
             .pop()
             .push(previousNode.path.pop().pop().last() + 1)
             .push('name')
-      return acc.push({ type: 'prop', path: newPath }).push(node)
+
+      const newAddButtonPath = previousNode.type === 'component'
+        ? previousNode.path.pop().push('add-button')
+        : previousNode.path.pop().pop().pop().pop().push('add-button')
+      return (
+        acc
+          .push({ type: 'prop', path: newPropPath })
+          /** Null type here indicates it will not be an 'actual' node in the componentTree */
+          .push({ type: null, path: newAddButtonPath })
+          .push(node)
+      )
     }
     return acc.push(node)
   }, List())

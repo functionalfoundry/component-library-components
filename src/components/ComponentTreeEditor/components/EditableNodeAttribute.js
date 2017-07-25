@@ -1,7 +1,8 @@
 /** @flow */
 import React, { PureComponent } from 'react'
-import { is, List } from 'immutable'
+import { is } from 'immutable'
 
+import { Path } from '../../../modules/ComponentTree'
 import type { InteractionStateT } from '../types'
 import EditableField from './EditableField'
 
@@ -33,7 +34,7 @@ type Props = {
   /** The ID of the componentTree node being modififed */
   nodeId: string,
   /** The path of the attribute being modified within the componentTree node (may be nested) */
-  path: List<string>,
+  path: Path,
   /** The current value of the node attribute */
   value: string,
 }

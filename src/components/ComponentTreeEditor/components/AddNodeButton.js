@@ -1,13 +1,17 @@
 import React from 'react'
 import Theme from 'js-theme'
+import { is } from 'immutable'
 
 import { Colors } from '@workflo/styles'
 import { Icon, AlignedPointer } from '@workflo/components'
 
+import { Path } from '../../../modules/ComponentTree'
+import type { InteractionStateT } from '../types'
 import { options, ADD_SIBLING } from '../constants/addPropNode'
 import OptionChooser from './OptionChooser'
 
 type ContainerPropsT = {
+  interactionState: InteractionStateT,
   isFocused: boolean,
   /**
    * Indicates whether the 'Add Sibling' option should be available.
@@ -20,6 +24,7 @@ type ContainerPropsT = {
   isVisible: boolean,
   nodeId: string,
   onInsertNode: Function,
+  path: Path,
   theme: Object,
 }
 
@@ -43,21 +48,57 @@ class AddNodeButtonContainer extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps: ContainerPropsT) {
+    if (
+      this.props.interactionState.focusedNodePath !==
+      nextProps.interactionState.focusedNodePath
+    ) {
+      if (this.computeIsFocused(nextProps)) {
+        this.focus()
+      } else {
+        this.setState({ isFocused: false })
+      }
+    }
+  }
+
   blur = () => this.setState({ isFocused: false })
 
-  focus = () => this.setState({ isFocused: true })
+  computeIsFocused = ({ interactionState, path }: Props) =>
+    is(interactionState.focusedNodePath, path)
 
-  handleBlur = () => this.setState({ isFocused: false })
+  focus = () => {
+    this.setState({ isFocused: true }, () => {
+      console.log('triggering focus')
+      this.state.container && this.state.container.focus()
+    })
+  }
 
   handleClick = () => this.focus()
-
-  handleFocus = () => this.focus()
 
   handleSelect = index => {
     const { nodeId, onInsertNode } = this.props
     // TODO: Put these in a constants file
     onInsertNode(nodeId, this.getOptions()[index].type)
     this.blur()
+  }
+
+  handleKeyDown = (event: SyntheticKeyboardEvent) => {
+    const { onFocusNext, onFocusPrevious, path } = this.props
+    if (event.keyCode === 46 || event.keyCode === 8) {
+      /** This allows the user to repeatedly hit delete to clear fields */
+      onFocusPrevious(path)
+      event.preventDefault()
+    }
+
+    if (event.keyCode === 9 && !event.shiftKey) {
+      onFocusNext(path)
+      event.preventDefault()
+    }
+
+    if (event.keyCode === 9 && event.shiftKey) {
+      onFocusPrevious(path)
+      event.preventDefault()
+    }
   }
 
   getOptions = () => {
@@ -75,9 +116,8 @@ class AddNodeButtonContainer extends React.Component {
       <span
         {...theme.container}
         ref={this.storeContainer}
-        onBlur={this.handleBlur}
         onClick={this.handleClick}
-        onFocus={this.handleFocus}
+        onKeyDown={this.handleKeyDown}
         tabIndex="0"
       >
         <ThemedAddNodeButton

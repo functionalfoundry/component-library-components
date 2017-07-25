@@ -9,7 +9,6 @@ import type { CompletionDataT } from '../../types/Completion'
 import {
   type ComponentTree,
   Helpers,
-  type NodeIdentifierT,
   Path,
   type TraverseContext,
 } from '../../modules/ComponentTree'
@@ -164,7 +163,7 @@ class ComponentTreeEditor extends React.Component {
     }
 
     /** If the targetNode exists we focus it, otherwise we must create it first */
-    if (targetNode) {
+    if (targetNode || !type) {
       this.setState({
         interactionState: {
           focusedNodePath: path,
@@ -178,8 +177,6 @@ class ComponentTreeEditor extends React.Component {
       if (type === 'prop') {
         newNode = Helpers.createEmptyProp(newPath)
       }
-      console.log('new path: ', newPath)
-      console.log('new node: ', newNode)
       this.setState(
         prevState => ({
           componentTree: componentTree.setIn(newPath, newNode),
