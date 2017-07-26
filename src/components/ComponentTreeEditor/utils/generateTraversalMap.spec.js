@@ -1,4 +1,4 @@
-import { is, List, Map } from 'immutable'
+import { List, Map } from 'immutable'
 
 import generateTraversalMap from './generateTraversalMap'
 import { regularTree, treeFromRaw } from '../../../../mocks/componentTreeEditor'
@@ -241,11 +241,11 @@ const traversalMapFromRaw = {
 test('generateTraversalMap: Generates a correct traversal map from hardcoded ComponentTree', () => {
   const result = generateTraversalMap(regularTree)
   validateTraversalMapType(result)
-  expect(JSON.stringify(result.toJS())).toBe(JSON.stringify(traversalMapFromHardcoded))
+  expect(result.toJS()).toEqual(traversalMapFromHardcoded)
 })
 
 test('generateTraversalMap: Generates a correct traversal map from ComponentTree constructed from raw data', () => {
   const result = generateTraversalMap(treeFromRaw)
   validateTraversalMapType(result)
-  expect(JSON.stringify(result.toJS())).toBe(JSON.stringify(traversalMapFromRaw))
+  expect(JSON.parse(JSON.stringify(result.toJS()))).toEqual(traversalMapFromRaw)
 })
