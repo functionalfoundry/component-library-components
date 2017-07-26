@@ -68,7 +68,6 @@ class AddNodeButtonContainer extends React.Component {
 
   focus = () => {
     this.setState({ isFocused: true }, () => {
-      console.log('triggering focus')
       this.state.container && this.state.container.focus()
     })
   }

@@ -208,9 +208,10 @@ const updateNodesAtPath = (
 let newComponentCount = 0
 
 // TODO: What is the best way to generate IDs?
-const createEmptyComponent = () => {
+const createEmptyComponent = (path: Path) => {
   const newComponent = Component({
     id: `new-component-${newComponentCount}`,
+    path,
     props: List(),
   })
   newComponentCount++
