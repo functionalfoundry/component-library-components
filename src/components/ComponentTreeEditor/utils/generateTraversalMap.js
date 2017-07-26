@@ -32,46 +32,50 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     return ctx
   })
 
-  const traversalList = traversalResult.get('data')
+  /** We put a dummy node at the end, which we remove later */
+  const traversalList = traversalResult.get('data').push({ path: null, type: null })
   /**
    * Add nodes representing new props as necessary.
    */
-  const finalTraversalList = traversalList.reduce((acc, node, index) => {
-    /** Don't want to do this logic for the root component */
-    if (index === 0) {
-      return acc.push(node)
-    }
-    /** All other components should have a "new node" as well as an "add-button" injected before them in the list */
-    if (node.type === 'component') {
-      const previousNode = acc.last()
-      /** previous node will either be a component or a prop value */
-      const newPropPath = previousNode.type === 'component'
-        ? /** previousNode.path looks like:  ['root', 'children', 0, 'name']*/
-          previousNode.path.pop().push('props').push(0).push('name')
-        : /**
+  const finalTraversalList = traversalList
+    .reduce((acc, node, index) => {
+      /** Don't want to do this logic for the root component */
+      if (index === 0) {
+        return acc.push(node)
+      }
+      /** All other components should have a "new node" as well as an "add-button" injected before them in the list */
+      if (node.type === 'component' || !node.type) {
+        const previousNode = acc.last()
+        /** previous node will either be a component or a prop value */
+        const newPropPath = previousNode.type === 'component'
+          ? /** previousNode.path looks like:  ['root', 'children', 0, 'name']*/
+            previousNode.path.pop().push('props').push(0).push('name')
+          : /**
            * Sets a path as the last sibling of the previous prop node.
            * In this case previousNode.path looks like: ['root',..., 'props', 0, 'value', 'value']
            */
-          previousNode.path
-            .pop()
-            .pop()
-            .pop()
-            .push(previousNode.path.pop().pop().last() + 1)
-            .push('name')
+            previousNode.path
+              .pop()
+              .pop()
+              .pop()
+              .push(previousNode.path.pop().pop().last() + 1)
+              .push('name')
 
-      const newAddButtonPath = previousNode.type === 'component'
-        ? previousNode.path.pop().push('add-button')
-        : previousNode.path.pop().pop().pop().pop().push('add-button')
-      return (
-        acc
-          .push({ type: 'prop', path: newPropPath })
-          /** Null type here indicates it will not be an 'actual' node in the componentTree */
-          .push({ type: null, path: newAddButtonPath })
-          .push(node)
-      )
-    }
-    return acc.push(node)
-  }, List())
+        const newAddButtonPath = previousNode.type === 'component'
+          ? previousNode.path.pop().push('add-button')
+          : previousNode.path.pop().pop().pop().pop().push('add-button')
+        return (
+          acc
+            .push({ type: 'prop', path: newPropPath })
+            /** Null type here indicates it will not be an 'actual' node in the componentTree */
+            .push({ type: null, path: newAddButtonPath })
+            .push(node)
+        )
+      }
+      return acc.push(node)
+    }, List())
+    /** Filter out the dummy node we created earlier */
+    .filter(node => !!node.path)
 
   const traversalMap = finalTraversalList.reduce((acc, node, index, list) => {
     const previousNode = index === 0 ? null : list.get(index - 1, null)
