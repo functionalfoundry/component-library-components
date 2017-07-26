@@ -156,6 +156,21 @@
     rgba-regex "^1.0.0"
     xtend "^4.0.0"
 
+"@workflo/css-shorthand-expand@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@workflo/css-shorthand-expand/-/css-shorthand-expand-1.1.1.tgz#ebba5de4dd7bb6c618da54867d00e7fca94c0c91"
+  dependencies:
+    css-color-names "0.0.1"
+    css-url-regex "0.0.1"
+    hex-color-regex "^1.0.1"
+    hsl-regex "^1.0.0"
+    hsla-regex "^1.0.0"
+    map-obj "^1.0.0"
+    repeat-element "^1.1.0"
+    rgb-regex "^1.0.1"
+    rgba-regex "^1.0.0"
+    xtend "^4.0.0"
+
 "@workflo/styles@^0.7.10", "@workflo/styles@^0.7.11":
   version "0.7.11"
   resolved "https://registry.yarnpkg.com/@workflo/styles/-/styles-0.7.11.tgz#9def2229c86a549d3840ee0b452f3fcc9e8d6b90"
@@ -3447,7 +3462,16 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
-js-theme@^0.8.0, js-theme@^0.8.1:
+js-theme@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.2.tgz#4932efde9aae16f70a7543dd725a513f1f461c5a"
+  dependencies:
+    "@workflo/aphrodite" "0.7.4"
+    "@workflo/css-shorthand-expand" "1.1.1"
+    invariant "^2.2.1"
+    lodash "^4.15.0"
+
+js-theme@^0.8.0:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/js-theme/-/js-theme-0.8.1.tgz#b85f69863855c363d348867ce4c6af51279cf346"
   dependencies:
