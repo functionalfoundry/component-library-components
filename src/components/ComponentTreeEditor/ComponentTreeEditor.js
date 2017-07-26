@@ -151,7 +151,7 @@ class ComponentTreeEditor extends React.Component {
 
   focusNodeAttribute(path: Path, type?: string) {
     const { componentTree } = this.state
-    const targetNode = componentTree.getIn(path, null)
+    const targetNode = componentTree.getIn(path.pop(), null)
 
     /**
      *  If a blur event is immediately followed by a focus event, we cancel the
@@ -233,7 +233,6 @@ class ComponentTreeEditor extends React.Component {
     const { traversalMap } = this.state
     const currentNode = traversalMap.get(path)
     const nextNode = currentNode && currentNode.next
-
     /** If there is a next node in the traversalMap then we focus that node */
     if (nextNode) {
       this.focusNodeAttribute(nextNode.path, nextNode.type)

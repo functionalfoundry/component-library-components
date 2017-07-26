@@ -120,24 +120,26 @@ const ComponentRenderer = ({
         <span>&nbsp;</span>
       </Line>
       {componentProps
-        .map((propNode, index) => (
-          <PropRenderer
-            completionData={completionData}
-            componentTree={componentTree}
-            componentNode={componentNode}
-            key={index}
-            indentLevel={indentLevel + 1}
-            interactionState={interactionState}
-            onBlur={onBlur}
-            onChangeNode={onChangeNode}
-            onFocus={onFocus}
-            onFocusNext={onFocusNext}
-            onFocusPrevious={onFocusPrevious}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            propNode={propNode}
-          />
-        ))
+        .map((propNode, index) => {
+          return (
+            <PropRenderer
+              completionData={completionData}
+              componentTree={componentTree}
+              componentNode={componentNode}
+              key={index}
+              indentLevel={indentLevel + 1}
+              interactionState={interactionState}
+              onBlur={onBlur}
+              onChangeNode={onChangeNode}
+              onFocus={onFocus}
+              onFocusNext={onFocusNext}
+              onFocusPrevious={onFocusPrevious}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
+              propNode={propNode}
+            />
+          )
+        })
         .toArray()}
       {componentProps.count() > 0 &&
         <Line
