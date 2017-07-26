@@ -18,6 +18,8 @@ import Panel from '../Panel'
 import QuickActionSelection from '../QuickActionSelection'
 import QuickActionButton from '../QuickActionButton'
 import PanelHeader from '../PanelHeader'
+import PanelContent from '../PanelContent'
+import PanelToolbar from '../PanelToolbar'
 import {
   componentTree,
   components,
@@ -44,43 +46,6 @@ const header = (
         icon="duplicate"
         label="Duplicate"
         onClick={action('onClick')}
-      />,
-      <QuickAction
-        icon="alignment"
-        label="Alignment"
-        shade="Light"
-        input={{
-          type: 'Icon',
-          value: 'align-left',
-          options: [
-            {
-              name: 'align-left',
-              hint: 'Left',
-            },
-            {
-              name: 'align-center',
-              hint: 'Center',
-            },
-            {
-              name: 'align-right',
-              hint: 'Right',
-            },
-          ],
-        }}
-        onClick={action('onClick')}
-        showLabelInButton
-      />,
-      <QuickAction
-        icon="theme"
-        label="Theme"
-        shade="Light"
-        input={{
-          type: 'Radio',
-          value: 'Light',
-          options: ['Light', 'Grey', 'Dark'],
-        }}
-        onClick={action('onClick')}
-        showLabelInButton
       />,
     ]}
     primaryAction={{
@@ -295,8 +260,68 @@ storiesOf('AppShell', module)
         bottomPanel,
         header,
         leftNav,
-        content: <FetchAndRender />,
-        rightPanel,
+        content: (
+          <Panel>
+            <PanelHeader>
+              <PanelToolbar align="Right">
+                <QuickAction
+                  icon="alignment"
+                  label="Alignment"
+                  shade="Light"
+                  input={{
+                    type: 'Icon',
+                    value: 'align-left',
+                    options: [
+                      {
+                        name: 'align-left',
+                        hint: 'Left',
+                      },
+                      {
+                        name: 'align-center',
+                        hint: 'Center',
+                      },
+                      {
+                        name: 'align-right',
+                        hint: 'Right',
+                      },
+                    ],
+                  }}
+                  onClick={action('onClick')}
+                  paddingBottom={16}
+                  showLabelInButton
+                />
+                <QuickAction
+                  icon="theme"
+                  label="Theme"
+                  shade="Light"
+                  input={{
+                    type: 'Radio',
+                    value: 'Light',
+                    options: ['Light', 'Grey', 'Dark'],
+                  }}
+                  onClick={action('onClick')}
+                  paddingBottom={16}
+                  showLabelInButton
+                />
+              </PanelToolbar>
+            </PanelHeader>
+            <PanelContent>
+              <FetchAndRender />
+            </PanelContent>
+          </Panel>
+        ),
+        rightPanel: (
+          <Panel>
+            <PanelHeader showLeftBorder>
+              <PanelToolbar align="Left">
+                Editor
+              </PanelToolbar>
+            </PanelHeader>
+            <PanelContent>
+              {rightPanel}
+            </PanelContent>
+          </Panel>
+        ),
       }}
     />
   ))

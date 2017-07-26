@@ -247,6 +247,7 @@ const headerCellBase = Object.assign({}, cellBorder, {
   color: Colors.grey200,
   userSelect: 'none',
   display: 'flex',
+  paddingBottom: 20,
 })
 
 const selectedStyle = {

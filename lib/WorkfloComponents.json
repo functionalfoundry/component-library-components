@@ -38,6 +38,7 @@
   "Panel",
   "PanelContent",
   "PanelHeader",
+  "PanelToolbar",
   "PopoverError",
   "Preferences",
   "ProjectPane",

@@ -24,16 +24,12 @@ type PropsT = {
   onClick: Function,
   onOpen: Function,
   onClose: Function,
+  paddingTop?: number,
+  paddingBottom?: number,
 }
 
 class QuickAction extends React.Component {
   props: PropsT
-  static defaultProps = {
-    input: {},
-    onChange: () => {},
-    shade: 'Dark',
-    iconKind: 'Secondary',
-  }
 
   render() {
     return (
@@ -63,6 +59,8 @@ const Content = ({
   onClick,
   onOpen,
   onClose,
+  paddingTop,
+  paddingBottom,
 }: PropsT) => {
   if (!input && !input.type) return null
   switch (input.type) {
@@ -79,6 +77,8 @@ const Content = ({
           iconKind={iconKind}
           icon={icon}
           onClick={onClick}
+          paddingTop={paddingTop}
+          paddingBottom={paddingBottom}
         >
           <Radios
             options={input.options}
@@ -141,7 +141,7 @@ const Content = ({
           >
             <View
               theme={{
-                view: getButtonWrapperStyle(),
+                view: getButtonWrapperStyle({ paddingTop, paddingBottom }),
               }}
               onClick={onClick}
             >
@@ -162,7 +162,12 @@ const Content = ({
       return (
         <View
           theme={{
-            view: getButtonWrapperStyle(true, true),
+            view: getButtonWrapperStyle({
+              isButton: true,
+              hasLabel: true,
+              paddingTop,
+              paddingBottom,
+            }),
           }}
           onClick={onClick}
         >
@@ -189,6 +194,7 @@ const Content = ({
           iconKind={iconKind}
           icon={icon}
           onClick={onClick}
+          paddingBottom={paddingBottom}
         >
           <IconButtonGroup
             onChange={value => onChange(value)}
@@ -217,6 +223,15 @@ const Content = ({
   }
 }
 
+QuickAction.defaultProps = {
+  input: {},
+  onChange: () => {},
+  shade: 'Dark',
+  iconKind: 'Secondary',
+  paddingTop: 4,
+  paddingBottom: 4,
+}
+
 const BaseQuickAction = ({
   onOpen,
   onClose,
@@ -227,6 +242,8 @@ const BaseQuickAction = ({
   iconKind,
   icon,
   onClick,
+  paddingTop,
+  paddingBottom,
 }) => (
   <AlignedPointer
     position="Bottom"
@@ -257,7 +274,7 @@ const BaseQuickAction = ({
   >
     <View
       theme={{
-        view: getButtonWrapperStyle(),
+        view: getButtonWrapperStyle({ paddingTop, paddingBottom }),
       }}
     >
       <Icon
@@ -301,7 +318,12 @@ const buttonTextStyle = {
   userSelect: 'none',
 }
 
-const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
+const getButtonWrapperStyle = ({
+  isButton = false,
+  hasLabel = false,
+  paddingTop = 4,
+  paddingBottom = 4,
+}) => {
   let buttonWrapperStyle = {
     flexDirection: 'row',
     alignItems: 'center',
@@ -323,7 +345,8 @@ const getButtonWrapperStyle = (isButton = false, hasLabel = false) => {
     buttonWrapperStyle.top = 4 // Hack because AlignedTrigger offsets the height
     buttonWrapperStyle.height = 40
   }
-  buttonWrapperStyle.padding = '4px 10px 4px 4px'
+  console.log('paddingBottom: ', paddingBottom)
+  buttonWrapperStyle.padding = `${paddingTop}px 10px ${paddingBottom}px 4px`
   return buttonWrapperStyle
 }
 
