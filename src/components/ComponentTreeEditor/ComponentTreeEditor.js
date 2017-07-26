@@ -260,23 +260,29 @@ class ComponentTreeEditor extends React.Component {
 
   handleInsertNode = (id, type) => {
     const { componentTree } = this.state
-    const path = Helpers.findNodeById(componentTree, id)
+    const sourcePath = Helpers.findNodeById(componentTree, id)
+    const sourceNode = componentTree.getIn(sourcePath)
     let targetId = id
     let newNode = null
+    let newPath = null
     let modifiedTree = componentTree
     if (type === ADD_PROP) {
-      newNode = Helpers.createEmptyProp()
+      const propCount = sourceNode.props.count()
+      newPath = sourceNode.path.push('props').push(propCount)
+      newNode = Helpers.createEmptyProp(newPath)
       modifiedTree = Helpers.insertProp(componentTree, targetId, newNode)
     }
 
     if (type === ADD_SIBLING) {
+      const path = sourceNode.path
       targetId = componentTree.getIn(path.pop().pop()).get('id')
     }
 
     if (type === ADD_CHILD || type === ADD_SIBLING) {
-      newNode = Helpers.createEmptyComponent()
       const targetNode = Helpers.getNodeById(componentTree, targetId)
       const insertionIndex = targetNode.children.count()
+      newPath = targetNode.path.push('children').push(insertionIndex)
+      newNode = Helpers.createEmptyComponent(newPath)
       modifiedTree = Helpers.insertComponent(
         componentTree,
         targetId,
@@ -286,14 +292,15 @@ class ComponentTreeEditor extends React.Component {
     }
 
     if (newNode) {
-      const newPath = Helpers.findNodeById(modifiedTree, newNode.id)
       this.setState(
         {
           componentTree: modifiedTree,
           traversalMap: generateTraversalMap(modifiedTree),
         },
         () => {
-          this.focusNodeAttribute(newPath)
+          if (newPath) {
+            this.focusNodeAttribute(newPath.push('name'))
+          }
         }
       )
     }
