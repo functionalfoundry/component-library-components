@@ -54,6 +54,8 @@
   "globals": {
     "fetch": false,
     "SyntheticEvent": false,
-    "SyntheticKeyboardEvent": false
+    "SyntheticKeyboardEvent": false,
+    "test": false,
+    "expect": false
   }
 }
