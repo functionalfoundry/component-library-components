@@ -6,6 +6,7 @@ import Animations from '@workflo/styles/lib/Animations'
 import Theme from 'js-theme'
 import ProjectPane from '../ProjectPane'
 import HorizontalSeparator from '../HorizontalSeparator'
+import QuickActionButton from '../QuickActionButton'
 
 type Props = {
   /** Filter state to display in left nav */
@@ -47,19 +48,22 @@ const darkHoverAndActive = ({ isKeyboardFocused }, isSelected) => {
     cursor: 'pointer',
     color: 'white',
     ':hover': {
-      backgroundColor: Colors.grey600,
+      backgroundColor: Colors.grey800,
     },
   }
 
   if (isKeyboardFocused) {
     return {
       ...base,
-      backgroundColor: Colors.grey600,
+      backgroundColor: Colors.grey800,
     }
   } else if (isSelected) {
     return {
       ...base,
-      backgroundColor: Colors.grey700,
+      backgroundColor: '#474d50',
+      ':hover': {
+        backgroundColor: '#4a5053',
+      },
     }
   }
   return base
@@ -144,6 +148,13 @@ class ComponentsLeftNav extends React.Component {
               },
             }}
           />
+          <div {...theme.galleryButtonWrapper}>
+            <QuickActionButton
+              icon="grid"
+              label="Components Browser"
+              onClick={() => {}}
+            />
+          </div>
           <TextInput
             disableUnderline
             placeholder="Filter"
@@ -151,14 +162,15 @@ class ComponentsLeftNav extends React.Component {
             theme={{
               inputContain: {
                 backgroundColor: '#23292b',
-                // borderStyle: 'solid',
-                // borderWidth: 0.5,
-                // borderColor: Colors.grey700,
+                borderStyle: 'solid',
+                borderWidth: 0.5,
+                borderColor: '#404642',
                 padding: 3,
                 display: 'flex',
                 flex: 1,
                 maxWidth: 'none',
                 width: 'auto',
+                marginTop: Spacing.tiny,
               },
               textInput: {
                 color: 'white',
@@ -253,6 +265,9 @@ const defaultTheme = {
     marginLeft: SEPARATOR_MARGIN,
   },
   projectPane: {},
+  galleryButtonWrapper: {
+    marginBottom: 2,
+  },
 }
 
 export default Theme('ComponentsLeftname', defaultTheme)(ComponentsLeftNav)

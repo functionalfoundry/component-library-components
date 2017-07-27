@@ -71,14 +71,14 @@ const defaultTheme = ({ tabletShowLeftPanel }) => ({
   leftPanel: {
     flexBasis: 300,
     overflow: 'hidden',
-    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+    [`@media(max-width: ${BreakPoints.tabletLarge}px)`]: {
       flexBasis: 0,
     },
   },
   rightPanel: {
     flexBasis: 400,
     overflow: 'hidden',
-    [`@media(max-width: ${BreakPoints.tablet}px)`]: {
+    [`@media(max-width: ${BreakPoints.tabletLarge}px)`]: {
       flexBasis: 0,
     },
   },

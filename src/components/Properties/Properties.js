@@ -343,6 +343,7 @@ const defaultTheme = {
   }),
   propHeader: Object.assign({}, headerCellBase, {
     paddingLeft: Spacing.small,
+    paddingBottom: 8,
     color: 'white',
     display: 'flex',
     alignItems: 'center',

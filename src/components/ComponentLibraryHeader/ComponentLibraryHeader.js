@@ -61,9 +61,12 @@ const ComponentLibraryHeader = ({
           <div {...theme.quickActionsWrapper}>
             <QuickActions quickActions={quickActions} theme={theme} />
           </div>
-          {secondaryActions &&
-            <SecondaryActions secondaryActions={secondaryActions} theme={theme} />}
-          {primaryAction && <PrimaryAction primaryAction={primaryAction} theme={theme} />}
+          <div {...theme.actionsWrapper}>
+            {secondaryActions &&
+              <SecondaryActions secondaryActions={secondaryActions} theme={theme} />}
+            {primaryAction &&
+              <PrimaryAction primaryAction={primaryAction} theme={theme} />}
+          </div>
         </div>
       </View>
     </View>
@@ -169,12 +172,18 @@ const defaultTheme = {
   quickActionsWrapper: {
     marginLeft: 30,
     marginRight: 30,
+    [`@media(max-width: ${1100}px)`]: {
+      display: 'none',
+    },
   },
   quickActionWrapper: {
     display: 'flex',
   },
   secondaryActions: {
     display: 'flex',
+    [`@media(max-width: ${1100}px)`]: {
+      display: 'none',
+    },
   },
   header: {
     display: 'flex',
@@ -196,6 +205,10 @@ const defaultTheme = {
     alignItems: 'center',
     justifyContent: 'flex-end',
     flex: '0 auto',
+    [`@media(max-width: ${1100}px)`]: {
+      flexDirection: 'column-reverse',
+      alignItems: 'flex-end',
+    },
   },
   separator: {
     flex: '0 1 auto',
@@ -213,6 +226,14 @@ const defaultTheme = {
   primaryActionWrapper: {
     display: 'flex',
     alignSelf: 'flex-end',
+  },
+  actionsWrapper: {
+    display: 'flex',
+    flexGrow: 1,
+    flexDirection: 'row',
+    [`@media(max-width: ${500}px)`]: {
+      display: 'none',
+    },
   },
 }
 

@@ -53,6 +53,7 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
   content: {
     flexGrow: 1,
     paddingTop: 4,
+    maxWidth: '100%',
   },
   header: {
     // flexBasis: 100,
@@ -74,6 +75,7 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
   },
   page: {
     flexGrow: 1,
+    maxWidth: '100%',
   },
 })
 
