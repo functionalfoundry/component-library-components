@@ -2,13 +2,15 @@
 
 import { List, Record } from 'immutable'
 
-import type {
-  ComponentTreeNodeT,
-  ComponentTreePathT,
-  NodeIdentifierT,
-  Path,
-} from './types'
-import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
+import type { ComponentTreePathT, NodeIdentifierT, Path } from './types'
+import {
+  Component,
+  ComponentTree,
+  type ComponentTreeNodeT,
+  Prop,
+  PropValue,
+} from './ComponentTree'
+import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants'
 
 /**
  * Tree traversal
@@ -144,6 +146,34 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
  */
 
 /**
+ * Finds the closest ancestor of a given node (specified by a path), which passes
+ * a provided predicate. If no predicate is provided, will return the closest ancestor.
+ */
+
+const findClosestAncestor = (
+  tree: ComponentTree,
+  path: Path,
+  predicate: Function = () => true
+): ?Object => {
+  const parentPath = path.pop()
+  if (parentPath.count() === 0) {
+    return null
+  }
+  const parentNode = tree.getIn(parentPath)
+  if (!parentNode) {
+    throw new Error(
+      'findClosestAncestor(): path not found in tree - ' + JSON.stringify(path)
+    )
+  }
+  /** If node is not found returns null */
+  if (predicate(parentNode)) {
+    return parentNode
+  } else {
+    return findClosestAncestor(tree, parentPath, predicate)
+  }
+}
+
+/**
  * Returns path of node with the given ID
  */
 const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
@@ -202,21 +232,59 @@ const updateNodesAtPath = (
 ): ComponentTree => tree.updateIn(path, updater)
 
 /**
- * Component insertion
+ * Node Insertion
  */
 
-let newComponentCount = 0
-
-// TODO: What is the best way to generate IDs?
-const createEmptyComponent = (path: Path) => {
-  const newComponent = Component({
-    id: `new-component-${newComponentCount}`,
+const getInsertionPath = (
+  tree: ComponentTree,
+  path: Path,
+  type: ADD_PROP | ADD_CHILD | ADD_SIBLING
+) => {
+  const componentNode = findClosestAncestor(
+    tree,
     path,
-    props: List(),
-  })
-  newComponentCount++
-  return newComponent
+    node => node.nodeType === 'component'
+  )
+  if (!componentNode) {
+    throw new Error('getInsertionPath(): Invalid path/tree combination supplied')
+  }
+  const componentPath = componentNode.path
+  /** Inserts props at the end */
+  if (type === ADD_PROP) {
+    const propCount = componentNode.props.count()
+    return componentPath.push('props').push(propCount)
+  }
+  /** Inserts new components at the end */
+  if (type === ADD_CHILD) {
+    const childCount = componentNode.children.count()
+    return componentPath.push('children').push(childCount)
+  }
+  if (type === ADD_SIBLING) {
+    if (componentPath.pop().pop().count() === 0) {
+      throw new Error('getInsertionPath(): Cant insert sibling from root node')
+    }
+    const componentIndex = componentPath.last()
+    return componentPath.pop().push(componentIndex + 1)
+  }
+  throw new Error('getInsertionPath(): Invalid type supplied')
 }
+
+/**
+ * Inserts node at a given path, either overriding the value already there, or shifting it
+ * in the case where the parent is a List.
+ */
+const insertNodeAtPath = (tree, path, node) => {
+  const parentTargetPath = path.pop()
+  const parentTargetNode = tree.getIn(parentTargetPath)
+  if (List.isList(parentTargetNode)) {
+    return tree.setIn(parentTargetPath, parentTargetNode.insert(path.last(), node))
+  }
+  return tree.setIn(path, node)
+}
+
+/**
+ * Component insertion
+ */
 
 const insertComponent = (
   tree: ComponentTree,
@@ -298,20 +366,6 @@ const setComponentText = (
 /**
  * Prop insertion
  */
-
-let newPropCount = 0
-
-// TODO: What is the best way to generate IDs?
-const createEmptyProp = (path: Path) => {
-  const newPropValue = PropValue({
-    id: `new-prop-value-${newPropCount}`,
-    path: path.push('value'),
-    value: '',
-  })
-  const newProp = Prop({ id: `new-prop-${newPropCount}`, path, value: newPropValue })
-  newPropCount++
-  return newProp
-}
 
 const insertProp = (
   tree: ComponentTree,
@@ -442,6 +496,7 @@ const getRawTreeData = (tree: ComponentTree) => tree.toJS()
 export default {
   // Generic tree operations
   traverse,
+  findClosestAncestor,
   findNodeById,
   getNodeById,
   getParent,
@@ -450,12 +505,12 @@ export default {
   removeNodeByPath,
   updateNodesAtPath,
   // Higher-level, semantic tree operations
-  createEmptyComponent,
+  getInsertionPath,
+  insertNodeAtPath,
   insertComponent,
   removeComponent,
   setComponentName,
   setComponentText,
-  createEmptyProp,
   insertProp,
   removeProp,
   setNodeAttribute,

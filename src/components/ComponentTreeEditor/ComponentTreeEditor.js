@@ -1,21 +1,24 @@
 /** @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import { List } from 'immutable'
+import { is, List } from 'immutable'
 
 import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../types/Completion'
 import {
+  Component,
   type ComponentTree,
   Helpers,
   Path,
+  Prop,
+  PropValue,
   type TraverseContext,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
 import type { InteractionStateT } from './types'
 import generateTraversalMap, { type TraversalMapT } from './utils/generateTraversalMap'
-import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants/addPropNode'
+import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from '../../modules/ComponentTree/constants'
 
 /**
  * Props
@@ -108,9 +111,35 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
+  newPropCount = 0
+  createEmptyProp = path => {
+    const newPropValue = PropValue({
+      id: `new-prop-value-${this.newPropCount}`,
+      path: path.push('value'),
+      value: '',
+    })
+    const newProp = Prop({
+      id: `new-prop-${this.newPropCount}`,
+      path,
+      value: newPropValue,
+    })
+    this.newPropCount++
+    return newProp
+  }
+
+  newComponentCount = 0
+  createEmptyComponent = path => {
+    const newComponent = Component({
+      id: `new-component-${this.newComponentCount}`,
+      path,
+      props: List(),
+    })
+    this.newComponentCount++
+    return newComponent
+  }
+
   /** Deletes empty nodes that are currently not in focus */
   clearEmptyNodes = () => {
-    const { onChange } = this.props
     const { componentTree, interactionState } = this.state
     const focusedNodePath = interactionState.focusedNodePath
     /** Find empty nodes */
@@ -145,8 +174,9 @@ class ComponentTreeEditor extends React.Component {
       componentTree
     )
 
-    onChange && onChange(modifiedComponentTree)
-    this.setState({ componentTree: modifiedComponentTree })
+    if (!is(modifiedComponentTree, componentTree)) {
+      this.updateComponentTree(modifiedComponentTree)
+    }
   }
 
   focusNodeAttribute(path: Path, type?: string) {
@@ -160,6 +190,7 @@ class ComponentTreeEditor extends React.Component {
      */
     if (this.blurTimeoutId) {
       clearTimeout(this.blurTimeoutId)
+      this.blurTimeoutId = null
     }
 
     /** If the targetNode exists we focus it, otherwise we must create it first */
@@ -175,32 +206,21 @@ class ComponentTreeEditor extends React.Component {
       /** We convert from the path of the node attribute to the path of the new node */
       const newPath = path.pop()
       if (type === 'prop') {
-        newNode = Helpers.createEmptyProp(newPath)
+        newNode = this.createEmptyProp(newPath)
       }
-      this.setState(
-        prevState => ({
-          componentTree: componentTree.setIn(newPath, newNode),
-        }),
-        () => {
-          /** Only after the node has been created do we focus it */
-          this.setState({
-            interactionState: {
-              focusedNodePath: path,
-            },
-          })
-        }
-      )
+      this.setState(prevState => ({
+        componentTree: componentTree.setIn(newPath, newNode),
+        interactionState: {
+          focusedNodePath: path,
+        },
+      }))
     }
   }
 
   handleChangeNode = ({ path, value }) => {
     const { componentTree } = this.state
     const modifiedComponentTree = componentTree.setIn(path, value)
-    this.props.onChange && this.props.onChange(modifiedComponentTree)
-    this.setState({
-      componentTree: modifiedComponentTree,
-      traversalMap: generateTraversalMap(modifiedComponentTree),
-    })
+    this.updateComponentTree(modifiedComponentTree)
   }
 
   handleBlur = (path: Path) => {
@@ -209,22 +229,28 @@ class ComponentTreeEditor extends React.Component {
      * should be set to null. If another node has alreadty been focused in the meantime,
      * as is likely to happen, then do nothing.
      */
-    this.blurTimeoutId = setTimeout(() => {
-      this.setState(
-        prevState =>
-          prevState.interactionState.focusedNodePath === path
-            ? {
-                interactionState: {
-                  focusedNodePath: null,
-                },
-              }
-            : {}
-      )
-    }, 100)
-    this.blurTimeoutId = null
+    if (this.state.interactionState.focusedNodePath === path) {
+      this.blurTimeoutId = setTimeout(() => {
+        if (this.state.interactionState.focusedNodePath === path) {
+          this.setState(
+            {
+              interactionState: {
+                focusedNodePath: null,
+              },
+            },
+            () => {
+              this.clearEmptyNodes()
+            }
+          )
+        }
+        this.blurTimeoutId = null
+      }, 100)
+    }
   }
 
-  handleFocus = (path: Path) => this.focusNodeAttribute(path)
+  handleFocus = (path: Path) => {
+    this.focusNodeAttribute(path)
+  }
 
   /**
    * Handles traversing forwards in the editor via keyboard navigation.
@@ -257,53 +283,44 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
-  handleInsertNode = (id, type) => {
+  /**
+   * Adds node of a certain type to a place in the componentTree relative to the
+   * given path.
+   */
+  insertNode = (path: Path, type = ADD_PROP | ADD_SIBLING | ADD_CHILD) => {
     const { componentTree } = this.state
-    const sourcePath = Helpers.findNodeById(componentTree, id)
-    const sourceNode = componentTree.getIn(sourcePath)
-    let targetId = id
-    let newNode = null
-    let newPath = null
-    let modifiedTree = componentTree
-    if (type === ADD_PROP) {
-      const propCount = sourceNode.props.count()
-      newPath = sourceNode.path.push('props').push(propCount)
-      newNode = Helpers.createEmptyProp(newPath)
-      modifiedTree = Helpers.insertProp(componentTree, targetId, newNode)
+
+    if (type !== ADD_PROP && type !== ADD_SIBLING && type !== ADD_CHILD) {
+      console.warn('ComponentTreeEditor.insertNode(): Invalid second parameter, type')
     }
 
-    if (type === ADD_SIBLING) {
-      const path = sourceNode.path
-      targetId = componentTree.getIn(path.pop().pop()).get('id')
-    }
+    const insertionPath = Helpers.getInsertionPath(componentTree, path, type)
+    const newNode = type === ADD_PROP
+      ? this.createEmptyProp(insertionPath)
+      : this.createEmptyComponent(insertionPath)
+    const newTree = Helpers.insertNodeAtPath(componentTree, insertionPath, newNode)
 
-    if (type === ADD_CHILD || type === ADD_SIBLING) {
-      const targetNode = Helpers.getNodeById(componentTree, targetId)
-      const insertionIndex = targetNode.children.count()
-      newPath = targetNode.path.push('children').push(insertionIndex)
-      newNode = Helpers.createEmptyComponent(newPath)
-      modifiedTree = Helpers.insertComponent(
-        componentTree,
-        targetId,
-        insertionIndex,
-        newNode
-      )
-    }
-
-    if (newNode) {
-      this.setState(
-        {
-          componentTree: modifiedTree,
-          traversalMap: generateTraversalMap(modifiedTree),
-        },
-        () => {
-          if (newPath) {
-            this.focusNodeAttribute(newPath.push('name'))
-          }
-        }
-      )
-    }
+    this.updateComponentTree(newTree, () => {
+      this.focusNodeAttribute(insertionPath.push('name'))
+    })
   }
+
+  handleInsertNode = (path, type) => this.insertNode(path, type)
+
+  updateComponentTree = (componentTree: ComponentTree, callback?: Function) => {
+    const { onChange } = this.props
+    if (onChange) {
+      onChange(componentTree)
+    }
+    this.setState(
+      {
+        componentTree,
+        traversalMap: generateTraversalMap(componentTree),
+      },
+      callback
+    )
+  }
+
   //
   // handleRemoveProp = (nodeId: NodeIdentifierT) => {
   //   this.props.onRemoveProp && this.props.onRemoveProp(nodeId)

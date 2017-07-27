@@ -7,8 +7,27 @@ import { Icon, AlignedPointer } from '@workflo/components'
 
 import { Path } from '../../../modules/ComponentTree'
 import type { InteractionStateT } from '../types'
-import { options, ADD_SIBLING } from '../constants/addPropNode'
+import {
+  ADD_PROP,
+  ADD_SIBLING,
+  ADD_CHILD,
+} from '../../../modules/ComponentTree/constants'
 import OptionChooser from './OptionChooser'
+
+const options = [
+  {
+    type: ADD_PROP,
+    label: 'Add Prop',
+  },
+  {
+    type: ADD_SIBLING,
+    label: 'Add Sibling',
+  },
+  {
+    type: ADD_CHILD,
+    label: 'Add Child',
+  },
+]
 
 type ContainerPropsT = {
   interactionState: InteractionStateT,
@@ -75,9 +94,9 @@ class AddNodeButtonContainer extends React.Component {
   handleClick = () => this.focus()
 
   handleSelect = index => {
-    const { nodeId, onInsertNode } = this.props
+    const { path, onInsertNode } = this.props
     // TODO: Put these in a constants file
-    onInsertNode(nodeId, this.getOptions()[index].type)
+    onInsertNode(path, this.getOptions()[index].type)
     this.blur()
   }
 
