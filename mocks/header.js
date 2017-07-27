@@ -2,10 +2,6 @@
 import { action } from '@kadira/storybook'
 export const breadCrumbPath = [
   {
-    onClick: () => action('Navigate to Components')(),
-    value: 'Components',
-  },
-  {
     onClick: () => action('Navigate to ButtonGroup')(),
     value: 'ButtonGroup',
   },

@@ -124,15 +124,12 @@ class LivePreview extends React.Component {
 
   updateDimensions = () => {
     const dimensions = this.getDimensions()
-    const zoomState = this.state.zoomHasBeenChangedByUser
-      ? {}
-      : {
-          zoom: this.getInitialZoom(dimensions.width, dimensions.height),
-        }
+    // QUESTION: Should we re-enable only doing scale-to-fit when zoom hasn't
+    // been changed by user? Disabling that behavior for now.
     this.setState({
       canvasWidth: dimensions.width,
       canvasHeight: dimensions.height,
-      ...zoomState,
+      zoom: this.getInitialZoom(dimensions.width, dimensions.height),
     })
   }
 

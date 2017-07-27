@@ -33,14 +33,7 @@ class QuickAction extends React.Component {
 
   render() {
     return (
-      <View
-        inline
-        theme={{
-          view: {
-            marginLeft: Spacing.tiny / 2, // AWEFULLEST OF HACKS
-          },
-        }}
-      >
+      <View inline>
         <Content {...this.props} />
       </View>
     )
@@ -98,7 +91,6 @@ const Content = ({
           name={icon}
           size="base"
           stroke={getColor(shade, iconKind)}
-          fill={getColor(shade, iconKind)}
           theme={{
             icon: {
               display: 'inline-block',

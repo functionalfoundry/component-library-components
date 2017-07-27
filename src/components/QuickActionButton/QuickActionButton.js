@@ -4,7 +4,7 @@ import { Fonts } from '@workflo/styles'
 
 type PropsT = {}
 
-const QuickActionButton = ({ icon, label, onClick, disabled }) => {
+const QuickActionButton = ({ icon, label, onClick, disabled, addMarginLeft }) => {
   return (
     <QuickAction
       key={icon}
@@ -17,6 +17,7 @@ const QuickActionButton = ({ icon, label, onClick, disabled }) => {
       shade="Light"
       onClick={onClick}
       showLabelInButton
+      addMarginLeft={false}
     />
   )
 }
