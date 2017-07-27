@@ -99,6 +99,12 @@ class EditableFieldContainer extends React.Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.isFocused) {
+      this.focus()
+    }
+  }
+
   focus() {
     const { onFocus } = this.props
     this.setState(
@@ -110,7 +116,10 @@ class EditableFieldContainer extends React.Component {
          * it has been passed the lastest formatted value by formatValue.
          */
       () => {
-        onFocus && onFocus()
+        /** Prevents extra renders life cycles */
+        if (!this.props.isFocused) {
+          onFocus && onFocus()
+        }
         if (
           this.editableText &&
           this.editableText.refs &&
