@@ -58,6 +58,10 @@ class ComponentTreeEditor extends React.Component {
   state: StateT
   blurTimeoutId: ?number
 
+  static defaultProps = {
+    nodeIdGenerator: () => Math.random().toString(),
+  }
+
   constructor(props: PropsT) {
     const { tree } = props
     super(props)
@@ -111,30 +115,28 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  newPropCount = 0
   createEmptyProp = path => {
+    const { nodeIdGenerator } = this.props
     const newPropValue = PropValue({
-      id: `new-prop-value-${this.newPropCount}`,
+      id: `new-prop-value-${nodeIdGenerator()}`,
       path: path.push('value'),
       value: '',
     })
     const newProp = Prop({
-      id: `new-prop-${this.newPropCount}`,
+      id: `new-prop-${nodeIdGenerator()}`,
       path,
       value: newPropValue,
     })
-    this.newPropCount++
     return newProp
   }
 
-  newComponentCount = 0
   createEmptyComponent = path => {
+    const { nodeIdGenerator } = this.props
     const newComponent = Component({
-      id: `new-component-${this.newComponentCount}`,
+      id: `new-component-${nodeIdGenerator()}`,
       path,
       props: List(),
     })
-    this.newComponentCount++
     return newComponent
   }
 
