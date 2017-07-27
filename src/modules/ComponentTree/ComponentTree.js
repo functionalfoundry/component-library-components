@@ -68,5 +68,7 @@ const defaultComponentTree: ComponentTreeT = {
 
 const ComponentTree = Record(defaultComponentTree)
 
+export type ComponentTreeNodeT = Prop | Component | PropValue
+
 export { ComponentTree }
 export default ComponentTree
