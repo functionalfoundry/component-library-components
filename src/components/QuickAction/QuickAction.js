@@ -339,7 +339,6 @@ const getButtonWrapperStyle = ({
     buttonWrapperStyle.top = 4 // Hack because AlignedTrigger offsets the height
     buttonWrapperStyle.height = 40
   }
-  console.log('paddingBottom: ', paddingBottom)
   buttonWrapperStyle.padding = `${paddingTop}px 10px ${paddingBottom}px 4px`
   return buttonWrapperStyle
 }
