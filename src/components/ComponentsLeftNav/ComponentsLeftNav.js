@@ -22,6 +22,8 @@ type Props = {
   onSelect: Function,
   /** Id of the item to show selection state for */
   selectedId: string,
+  /** Called when the user clicks the Component Browser button */
+  onClickComponentBrowser: Function,
 }
 
 const listTheme = {
@@ -98,6 +100,7 @@ class ComponentsLeftNav extends React.Component {
       branches,
       selectedRepoId,
       selectedBranchId,
+      onClickComponentBrowser,
       onClickRepoGithub,
       onSelectRepo,
       buildStatus,
@@ -152,7 +155,7 @@ class ComponentsLeftNav extends React.Component {
             <QuickActionButton
               icon="grid"
               label="Components Browser"
-              onClick={() => {}}
+              onClick={onClickComponentBrowser}
             />
           </div>
           <TextInput
