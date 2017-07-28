@@ -1,6 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Tab, TabList, TabPanel, Tabs, View } from '@workflo/components'
+import { Card } from '@workflo/components/lib/Accordion'
 import { Colors, Spacing, Fonts } from '@workflo/styles'
 import Slate from 'slate'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -117,7 +118,6 @@ class LiveEditor extends React.Component {
       shouldAnimateDataEditor,
       theme,
     } = this.props
-    const { copied } = this.state
 
     const properTree = TreeHelpers.createTree(componentTree)
     const treeLayout = generateTreeLayout(properTree)
@@ -125,18 +125,23 @@ class LiveEditor extends React.Component {
 
     return (
       <View {...theme.liveEditor} data-walkthrough-id="live-editor">
-        <Tabs
-          onSelect={this.handleSelect}
-          selectedIndex={this.state.selectedIndex}
-          {...theme.liveEditorTabs}
-        >
-          <TabList>
-            {/* TODO: Rename Code -> Markup in code */}
-            <Tab data-walkthrough-id="markup-tab">Markup</Tab>
-            <Tab data-walkthrough-id="data-tab">Mock Data</Tab>
-            <Tab data-walkthrough-id="actions-tab">Handlers</Tab>
-          </TabList>
-          <TabPanel>
+        <Card title="Handlers" theme={cardTheme}>
+          <div {...theme.cardContent}>
+            <Data state={actions.state} text={actions.text} onChange={onChangeActions} />
+          </div>
+        </Card>
+        <Card title="Mock Data" theme={cardTheme}>
+          <div {...theme.cardContent}>
+            <Data
+              state={data.state}
+              text={data.text}
+              onChange={onChangeData}
+              shouldAnimate={shouldAnimateDataEditor}
+            />
+          </div>
+        </Card>
+        <Card title="Markup" isInitiallyExpanded theme={cardTheme}>
+          <div {...theme.cardContent}>
             <ComponentTreeEditor
               tree={properTree}
               layout={treeLayout}
@@ -152,38 +157,21 @@ class LiveEditor extends React.Component {
               onRemoveComponent={onRemoveComponent}
               onSelectComponent={onSelectComponent}
             />
-          </TabPanel>
-          <TabPanel>
-            <Data
-              state={data.state}
-              text={data.text}
-              onChange={onChangeData}
-              shouldAnimate={shouldAnimateDataEditor}
-            />
-          </TabPanel>
-          <TabPanel>
-            <Data state={actions.state} text={actions.text} onChange={onChangeActions} />
-          </TabPanel>
-        </Tabs>
-        <CopyToClipboard
-          text={treeMarkup}
-          onCopy={() => {
-            this.setState({ copied: true })
-            setTimeout(() => {
-              this.setState({ copied: false })
-            }, 1100)
-          }}
-        >
-          <div {...theme.copy}>
-            {!copied ? 'Copy' : 'Copied!'}
           </div>
-        </CopyToClipboard>
+        </Card>
       </View>
     )
   }
 }
 
+const cardTheme = {
+  cardTitle: { ...Fonts.base },
+}
+
 const defaultTheme = {
+  cardContent: {
+    paddingLeft: 22,
+  },
   liveEditor: {
     padding: Spacing.small,
     paddingTop: Spacing.base + Spacing.tiny,
@@ -194,15 +182,6 @@ const defaultTheme = {
     position: 'relative',
   },
   liveEditorTabs: {},
-  copy: {
-    ...Fonts.small,
-    fontWeight: 400,
-    position: 'absolute',
-    top: Spacing.base,
-    right: Spacing.small,
-    color: '#00719e',
-    cursor: 'pointer',
-  },
 }
 
 export default Theme('LiveEditor', defaultTheme)(LiveEditor)
