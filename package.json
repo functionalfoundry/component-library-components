@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@workflo/components": "0.8.119",
-    "@workflo/styles": "0.7.12",
+    "@workflo/styles": "0.7.13",
     "acorn": "^4.0.3",
     "acorn-jsx": "^3.0.1",
     "aphrodite": "^0.5.0",
@@ -46,6 +46,7 @@
     "babel-traverse": "^6.18.0",
     "babel-types": "^6.18.0",
     "babylon": "^6.13.1",
+    "color": "^2.0.0",
     "grommet": "^0.6.10",
     "gsap": "^1.19.1",
     "js-theme": "0.8.2",
