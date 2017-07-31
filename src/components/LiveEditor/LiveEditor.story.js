@@ -13,6 +13,7 @@ storiesOf('LiveEditor', module)
           componentTree={componentTree}
           completionData={{
             components: ['ExampleComponentA', 'ExampleComponentB', 'SomethingElse'],
+            props: [],
           }}
           data={{ text: dataCode }}
           actions={{ text: actionsCode }}
@@ -30,6 +31,7 @@ storiesOf('LiveEditor', module)
           componentTree={componentTree}
           completionData={{
             components: ['ExampleComponentA', 'ExampleComponentB', 'SomethingElse'],
+            props: [],
           }}
           data={{ text: dataCode }}
           actions={{ text: actionsCode }}
