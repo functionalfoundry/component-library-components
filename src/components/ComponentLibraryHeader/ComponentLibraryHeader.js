@@ -1,7 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Button, View, Icon } from '@workflo/components'
-import { Colors, Fonts, Spacing } from '@workflo/styles'
+import { BreakPoints, Colors, Fonts, Spacing } from '@workflo/styles'
 
 import { ActionT, ActionsT } from '../../types/Action'
 import SubHeader from '../SubHeader'
@@ -172,7 +172,7 @@ const defaultTheme = {
   quickActionsWrapper: {
     marginLeft: 30,
     marginRight: 30,
-    [`@media(max-width: ${1100}px)`]: {
+    [`@media(max-width: ${BreakPoints.tabletLarge}px)`]: {
       display: 'none',
     },
   },
@@ -181,7 +181,7 @@ const defaultTheme = {
   },
   secondaryActions: {
     display: 'flex',
-    [`@media(max-width: ${1100}px)`]: {
+    [`@media(max-width: ${BreakPoints.tabletLarge}px)`]: {
       display: 'none',
     },
   },
@@ -205,7 +205,7 @@ const defaultTheme = {
     alignItems: 'center',
     justifyContent: 'flex-end',
     flex: '0 auto',
-    [`@media(max-width: ${1100}px)`]: {
+    [`@media(max-width: ${BreakPoints.tabletLarge}px)`]: {
       flexDirection: 'column-reverse',
       alignItems: 'flex-end',
     },

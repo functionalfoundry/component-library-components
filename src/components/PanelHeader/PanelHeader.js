@@ -43,7 +43,7 @@ const defaultTheme = ({ showLeftBorder }) => {
       display: 'flex',
       flexDirection: 'row',
       // justifyContent: 'flex-end',
-      backgroundColor: '#1e2428',
+      backgroundColor: Colors.grey820,
       paddingRight: 6,
       paddingLeft: 15,
       height: 40,

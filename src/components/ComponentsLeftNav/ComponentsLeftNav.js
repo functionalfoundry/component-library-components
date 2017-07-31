@@ -62,7 +62,7 @@ const darkHoverAndActive = ({ isKeyboardFocused }, isSelected) => {
   } else if (isSelected) {
     return {
       ...base,
-      backgroundColor: '#474d50',
+      backgroundColor: Colors.grey720,
       ':hover': {
         backgroundColor: '#4a5053',
       },
@@ -164,10 +164,10 @@ class ComponentsLeftNav extends React.Component {
             onChange={onChangeFilter}
             theme={{
               inputContain: {
-                backgroundColor: '#23292b',
+                backgroundColor: Colors.grey820,
                 borderStyle: 'solid',
                 borderWidth: 0.5,
-                borderColor: '#404642',
+                borderColor: Colors.grey720,
                 padding: 3,
                 display: 'flex',
                 flex: 1,
