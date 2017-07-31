@@ -1,5 +1,6 @@
 import React from 'react'
 const Immutable = require('immutable')
+import { Set } from 'immutable'
 import Theme from 'js-theme'
 
 import { Colors, Fonts, Spacing } from '@workflo/styles'

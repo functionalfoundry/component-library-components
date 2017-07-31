@@ -1,4 +1,4 @@
-/* @flow */
+/** @flow */
 import { List, Record } from 'immutable'
 import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
 
@@ -10,10 +10,20 @@ import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
  * ComponentTree implementation
  */
 
+/**
+ * Path used for getting and setting nested children in ComponentTree
+ */
+const Path = List
+export { Path }
+
 // PropValue
 
 const defaultPropValue: PropValueT = {
   id: null,
+  status: {
+    isValid: true,
+    message: '',
+  },
   nodeType: 'prop-value',
   value: null,
   type: null,
@@ -42,7 +52,6 @@ const defaultComponent: ComponentT = {
   name: null,
   props: List(),
   children: List(),
-  text: null,
 }
 
 const Component = Record(defaultComponent)

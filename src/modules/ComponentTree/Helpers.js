@@ -138,6 +138,9 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
  * Node lookup
  */
 
+/**
+ * Returns path of node with the given ID
+ */
 const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
   const result = traverse(tree, null, (ctx: TraverseContext) => {
     if (ctx.node.id == id) {
@@ -147,6 +150,29 @@ const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePa
     }
   })
   return result.data
+}
+
+/**
+ * Returns node with the given id
+ */
+const getNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path)
+}
+
+const getParent = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path.pop(), null)
+}
+
+/**
+ * Returns the next sibling if it exists, or returns null otherwise.
+ */
+const getNextSibling = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const nodePath = findNodeById(tree, id)
+  const nodeIndex = nodePath.last()
+  const siblingPath = nodePath.pop().push(nodeIndex + 1)
+  return tree.getIn(siblingPath, null)
 }
 
 /**
@@ -174,6 +200,18 @@ const updateNodesAtPath = (
 /**
  * Component insertion
  */
+
+let newComponentCount = 0
+
+// TODO: What is the best way to generate IDs?
+const createEmptyComponent = () => {
+  const newComponent = Component({
+    id: `new-component-${newComponentCount}`,
+    props: List(),
+  })
+  newComponentCount++
+  return newComponent
+}
 
 const insertComponent = (
   tree: ComponentTree,
@@ -256,6 +294,16 @@ const setComponentText = (
  * Prop insertion
  */
 
+let newPropCount = 0
+
+// TODO: What is the best way to generate IDs?
+const createEmptyProp = () => {
+  const newPropValue = PropValue({ id: `new-prop-value-${newPropCount}`, value: '' })
+  const newProp = Prop({ id: `new-prop-${newPropCount}`, value: newPropValue })
+  newPropCount++
+  return newProp
+}
+
 const insertProp = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
@@ -279,6 +327,29 @@ const insertProp = (
 const removeProp = (tree: ComponentTree, propId: NodeIdentifierT): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   return propPath ? tree.deleteIn(propPath) : tree
+}
+
+/** Helping for setting an arbitrary attribute on any node in the ComponentTree */
+type SetNodeAttributeT = ({
+  nodeId: NodeIdentifierT,
+  /** A string representing the attribute key, or an array of strings for nested maps */
+  path: Array<string> | string,
+  tree: ComponentTree,
+  value: any,
+}) => ComponentTree
+const setNodeAttribute: SetNodeAttributeT = ({ nodeId, path, tree, value }) => {
+  const basePath = findNodeById(tree, nodeId)
+  const attributePath = Array.isArray(path) ? path : [path]
+  if (basePath) {
+    return tree.setIn(basePath.concat(attributePath), value)
+  } else {
+    throw new Error(
+      'Failed to set a node attribute in the component tree: ' +
+        'Node with ID "' +
+        nodeId +
+        '" not found'
+    )
+  }
 }
 
 const setPropName = (
@@ -352,18 +423,26 @@ export default {
   // Generic tree operations
   traverse,
   findNodeById,
+  getNodeById,
+  getParent,
+  getNextSibling,
   removeNodeById,
   updateNodesAtPath,
   // Higher-level, semantic tree operations
+  createEmptyComponent,
   insertComponent,
   removeComponent,
   setComponentName,
   setComponentText,
+  createEmptyProp,
   insertProp,
   removeProp,
+  setNodeAttribute,
   setPropName,
   setPropValue,
   // Tree construction from raw data
   createTree,
   getRawTreeData,
+  // data types
+  TraverseContext,
 }

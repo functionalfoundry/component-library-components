@@ -2,10 +2,10 @@
 import React from 'react'
 import { List } from 'immutable'
 import { action } from '@kadira/storybook'
-import Helpers, {
+import ComponentTree, {
   type NodeIdentifierT,
   Component,
-  ComponentTree,
+  Helpers,
   Prop,
   PropValue,
 } from '../src/modules/ComponentTree'

@@ -1,21 +1,22 @@
-/* @flow */
+/** @flow */
 import React from 'react'
 import Theme from 'js-theme'
-import { Editor, Raw, State } from 'slate'
+import { List } from 'immutable'
 
-import type { InteractionStateT } from './types'
-import type {
-  Component,
-  ComponentTree,
-  NodeIdentifierT,
-} from '../../modules/ComponentTree'
-import InteractionPlugin, { InteractionState } from './utils/InteractionPlugin'
-import SyntaxPlugin from './utils/SyntaxPlugin'
-import ComponentTreeLayout, {
-  generateTreeLayout,
-  generateTreeLayoutMarkup,
-} from './utils/ComponentTreeLayout'
+import { Colors, Fonts } from '@workflo/styles'
+
 import type { CompletionDataT } from '../../types/Completion'
+import {
+  type ComponentTree,
+  Helpers,
+  type NodeIdentifierT,
+  Path,
+  type TraverseContext,
+} from '../../modules/ComponentTree'
+import ComponentRenderer from './components/ComponentRenderer'
+import type { InteractionStateT } from './types'
+import generateTraversalMap, { type TraversalMapT } from './utils/generateTraversalMap'
+import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants/addPropNode'
 
 /**
  * Props
@@ -23,8 +24,6 @@ import type { CompletionDataT } from '../../types/Completion'
 
 type PropsT = {
   tree: ComponentTree,
-  layout: ComponentTreeLayout,
-  markup: string,
   completionData: CompletionDataT,
   nodeIdGenerator: Function,
   onChange?: Function,
@@ -32,73 +31,21 @@ type PropsT = {
   onRemoveComponent?: Function,
   onInsertComponent?: Function,
   onChangePropName?: Function,
-  onChangePropValue?: Function,
+  // onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
+  theme: Object,
 }
-
-const defaultProps = {}
 
 /**
  * State
  */
 
 type StateT = {
-  tree: ComponentTree,
-  markup: string,
-  layout: ComponentTreeLayout,
-  plugins: Array<Object>,
-  editorState: State,
-  interactionState: InteractionState,
+  componentTree: ComponentTree,
+  interactionState: InteractionStateT,
+  traversalMap: TraversalMapT,
 }
-
-const getComponentTreeEditorState = (tree: ComponentTree, treeMarkup: string) =>
-  Raw.deserialize(
-    {
-      nodes: [
-        {
-          kind: 'block',
-          type: 'code',
-          nodes: [
-            {
-              kind: 'text',
-              text: treeMarkup,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      terse: true,
-    }
-  )
-
-const getComponentTreeEditorPlugins = (
-  editor: ComponentTreeEditor,
-  tree: ComponentTree,
-  layout: ComponentTreeLayout,
-  completionData: CompletionDataT,
-  interactionState: InteractionStateT
-) => [
-  InteractionPlugin({
-    tree,
-    completionData,
-    interactionState,
-    onChange: editor.handleTreeChange,
-    onRemoveProp: editor.handleRemoveProp,
-    onRemoveComponent: editor.handleRemoveComponent,
-    onInsertComponent: editor.handleInsertComponent,
-    onChangePropName: editor.handleChangePropName,
-    onChangePropValue: editor.handleChangePropValue,
-    onChangeComponentName: editor.handleChangeComponentName,
-    onSelectComponent: editor.handleSelectComponent,
-    onSelectNode: editor.handleSelectNode,
-  }),
-  SyntaxPlugin({
-    tree,
-    layout,
-  }),
-]
 
 /**
  * ComponentTree component
@@ -107,132 +54,311 @@ const getComponentTreeEditorPlugins = (
 class ComponentTreeEditor extends React.Component {
   props: PropsT
   state: StateT
+  blurTimeoutId: ?number
 
-  static defaultProps = defaultProps
-
-  constructor(props) {
+  constructor(props: PropsT) {
+    const { tree } = props
     super(props)
-    this.state = this.getStateFromTreeAndProps(props, InteractionState())
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(state => {
-      return this.getStateFromTreeAndProps(nextProps, state.interactionState)
-    })
-  }
-
-  render() {
-    return (
-      <Editor
-        state={this.state.editorState}
-        plugins={this.state.plugins}
-        onChange={this.handleChange}
-        readOnly
-      />
-    )
-  }
-
-  getStateFromTreeAndProps = (
-    { tree, markup, layout, completionData }: PropsT,
-    interactionState: InteractionState
-  ) => {
-    const editorState = getComponentTreeEditorState(tree, markup)
-    const plugins = getComponentTreeEditorPlugins(
-      this,
-      tree,
-      layout,
-      completionData,
-      interactionState
-    )
-    return {
-      tree,
-      markup,
-      layout,
-      plugins,
-      editorState,
-      interactionState,
+    this.state = {
+      componentTree: tree,
+      interactionState: {
+        focusedNodeId: null,
+      },
+      traversalMap: generateTraversalMap(tree),
     }
   }
 
-  updateInteractionState = (interactionState: InteractionState) => {
-    this.setState((state, props) => {
-      return this.getStateFromTreeAndProps(props, interactionState)
-    })
+  componentWillReceiveProps(nextProps) {
+    const { tree } = nextProps
+    if (tree !== this.props.tree) {
+      this.setState({ componentTree: tree, traversalMap: generateTraversalMap(tree) })
+    }
   }
 
-  handleChange = (editorState: State) => this.setState({ editorState })
-
-  handleTreeChange = (tree: ComponentTree) => {
-    this.setState((state, props) => {
-      const layout = generateTreeLayout(tree)
-      const markup = generateTreeLayoutMarkup(layout)
-
-      return this.getStateFromTreeAndProps(
-        Object.assign({}, props, { tree: tree, markup: markup, layout: layout }),
-        state.interactionState
-      )
-    })
-    this.props.onChange && this.props.onChange(tree)
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.interactionState.focusedNodeId !==
+      prevState.interactionState.focusedNodeId
+    ) {
+      this.clearEmptyNodes()
+    }
   }
 
-  handleRemoveProp = (nodeId: NodeIdentifierT) => {
-    this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
-  }
+  render() {
+    const { completionData, theme } = this.props
+    const { componentTree, interactionState } = this.state
+    const rootNode = componentTree.get('root')
 
-  handleRemoveComponent = (nodeId: NodeIdentifierT) => {
-    this.props.onRemoveComponent && this.props.onRemoveComponent(nodeId)
-  }
-
-  handleInsertComponent = (
-    parentNodeId: NodeIdentifierT,
-    index: number,
-    component: Component
-  ) => {
-    component = component.set('id', this.props.nodeIdGenerator())
-    this.updateInteractionState(
-      this.state.interactionState.set('editingNodeId', component.get('id'))
+    return (
+      rootNode &&
+      <div {...theme.componentTreeEditor}>
+        <ComponentRenderer
+          isRootComponent
+          onChangeNode={this.handleChangeNode}
+          onBlur={this.handleBlur}
+          onFocus={this.handleFocus}
+          onFocusNext={this.handleFocusNext}
+          onFocusPrevious={this.handleFocusPrevious}
+          onInsertNode={this.handleInsertNode}
+          completionData={completionData}
+          componentNode={rootNode}
+          componentTree={componentTree}
+          interactionState={interactionState}
+        />
+      </div>
     )
-    const { onInsertComponent } = this.props
-    onInsertComponent &&
-      onInsertComponent(parentNodeId, index, component, component.toJS())
   }
 
-  handleChangePropName = (
-    componentId: NodeIdentifierT,
-    nodeId: NodeIdentifierT,
-    name: any
-  ) => {
-    const { onChangePropName } = this.props
-    this.updateInteractionState(this.state.interactionState.delete('editingNodeId'))
-    onChangePropName && onChangePropName(componentId, nodeId, name)
+  /** Deletes empty nodes that are currently not in focus */
+  clearEmptyNodes = () => {
+    const { onChange } = this.props
+    const { componentTree, interactionState } = this.state
+    const focusedNodeId = interactionState.focusedNodeId
+    /** Find empty nodes */
+    const traverseResult = Helpers.traverse(
+      componentTree,
+      List(),
+      (ctx: TraverseContext, type) => {
+        const node = ctx.node
+        const path = ctx.path
+        /** We never remove the root node */
+        if (type === 'post' || path.last() === 'root') {
+          return ctx
+        }
+        if (
+          (node.nodeType === 'prop' && !node.get('name')) ||
+          (node.nodeType === 'component' && !node.get('name'))
+        ) {
+          return ctx.set('data', ctx.data.push(node.id))
+        }
+        return ctx
+      }
+    )
+
+    const nodesToRemove = traverseResult.data
+
+    /** Only clear empty nodes if they are not currently being edited */
+    const modifiedComponentTree = nodesToRemove.reduce(
+      (tree, nodeId) =>
+        nodeId === focusedNodeId ? tree : Helpers.removeNodeById(tree, nodeId),
+      componentTree
+    )
+
+    onChange && onChange(modifiedComponentTree)
+    this.setState({ componentTree: modifiedComponentTree })
   }
 
-  handleChangePropValue = (nodeId: NodeIdentifierT, value: any) => {
-    const { onChangePropValue } = this.props
-    onChangePropValue && onChangePropValue(nodeId, value)
+  focusNode(path: Path) {
+    const { componentTree } = this.state
+    const targetNode = componentTree.getIn(path, null)
+
+    /**
+     *  If a blur event is immediately followed by a focus event, we cancel the
+     *  blur timeout callback from firing, since it is redundant and can cause
+     *  extra intermediate updates which can cause perceived bugginess in UI.
+     */
+    if (this.blurTimeoutId) {
+      clearTimeout(this.blurTimeoutId)
+    }
+
+    /** If the targetNode exists we focus it, otherwise we must create it first */
+    if (targetNode) {
+      this.setState({
+        interactionState: {
+          focusedNodeId: targetNode.id,
+        },
+      })
+    } else {
+      const emptyProp = Helpers.createEmptyProp()
+      this.setState(
+        prevState => ({
+          componentTree: componentTree.setIn(path, emptyProp),
+        }),
+        () => {
+          /** Only after the node has been created do we focus it */
+          this.setState({
+            interactionState: {
+              focusedNodeId: emptyProp.id,
+            },
+          })
+        }
+      )
+    }
   }
 
-  handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
-    const { onChangeComponentName } = this.props
-    this.updateInteractionState(this.state.interactionState.delete('editingNodeId'))
-    onChangeComponentName && onChangeComponentName(nodeId, name)
+  handleChangeNode = ({ nodeId, path, value }) => {
+    const { componentTree } = this.state
+
+    const modifiedComponentTree = Helpers.setNodeAttribute({
+      tree: componentTree,
+      path,
+      nodeId,
+      value,
+    })
+
+    this.props.onChange && this.props.onChange(modifiedComponentTree)
+    this.setState({
+      componentTree: modifiedComponentTree,
+      traversalMap: generateTraversalMap(modifiedComponentTree),
+    })
   }
 
-  handleSelectComponent = (nodeId: NodeIdentifierT) => {
-    this.updateInteractionState(this.state.interactionState.set('editingNodeId', nodeId))
-    this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+  handleBlur = (id: NodeIdentifierT) => {
+    /**
+     * If the node being blurred is the node being focused then the focused node
+     * should be set to null. If another node has alreadty been focused in the meantime,
+     * as is likely to happen, then do nothing.
+     */
+    this.blurTimeoutId = setTimeout(() => {
+      this.setState(
+        prevState =>
+          prevState.interactionState.focusedNodeId === id
+            ? {
+                interactionState: {
+                  focusedNodeId: null,
+                },
+              }
+            : {}
+      )
+    }, 100)
+    this.blurTimeoutId = null
   }
 
-  handleSelectNode = (nodeId: NodeIdentifierT) => {
-    this.updateInteractionState(this.state.interactionState.set('editingNodeId', nodeId))
+  handleFocus = (id: NodeIdentifierT) => {
+    const { componentTree } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    if (path) {
+      this.focusNode(path)
+    }
   }
+
+  /**
+   * Handles traversing forwards in the editor via keyboard navigation.
+   */
+  handleFocusNext = (id: NodeIdentifierT) => {
+    const { componentTree, traversalMap } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    const currentNode = traversalMap.get(path)
+    const nextPath = currentNode && currentNode.next
+
+    /** If there is a next node in the traversalMap then we focus that node */
+    if (nextPath) {
+      this.focusNode(nextPath)
+    }
+  }
+
+  /**
+   * Handles traversing backwards in the editor via keyboard navigation.
+   */
+  handleFocusPrevious = (id: NodeIdentifierT) => {
+    const { componentTree, traversalMap } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    const currentNode = traversalMap.get(path)
+    let previousPath = currentNode && currentNode.previous
+
+    /** This prevents us from creating new nodes while traversing backwards */
+    while (previousPath) {
+      if (componentTree.hasIn(previousPath)) {
+        this.focusNode(previousPath)
+        return
+      }
+      previousPath = traversalMap.get(previousPath).previous
+    }
+  }
+
+  handleInsertNode = (id, type) => {
+    const { componentTree } = this.state
+    const path = Helpers.findNodeById(componentTree, id)
+    let targetId = id
+    let newNode = null
+    let modifiedTree = componentTree
+    if (type === ADD_PROP) {
+      newNode = Helpers.createEmptyProp()
+      modifiedTree = Helpers.insertProp(componentTree, targetId, newNode)
+    }
+
+    if (type === ADD_SIBLING) {
+      targetId = componentTree.getIn(path.pop().pop()).get('id')
+    }
+
+    if (type === ADD_CHILD || type === ADD_SIBLING) {
+      newNode = Helpers.createEmptyComponent()
+      const targetNode = Helpers.getNodeById(componentTree, targetId)
+      const insertionIndex = targetNode.children.count()
+      modifiedTree = Helpers.insertComponent(
+        componentTree,
+        targetId,
+        insertionIndex,
+        newNode
+      )
+    }
+
+    if (newNode) {
+      const newPath = Helpers.findNodeById(modifiedTree, newNode.id)
+      this.setState(
+        {
+          componentTree: modifiedTree,
+          traversalMap: generateTraversalMap(modifiedTree),
+        },
+        () => {
+          this.focusNode(newPath)
+        }
+      )
+    }
+  }
+  //
+  // handleRemoveProp = (nodeId: NodeIdentifierT) => {
+  //   this.props.onRemoveProp && this.props.onRemoveProp(nodeId)
+  // }
+  //
+  // handleRemoveComponent = (nodeId: NodeIdentifierT) => {
+  //   this.props.onRemoveComponent && this.props.onRemoveComponent(nodeId)
+  // }
+  //
+  // handleInsertComponent = (
+  //   parentNodeId: NodeIdentifierT,
+  //   index: number,
+  //   component: Component
+  // ) => {
+  //   component = component.set('id', this.props.nodeIdGenerator())
+  //   const { onInsertComponent } = this.props
+  //   onInsertComponent &&
+  //     onInsertComponent(parentNodeId, index, component, component.toJS())
+  // }
+  //
+  // handleChangePropName = (
+  //   componentId: NodeIdentifierT,
+  //   nodeId: NodeIdentifierT,
+  //   name: any
+  // ) => {
+  //   const { onChangePropName } = this.props
+  //   onChangePropName && onChangePropName(componentId, nodeId, name)
+  // }
+  //
+  //
+  // handleChangeComponentName = (nodeId: NodeIdentifierT, name: any) => {
+  //   const { onChangeComponentName } = this.props
+  //   onChangeComponentName && onChangeComponentName(nodeId, name)
+  // }
+  //
+  // handleSelectComponent = (nodeId: NodeIdentifierT) => {
+  //   this.props.onSelectComponent && this.props.onSelectComponent(nodeId)
+  // }
+  //
+  // handleSelectNode = (nodeId: NodeIdentifierT) => {}
 }
 
 /**
  * Theming
  */
 
-const defaultTheme = {}
+const defaultTheme = {
+  componentTreeEditor: {
+    ...Fonts.code,
+    color: Colors.grey300,
+    backgroundColor: Colors.grey900,
+  },
+}
 
 const ThemedComponentTreeEditor = Theme('ComponentTreeEditor', defaultTheme)(
   ComponentTreeEditor
