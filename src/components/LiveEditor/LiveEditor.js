@@ -165,6 +165,7 @@ class LiveEditor extends React.Component {
 }
 
 const cardTheme = {
+  card: { marginBottom: Spacing.micro },
   cardTitle: { ...Fonts.base },
 }
 
@@ -175,8 +176,8 @@ const defaultTheme = {
   liveEditor: {
     padding: Spacing.small,
     paddingTop: Spacing.base + Spacing.tiny,
-    backgroundColor: 'white',
-    color: Colors.grey600,
+    backgroundColor: Colors.grey900,
+    color: Colors.grey300,
     overflowY: 'scroll',
     flex: '1 1 auto',
     position: 'relative',
