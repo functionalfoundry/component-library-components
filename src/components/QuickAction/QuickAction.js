@@ -214,6 +214,8 @@ const Content = ({
           iconKind={iconKind}
           icon={icon}
           onClick={onClick}
+          paddingBottom={paddingBottom}
+          paddingTop={paddingTop}
         >
           {input.element}
         </BaseQuickAction>
