@@ -27,6 +27,7 @@ const OrganizationSignIn = require('./components/OrganizationSignIn')
 const Panel = require('./components/Panel')
 const PanelHeader = require('./components/PanelHeader')
 const PanelContent = require('./components/PanelContent')
+const PanelToolbar = require('./components/PanelToolbar')
 const Preferences = require('./components/Preferences')
 const RepoPreferences = require('./components/RepoPreferences')
 const ThemePreferences = require('./components/ThemePreferences')
@@ -82,6 +83,7 @@ const WorkfloComponents = {
   Panel,
   PanelHeader,
   PanelContent,
+  PanelToolbar,
   ProjectPane,
   OrganizationSignIn,
   Preferences,
