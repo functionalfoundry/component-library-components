@@ -8,7 +8,10 @@ const PanelContent = ({ children, theme }: PropsT) => (
 )
 
 const defaultTheme = {
-  panelContent: {},
+  panelContent: {
+    display: 'flex',
+    flexGrow: 1,
+  },
 }
 
 const ThemedPanelContent = Theme('PanelContent', defaultTheme)(PanelContent)

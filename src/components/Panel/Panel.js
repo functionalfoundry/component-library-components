@@ -24,7 +24,7 @@ const Panel = ({ children, theme }: PropsT) => (
           )
         case PanelContent:
           return (
-            <div key={index}>
+            <div key={index} {...theme.panelContentContainer}>
               {child}
             </div>
           )
@@ -37,6 +37,11 @@ const Panel = ({ children, theme }: PropsT) => (
 
 const defaultTheme = {
   panel: { display: 'flex', flexDirection: 'column', flexGrow: 1 },
+  panelContentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+  },
 }
 
 const ThemedPanel = Theme('Panel', defaultTheme)(Panel)
