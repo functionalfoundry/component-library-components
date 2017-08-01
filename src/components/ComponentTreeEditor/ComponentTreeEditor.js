@@ -324,6 +324,7 @@ class ComponentTreeEditor extends React.Component {
    * given path.
    */
   insertNode = (path: Path, type = ADD_PROP | ADD_SIBLING | ADD_CHILD) => {
+    const { onInsertComponent, onInsertProp } = this.props
     const { componentTree } = this.state
 
     if (type !== ADD_PROP && type !== ADD_SIBLING && type !== ADD_CHILD) {
@@ -339,6 +340,20 @@ class ComponentTreeEditor extends React.Component {
     this.updateComponentTree(newTree, () => {
       this.focusNodeAttribute(insertionPath.push('name'))
     })
+
+    const parentPath = insertionPath.pop().pop()
+    const parentComponent = componentTree.getIn(parentPath)
+    const insertionIndex = insertionPath.get(-1)
+    if (type === ADD_PROP) {
+      onInsertProp(parentComponent.get('id'), insertionIndex, newNode, newNode.toJS())
+    } else if (type === ADD_SIBLING || type === ADD_CHILD) {
+      onInsertComponent(
+        parentComponent.get('id'),
+        insertionIndex,
+        newNode,
+        newNode.toJS()
+      )
+    }
   }
 
   handleInsertNode = (path, type) => this.insertNode(path, type)
