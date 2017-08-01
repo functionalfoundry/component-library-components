@@ -197,6 +197,7 @@ class EditableFieldContainer extends React.Component {
           <AlignedPointer
             forceOpen={this.state.isFocused}
             gravity="Bottom"
+            padding={0}
             openTriggers={[]}
             portal={({ close }) => {
               return (
