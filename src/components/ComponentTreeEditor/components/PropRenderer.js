@@ -40,6 +40,7 @@ type Props = {
   onBlur: Function,
   onChangeNode: Function,
   onChangePropName: Function,
+  onChangePropValue: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
@@ -58,6 +59,7 @@ const PropRenderer = ({
   onBlur,
   onChangeNode,
   onChangePropName,
+  onChangePropValue,
   onFocus,
   onFocusNext,
   onFocusPrevious,
@@ -98,7 +100,10 @@ const PropRenderer = ({
           formatValue={displayPropValue}
           interactionState={interactionState}
           onBlur={onBlur}
-          onChangeNode={onChangeNode}
+          onChangeNode={({ path, value }) => {
+            onChangeNode({ path, value })
+            onChangePropValue(propNode.get('id'), value)
+          }}
           onFocus={onFocus}
           onFocusNext={onFocusNext}
           onFocusPrevious={onFocusPrevious}
