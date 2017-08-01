@@ -97,6 +97,7 @@ class ComponentTreeEditor extends React.Component {
       onChangeComponentName,
       onChangePropName,
       onChangePropValue,
+      onSelectComponent,
       theme,
     } = this.props
     const { componentTree, interactionState } = this.state
@@ -111,6 +112,7 @@ class ComponentTreeEditor extends React.Component {
           onChangeComponentName={onChangeComponentName}
           onChangePropName={onChangePropName}
           onChangePropValue={onChangePropValue}
+          onSelectComponent={onSelectComponent}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
