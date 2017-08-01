@@ -39,6 +39,7 @@ type Props = {
   componentTree: ComponentTree,
   onBlur: Function,
   onChangeNode: Function,
+  onChangePropName: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
@@ -56,6 +57,7 @@ const PropRenderer = ({
   interactionState,
   onBlur,
   onChangeNode,
+  onChangePropName,
   onFocus,
   onFocusNext,
   onFocusPrevious,
@@ -78,7 +80,10 @@ const PropRenderer = ({
           <EditableNodeAttribute
             interactionState={interactionState}
             onBlur={onBlur}
-            onChangeNode={onChangeNode}
+            onChangeNode={({ path, value }) => {
+              onChangeNode({ path, value })
+              onChangePropName(componentNode.get('id'), propNode.get('id'), value)
+            }}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
