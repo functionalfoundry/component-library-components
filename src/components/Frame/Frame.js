@@ -237,8 +237,9 @@ class Frame extends React.Component {
 
 const defaultTheme = {
   frame: {
-    border: 'none',
+    border: 0,
     borderRadius: 0,
+    display: 'block',
     backgroundColor: 'white',
     width: '100%',
     height: '100%',
