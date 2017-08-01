@@ -190,8 +190,8 @@ const ComponentRenderer = ({
         ))
         .toArray()}
       {childComponents.count() > 0 &&
-        <Line>
-          {'<'}<span {...theme.componentName}>{componentName}</span>{'/>'}
+        <Line indentLevel={indentLevel}>
+          {'</'}<span {...theme.componentName}>{componentName}</span>{'>'}
         </Line>}
     </div>
   )
