@@ -1,6 +1,7 @@
-import { List } from 'immutable'
+import { is, List } from 'immutable'
 import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants'
 
+import { Component } from './ComponentTree'
 import Helpers from './Helpers'
 import { regularTree } from '../../../mocks/componentTreeEditor'
 
@@ -43,4 +44,13 @@ test('getInsertionPath(): Finds the correct path to insert a new prop', () => {
   const expected = List(['root', 'props', 3])
   const result = Helpers.getInsertionPath(regularTree, sourcePath, ADD_PROP)
   expect(expected).toEqual(result)
+})
+
+test('insertNodeAtPath(): Correctly updates paths on inserted nodes', () => {
+  const insertionPath = List(['root', 'children', 1, 'name'])
+  const result = Helpers.insertNodeAtPath(regularTree, insertionPath, Component())
+  result.getIn(['root', 'children']).map((node, index) => {
+    const expectedPath = List(['root', 'children', index])
+    expect(is(expectedPath, node.get('path'))).toBe(true)
+  })
 })

@@ -273,11 +273,14 @@ const getInsertionPath = (
  * Inserts node at a given path, either overriding the value already there, or shifting it
  * in the case where the parent is a List.
  */
-const insertNodeAtPath = (tree, path, node) => {
+const insertNodeAtPath = (tree: ComponentTree, path: Path, node: ComponentTreeNodeT) => {
   const parentTargetPath = path.pop()
   const parentTargetNode = tree.getIn(parentTargetPath)
   if (List.isList(parentTargetNode)) {
-    return tree.setIn(parentTargetPath, parentTargetNode.insert(path.last(), node))
+    const newList = parentTargetNode
+      .insert(path.last(), node)
+      .map((node, index) => node.set('path', parentTargetPath.push(index)))
+    return tree.setIn(parentTargetPath, newList)
   }
   return tree.setIn(path, node)
 }
