@@ -267,6 +267,7 @@ const defaultRowTheme = ({ property, isHovering }) => ({
     flexDirection: 'row',
     display: 'flex',
     flexGrow: 1,
+    alignItems: 'flex-start',
   },
   propCell: {
     ...Object.assign({}, cellBorder, {
@@ -333,7 +334,8 @@ const defaultTheme = {
     borderBottom: `1px solid ${Colors.grey800}`,
     flexDirection: 'row',
     display: 'flex',
-    flexGrow: 1,
+    flexShrink: 1,
+    alignItems: 'flex-start',
   },
   typeHeader: Object.assign({}, headerCellBase, middleCell, {
     flexBasis: typeWidth,
