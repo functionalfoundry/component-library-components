@@ -91,7 +91,7 @@ class ComponentTreeEditor extends React.Component {
   }
 
   render() {
-    const { completionData, theme } = this.props
+    const { completionData, onChangeComponentName, onChangePropName, theme } = this.props
     const { componentTree, interactionState } = this.state
     const rootNode = componentTree.get('root')
 
@@ -101,6 +101,8 @@ class ComponentTreeEditor extends React.Component {
         <ComponentRenderer
           isRootComponent
           onChangeNode={this.handleChangeNode}
+          onChangeComponentName={onChangeComponentName}
+          onChangePropName={onChangePropName}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
