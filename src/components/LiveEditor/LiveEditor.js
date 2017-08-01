@@ -34,6 +34,7 @@ type PropsT = {
   onChangePropName: Function,
   onChangePropValue: Function,
   onInsertComponent: Function,
+  onInsertProp: Function,
   onRemoveComponent: Function,
   onRemoveProp: Function,
   onSelectComponent: Function,
@@ -108,6 +109,7 @@ class LiveEditor extends React.Component {
       onChangeComponentName,
       onChangeComponentTree, // eslint-disable-line no-unused-vars
       onChangeData,
+      onInsertProp,
       onChangePropName,
       onChangePropValue,
       onInsertComponent,
@@ -150,6 +152,7 @@ class LiveEditor extends React.Component {
               nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
               onChangeComponentName={onChangeComponentName}
+              onInsertProp={onInsertProp}
               onChangePropName={onChangePropName}
               onChangePropValue={onChangePropValue}
               onInsertComponent={onInsertComponent}
