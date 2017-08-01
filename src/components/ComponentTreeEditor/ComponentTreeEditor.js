@@ -33,7 +33,7 @@ type PropsT = {
   onRemoveComponent?: Function,
   onInsertComponent?: Function,
   onChangePropName?: Function,
-  // onChangePropValue?: Function,
+  onChangePropValue?: Function,
   onChangeComponentName?: Function,
   onSelectComponent?: Function,
   theme: Object,
@@ -91,7 +91,13 @@ class ComponentTreeEditor extends React.Component {
   }
 
   render() {
-    const { completionData, onChangeComponentName, onChangePropName, theme } = this.props
+    const {
+      completionData,
+      onChangeComponentName,
+      onChangePropName,
+      onChangePropValue,
+      theme,
+    } = this.props
     const { componentTree, interactionState } = this.state
     const rootNode = componentTree.get('root')
 
@@ -103,6 +109,7 @@ class ComponentTreeEditor extends React.Component {
           onChangeNode={this.handleChangeNode}
           onChangeComponentName={onChangeComponentName}
           onChangePropName={onChangePropName}
+          onChangePropValue={onChangePropValue}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
