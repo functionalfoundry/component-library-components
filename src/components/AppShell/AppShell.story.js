@@ -228,7 +228,7 @@ class FetchAndRender extends React.Component {
 
   render() {
     const { badge, loader, slider, zoom } = this.state
-    const { error } = this.props
+    const { isFullscreen, error } = this.props
     return (
       <div
         style={{
@@ -251,10 +251,78 @@ class FetchAndRender extends React.Component {
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
           error={error}
+          isFullscreen={isFullscreen}
         />
       </div>
     )
   }
+}
+
+const LiveView = ({ isFullscreen }) => {
+  return (
+    <AppShell
+      isFullscreen={isFullscreen}
+      sections={{
+        bottomPanel,
+        header,
+        leftNav,
+        content: <FetchAndRender isFullscreen={isFullscreen} />,
+        contentPanelHeader: (
+          <PanelToolbar align="Right">
+            <QuickAction
+              icon="alignment"
+              label="Alignment"
+              shade="Light"
+              input={{
+                type: 'Icon',
+                value: 'align-left',
+                options: [
+                  {
+                    name: 'align-left',
+                    hint: 'Left',
+                  },
+                  {
+                    name: 'align-center',
+                    hint: 'Center',
+                  },
+                  {
+                    name: 'align-right',
+                    hint: 'Right',
+                  },
+                ],
+              }}
+              onClick={action('onClick')}
+              paddingBottom={16}
+              showLabelInButton
+            />
+            <QuickAction
+              icon="theme"
+              label="Theme"
+              shade="Light"
+              input={{
+                type: 'Radio',
+                value: 'Light',
+                options: ['Light', 'Grey', 'Dark'],
+              }}
+              onClick={action('onClick')}
+              paddingBottom={16}
+              showLabelInButton
+            />
+          </PanelToolbar>
+        ),
+        rightPanel: (
+          <Panel>
+            <PanelHeader showLeftBorder>
+              <PanelToolbar align="Left">Editor</PanelToolbar>
+            </PanelHeader>
+            <PanelContent>
+              {rightPanel}
+            </PanelContent>
+          </Panel>
+        ),
+      }}
+    />
+  )
 }
 
 storiesOf('AppShell', module)
@@ -274,72 +342,5 @@ storiesOf('AppShell', module)
       }}
     />
   )
-  .add('LiveView', () =>
-    <AppShell
-      sections={{
-        bottomPanel,
-        header,
-        leftNav,
-        content: (
-          <Panel>
-            <PanelHeader>
-              <PanelToolbar align="Right">
-                <QuickAction
-                  icon="alignment"
-                  label="Alignment"
-                  shade="Light"
-                  input={{
-                    type: 'Icon',
-                    value: 'align-left',
-                    options: [
-                      {
-                        name: 'align-left',
-                        hint: 'Left',
-                      },
-                      {
-                        name: 'align-center',
-                        hint: 'Center',
-                      },
-                      {
-                        name: 'align-right',
-                        hint: 'Right',
-                      },
-                    ],
-                  }}
-                  onClick={action('onClick')}
-                  paddingBottom={16}
-                  showLabelInButton
-                />
-                <QuickAction
-                  icon="theme"
-                  label="Theme"
-                  shade="Light"
-                  input={{
-                    type: 'Radio',
-                    value: 'Light',
-                    options: ['Light', 'Grey', 'Dark'],
-                  }}
-                  onClick={action('onClick')}
-                  paddingBottom={16}
-                  showLabelInButton
-                />
-              </PanelToolbar>
-            </PanelHeader>
-            <PanelContent>
-              <FetchAndRender />
-            </PanelContent>
-          </Panel>
-        ),
-        rightPanel: (
-          <Panel>
-            <PanelHeader showLeftBorder>
-              <PanelToolbar align="Left">Editor</PanelToolbar>
-            </PanelHeader>
-            <PanelContent>
-              {rightPanel}
-            </PanelContent>
-          </Panel>
-        ),
-      }}
-    />
-  )
+  .add('LiveView', () => <LiveView />)
+  .add('Fullscreen', () => <LiveView isFullscreen />)

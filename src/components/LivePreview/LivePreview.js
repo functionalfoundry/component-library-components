@@ -29,6 +29,8 @@ type PropsT = {
   containerWidth: number,
   /** The user-specified pixel height of the contianer that is then scaled */
   containerHeight: number,
+  /** Whether or not the the preview should be displayed in fullscreen */
+  isFullscreen: boolean,
   /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
   React?: any,
   /** The ReactDOM object to use inside the iFrame */
@@ -183,6 +185,7 @@ class LivePreview extends React.Component {
       backgroundColor,
       alignment,
       error,
+      isFullscreen,
     } = this.props
 
     const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
@@ -199,6 +202,26 @@ class LivePreview extends React.Component {
         isContainerFocused={isContainerFocused}
       />
     )
+    const fullscreenHarnessElement = <div />
+    if (isFullscreen) {
+      return (
+        <Frame
+          name={name}
+          tree={TreeHelpers.createTree(tree)}
+          bundles={bundles}
+          React={React}
+          ReactDOM={ReactDOM}
+          harnessElement={fullscreenHarnessElement}
+          backgroundColor={backgroundColor}
+          theme={{
+            frame: {
+              backgroundColor: backgroundColor,
+            },
+          }}
+        />
+      )
+    }
+
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
       return (
         <div style={{ width: `100%`, height: `100%`, position: 'absolute' }}>
