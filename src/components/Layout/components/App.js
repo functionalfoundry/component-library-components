@@ -14,6 +14,7 @@ type Props = {
   showHeader: boolean,
   showLeftNav: boolean,
   tabletShowLeftNav: boolean,
+  isFullscreen: boolean,
   theme: Object,
 }
 
@@ -24,27 +25,38 @@ const App = ({
   leftNav,
   showHeader = true,
   showLeftNav = true,
+  isFullscreen,
   theme,
-}: Props) =>
-  <Row {...theme.container}>
-    {showLeftNav &&
-      leftNav &&
-      <Column {...theme.leftNav}>
-        {leftNav}
-      </Column>}
-    <Column {...theme.page}>
-      {showHeader &&
-        header &&
-        <Row {...theme.header}>
-          {header}
-        </Row>}
-      <Row {...theme.main}>
-        <Column {...theme.content}>
-          {children}
-        </Column>
-      </Row>
-    </Column>
-  </Row>
+}: Props) => {
+  if (isFullscreen) {
+    return (
+      <div>
+        {children}
+      </div>
+    )
+  }
+  return (
+    <Row {...theme.container}>
+      {showLeftNav &&
+        leftNav &&
+        <Column {...theme.leftNav}>
+          {leftNav}
+        </Column>}
+      <Column {...theme.page}>
+        {showHeader &&
+          header &&
+          <Row {...theme.header}>
+            {header}
+          </Row>}
+        <Row {...theme.main}>
+          <Column {...theme.content}>
+            {children}
+          </Column>
+        </Row>
+      </Column>
+    </Row>
+  )
+}
 
 const LEFT_NAV_WIDTH = 250
 
