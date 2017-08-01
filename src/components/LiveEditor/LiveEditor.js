@@ -28,15 +28,15 @@ type PropsT = {
   data: DataT,
   nodeIdGenerator: Function,
   onChangeActions: Function,
-  onChangeComponentName?: Function,
+  onChangeComponentName: Function,
   onChangeComponentTree?: Function,
   onChangeData: Function,
-  onChangePropName?: Function,
-  onChangePropValue?: Function,
-  onInsertComponent?: Function,
-  onRemoveComponent?: Function,
-  onRemoveProp?: Function,
-  onSelectComponent?: Function,
+  onChangePropName: Function,
+  onChangePropValue: Function,
+  onInsertComponent: Function,
+  onRemoveComponent: Function,
+  onRemoveProp: Function,
+  onSelectComponent: Function,
   /**
    * Index of the selected tab.
    */
