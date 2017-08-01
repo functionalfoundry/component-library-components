@@ -4,6 +4,7 @@ import Theme from 'js-theme'
 
 import { BreakPoints, Colors } from '@workflo/styles'
 
+import Canvas from './Canvas'
 import Column from './Column'
 import Row from './Row'
 
@@ -12,10 +13,12 @@ type Props = {
   children: React.Element<*>,
   leftPanel: React.Element<*>,
   rightPanel: React.Element<*>,
+  contentPanelHeader: React.Element<*>,
   showLeftPanel: boolean,
   showRightPanel: boolean,
   showBottomPanel: boolean,
   tabletShowLeftPanel: boolean,
+  isFullscreen: boolean,
   theme: Object,
 }
 
@@ -28,31 +31,38 @@ const LiveView = ({
   showBottomPanel = true,
   showLeftPanel = true,
   showRightPanel = true,
+  contentPanelHeader,
+  isFullscreen,
   theme,
-}: Props) => (
-  <Column {...theme.container}>
-    <Row {...theme.middle}>
-      {showLeftPanel &&
-        leftPanel &&
-        <Column {...theme.leftPanel}>
-          {leftPanel}
-        </Column>}
-      <Column {...theme.content}>
-        {children}
-      </Column>
-      {showRightPanel &&
-        rightPanel &&
-        <Column {...theme.rightPanel}>
-          {rightPanel}
-        </Column>}
-    </Row>
-    {showBottomPanel &&
-      bottomPanel &&
-      <Row {...theme.bottomPanel}>
-        {bottomPanel}
-      </Row>}
-  </Column>
-)
+}: Props) => {
+  if (isFullscreen) return <div>{children}</div>
+  return (
+    <Column {...theme.container}>
+      <Row {...theme.middle}>
+        {showLeftPanel &&
+          leftPanel &&
+          <Column {...theme.leftPanel}>
+            {leftPanel}
+          </Column>}
+        <Column {...theme.content}>
+          <Canvas header={contentPanelHeader}>
+            {children}
+          </Canvas>
+        </Column>
+        {showRightPanel &&
+          rightPanel &&
+          <Column {...theme.rightPanel}>
+            {rightPanel}
+          </Column>}
+      </Row>
+      {showBottomPanel &&
+        bottomPanel &&
+        <Row {...theme.bottomPanel}>
+          {bottomPanel}
+        </Row>}
+    </Column>
+  )
+}
 
 const defaultTheme = ({ tabletShowLeftPanel }) => ({
   bottomPanel: {
