@@ -23,6 +23,8 @@ type Props = {
   isRootComponent: boolean,
   onBlur: Function,
   onChangeNode: Function,
+  onChangeComponentName: Function,
+  onChangePropName: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
@@ -71,6 +73,8 @@ const ComponentRenderer = ({
   isHovered,
   isRootComponent,
   onBlur,
+  onChangeComponentName,
+  onChangePropName,
   onChangeNode,
   onFocus,
   onFocusNext,
@@ -94,7 +98,10 @@ const ComponentRenderer = ({
         {'<'}
         <span {...theme.componentName}>
           <EditableNodeAttribute
-            onChangeNode={onChangeNode}
+            onChangeNode={({ path, value }) => {
+              onChangeNode({ path, value })
+              onChangeComponentName(componentNode.get('id'), value)
+            }}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
@@ -131,6 +138,7 @@ const ComponentRenderer = ({
               interactionState={interactionState}
               onBlur={onBlur}
               onChangeNode={onChangeNode}
+              onChangePropName={onChangePropName}
               onFocus={onFocus}
               onFocusNext={onFocusNext}
               onFocusPrevious={onFocusPrevious}
