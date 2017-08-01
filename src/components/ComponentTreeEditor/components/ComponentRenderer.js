@@ -25,6 +25,7 @@ type Props = {
   onChangeNode: Function,
   onChangeComponentName: Function,
   onChangePropName: Function,
+  onChangePropValue: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
@@ -75,6 +76,7 @@ const ComponentRenderer = ({
   onBlur,
   onChangeComponentName,
   onChangePropName,
+  onChangePropValue,
   onChangeNode,
   onFocus,
   onFocusNext,
@@ -139,6 +141,7 @@ const ComponentRenderer = ({
               onBlur={onBlur}
               onChangeNode={onChangeNode}
               onChangePropName={onChangePropName}
+              onChangePropValue={onChangePropValue}
               onFocus={onFocus}
               onFocusNext={onFocusNext}
               onFocusPrevious={onFocusPrevious}
@@ -178,6 +181,7 @@ const ComponentRenderer = ({
             onChangeNode={onChangeNode}
             onChangeComponentName={onChangeComponentName}
             onChangePropName={onChangePropName}
+            onChangePropValue={onChangePropValue}
             onInsertNode={onInsertNode}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
