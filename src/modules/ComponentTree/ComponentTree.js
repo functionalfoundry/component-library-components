@@ -38,7 +38,7 @@ export { PropValue }
 const defaultProp: PropT = {
   id: null,
   nodeType: 'prop',
-  name: null,
+  name: '',
   path: List(),
   value: null,
 }
