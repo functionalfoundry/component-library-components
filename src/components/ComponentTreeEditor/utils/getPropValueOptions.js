@@ -36,8 +36,8 @@ const unifyOptions = (
   return result
 }
 
-const isOptionAppropriateForProp = (option, propValueNode: Object) => {
-  if (propValueNode.get('type') === 'function') {
+const isOptionAppropriateForProp = (option, propValueNode: ?Object) => {
+  if (propValueNode && propValueNode.get('type') === 'function') {
     return (
       option.source === 'actions' && option.name !== 'setState' && option.name !== 'state'
     )
