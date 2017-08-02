@@ -129,15 +129,9 @@ class ComponentTreeEditor extends React.Component {
 
   createEmptyProp = path => {
     const { nodeIdGenerator } = this.props
-    const newPropValue = PropValue({
-      id: nodeIdGenerator(),
-      path: path.push('value'),
-      value: '',
-    })
     const newProp = Prop({
       id: nodeIdGenerator(),
       path,
-      value: newPropValue,
     })
     return newProp
   }
