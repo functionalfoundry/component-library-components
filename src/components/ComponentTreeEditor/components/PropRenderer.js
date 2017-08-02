@@ -38,9 +38,8 @@ type Props = {
   componentNode: Component,
   componentTree: ComponentTree,
   onBlur: Function,
-  onChangeNode: Function,
-  onChangePropName: Function,
-  onChangePropValue: Function,
+  onChangeNameNode: Function,
+  onChangeValueNode: Function,
   onFocus: Function,
   onFocusNext: Function,
   onFocusPrevious: Function,
@@ -57,9 +56,8 @@ const PropRenderer = ({
   indentLevel,
   interactionState,
   onBlur,
-  onChangeNode,
-  onChangePropName,
-  onChangePropValue,
+  onChangeNameNode,
+  onChangeValueNode,
   onFocus,
   onFocusNext,
   onFocusPrevious,
@@ -82,10 +80,7 @@ const PropRenderer = ({
           <EditableNodeAttribute
             interactionState={interactionState}
             onBlur={onBlur}
-            onChangeNode={({ path, value }) => {
-              onChangeNode({ path, value })
-              onChangePropName(componentNode.get('id'), propNode.get('id'), value)
-            }}
+            onChangeNode={onChangeNameNode}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
@@ -101,10 +96,7 @@ const PropRenderer = ({
               formatValue={displayPropValue}
               interactionState={interactionState}
               onBlur={onBlur}
-              onChangeNode={({ path, value }) => {
-                onChangeNode({ path, value })
-                onChangePropValue(propNode.get('id'), value)
-              }}
+              onChangeNode={onChangeValueNode}
               onFocus={onFocus}
               onFocusNext={onFocusNext}
               onFocusPrevious={onFocusPrevious}
@@ -126,8 +118,32 @@ const defaultTheme = {
 }
 
 class PurePropRenderer extends PureComponent {
+  handleChangeNameNode = ({ path, value }) => {
+    const { componentNode, propNode, onChangeNode, onChangePropName } = this.props
+    onChangeNode({ path, value })
+    onChangePropName(componentNode.get('id'), propNode.get('id'), value)
+  }
+
+  handleChangeValueNode = ({ path, value }) => {
+    const { propNode, onChangeNode, onChangePropValue } = this.props
+    onChangeNode({ path, value })
+    onChangePropValue(propNode.get('id'), value)
+  }
+
   render() {
-    return <PropRenderer {...this.props} />
+    const {
+      onChangeNode, // eslint-disable-line no-unused-vars
+      onChangePropName, // eslint-disable-line no-unused-vars
+      onChangePropValue, // eslint-disable-line no-unused-vars
+      ...props
+    } = this.props
+    return (
+      <PropRenderer
+        {...props}
+        onChangeNameNode={this.handleChangeNameNode}
+        onChangeValueNode={this.handleChangeValueNode}
+      />
+    )
   }
 }
 
