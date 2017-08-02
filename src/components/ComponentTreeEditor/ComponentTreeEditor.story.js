@@ -337,7 +337,16 @@ class TreeEditorContainer extends React.Component {
     name: string
   ) => {
     action('onChangePropName')(componentId, nodeId, name)
-    const tree = Helpers.setPropName(this.state.tree, nodeId, name)
+    let tree = this.state.tree
+    tree = Helpers.setPropName(tree, nodeId, name)
+    tree = Helpers.setPropValue(
+      tree,
+      nodeId,
+      PropValue({
+        id: Math.random().toString(),
+        value: '',
+      })
+    )
     this.setState({ tree })
   }
 
