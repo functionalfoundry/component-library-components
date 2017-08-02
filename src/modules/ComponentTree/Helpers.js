@@ -297,9 +297,7 @@ const insertComponent = (
 ): ComponentTree => {
   const parentPath = findNodeById(tree, parentId)
   if (parentPath) {
-    return updateNodesAtPath(tree, parentPath.push('children'), children =>
-      children.insert(index, component)
-    )
+    return insertNodeAtPath(tree, parentPath.push('children').push(index), component)
   } else {
     throw new Error(
       'Failed to insert component into component tree: ' +
@@ -373,13 +371,12 @@ const setComponentText = (
 const insertProp = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
+  index: number,
   prop: Prop
 ): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
-    return updateNodesAtPath(tree, componentPath.push('props'), props =>
-      props.push(prop).sortBy(prop => prop.name && prop.name.name)
-    )
+    return insertNodeAtPath(tree, componentPath.push('props').push(index), prop)
   } else {
     throw new Error(
       'Failed to insert a prop into the component tree: ' +
