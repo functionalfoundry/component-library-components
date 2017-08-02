@@ -107,6 +107,7 @@ class ComponentTreeEditor extends React.Component {
       rootNode &&
       <div {...theme.componentTreeEditor}>
         <ComponentRenderer
+          key={rootNode.get('id')}
           isRootComponent
           onChangeNode={this.handleChangeNode}
           onChangeComponentName={onChangeComponentName}

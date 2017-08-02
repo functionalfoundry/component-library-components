@@ -131,10 +131,10 @@ const ComponentRenderer = ({
         .map((propNode, index) => {
           return (
             <PropRenderer
+              key={propNode.get('id')}
               completionData={completionData}
               componentTree={componentTree}
               componentNode={componentNode}
-              key={index}
               indentLevel={indentLevel + 1}
               interactionState={interactionState}
               onBlur={onBlur}
@@ -171,7 +171,7 @@ const ComponentRenderer = ({
       {childComponents
         .map((childComponent, index) => (
           <ThemedComponentRenderer
-            key={index}
+            key={childComponent.get('id')}
             completionData={completionData}
             componentNode={childComponent}
             componentTree={componentTree}
