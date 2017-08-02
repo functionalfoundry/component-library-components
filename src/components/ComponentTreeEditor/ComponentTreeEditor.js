@@ -235,18 +235,11 @@ class ComponentTreeEditor extends React.Component {
       })
       /** We only create a new node if the type has been specified as a parameter */
     } else if (type) {
-      let newNode = null
       /** We convert from the path of the node attribute to the path of the new node */
       const newPath = path.pop()
       if (type === 'prop') {
-        newNode = this.createEmptyProp(newPath)
+        this.insertNode(newPath, ADD_PROP)
       }
-      this.setState(prevState => ({
-        componentTree: componentTree.setIn(newPath, newNode),
-        interactionState: {
-          focusedNodePath: path,
-        },
-      }))
     }
   }
 
