@@ -76,7 +76,7 @@ const PropRenderer = ({
     propNode,
     componentNode,
   })
-  return propValue || propName
+  return propValue !== null || propName !== null
     ? <Line {...restProps} indentLevel={indentLevel}>
         <span {...theme.propName}>
           <EditableNodeAttribute
@@ -95,23 +95,25 @@ const PropRenderer = ({
             value={propNode.get('name')}
           />
         </span>
-        {'='}
-        <EditableNodeAttribute
-          formatValue={displayPropValue}
-          interactionState={interactionState}
-          onBlur={onBlur}
-          onChangeNode={({ path, value }) => {
-            onChangeNode({ path, value })
-            onChangePropValue(propNode.get('id'), value)
-          }}
-          onFocus={onFocus}
-          onFocusNext={onFocusNext}
-          onFocusPrevious={onFocusPrevious}
-          options={propValueOptions.map(option => option.value)}
-          nodeId={propValue.get('id')}
-          path={propPath.push('value').push('value')}
-          value={propValue.get('value')}
-        />
+        {propValue !== null ? '=' : null}
+        {propValue !== null
+          ? <EditableNodeAttribute
+              formatValue={displayPropValue}
+              interactionState={interactionState}
+              onBlur={onBlur}
+              onChangeNode={({ path, value }) => {
+                onChangeNode({ path, value })
+                onChangePropValue(propNode.get('id'), value)
+              }}
+              onFocus={onFocus}
+              onFocusNext={onFocusNext}
+              onFocusPrevious={onFocusPrevious}
+              options={propValueOptions.map(option => option.value)}
+              nodeId={propValue.get('id')}
+              path={propPath.push('value').push('value')}
+              value={propValue.get('value')}
+            />
+          : null}
         <span>&nbsp;</span>
       </Line>
     : null
