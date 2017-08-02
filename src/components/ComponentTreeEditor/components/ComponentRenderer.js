@@ -102,14 +102,8 @@ const ComponentRenderer = ({
         {'<'}
         <span {...theme.componentName}>
           <EditableNodeAttribute
-            onChangeNode={({ path, value }) => {
-              onChangeNode({ path, value })
-              onChangeComponentName(componentNode.get('id'), value)
-            }}
-            onFocus={path => {
-              onFocus(path)
-              onSelectComponent(componentNode.get('id'))
-            }}
+            onChangeNode={onChangeNode}
+            onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
             onBlur={onBlur}
@@ -218,13 +212,29 @@ class ComponentRendererContainer extends PureComponent {
       isHovered: false,
     }
   }
+
+  handleChangeNode = ({ path, value }) => {
+    const { componentNode, onChangeComponentName, onChangeNode } = this.props
+    onChangeNode({ path, value })
+    onChangeComponentName(componentNode.get('id'), value)
+  }
+
+  handleFocus = path => {
+    const { componentNode, onFocus, onSelectComponent } = this.props
+    onFocus(path)
+    onSelectComponent(componentNode.get('id'))
+  }
+
   handleMouseEnter = () => this.setState({ isHovered: true })
   handleMouseLeave = () => this.setState({ isHovered: false })
+
   render() {
     return (
       <ComponentRenderer
         {...this.props}
         isHovered={this.state.isHovered}
+        onChangeNode={this.handleChangeNode}
+        onFocus={this.handleFocus}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       />
