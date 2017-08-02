@@ -327,7 +327,7 @@ class TreeEditorContainer extends React.Component {
     jsProp: Object
   ) => {
     action('onInsertProp')(componentId, index, prop, jsProp)
-    const tree = Helpers.insertProp(this.state.tree, componentId, prop)
+    const tree = Helpers.insertProp(this.state.tree, componentId, index, prop)
     this.setState({ tree })
   }
 
@@ -373,7 +373,7 @@ class TreeEditorContainer extends React.Component {
           onInsertComponent={this.handleInsertComponent}
           onInsertProp={this.handleInsertProp}
           onChangePropName={this.handleChangePropName}
-          // onChangePropValue={action('onChangePropValue')}
+          onChangePropValue={action('onChangePropValue')}
           onChangeComponentName={this.handleChangeComponentName}
           onSelectComponent={action('onSelectComponent')}
         />
