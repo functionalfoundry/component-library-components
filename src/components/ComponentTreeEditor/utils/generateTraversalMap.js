@@ -24,9 +24,11 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
   const processProp = (propNode: Prop) => {
     const path = propNode.get('path')
     traversalList.push(NodePointer({ path: path.push('name'), type: 'prop' }))
-    traversalList.push(
-      NodePointer({ path: path.push('value').push('value'), type: 'prop-value' })
-    )
+    if (propNode.get('value') !== null) {
+      traversalList.push(
+        NodePointer({ path: path.push('value').push('value'), type: 'prop-value' })
+      )
+    }
   }
 
   const processComponent = (componentNode: Component) => {
@@ -35,12 +37,14 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     traversalList.push(NodePointer({ path: path.push('name'), type: 'component' }))
     props.forEach(processProp)
     /** This is the new prop that gets created during keyboard navigation */
-    traversalList.push(
-      NodePointer({
-        path: path.push('props').push(props.count()).push('name'),
-        type: 'prop',
-      })
-    )
+    if (!props.last() || props.last().get('value') !== null) {
+      traversalList.push(
+        NodePointer({
+          path: path.push('props').push(props.count()).push('name'),
+          type: 'prop',
+        })
+      )
+    }
     traversalList.push(NodePointer({ path: path.push('add-button'), type: null }))
     componentNode.get('children').forEach(processComponent)
   }
