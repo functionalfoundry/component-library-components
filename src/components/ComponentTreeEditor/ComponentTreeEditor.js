@@ -139,6 +139,7 @@ class ComponentTreeEditor extends React.Component {
 
   /** Deletes empty nodes that are currently not in focus */
   clearEmptyNodes = () => {
+    const { onRemoveComponent, onRemoveProp } = this.props
     const { componentTree, interactionState, traversalMap } = this.state
     const focusedNodePath = interactionState.focusedNodePath
     /** Find empty nodes */
@@ -165,24 +166,32 @@ class ComponentTreeEditor extends React.Component {
     const nodesToRemove = traverseResult.data
 
     /** Only clear empty nodes if they are not currently being edited */
-    const modifiedComponentTree = nodesToRemove.reduce(
-      (tree, nodePath) =>
+    const modifiedComponentTree = nodesToRemove.reduce((tree, nodePath) => {
+      if (
         !tree.hasIn(focusedNodePath) ||
-          !tree.hasIn(nodePath) ||
-          is(nodePath, focusedNodePath) ||
-          is(
-            nodePath,
-            Helpers.findClosestAncestor(tree, focusedNodePath, node => !!node.nodeType)
-              .path
-          )
-          ? tree
-          : Helpers.removeNodeByPath(tree, nodePath),
-      componentTree
-    )
+        !tree.hasIn(nodePath) ||
+        is(nodePath, focusedNodePath) ||
+        is(
+          nodePath,
+          Helpers.findClosestAncestor(tree, focusedNodePath, node => !!node.nodeType).path
+        )
+      ) {
+        return tree
+      } else {
+        const nodeToRemove = tree.getIn(nodePath)
+        if (nodeToRemove.nodeType === 'component') {
+          onRemoveComponent(nodeToRemove.get('id'))
+        }
+        if (nodeToRemove.nodeType === 'prop') {
+          onRemoveProp(nodeToRemove.get('id'))
+        }
+        return Helpers.removeNodeByPath(tree, nodePath)
+      }
+    }, componentTree)
 
     /**
      * If the focusedNodePath was deleted by the logic above, then focus to the next
-     * node that is still in the tree, if there is one. Note the extra pops handleRemoveProp
+     * node that is still in the tree, if there is one. Note the extra pops
      * on the path are to get from the node attribute to the node itself (needed because
      * 'add-button' is not actually in the componentTree but we treat it like a node attribute)
      */
