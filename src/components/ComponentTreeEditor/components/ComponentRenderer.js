@@ -23,7 +23,6 @@ type Props = {
   isRootComponent: boolean,
   onBlur: Function,
   onChangeNode: Function,
-  onChangeComponentName: Function,
   onChangePropName: Function,
   onChangePropValue: Function,
   onSelectComponent: Function,
@@ -75,7 +74,6 @@ const ComponentRenderer = ({
   isHovered,
   isRootComponent,
   onBlur,
-  onChangeComponentName,
   onChangePropName,
   onChangePropValue,
   onChangeNode,
@@ -178,7 +176,6 @@ const ComponentRenderer = ({
             indentLevel={indentLevel + 1}
             interactionState={interactionState}
             onChangeNode={onChangeNode}
-            onChangeComponentName={onChangeComponentName}
             onChangePropName={onChangePropName}
             onChangePropValue={onChangePropValue}
             onSelectComponent={onSelectComponent}
@@ -213,18 +210,6 @@ class ComponentRendererContainer extends PureComponent {
     }
   }
 
-  handleChangeNode = ({ path, value }) => {
-    const { componentNode, onChangeComponentName, onChangeNode } = this.props
-    onChangeNode({ path, value })
-    onChangeComponentName(componentNode.get('id'), value)
-  }
-
-  handleFocus = path => {
-    const { componentNode, onFocus, onSelectComponent } = this.props
-    onFocus(path)
-    onSelectComponent(componentNode.get('id'))
-  }
-
   handleMouseEnter = () => this.setState({ isHovered: true })
   handleMouseLeave = () => this.setState({ isHovered: false })
 
@@ -233,8 +218,6 @@ class ComponentRendererContainer extends PureComponent {
       <ComponentRenderer
         {...this.props}
         isHovered={this.state.isHovered}
-        onChangeNode={this.handleChangeNode}
-        onFocus={this.handleFocus}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       />

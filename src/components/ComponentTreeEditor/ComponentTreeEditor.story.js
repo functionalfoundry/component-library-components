@@ -351,9 +351,10 @@ class TreeEditorContainer extends React.Component {
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
+    console.log('changing component name! nodeId, name: ', nodeId, name)
     action('onChangeComponentName')(nodeId, name)
-    const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
-    this.setState({ tree })
+    // const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
+    // this.setState({ tree })
   }
 
   render() {

@@ -12,7 +12,6 @@ import {
   Helpers,
   Path,
   Prop,
-  PropValue,
   type TraverseContext,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
@@ -92,14 +91,7 @@ class ComponentTreeEditor extends React.Component {
   }
 
   render() {
-    const {
-      completionData,
-      onChangeComponentName,
-      onChangePropName,
-      onChangePropValue,
-      onSelectComponent,
-      theme,
-    } = this.props
+    const { completionData, onChangePropName, onChangePropValue, theme } = this.props
     const { componentTree, interactionState } = this.state
     const rootNode = componentTree.get('root')
 
@@ -109,11 +101,9 @@ class ComponentTreeEditor extends React.Component {
         <ComponentRenderer
           key={rootNode.get('id')}
           isRootComponent
-          onChangeNode={this.handleChangeNode}
-          onChangeComponentName={onChangeComponentName}
+          onChangeNode={this.handleChangeNodeAttribute}
           onChangePropName={onChangePropName}
           onChangePropValue={onChangePropValue}
-          onSelectComponent={onSelectComponent}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           onFocusNext={this.handleFocusNext}
@@ -213,6 +203,7 @@ class ComponentTreeEditor extends React.Component {
   }
 
   focusNodeAttribute(path: Path, type?: string) {
+    const { onSelectComponent } = this.props
     const { componentTree } = this.state
     const targetNode = componentTree.getIn(path.pop(), null)
 
@@ -233,6 +224,9 @@ class ComponentTreeEditor extends React.Component {
           focusedNodePath: path,
         },
       })
+      if (targetNode.nodeType === 'component') {
+        onSelectComponent(targetNode.get('id'))
+      }
       /** We only create a new node if the type has been specified as a parameter */
     } else if (type) {
       /** We convert from the path of the node attribute to the path of the new node */
@@ -243,10 +237,17 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
-  handleChangeNode = ({ path, value }) => {
+  handleChangeNodeAttribute = ({ path, value }) => {
+    const { onChangeComponentName } = this.props
     const { componentTree } = this.state
     const modifiedComponentTree = componentTree.setIn(path, value)
     this.updateComponentTree(modifiedComponentTree)
+
+    /** Invoke individual callbacks for certain types of changes */
+    const parentNode = componentTree.getIn(path.pop())
+    if (parentNode.nodeType === 'component' && path.last() === 'name') {
+      onChangeComponentName(parentNode.get('id'), value)
+    }
   }
 
   handleBlur = (path: Path) => {

@@ -4,7 +4,7 @@ import Theme from 'js-theme'
 
 import { Colors } from '@workflo/styles'
 
-import type { CompletionDataT, CompletionOptionT } from '../../../types/Completion'
+import type { CompletionDataT } from '../../../types/Completion'
 import type { Component, ComponentTree, Prop } from '../../../modules/ComponentTree'
 import getPropValueTypeBoundaries from '../utils/getPropValueTypeBoundaries'
 import stripQuotes from '../utils/stripQuotes'
