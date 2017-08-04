@@ -80,36 +80,38 @@ const PropRenderer = ({
   })
   return propValue !== null || propName !== null
     ? <Line {...restProps} indentLevel={indentLevel}>
-        <span {...theme.propName}>
-          <EditableNodeAttribute
-            interactionState={interactionState}
-            onBlur={onBlur}
-            onChangeNode={onChangeNameNode}
-            onFocus={onFocus}
-            onFocusNext={onFocusNext}
-            onFocusPrevious={onFocusPrevious}
-            options={Object.keys(completionData.props[componentName] || {})}
-            nodeId={propNode.get('id')}
-            path={propPath.push('name')}
-            value={propNode.get('name')}
-          />
-        </span>
-        {propValue !== null ? '=' : null}
-        {propValue !== null
-          ? <EditableNodeAttribute
-              formatValue={displayPropValue}
+        <span {...theme.propContainer}>
+          <span {...theme.propName}>
+            <EditableNodeAttribute
               interactionState={interactionState}
               onBlur={onBlur}
-              onChangeNode={onChangeValueNode}
+              onChangeNode={onChangeNameNode}
               onFocus={onFocus}
               onFocusNext={onFocusNext}
               onFocusPrevious={onFocusPrevious}
-              options={propValueOptions.map(option => option.value)}
-              nodeId={propValue.get('id')}
-              path={propPath.push('value').push('value')}
-              value={propValue.get('value')}
+              options={Object.keys(completionData.props[componentName] || {})}
+              nodeId={propNode.get('id')}
+              path={propPath.push('name')}
+              value={propNode.get('name')}
             />
-          : null}
+          </span>
+          {propValue !== null ? '=' : null}
+          {propValue !== null
+            ? <EditableNodeAttribute
+                formatValue={displayPropValue}
+                interactionState={interactionState}
+                onBlur={onBlur}
+                onChangeNode={onChangeValueNode}
+                onFocus={onFocus}
+                onFocusNext={onFocusNext}
+                onFocusPrevious={onFocusPrevious}
+                options={propValueOptions.map(option => option.value)}
+                nodeId={propValue.get('id')}
+                path={propPath.push('value').push('value')}
+                value={propValue.get('value')}
+              />
+            : null}
+        </span>
         <span>&nbsp;</span>
       </Line>
     : null
@@ -117,11 +119,16 @@ const PropRenderer = ({
 
 PropRenderer.defaultProps = defaultProps
 
-const defaultTheme = {
+const defaultTheme = ({ propNode }) => ({
+  propContainer: !propNode.getIn(['value', 'status'], { isValid: true }).isValid
+    ? {
+        textDecoration: 'line-through',
+      }
+    : {},
   propName: {
     color: Colors.green300,
   },
-}
+})
 
 class PurePropRenderer extends PureComponent {
   handleChangeNameNode = ({ path, value }) => {
