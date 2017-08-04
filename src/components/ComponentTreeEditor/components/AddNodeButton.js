@@ -183,6 +183,7 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
       }}
       position="Bottom"
       targetRef={containerRef}
+      padding={0}
       verticalOffset={2}
     />
   </span>
