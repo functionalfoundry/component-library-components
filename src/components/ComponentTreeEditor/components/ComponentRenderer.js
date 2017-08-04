@@ -174,7 +174,7 @@ const ComponentRenderer = ({
           })}
         </Line>}
       {childComponents
-        .map((childComponent, index) => (
+        .map((childComponent, index) =>
           <ThemedComponentRenderer
             key={childComponent.get('id')}
             completionData={completionData}
@@ -191,11 +191,15 @@ const ComponentRenderer = ({
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
           />
-        ))
+        )
         .toArray()}
       {childComponents.count() > 0 &&
         <Line indentLevel={indentLevel}>
-          {'</'}<span {...theme.componentName}>{componentName}</span>{'>'}
+          {'</'}
+          <span {...theme.componentName}>
+            {componentName}
+          </span>
+          {'>'}
         </Line>}
     </div>
   )
