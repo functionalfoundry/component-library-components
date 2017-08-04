@@ -49,6 +49,10 @@ type Props = {
   theme: Object,
 }
 
+const defaultProps = {
+  indentLevel: 1,
+}
+
 const PropRenderer = ({
   completionData,
   componentTree,
@@ -110,6 +114,8 @@ const PropRenderer = ({
       </Line>
     : null
 }
+
+PropRenderer.defaultProps = defaultProps
 
 const defaultTheme = {
   propName: {
