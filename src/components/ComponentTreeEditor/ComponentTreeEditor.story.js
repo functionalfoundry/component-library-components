@@ -66,7 +66,8 @@ const regularTree = ComponentTree({
           id: 'list-title-prop-value',
           nodeType: 'prop-value',
           path: List(['root', 'props', 0, 'value']),
-          value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
+          value:
+            'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
       }),
@@ -200,7 +201,10 @@ class TreeEditorContainer extends React.Component {
     }
   }
 
-  createAction = (name, handler) => <button key={name} onClick={handler}>{name}</button>
+  createAction = (name, handler) =>
+    <button key={name} onClick={handler}>
+      {name}
+    </button>
 
   insertProp = () => {
     const prop = Prop({
@@ -427,17 +431,17 @@ class TreeEditorContainer extends React.Component {
 }
 
 storiesOf('Component Tree Editor', module)
-  .add('Regular', () => (
+  .add('Regular', () =>
     <PreviewContainer shade="light">
       <Preview label="Regular">
         <TreeEditorContainer tree={regularTree} />
       </Preview>
     </PreviewContainer>
-  ))
-  .add('Tree from raw data', () => (
+  )
+  .add('Tree from raw data', () =>
     <PreviewContainer shade="light">
       <Preview label="Regular">
         <TreeEditorContainer tree={treeFromRaw} />
       </Preview>
     </PreviewContainer>
-  ))
+  )
