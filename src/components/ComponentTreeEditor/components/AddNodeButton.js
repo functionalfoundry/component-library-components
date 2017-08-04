@@ -132,7 +132,7 @@ class AddNodeButtonContainer extends React.Component {
     const { isVisible, theme } = this.props
     return (
       <span
-        {...theme.container}
+        {...theme.addNodeButtonContainer}
         ref={this.storeContainer}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
@@ -158,8 +158,8 @@ type Props = {
   options: Array<string>,
   theme: Object,
 }
-const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Props) => (
-  <span {...theme.container}>
+const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Props) =>
+  <span {...theme.addNodeButton}>
     <Icon
       name="add-example"
       size="base"
@@ -186,16 +186,15 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
       verticalOffset={2}
     />
   </span>
-)
 
 const defaultTheme = ({ isVisible }) => ({
-  container: {
+  addNodeButton: {
     visibility: isVisible ? 'visible' : 'hidden',
   },
 })
 
 const containerDefaultTheme = ({ isVisible }) => ({
-  container: {
+  addNodeButtonContainer: {
     ':focus': {
       outline: 'none',
     },
