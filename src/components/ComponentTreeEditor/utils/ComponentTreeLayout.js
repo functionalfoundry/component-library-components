@@ -6,6 +6,7 @@ import ComponentTree, {
   PropValue,
   type ComponentTreeNodeT,
 } from '../../../modules/ComponentTree'
+import getPropValueTypeBoundaries from './getPropValueTypeBoundaries'
 
 type ComponentTreeLayoutTagsT = Set<?string>
 type ComponentTreeLayoutDataT = Map<string, any>
@@ -57,19 +58,6 @@ type LayoutPartialElementT = {
   node?: ComponentTreeNodeT,
   tags?: ComponentTreeLayoutTagsT,
   data?: ComponentTreeLayoutDataT,
-}
-
-const typeValueBoundaries = {
-  any: '{}',
-  string: "''",
-}
-
-const getPropValueTypeBoundaries = (value: PropValue) => {
-  const text = typeValueBoundaries[value.type] || typeValueBoundaries['any']
-  return {
-    open: text[0],
-    close: text[1],
-  }
 }
 
 const generateTreeLayout = (tree: ComponentTree) => {
@@ -423,15 +411,6 @@ const generateTreeLayout = (tree: ComponentTree) => {
     // Get opening and closing markup depending on property type
     const { open, close } = getPropValueTypeBoundaries(propValue)
 
-    if (open) {
-      ctx = addElement(ctx, {
-        text: open,
-        node: propValue,
-        data: data,
-        tags: Set(['prop-open']).union(tags),
-      })
-    }
-
     let displayValue = 'null'
     try {
       displayValue = propValue.value.toString() || ' '
@@ -441,20 +420,11 @@ const generateTreeLayout = (tree: ComponentTree) => {
     }
 
     ctx = addElement(ctx, {
-      text: displayValue,
+      text: `${open}${displayValue}${close}`,
       node: propValue,
       data: data,
       tags: Set(['prop', 'prop-value']).union(tags),
     })
-
-    if (close) {
-      ctx = addElement(ctx, {
-        text: close,
-        node: propValue,
-        data: data,
-        tags: Set(['prop-close']).union(tags),
-      })
-    }
 
     return ctx
   }
@@ -517,4 +487,10 @@ const generateTreeLayoutMarkup = (layout: ComponentTreeLayoutT) =>
 
 export { generateTreeLayoutMarkup }
 
-export default ComponentTreeLayout
+export { ComponentTreeLayout }
+
+export default {
+  ComponentTreeLayout,
+  generateTreeLayoutMarkup,
+  generateTreeLayout,
+}

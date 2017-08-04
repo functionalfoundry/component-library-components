@@ -1,13 +1,13 @@
 import React from 'react'
 const Slate = require('slate')
-import ComponentTree, { type NodeIdentifierT } from '../../modules/ComponentTree'
+import ComponentTree, { type Path } from '../../modules/ComponentTree'
 import type { CompletionDataT } from '../../types/Completion'
 
 /**
  * Interaction state
  */
 export type InteractionStateT = {
-  editingNodeId?: NodeIdentifierT,
+  focusedNodePath: ?Path,
 }
 
 /**

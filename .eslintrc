@@ -52,6 +52,10 @@
     }
   },
   "globals": {
-    "fetch": false
+    "fetch": false,
+    "SyntheticEvent": false,
+    "SyntheticKeyboardEvent": false,
+    "test": false,
+    "expect": false
   }
 }

@@ -28,15 +28,16 @@ type PropsT = {
   data: DataT,
   nodeIdGenerator: Function,
   onChangeActions: Function,
-  onChangeComponentName?: Function,
+  onChangeComponentName: Function,
   onChangeComponentTree?: Function,
   onChangeData: Function,
-  onChangePropName?: Function,
-  onChangePropValue?: Function,
-  onInsertComponent?: Function,
-  onRemoveComponent?: Function,
-  onRemoveProp?: Function,
-  onSelectComponent?: Function,
+  onChangePropName: Function,
+  onChangePropValue: Function,
+  onInsertComponent: Function,
+  onInsertProp: Function,
+  onRemoveComponent: Function,
+  onRemoveProp: Function,
+  onSelectComponent: Function,
   /**
    * Index of the selected tab.
    */
@@ -108,6 +109,7 @@ class LiveEditor extends React.Component {
       onChangeComponentName,
       onChangeComponentTree, // eslint-disable-line no-unused-vars
       onChangeData,
+      onInsertProp,
       onChangePropName,
       onChangePropValue,
       onInsertComponent,
@@ -150,6 +152,7 @@ class LiveEditor extends React.Component {
               nodeIdGenerator={nodeIdGenerator}
               onChange={this.handleTreeChange}
               onChangeComponentName={onChangeComponentName}
+              onInsertProp={onInsertProp}
               onChangePropName={onChangePropName}
               onChangePropValue={onChangePropValue}
               onInsertComponent={onInsertComponent}
@@ -165,6 +168,7 @@ class LiveEditor extends React.Component {
 }
 
 const cardTheme = {
+  card: { marginBottom: Spacing.micro },
   cardTitle: { ...Fonts.base },
 }
 
@@ -175,8 +179,8 @@ const defaultTheme = {
   liveEditor: {
     padding: Spacing.small,
     paddingTop: Spacing.base + Spacing.tiny,
-    backgroundColor: 'white',
-    color: Colors.grey600,
+    backgroundColor: Colors.grey900,
+    color: Colors.grey300,
     overflowY: 'scroll',
     flex: '1 1 auto',
     position: 'relative',

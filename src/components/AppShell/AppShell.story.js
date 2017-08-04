@@ -93,6 +93,7 @@ const bottomPanel = (
 const rightPanel = (
   <LiveEditor
     componentTree={componentTree}
+    completionData={{ components: [], props: [] }}
     data={{ text: dataCode }}
     actions={{ text: actionsCode }}
     onChangeData={action('onChangeData')}

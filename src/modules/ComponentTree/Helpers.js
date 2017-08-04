@@ -2,8 +2,15 @@
 
 import { List, Record } from 'immutable'
 
-import type { ComponentTreeNodeT, ComponentTreePathT, NodeIdentifierT } from './types'
-import { Component, ComponentTree, Prop, PropValue } from './ComponentTree'
+import type { ComponentTreePathT, NodeIdentifierT, Path } from './types'
+import {
+  Component,
+  ComponentTree,
+  type ComponentTreeNodeT,
+  Prop,
+  PropValue,
+} from './ComponentTree'
+import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants'
 
 /**
  * Tree traversal
@@ -138,6 +145,37 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
  * Node lookup
  */
 
+/**
+ * Finds the closest ancestor of a given node (specified by a path), which passes
+ * a provided predicate. If no predicate is provided, will return the closest ancestor.
+ */
+
+const findClosestAncestor = (
+  tree: ComponentTree,
+  path: Path,
+  predicate: Function = () => true
+): ?Object => {
+  const parentPath = path.pop()
+  if (parentPath.count() === 0) {
+    return null
+  }
+  const parentNode = tree.getIn(parentPath)
+  if (!parentNode) {
+    throw new Error(
+      'findClosestAncestor(): path not found in tree - ' + JSON.stringify(path)
+    )
+  }
+  /** If node is not found returns null */
+  if (predicate(parentNode)) {
+    return parentNode
+  } else {
+    return findClosestAncestor(tree, parentPath, predicate)
+  }
+}
+
+/**
+ * Returns path of node with the given ID
+ */
 const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
   const result = traverse(tree, null, (ctx: TraverseContext) => {
     if (ctx.node.id == id) {
@@ -150,16 +188,38 @@ const findNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePa
 }
 
 /**
+ * Returns node with the given id
+ */
+const getNodeById = (tree: ComponentTree, id: NodeIdentifierT): ComponentTreePathT => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path)
+}
+
+const getParent = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const path = findNodeById(tree, id)
+  return tree.getIn(path.pop(), null)
+}
+
+/**
+ * Returns the next sibling if it exists, or returns null otherwise.
+ */
+const getNextSibling = (tree: ComponentTree, id: NodeIdentifierT): Object => {
+  const nodePath = findNodeById(tree, id)
+  const nodeIndex = nodePath.last()
+  const siblingPath = nodePath.pop().push(nodeIndex + 1)
+  return tree.getIn(siblingPath, null)
+}
+
+/**
  * Node removal
  */
 
+const removeNodeByPath = (tree: ComponentTree, path: Path): ComponentTree =>
+  tree.deleteIn(path)
+
 const removeNodeById = (tree: ComponentTree, nodeId: NodeIdentifierT): ComponentTree => {
   const path = findNodeById(tree, nodeId)
-  if (path) {
-    return tree.deleteIn(path)
-  } else {
-    return tree
-  }
+  return removeNodeByPath(tree, path)
 }
 
 /**
@@ -170,6 +230,60 @@ const updateNodesAtPath = (
   path: ComponentTreePathT,
   updater: Function
 ): ComponentTree => tree.updateIn(path, updater)
+
+/**
+ * Node Insertion
+ */
+
+const getInsertionPath = (
+  tree: ComponentTree,
+  path: Path,
+  type: ADD_PROP | ADD_CHILD | ADD_SIBLING
+) => {
+  const componentNode = findClosestAncestor(
+    tree,
+    path,
+    node => node.nodeType === 'component'
+  )
+  if (!componentNode) {
+    throw new Error('getInsertionPath(): Invalid path/tree combination supplied')
+  }
+  const componentPath = componentNode.path
+  /** Inserts props at the end */
+  if (type === ADD_PROP) {
+    const propCount = componentNode.props.count()
+    return componentPath.push('props').push(propCount)
+  }
+  /** Inserts new components at the end */
+  if (type === ADD_CHILD) {
+    const childCount = componentNode.children.count()
+    return componentPath.push('children').push(childCount)
+  }
+  if (type === ADD_SIBLING) {
+    if (componentPath.pop().pop().count() === 0) {
+      throw new Error('getInsertionPath(): Cant insert sibling from root node')
+    }
+    const componentIndex = componentPath.last()
+    return componentPath.pop().push(componentIndex + 1)
+  }
+  throw new Error('getInsertionPath(): Invalid type supplied')
+}
+
+/**
+ * Inserts node at a given path, either overriding the value already there, or shifting it
+ * in the case where the parent is a List.
+ */
+const insertNodeAtPath = (tree: ComponentTree, path: Path, node: ComponentTreeNodeT) => {
+  const parentTargetPath = path.pop()
+  const parentTargetNode = tree.getIn(parentTargetPath)
+  if (List.isList(parentTargetNode)) {
+    const newList = parentTargetNode
+      .insert(path.last(), node)
+      .map((node, index) => node.set('path', parentTargetPath.push(index)))
+    return tree.setIn(parentTargetPath, newList)
+  }
+  return tree.setIn(path, node)
+}
 
 /**
  * Component insertion
@@ -183,9 +297,7 @@ const insertComponent = (
 ): ComponentTree => {
   const parentPath = findNodeById(tree, parentId)
   if (parentPath) {
-    return updateNodesAtPath(tree, parentPath.push('children'), children =>
-      children.insert(index, component)
-    )
+    return insertNodeAtPath(tree, parentPath.push('children').push(index), component)
   } else {
     throw new Error(
       'Failed to insert component into component tree: ' +
@@ -259,13 +371,12 @@ const setComponentText = (
 const insertProp = (
   tree: ComponentTree,
   componentId: NodeIdentifierT,
+  index: number,
   prop: Prop
 ): ComponentTree => {
   const componentPath = findNodeById(tree, componentId)
   if (componentPath) {
-    return updateNodesAtPath(tree, componentPath.push('props'), props =>
-      props.push(prop).sortBy(prop => prop.name && prop.name.name)
-    )
+    return insertNodeAtPath(tree, componentPath.push('props').push(index), prop)
   } else {
     throw new Error(
       'Failed to insert a prop into the component tree: ' +
@@ -279,6 +390,29 @@ const insertProp = (
 const removeProp = (tree: ComponentTree, propId: NodeIdentifierT): ComponentTree => {
   const propPath = findNodeById(tree, propId)
   return propPath ? tree.deleteIn(propPath) : tree
+}
+
+/** Helping for setting an arbitrary attribute on any node in the ComponentTree */
+type SetNodeAttributeT = ({
+  nodeId: NodeIdentifierT,
+  /** A string representing the attribute key, or an array of strings for nested maps */
+  path: Array<string> | string,
+  tree: ComponentTree,
+  value: any,
+}) => ComponentTree
+const setNodeAttribute: SetNodeAttributeT = ({ nodeId, path, tree, value }) => {
+  const basePath = findNodeById(tree, nodeId)
+  const attributePath = Array.isArray(path) ? path : [path]
+  if (basePath) {
+    return tree.setIn(basePath.concat(attributePath), value)
+  } else {
+    throw new Error(
+      'Failed to set a node attribute in the component tree: ' +
+        'Node with ID "' +
+        nodeId +
+        '" not found'
+    )
+  }
 }
 
 const setPropName = (
@@ -318,31 +452,42 @@ const setPropValue = (
 }
 
 const createTree = (data: Object): ComponentTree => {
-  const createComponent = (data: Object): Component =>
+  const createComponent = (data: Object, path: List<string>): Component =>
     Component({
       id: data.id,
       name: data.name,
-      props: List((data.props || []).map(createProp)),
-      children: List((data.children || []).map(createComponent)),
+      path,
+      props: List(
+        (data.props || [])
+          .map((prop, index) => createProp(prop, path.push('props').push(index)))
+      ),
+      children: List(
+        (data.children || [])
+          .map((component, index) =>
+            createComponent(component, path.push('children').push(index))
+          )
+      ),
       text: data.text,
     })
 
-  const createProp = (data: Object): Prop =>
+  const createProp = (data: Object, path: List<string>): Prop =>
     Prop({
       id: data.id,
       name: data.name,
-      value: data.value ? createPropValue(data.value) : null,
+      path,
+      value: data.value ? createPropValue(data.value, path.push('value')) : null,
     })
 
-  const createPropValue = (data: Object): PropValue =>
+  const createPropValue = (data: Object, path: List<string>): PropValue =>
     PropValue({
       id: data.id,
+      path,
       value: data.value,
       type: data.type,
     })
 
   return ComponentTree({
-    root: createComponent(data),
+    root: createComponent(data, List(['root'])),
   })
 }
 
@@ -351,19 +496,29 @@ const getRawTreeData = (tree: ComponentTree) => tree.toJS()
 export default {
   // Generic tree operations
   traverse,
+  findClosestAncestor,
   findNodeById,
+  getNodeById,
+  getParent,
+  getNextSibling,
   removeNodeById,
+  removeNodeByPath,
   updateNodesAtPath,
   // Higher-level, semantic tree operations
+  getInsertionPath,
+  insertNodeAtPath,
   insertComponent,
   removeComponent,
   setComponentName,
   setComponentText,
   insertProp,
   removeProp,
+  setNodeAttribute,
   setPropName,
   setPropValue,
   // Tree construction from raw data
   createTree,
   getRawTreeData,
+  // data types
+  TraverseContext,
 }

@@ -12,7 +12,7 @@ import ComponentTree, {
   PropValue,
 } from '../../modules/ComponentTree'
 import ComponentTreeEditor from './ComponentTreeEditor'
-import { generateTreeLayout, generateTreeLayoutMarkup } from './utils/ComponentTreeLayout'
+import { generateTreeLayoutMarkup, generateTreeLayout } from './utils/ComponentTreeLayout'
 
 const completionData = {
   components: ['List', 'ListItem'],
@@ -26,7 +26,7 @@ const completionData = {
       },
       listWidth: {
         type: 'number',
-        options: [10, 20, 30],
+        options: ['10', '20', '30'],
       },
     },
     ListItem: {
@@ -55,11 +55,17 @@ const regularTree = ComponentTree({
   root: Component({
     id: 'list',
     name: 'List',
+    path: List(['root']),
     props: List([
       Prop({
         id: 'list-title-prop',
         name: 'title',
+        nodeType: 'prop',
+        path: List(['root', 'props', 0]),
         value: PropValue({
+          id: 'list-title-prop-value',
+          nodeType: 'prop-value',
+          path: List(['root', 'props', 0, 'value']),
           value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
@@ -67,14 +73,26 @@ const regularTree = ComponentTree({
       Prop({
         id: 'list-width-prop',
         name: 'listWidth',
-        value: PropValue({ value: '10' }),
+        nodeType: 'prop',
+        path: List(['root', 'props', 1]),
+        value: PropValue({
+          id: 'list-width-prop-value',
+          nodeType: 'prop-value',
+          path: List(['root', 'props', 1, 'value']),
+          value: '10',
+        }),
       }),
       Prop({
         id: 'list-on-select-prop',
         name: 'onSelect',
+        nodeType: 'prop',
+        path: List(['root', 'props', 2]),
         value: PropValue({
-          value: 'handleSelect',
+          id: 'list-on-select-prop-value',
+          nodeType: 'prop-value',
+          path: List(['root', 'props', 2, 'value']),
           type: 'function',
+          value: 'handleSelect',
         }),
       }),
     ]),
@@ -82,11 +100,18 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-1',
         name: 'ListItem',
+        path: List(['root', 'children', 0]),
         props: List([
           Prop({
             id: 'list-item-1-key-prop',
             name: 'key',
-            value: PropValue({ value: '0', type: 'string' }),
+            path: List(['root', 'children', 0, 'props', 0]),
+            value: PropValue({
+              id: 'list-item-1-key-prop-value',
+              path: List(['root', 'children', 0, 'props', 0, 'value']),
+              type: 'string',
+              value: '0',
+            }),
           }),
         ]),
         text: 'First list item',
@@ -94,11 +119,18 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-2',
         name: 'ListItem',
+        path: List(['root', 'children', 1]),
         props: List([
           Prop({
             id: 'list-item-2-key-prop',
             name: 'key',
-            value: PropValue({ value: '1', type: 'string' }),
+            path: List(['root', 'children', 1, 'props', 0]),
+            value: PropValue({
+              id: 'list-item-2-key-prop-value',
+              path: List(['root', 'children', 1, 'props', 0, 'value']),
+              value: '1',
+              type: 'string',
+            }),
           }),
         ]),
         text: 'Second list item',
@@ -106,11 +138,13 @@ const regularTree = ComponentTree({
       Component({
         id: 'list-item-3',
         name: 'ListItem',
+        path: List(['root', 'children', 2]),
         text: 'Third list item',
       }),
       Component({
         id: 'list-item-4',
         name: 'ListItem',
+        path: List(['root', 'children', 3]),
       }),
     ]),
   }),
@@ -137,7 +171,7 @@ const treeFromRaw = Helpers.createTree({
         {
           name: 'key',
           value: {
-            value: 1,
+            value: '1',
             type: 'number',
           },
         },
@@ -286,20 +320,55 @@ class TreeEditorContainer extends React.Component {
     this.setState({ tree })
   }
 
+  handleInsertProp = (
+    componentId: NodeIdentifierT,
+    index: number,
+    prop: Prop,
+    jsProp: Object
+  ) => {
+    action('onInsertProp')(componentId, index, prop, jsProp)
+    const tree = Helpers.insertProp(this.state.tree, componentId, index, prop)
+    this.setState({ tree })
+  }
+
   handleChangePropName = (
     componentId: NodeIdentifierT,
     nodeId: NodeIdentifierT,
     name: string
   ) => {
     action('onChangePropName')(componentId, nodeId, name)
-    const tree = Helpers.setPropName(this.state.tree, nodeId, name)
+    let tree = this.state.tree
+    tree = Helpers.setPropName(tree, nodeId, name)
+    tree = Helpers.setPropValue(
+      tree,
+      nodeId,
+      PropValue({
+        id: Math.random().toString(),
+        value: '',
+      })
+    )
+    this.setState({ tree })
+  }
+
+  handleChangePropValue = (nodeId: NodeIdentifierT, value: string) => {
+    action('onChangePropValue')(nodeId, value)
+
+    const tree = Helpers.setPropValue(
+      this.state.tree,
+      nodeId,
+      PropValue({
+        id: Math.random().toString(),
+        value: value,
+      })
+    )
     this.setState({ tree })
   }
 
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
+    console.log('changing component name! nodeId, name: ', nodeId, name)
     action('onChangeComponentName')(nodeId, name)
-    const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
-    this.setState({ tree })
+    // const tree = Helpers.setComponentName(this.state.tree, nodeId, name)
+    // this.setState({ tree })
   }
 
   render() {
@@ -317,8 +386,9 @@ class TreeEditorContainer extends React.Component {
           onRemoveProp={this.handleRemoveProp}
           onRemoveComponent={this.handleRemoveComponent}
           onInsertComponent={this.handleInsertComponent}
+          onInsertProp={this.handleInsertProp}
           onChangePropName={this.handleChangePropName}
-          onChangePropValue={action('onChangePropValue')}
+          onChangePropValue={this.handleChangePropValue}
           onChangeComponentName={this.handleChangeComponentName}
           onSelectComponent={action('onSelectComponent')}
         />
