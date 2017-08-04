@@ -350,6 +350,20 @@ class TreeEditorContainer extends React.Component {
     this.setState({ tree })
   }
 
+  handleChangePropValue = (nodeId: NodeIdentifierT, value: string) => {
+    action('onChangePropValue')(nodeId, value)
+
+    const tree = Helpers.setPropValue(
+      this.state.tree,
+      nodeId,
+      PropValue({
+        id: Math.random().toString(),
+        value: value,
+      })
+    )
+    this.setState({ tree })
+  }
+
   handleChangeComponentName = (nodeId: NodeIdentifierT, name: string) => {
     console.log('changing component name! nodeId, name: ', nodeId, name)
     action('onChangeComponentName')(nodeId, name)
@@ -374,7 +388,7 @@ class TreeEditorContainer extends React.Component {
           onInsertComponent={this.handleInsertComponent}
           onInsertProp={this.handleInsertProp}
           onChangePropName={this.handleChangePropName}
-          onChangePropValue={action('onChangePropValue')}
+          onChangePropValue={this.handleChangePropValue}
           onChangeComponentName={this.handleChangeComponentName}
           onSelectComponent={action('onSelectComponent')}
         />
