@@ -35,7 +35,14 @@ type Props = {
   theme: Object,
 }
 
-const getStartTagClosingCharacters = childComponents => `${childComponents.count() > 0 ? '' : '/'}>`
+const defaultProps = {
+  isHovered: false,
+  isRootComponent: false,
+  indentLevel: 0,
+}
+
+const getStartTagClosingCharacters = childComponents =>
+  `${childComponents.count() > 0 ? '' : '/'}>`
 
 const renderStartTagEnding = ({
   componentNode,
@@ -69,7 +76,7 @@ const ComponentRenderer = ({
   completionData,
   componentNode,
   componentTree,
-  indentLevel = 0,
+  indentLevel,
   interactionState,
   isHovered,
   isRootComponent,
@@ -193,6 +200,8 @@ const ComponentRenderer = ({
     </div>
   )
 }
+
+ComponentRenderer.defaultProps = defaultProps
 
 const defaultTheme = {
   componentName: {
