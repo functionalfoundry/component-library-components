@@ -101,19 +101,21 @@ const PropRenderer = ({
           </span>
           {propValue !== null ? '=' : null}
           {propValue !== null
-            ? <EditableNodeAttribute
-                formatValue={displayPropValue}
-                interactionState={interactionState}
-                onBlur={onBlur}
-                onChangeNode={onChangeValueNode}
-                onFocus={onFocus}
-                onFocusNext={onFocusNext}
-                onFocusPrevious={onFocusPrevious}
-                options={propValueOptions.map(option => option.value)}
-                nodeId={propValue.get('id')}
-                path={propPath.push('value').push('value')}
-                value={propValue.get('value')}
-              />
+            ? <span {...theme.propValue}>
+                <EditableNodeAttribute
+                  formatValue={displayPropValue}
+                  interactionState={interactionState}
+                  onBlur={onBlur}
+                  onChangeNode={onChangeValueNode}
+                  onFocus={onFocus}
+                  onFocusNext={onFocusNext}
+                  onFocusPrevious={onFocusPrevious}
+                  options={propValueOptions.map(option => option.value)}
+                  nodeId={propValue.get('id')}
+                  path={propPath.push('value').push('value')}
+                  value={propValue.get('value')}
+                />
+              </span>
             : null}
         </span>
         <span>&nbsp;</span>
@@ -133,6 +135,13 @@ const defaultTheme = ({ interactionState, propNode }) => ({
       : {},
   propName: {
     color: Colors.green300,
+  },
+  propValue: {
+    textDecoration:
+      isPropFocused({ interactionState, propNode }) &&
+      !propNode.getIn(['value', 'status'], { isValid: true }).isValid
+        ? `underline wavy ${Colors.danger}`
+        : null,
   },
 })
 
