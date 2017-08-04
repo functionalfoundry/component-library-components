@@ -265,9 +265,9 @@ class ComponentTreeEditor extends React.Component {
      * should be set to null. If another node has alreadty been focused in the meantime,
      * as is likely to happen, then do nothing.
      */
-    if (this.state.interactionState.focusedNodePath === path) {
+    if (is(this.state.interactionState.focusedNodePath, path)) {
       this.blurTimeoutId = setTimeout(() => {
-        if (this.state.interactionState.focusedNodePath === path) {
+        if (is(this.state.interactionState.focusedNodePath, path)) {
           this.setState(
             {
               interactionState: {
@@ -332,9 +332,10 @@ class ComponentTreeEditor extends React.Component {
     }
 
     const insertionPath = Helpers.getInsertionPath(componentTree, path, type)
-    const newNode = type === ADD_PROP
-      ? this.createEmptyProp(insertionPath)
-      : this.createEmptyComponent(insertionPath)
+    const newNode =
+      type === ADD_PROP
+        ? this.createEmptyProp(insertionPath)
+        : this.createEmptyComponent(insertionPath)
     const newTree = Helpers.insertNodeAtPath(componentTree, insertionPath, newNode)
 
     this.updateComponentTree(newTree, () => {

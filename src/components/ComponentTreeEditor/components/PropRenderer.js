@@ -33,6 +33,10 @@ const displayPropValue = ({ value, isFocused }) => {
   }
 }
 
+const isPropFocused = ({ propNode, interactionState }) =>
+  interactionState.focusedNodePath &&
+  interactionState.focusedNodePath.isSuperset(propNode.get('path'))
+
 type Props = {
   completionData: CompletionDataT,
   componentNode: Component,
@@ -119,12 +123,14 @@ const PropRenderer = ({
 
 PropRenderer.defaultProps = defaultProps
 
-const defaultTheme = ({ propNode }) => ({
-  propContainer: !propNode.getIn(['value', 'status'], { isValid: true }).isValid
-    ? {
-        textDecoration: 'line-through',
-      }
-    : {},
+const defaultTheme = ({ interactionState, propNode }) => ({
+  propContainer:
+    !isPropFocused({ interactionState, propNode }) &&
+    !propNode.getIn(['value', 'status'], { isValid: true }).isValid
+      ? {
+          textDecoration: 'line-through',
+        }
+      : {},
   propName: {
     color: Colors.green300,
   },
