@@ -81,6 +81,9 @@ const regularTree = ComponentTree({
           nodeType: 'prop-value',
           path: List(['root', 'props', 1, 'value']),
           value: '10',
+          status: {
+            isValid: false,
+          },
         }),
       }),
       Prop({
