@@ -484,6 +484,7 @@ const createTree = (data: Object): ComponentTree => {
       path,
       value: data.value,
       type: data.type,
+      status: data.status,
     })
 
   return ComponentTree({
