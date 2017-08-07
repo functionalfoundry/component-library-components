@@ -60,7 +60,8 @@ export const regularTree = ComponentTree({
           id: 'list-title-prop-value',
           nodeType: 'prop-value',
           path: List(['root', 'props', 0, 'value']),
-          value: 'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
+          value:
+            'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
           type: 'string',
         }),
       }),
@@ -139,6 +140,91 @@ export const regularTree = ComponentTree({
         id: 'list-item-4',
         name: 'ListItem',
         path: List(['root', 'children', 3]),
+      }),
+    ]),
+  }),
+})
+
+export const regularTreeWithoutPaths = ComponentTree({
+  root: Component({
+    id: 'list',
+    name: 'List',
+    props: List([
+      Prop({
+        id: 'list-title-prop',
+        name: 'title',
+        nodeType: 'prop',
+        value: PropValue({
+          id: 'list-title-prop-value',
+          nodeType: 'prop-value',
+          value:
+            'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
+          type: 'string',
+        }),
+      }),
+      Prop({
+        id: 'list-width-prop',
+        name: 'listWidth',
+        nodeType: 'prop',
+        value: PropValue({
+          id: 'list-width-prop-value',
+          nodeType: 'prop-value',
+          value: '10',
+        }),
+      }),
+      Prop({
+        id: 'list-on-select-prop',
+        name: 'onSelect',
+        nodeType: 'prop',
+        value: PropValue({
+          id: 'list-on-select-prop-value',
+          nodeType: 'prop-value',
+          type: 'function',
+          value: 'handleSelect',
+        }),
+      }),
+    ]),
+    children: List([
+      Component({
+        id: 'list-item-1',
+        name: 'ListItem',
+        props: List([
+          Prop({
+            id: 'list-item-1-key-prop',
+            name: 'key',
+            value: PropValue({
+              id: 'list-item-1-key-prop-value',
+              type: 'string',
+              value: '0',
+            }),
+          }),
+        ]),
+        text: 'First list item',
+      }),
+      Component({
+        id: 'list-item-2',
+        name: 'ListItem',
+        props: List([
+          Prop({
+            id: 'list-item-2-key-prop',
+            name: 'key',
+            value: PropValue({
+              id: 'list-item-2-key-prop-value',
+              value: '1',
+              type: 'string',
+            }),
+          }),
+        ]),
+        text: 'Second list item',
+      }),
+      Component({
+        id: 'list-item-3',
+        name: 'ListItem',
+        text: 'Third list item',
+      }),
+      Component({
+        id: 'list-item-4',
+        name: 'ListItem',
       }),
     ]),
   }),
