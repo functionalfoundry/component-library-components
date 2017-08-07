@@ -143,6 +143,12 @@ class ComponentTreeEditor extends React.Component {
     const { onRemoveComponent, onRemoveProp } = this.props
     const { componentTree, interactionState, traversalMap } = this.state
     const focusedNodePath = interactionState.focusedNodePath
+    const focusedNodeId = focusedNodePath
+      ? componentTree.getIn(focusedNodePath.pop()).id
+      : null
+    const parentFocusedNodeId = focusedNodePath
+      ? componentTree.getIn(focusedNodePath.pop()).id
+      : null
     /** Find empty nodes */
     const traverseResult = Helpers.traverse(
       componentTree,
@@ -158,7 +164,7 @@ class ComponentTreeEditor extends React.Component {
           (node.nodeType === 'prop' && !node.get('name')) ||
           (node.nodeType === 'component' && !node.get('name'))
         ) {
-          return ctx.set('data', ctx.data.push(node.path))
+          return ctx.set('data', ctx.data.push(node.id))
         }
         return ctx
       }
@@ -166,27 +172,19 @@ class ComponentTreeEditor extends React.Component {
 
     const nodesToRemove = traverseResult.data
 
-    /** Only clear empty nodes if they are not currently being edited */
-    const modifiedComponentTree = nodesToRemove.reduce((tree, nodePath) => {
-      if (
-        !tree.hasIn(focusedNodePath) ||
-        !tree.hasIn(nodePath) ||
-        is(nodePath, focusedNodePath) ||
-        is(
-          nodePath,
-          Helpers.findClosestAncestor(tree, focusedNodePath, node => !!node.nodeType).path
-        )
-      ) {
+    const modifiedComponentTree = nodesToRemove.reduce((tree, nodeId) => {
+      /** Don't clear a prop name or value if either is being edited */
+      if (is(nodeId, focusedNodeId) || is(nodeId, parentFocusedNodeId)) {
         return tree
       } else {
-        const nodeToRemove = tree.getIn(nodePath)
+        const nodeToRemove = tree.getIn(Helpers.findNodeById(tree, nodeId))
         if (nodeToRemove.nodeType === 'component') {
           onRemoveComponent(nodeToRemove.get('id'))
         }
         if (nodeToRemove.nodeType === 'prop') {
           onRemoveProp(nodeToRemove.get('id'))
         }
-        return Helpers.removeNodeByPath(tree, nodePath)
+        return Helpers.removeNodeById(tree, nodeId)
       }
     }, componentTree)
 
