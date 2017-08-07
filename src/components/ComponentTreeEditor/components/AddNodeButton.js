@@ -3,7 +3,7 @@ import Theme from 'js-theme'
 import { is } from 'immutable'
 
 import { Colors } from '@workflo/styles'
-import { Icon, AlignedPointer } from '@workflo/components'
+import { Icon, AlignedPointer, Trigger } from '@workflo/components'
 
 import { Path } from '../../../modules/ComponentTree'
 import type { InteractionStateT } from '../types'
@@ -100,6 +100,8 @@ class AddNodeButtonContainer extends React.Component {
     this.blur()
   }
 
+  handleClickOutsideDropdown = () => this.blur()
+
   handleKeyDown = (event: SyntheticKeyboardEvent) => {
     const { onFocusNext, onFocusPrevious, path } = this.props
     if (event.keyCode === 46 || event.keyCode === 8) {
@@ -143,6 +145,7 @@ class AddNodeButtonContainer extends React.Component {
           isFocused={this.state.isFocused}
           isVisible={this.state.isFocused || isVisible}
           onSelect={this.handleSelect}
+          onClose={this.handleClickOutsideDropdown}
           options={this.getOptions().map(option => option.label)}
         />
       </span>
@@ -155,10 +158,18 @@ type Props = {
   containerRef: any,
   isFocused: boolean,
   onSelect: Function,
+  onClose: Function,
   options: Array<string>,
   theme: Object,
 }
-const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Props) =>
+const AddNodeButton = ({
+  containerRef,
+  isFocused,
+  onSelect,
+  options,
+  onClose,
+  theme,
+}: Props) => (
   <span {...theme.addNodeButton}>
     <Icon
       name="add-example"
@@ -168,6 +179,12 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
         icon: {
           display: 'inline',
           paddingLeft: 2,
+          ':hover': {
+            stroke: 'white',
+          },
+          ':active': {
+            stroke: Colors.grey400,
+          },
         },
         svg: {
           marginBottom: '-2px',
@@ -179,7 +196,11 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
       forceOpen={isFocused}
       gravity="Bottom Right"
       portal={({ close }) => {
-        return <OptionChooser onSelect={onSelect} options={options} preventFocus />
+        return (
+          <Trigger triggerOn={['Click outside']} onTrigger={onClose}>
+            <OptionChooser onSelect={onSelect} options={options} preventFocus />
+          </Trigger>
+        )
       }}
       position="Bottom"
       targetRef={containerRef}
@@ -187,10 +208,12 @@ const AddNodeButton = ({ containerRef, isFocused, onSelect, options, theme }: Pr
       verticalOffset={2}
     />
   </span>
+)
 
 const defaultTheme = ({ isVisible }) => ({
   addNodeButton: {
     visibility: isVisible ? 'visible' : 'hidden',
+    cursor: 'pointer',
   },
 })
 
