@@ -343,7 +343,7 @@ class ComponentTreeEditor extends React.Component {
 
     const parentPath = insertionPath.pop().pop()
     const parentComponent = componentTree.getIn(parentPath)
-    const insertionIndex = insertionPath.get(-1)
+    const insertionIndex = insertionPath.last()
     if (type === ADD_PROP) {
       onInsertProp(parentComponent.get('id'), insertionIndex, newNode, newNode.toJS())
     } else if (type === ADD_SIBLING || type === ADD_CHILD) {
