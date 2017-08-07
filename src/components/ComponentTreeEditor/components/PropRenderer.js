@@ -25,9 +25,11 @@ const resolveValueType = valueString => {
 
 const displayPropValue = ({ value, isFocused }) => {
   const type = resolveValueType(value)
-  if (!isFocused || type === 'string') {
-    const { open, close } = getPropValueTypeBoundaries(type)
-    return `${open}${stripQuotes(value)}${close}`
+  const { open, close } = getPropValueTypeBoundaries(type)
+  if (type === 'string') {
+    return `${open}${stripQuotes(eval(value))}${close}` // eslint-disable-line
+  } else if (!isFocused && type !== 'string') {
+    return `${open}${value}${close}`
   } else {
     return value
   }
