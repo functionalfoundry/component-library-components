@@ -142,6 +142,13 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
 }
 
 /**
+ * Enhance tree with correct paths for each node
+ */
+
+const enhanceWithPaths = (tree: ComponentTree) =>
+  traverse(tree, null, ctx => ctx.setIn(['node', 'path'], ctx.get('path'))).tree
+
+/**
  * Node lookup
  */
 
@@ -497,6 +504,7 @@ const getRawTreeData = (tree: ComponentTree) => tree.toJS()
 export default {
   // Generic tree operations
   traverse,
+  enhanceWithPaths,
   findClosestAncestor,
   findNodeById,
   getNodeById,

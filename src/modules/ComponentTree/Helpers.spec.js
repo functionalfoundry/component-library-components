@@ -3,7 +3,7 @@ import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants'
 
 import { Component } from './ComponentTree'
 import Helpers from './Helpers'
-import { regularTree } from '../../../mocks/componentTreeEditor'
+import { regularTree, regularTreeWithoutPaths } from '../../../mocks/componentTreeEditor'
 
 test('findClosestAncestor(): Returns the closest ancestor', () => {
   const sourcePath = List(['root', 'props', 0, 'name'])
@@ -53,4 +53,18 @@ test('insertNodeAtPath(): Correctly updates paths on inserted nodes', () => {
     const expectedPath = List(['root', 'children', index])
     expect(is(expectedPath, node.get('path'))).toBe(true)
   })
+})
+
+test('enhanceWithPaths(): Correctly adds paths to a ComponentTree without paths', () => {
+  const result = Helpers.enhanceWithPaths(regularTreeWithoutPaths)
+  Helpers.traverse(result, null, ctx => {
+    expect(is(ctx.path, ctx.node.path)).toBe(true)
+    return ctx
+  })
+  expect(result.root.path.toArray()).toEqual(['root'])
+  expect(result.getIn(['root', 'children', 0, 'path']).toArray()).toEqual([
+    'root',
+    'children',
+    0,
+  ])
 })
