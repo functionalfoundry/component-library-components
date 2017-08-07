@@ -187,6 +187,7 @@ const ComponentRenderer = ({
             onChangePropValue={onChangePropValue}
             onSelectComponent={onSelectComponent}
             onInsertNode={onInsertNode}
+            onBlur={onBlur}
             onFocus={onFocus}
             onFocusNext={onFocusNext}
             onFocusPrevious={onFocusPrevious}
