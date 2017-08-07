@@ -2,6 +2,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { is, List } from 'immutable'
+import { flowRight as compose } from 'lodash'
 
 import { Colors, Fonts } from '@workflo/styles'
 
@@ -66,18 +67,18 @@ class ComponentTreeEditor extends React.Component {
     const { tree } = props
     super(props)
     this.state = {
-      componentTree: tree,
+      componentTree: Helpers.enhanceWithPaths(tree),
       interactionState: {
         focusedNodePath: null,
       },
-      traversalMap: generateTraversalMap(tree),
+      traversalMap: compose(generateTraversalMap, Helpers.enhanceWithPaths)(tree),
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { tree } = nextProps
     if (tree !== this.props.tree) {
-      this.setState({ componentTree: tree, traversalMap: generateTraversalMap(tree) })
+      this.updateComponentTree(tree)
     }
   }
 
@@ -361,12 +362,14 @@ class ComponentTreeEditor extends React.Component {
 
   updateComponentTree = (componentTree: ComponentTree, callback?: Function) => {
     const { onChange } = this.props
-    if (onChange) {
+    const enhancedTree = Helpers.enhanceWithPaths(componentTree)
+    /** This check prevents us from getting into render loops */
+    if (onChange && !is(componentTree, this.props.tree)) {
       onChange(componentTree)
     }
     this.setState(
       {
-        componentTree,
+        componentTree: enhancedTree,
         traversalMap: generateTraversalMap(componentTree),
       },
       callback
