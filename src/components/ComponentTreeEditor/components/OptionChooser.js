@@ -29,9 +29,15 @@ class PropValueChooser extends React.Component {
     accessValue: x => x,
   }
 
+  getOptions = () => {
+    const { options, value } = this.props
+    const filteredOptions = filterOptions({ options, value })
+    return [value].concat(filteredOptions)
+  }
+
   getOptionValue = index => {
-    const { accessValue, options } = this.props
-    return accessValue(options[index])
+    const { accessValue } = this.props
+    return accessValue(this.getOptions()[index])
   }
 
   handleMouseDown = e => {
@@ -51,9 +57,16 @@ class PropValueChooser extends React.Component {
       this.props.onSelect(this.getOptionValue(index), { type: 'enter' })
   }
 
+  renderOption = ({ option, index }) => {
+    const { optionRenderer } = this.props
+    if (index === 0) {
+      return option
+    }
+    return optionRenderer ? optionRenderer(option, index) : option
+  }
+
   render() {
-    const { optionRenderer, options, theme, value } = this.props
-    const filteredOptions = filterOptions({ options, value })
+    const { theme } = this.props
     return (
       <List
         {...theme.list}
@@ -61,13 +74,13 @@ class PropValueChooser extends React.Component {
         onMouseDown={this.handleMouseDown}
         onSelect={this.handleSelect}
       >
-        {filteredOptions.map((option, index) =>
+        {this.getOptions().map((option, index) =>
           <ListItem
             key={index}
             onClick={() => this.handleClick(index)}
             theme={listItemTheme}
           >
-            {optionRenderer ? optionRenderer(option, index) : option}
+            {this.renderOption({ option, index })}
           </ListItem>
         )}
       </List>
