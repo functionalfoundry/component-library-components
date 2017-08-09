@@ -206,6 +206,7 @@ class EditableFieldContainer extends React.Component {
                   options={options}
                   optionRenderer={optionRenderer}
                   preventFocus
+                  value={formatValue({ isFocused: true, value })}
                 />
               )
             }}
