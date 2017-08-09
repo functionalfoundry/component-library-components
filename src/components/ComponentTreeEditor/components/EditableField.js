@@ -151,11 +151,11 @@ class EditableFieldContainer extends React.Component {
     }
   }
 
-  handleSelect = (index: number, params: Object) => {
+  handleSelect = (value: string, params: Object) => {
     const { onChange, onFocusNext, options } = this.props
     if (options) {
       this.setState({ isFocused: false })
-      onChange && onChange(options[index])
+      onChange && onChange(value)
     }
     if (params.type === 'enter' && onFocusNext) {
       onFocusNext()
@@ -233,7 +233,7 @@ const EditableField = ({
   onStartEdit,
   onStopEdit,
   value,
-}: Props) => (
+}: Props) =>
   <span>
     <EditableText
       inline
@@ -245,6 +245,5 @@ const EditableField = ({
       value={value}
     />
   </span>
-)
 
 export default EditableFieldContainer

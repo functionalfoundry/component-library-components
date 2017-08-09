@@ -4,7 +4,12 @@ import Theme from 'js-theme'
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
 
+const filterOptions = ({ options, value }) => options
+
 export type Props = {
+  /** Used to access an option value from an element in the option array */
+  accessValue: Function,
+  /** A list of options to be rendered */
   options: Array<any>,
   onKeyboardSelect: Function,
   onSelect: Function,
@@ -14,10 +19,20 @@ export type Props = {
    */
   preventFocus?: boolean,
   theme: Object,
+  /** The value/expression to fuzzy filter the options by */
+  value: string,
 }
 
 class PropValueChooser extends React.Component {
   props: Props
+  static defaultProps = {
+    accessValue: x => x,
+  }
+
+  getOptionValue = index => {
+    const { accessValue, options } = this.props
+    return accessValue(options[index])
+  }
 
   handleMouseDown = e => {
     const { preventFocus } = this.props
@@ -27,15 +42,18 @@ class PropValueChooser extends React.Component {
   }
 
   handleClick = index => {
-    this.props.onSelect && this.props.onSelect(index, { type: 'click' })
+    this.props.onSelect &&
+      this.props.onSelect(this.getOptionValue(index), { type: 'click' })
   }
 
   handleSelect = index => {
-    this.props.onSelect && this.props.onSelect(index, { type: 'enter' })
+    this.props.onSelect &&
+      this.props.onSelect(this.getOptionValue(index), { type: 'enter' })
   }
 
   render() {
-    const { optionRenderer, options, theme } = this.props
+    const { optionRenderer, options, theme, value } = this.props
+    const filteredOptions = filterOptions({ options, value })
     return (
       <List
         {...theme.list}
@@ -43,7 +61,7 @@ class PropValueChooser extends React.Component {
         onMouseDown={this.handleMouseDown}
         onSelect={this.handleSelect}
       >
-        {options.map((option, index) => (
+        {filteredOptions.map((option, index) =>
           <ListItem
             key={index}
             onClick={() => this.handleClick(index)}
@@ -51,7 +69,7 @@ class PropValueChooser extends React.Component {
           >
             {optionRenderer ? optionRenderer(option, index) : option}
           </ListItem>
-        ))}
+        )}
       </List>
     )
   }
