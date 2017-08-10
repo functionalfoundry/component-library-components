@@ -55,7 +55,10 @@ class PropValueChooser extends React.Component {
     const { options } = this.props
     const { value } = this.state
     const filteredOptions = filterOptions({ options, value })
-    return [value].concat(filteredOptions)
+    if (value.length) {
+      return [value].concat(filteredOptions)
+    }
+    return filteredOptions
   }
 
   getOptionValue = index => {
