@@ -128,6 +128,11 @@ class EditableFieldContainer extends React.Component {
         ) {
           this.editableText.refs.wrappedInstance.focusAndSelect()
         }
+        /**
+         * Prevents duplicate option from being shown in OptionChooser when
+         * initially in focus.
+         */
+        this.optionChooser.setValue('')
       }
     )
   }
