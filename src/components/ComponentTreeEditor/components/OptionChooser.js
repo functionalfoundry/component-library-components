@@ -1,5 +1,6 @@
 import React from 'react'
 import Theme from 'js-theme'
+import fuzzaldrin from 'fuzzaldrin-plus'
 
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
@@ -54,11 +55,11 @@ class PropValueChooser extends React.Component {
   getOptions = () => {
     const { options } = this.props
     const { value } = this.state
-    const filteredOptions = filterOptions({ options, value })
     if (value.length) {
+      const filteredOptions = fuzzaldrin.filter(options, value)
       return [value].concat(filteredOptions)
     }
-    return filteredOptions
+    return options
   }
 
   getOptionValue = index => {
