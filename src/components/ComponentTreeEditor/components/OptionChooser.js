@@ -9,6 +9,8 @@ const filterOptions = ({ options, value }) => options
 export type Props = {
   /** Used to access an option value from an element in the option array */
   accessValue: Function,
+  /** A function to getRef that wont be blown away by HOCs */
+  getRef: Function,
   /** A list of options to be rendered */
   options: Array<any>,
   onKeyboardSelect: Function,
@@ -29,8 +31,29 @@ class PropValueChooser extends React.Component {
     accessValue: x => x,
   }
 
+  constructor(props: Props) {
+    const { value } = props
+    super(props)
+    this.state = {
+      value,
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { value } = nextProps
+    if (value !== this.state.value) {
+      this.setState({ value })
+    }
+  }
+
+  componentDidMount() {
+    const { getRef } = this.props
+    getRef(this)
+  }
+
   getOptions = () => {
-    const { options, value } = this.props
+    const { options } = this.props
+    const { value } = this.state
     const filteredOptions = filterOptions({ options, value })
     return [value].concat(filteredOptions)
   }
@@ -64,6 +87,8 @@ class PropValueChooser extends React.Component {
     }
     return optionRenderer ? optionRenderer(option, index) : option
   }
+
+  setValue = value => this.setState({ value })
 
   render() {
     const { theme } = this.props

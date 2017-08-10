@@ -64,6 +64,7 @@ class EditableFieldContainer extends React.Component {
   container: any
   editableText: any
   isFocused: boolean = false
+  optionChooser: any
 
   static defaultProps: ContainerDefaultPropsT = {
     formatValue: ({ value }) => value,
@@ -131,6 +132,16 @@ class EditableFieldContainer extends React.Component {
     )
   }
 
+  handleChange = (value: string) => {
+    const { onChange } = this.props
+    if (this.optionChooser && this.optionChooser.setValue) {
+      this.optionChooser.setValue(value)
+    }
+    if (onChange) {
+      onChange(value)
+    }
+  }
+
   handleKeyDown = (event: SyntheticKeyboardEvent) => {
     const { onFocusNext, onFocusPrevious, value } = this.props
     if (event.keyCode === 46 || event.keyCode === 8) {
@@ -179,14 +190,16 @@ class EditableFieldContainer extends React.Component {
 
   saveRefToEditableText = (ref: any) => (this.editableText = ref)
 
+  storeOptionChooser = (ref: any) => (this.optionChooser = ref)
+
   render() {
-    const { formatValue, onChange, options, optionRenderer, value } = this.props
+    const { formatValue, options, optionRenderer, value } = this.props
     const { isFocused } = this.state
     return (
       <span ref={this.saveRefToContainer} onKeyDown={this.handleKeyDown}>
         <EditableField
           editableTextRef={this.saveRefToEditableText}
-          onChange={onChange}
+          onChange={this.handleChange}
           onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}
           options={options}
@@ -202,6 +215,7 @@ class EditableFieldContainer extends React.Component {
             portal={({ close }) => {
               return (
                 <OptionChooser
+                  getRef={this.storeOptionChooser}
                   onSelect={this.handleSelect}
                   options={options}
                   optionRenderer={optionRenderer}
