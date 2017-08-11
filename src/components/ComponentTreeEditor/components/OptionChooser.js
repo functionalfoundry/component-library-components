@@ -58,6 +58,10 @@ class PropValueChooser extends React.Component {
     const { value } = this.state
     if (value.length) {
       const filteredOptions = fuzzaldrin.filter(options, value)
+      /**
+       * This helps us identify later if the option being handled is the
+       * current value or one of the passed in options.
+       */
       return [{ type: CURRENT_VALUE, value }].concat(filteredOptions)
     }
     return options
@@ -80,12 +84,31 @@ class PropValueChooser extends React.Component {
       this.props.onSelect(this.getOptions()[index], { type: 'enter' })
   }
 
-  renderOption = ({ option, index }) => {
-    const { accessOption, optionRenderer } = this.props
+  renderOption = ({ index, option }) => {
+    const { accessOption, theme } = this.props
+    const { value } = this.state
     if (option.type === CURRENT_VALUE) {
-      return option.value
+      return (
+        <span {...theme.currentValue}>
+          {option.value}
+        </span>
+      )
     }
-    return optionRenderer ? optionRenderer(option, index) : accessOption(option)
+    const matchIndexes = fuzzaldrin.match(accessOption(option), value)
+    return (
+      <span>
+        {accessOption(option).split('').map((char, index) =>
+          <span
+            key={index}
+            {...(matchIndexes.indexOf(index) === -1
+              ? theme.normalChar
+              : theme.highlightedChar)}
+          >
+            {char}
+          </span>
+        )}
+      </span>
+    )
   }
 
   setValue = value => this.setState({ value })
@@ -131,6 +154,13 @@ const defaultTheme = {
     backgroundColor: Colors.grey900,
     color: 'white',
   },
+  currentValue: {
+    fontWeight: 600,
+  },
+  highlightedChar: {
+    fontWeight: 600,
+  },
+  normalChar: {},
 }
 
 export default Theme('PropValueChooser', defaultTheme)(PropValueChooser)
