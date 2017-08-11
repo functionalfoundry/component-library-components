@@ -18,6 +18,11 @@ const editableTextTheme = {
 
 type ContainerPropsT = {
   /**
+   * Function used to access an option value from an element in in the
+   * options array.
+   */
+  accessOption?: Function,
+  /**
    * An optional function to be applied to value before rendering. It is passed `value`
    * and `isFocused` as named parameters.
    */
@@ -198,7 +203,7 @@ class EditableFieldContainer extends React.Component {
   storeOptionChooser = (ref: any) => (this.optionChooser = ref)
 
   render() {
-    const { formatValue, options, optionRenderer, value } = this.props
+    const { accessOption, formatValue, options, optionRenderer, value } = this.props
     const { isFocused } = this.state
     return (
       <span ref={this.saveRefToContainer} onKeyDown={this.handleKeyDown}>
@@ -220,6 +225,7 @@ class EditableFieldContainer extends React.Component {
             portal={({ close }) => {
               return (
                 <OptionChooser
+                  accessOption={accessOption}
                   getRef={this.storeOptionChooser}
                   onSelect={this.handleSelect}
                   options={options}

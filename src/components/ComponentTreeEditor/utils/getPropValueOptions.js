@@ -18,7 +18,8 @@ const unifyOptions = (
       result.push({
         name: option,
         value: option,
-        source: null,
+        //TODO: Remove hardcoded value here
+        source: 'prop types',
       })
     )
   }
@@ -29,6 +30,7 @@ const unifyOptions = (
         name: (options && options[key] && options[key].name) || '',
         value: options && options[key] && options[key].value,
         source: options && options[key] && options[key].source,
+        type: options && options[key] && options[key].type,
       })
     )
   }
