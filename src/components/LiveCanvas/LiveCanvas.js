@@ -73,6 +73,7 @@ class LiveCanvas extends React.Component {
      *  inside the canvas.
      *  TODO: Apply the original pan values ontop to achieve the desired offset
      */
+
     const newPanX = (canvasWidth - actualContainerWidth) / 2
     const newPanY = (canvasHeight - actualContainerHeight) / 2
     return (
