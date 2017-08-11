@@ -1,3 +1,12 @@
+import ComponentTree, {
+  type NodeIdentifierT,
+  Component,
+  Helpers,
+  Prop,
+  PropValue,
+} from '../src/modules/ComponentTree'
+import { List } from 'immutable'
+
 const properties = [
   {
     name: 'listing',
@@ -15,9 +24,10 @@ const properties = [
     name: 'showAllPictures',
     type: 'boolean',
     default: 'false',
-    description: 'Whether to show all the listed pictures or just the top 3 most popular.',
+    description:
+      'Whether to show all the listed pictures or just the top 3 most popular.',
     isUsedByTreeEditor: true,
-  }
+  },
 ]
 
 export const components = [
@@ -27,8 +37,8 @@ export const components = [
     owner: {
       firstName: 'Yaniv',
       lastName: 'Tal',
-      profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
-
+      profilePhoto:
+        'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
     properties,
   },
@@ -38,9 +48,11 @@ export const components = [
     owner: {
       firstName: 'Jannis',
       lastName: 'Pohlman',
-      profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
+      profilePhoto:
+        'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
-    thumbnail: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
+    thumbnail:
+      'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     properties,
   },
   {
@@ -49,8 +61,8 @@ export const components = [
     owner: {
       firstName: 'Yaniv',
       lastName: 'Tal',
-      profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
-
+      profilePhoto:
+        'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
     properties,
   },
@@ -60,7 +72,8 @@ export const components = [
     owner: {
       firstName: 'Jannis',
       lastName: 'Pohlman',
-      profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
+      profilePhoto:
+        'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
     properties,
   },
@@ -70,14 +83,14 @@ export const components = [
     owner: {
       firstName: 'Jannis',
       lastName: 'Pohlman',
-      profilePhoto: 'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
+      profilePhoto:
+        'http://res.cloudinary.com/workflo/image/upload/c_fill,g_face,h_200,w_200,x_0/v1468913856/rihanna_ibm9lc.jpg',
     },
     properties,
   },
 ]
 
-export const dataCode =
-`const user = {
+export const dataCode = `const user = {
   firstName: 'Brenda',
   lastName: 'Jenner',
 }
@@ -97,8 +110,7 @@ const responders = [
   },
 ]`
 
-export const actionsCode =
-`const handleClick = () => {
+export const actionsCode = `const handleClick = () => {
   setState({ clicked: true })
 }`
 
@@ -121,9 +133,10 @@ export const componentTree = {
     {
       name: 'size',
       value: {
-        value: 'http://localhost:9001/?selectedKind=Live%20View&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
+        value:
+          'http://localhost:9001/?selectedKind=Live%20View&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
         type: 'string',
-      }
+      },
     },
     {
       name: 'likeCount',
@@ -132,8 +145,32 @@ export const componentTree = {
         type: 'number',
       },
     },
-  ]
+  ],
 }
+
+export const fullComponentTree = ComponentTree({
+  root: Component({
+    id: 'badge',
+    name: 'Badge',
+    path: List(['root']),
+    props: List([
+      Prop({
+        id: 'list-title-prop',
+        name: 'title',
+        nodeType: 'prop',
+        path: List(['root', 'props', 0]),
+        value: PropValue({
+          id: 'list-title-prop-value',
+          nodeType: 'prop-value',
+          path: List(['root', 'props', 0, 'value']),
+          value:
+            'http://localhost:9001/?selectedKind=Component%20Tree%20Editor&selectedStory=Regular&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel',
+          type: 'string',
+        }),
+      }),
+    ]),
+  }),
+})
 
 export const componentStates = [
   {

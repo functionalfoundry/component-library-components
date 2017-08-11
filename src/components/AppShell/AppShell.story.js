@@ -22,6 +22,7 @@ import PanelContent from '../PanelContent'
 import PanelToolbar from '../PanelToolbar'
 import {
   componentTree,
+  fullComponentTree,
   components,
   // propKeyValues,
   dataCode,
@@ -92,7 +93,7 @@ const bottomPanel = (
 )
 const rightPanel = (
   <LiveEditor
-    componentTree={componentTree}
+    componentTree={fullComponentTree}
     completionData={{ components: [], props: [] }}
     data={{ text: dataCode }}
     actions={{ text: actionsCode }}
@@ -220,7 +221,7 @@ class FetchAndRender extends React.Component {
       >
         <LivePreview
           name="frame-1"
-          tree={sliderTree}
+          tree={componentTree}
           bundles={{ badge, loader, slider }}
           React={React}
           ReactDOM={ReactDOM}
@@ -239,7 +240,7 @@ class FetchAndRender extends React.Component {
 }
 
 storiesOf('AppShell', module)
-  .add('ComponentsGrid', () => (
+  .add('ComponentsGrid', () =>
     <AppShell
       sections={{
         content: (
@@ -254,8 +255,8 @@ storiesOf('AppShell', module)
         leftNav,
       }}
     />
-  ))
-  .add('LiveView', () => (
+  )
+  .add('LiveView', () =>
     <AppShell
       sections={{
         bottomPanel,
@@ -314,9 +315,7 @@ storiesOf('AppShell', module)
         rightPanel: (
           <Panel>
             <PanelHeader showLeftBorder>
-              <PanelToolbar align="Left">
-                Editor
-              </PanelToolbar>
+              <PanelToolbar align="Left">Editor</PanelToolbar>
             </PanelHeader>
             <PanelContent>
               {rightPanel}
@@ -325,4 +324,4 @@ storiesOf('AppShell', module)
         ),
       }}
     />
-  ))
+  )
