@@ -146,9 +146,8 @@ class LivePreview extends React.Component {
       const nextZoom = this.state.zoom - e.deltaY
 
       if (
-        (nextZoom * containerWidth / 100 < minContainerWidth ||
-          nextZoom * containerHeight / 100 < minContainerHeight) &&
-        nextZoom > 0
+        nextZoom * containerWidth / 100 < minContainerWidth ||
+        nextZoom * containerHeight / 100 < minContainerHeight
       ) {
         return
       }
