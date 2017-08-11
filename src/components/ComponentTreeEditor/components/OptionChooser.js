@@ -5,11 +5,11 @@ import fuzzaldrin from 'fuzzaldrin-plus'
 import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors } from '@workflo/styles'
 
-const filterOptions = ({ options, value }) => options
+const CURRENT_VALUE = Symbol('Current Value')
 
 export type Props = {
   /** Used to access an option value from an element in the option array */
-  accessValue: Function,
+  accessOption: Function,
   /** A function to getRef that wont be blown away by HOCs */
   getRef: Function,
   /** A list of options to be rendered */
@@ -29,27 +29,28 @@ export type Props = {
 class PropValueChooser extends React.Component {
   props: Props
   static defaultProps = {
-    accessValue: x => x,
+    accessOption: x => x,
   }
 
   constructor(props: Props) {
-    const { value } = props
     super(props)
     this.state = {
-      value,
+      value: '',
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { value } = nextProps
-    if (value !== this.state.value) {
+    if (value !== this.state.value && typeof value === 'string') {
       this.setState({ value })
     }
   }
 
   componentDidMount() {
     const { getRef } = this.props
-    getRef(this)
+    if (getRef) {
+      getRef(this)
+    }
   }
 
   getOptions = () => {
@@ -57,14 +58,9 @@ class PropValueChooser extends React.Component {
     const { value } = this.state
     if (value.length) {
       const filteredOptions = fuzzaldrin.filter(options, value)
-      return [value].concat(filteredOptions)
+      return [{ type: CURRENT_VALUE, value }].concat(filteredOptions)
     }
     return options
-  }
-
-  getOptionValue = index => {
-    const { accessValue } = this.props
-    return accessValue(this.getOptions()[index])
   }
 
   handleMouseDown = e => {
@@ -76,20 +72,20 @@ class PropValueChooser extends React.Component {
 
   handleClick = index => {
     this.props.onSelect &&
-      this.props.onSelect(this.getOptionValue(index), { type: 'click' })
+      this.props.onSelect(this.getOptions()[index], { type: 'click' })
   }
 
   handleSelect = index => {
     this.props.onSelect &&
-      this.props.onSelect(this.getOptionValue(index), { type: 'enter' })
+      this.props.onSelect(this.getOptions()[index], { type: 'enter' })
   }
 
   renderOption = ({ option, index }) => {
-    const { optionRenderer } = this.props
-    if (index === 0) {
-      return option
+    const { accessOption, optionRenderer } = this.props
+    if (option.type === CURRENT_VALUE) {
+      return option.value
     }
-    return optionRenderer ? optionRenderer(option, index) : option
+    return optionRenderer ? optionRenderer(option, index) : accessOption(option)
   }
 
   setValue = value => this.setState({ value })
