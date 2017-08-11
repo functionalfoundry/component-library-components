@@ -10,11 +10,17 @@ const CURRENT_VALUE = Symbol('Current Value')
 export type Props = {
   /** Used to access an option value from an element in the option array */
   accessOption: Function,
+  /**
+   * If set to false the user may select the currently input value, otherwise
+   * they are limited to the options passed in as the option prop. In freeform
+   * mode, 'onSelect' callback will always be invoked with a value, whereas otherwise
+   * they will be invoked with an object representing the option.
+   */
+  disableFreeform: boolean,
   /** A function to getRef that wont be blown away by HOCs */
   getRef: Function,
   /** A list of options to be rendered */
   options: Array<any>,
-  onKeyboardSelect: Function,
   onSelect: Function,
   optionRenderer?: Function,
   /**
@@ -30,6 +36,7 @@ class PropValueChooser extends React.Component {
   props: Props
   static defaultProps = {
     accessOption: x => x,
+    disableFreeform: false,
   }
 
   constructor(props: Props) {
@@ -54,9 +61,9 @@ class PropValueChooser extends React.Component {
   }
 
   getOptions = () => {
-    const { options } = this.props
+    const { disableFreeform, options } = this.props
     const { value } = this.state
-    if (value.length) {
+    if (value.length && !disableFreeform) {
       const filteredOptions = fuzzaldrin.filter(options, value)
       /**
        * This helps us identify later if the option being handled is the
@@ -75,13 +82,31 @@ class PropValueChooser extends React.Component {
   }
 
   handleClick = index => {
-    this.props.onSelect &&
-      this.props.onSelect(this.getOptions()[index], { type: 'click' })
+    const { accessOption, disableFreeform, onSelect } = this.props
+    const options = this.getOptions()
+    const meta = { type: 'click' }
+    if (!disableFreeform) {
+      const value =
+        options[index].type === CURRENT_VALUE
+          ? options[index].value
+          : accessOption(options[index])
+      return onSelect && onSelect(value, meta)
+    }
+    onSelect && onSelect(options[index], meta)
   }
 
   handleSelect = index => {
-    this.props.onSelect &&
-      this.props.onSelect(this.getOptions()[index], { type: 'enter' })
+    const { accessOption, disableFreeform, onSelect } = this.props
+    const options = this.getOptions()
+    const meta = { type: 'click' }
+    if (!disableFreeform) {
+      const value =
+        options[index].type === CURRENT_VALUE
+          ? options[index].value
+          : accessOption(options[index])
+      return onSelect && onSelect(value, meta)
+    }
+    onSelect && onSelect(options[index], meta)
   }
 
   renderOption = ({ index, option }) => {

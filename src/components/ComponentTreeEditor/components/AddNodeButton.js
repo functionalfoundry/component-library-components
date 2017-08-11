@@ -203,6 +203,7 @@ const AddNodeButton = ({
           <Trigger triggerOn={['Click outside']} onTrigger={onClose}>
             <OptionChooser
               accessOption={accessOption}
+              disableFreeform
               onSelect={onSelect}
               options={options}
               preventFocus
