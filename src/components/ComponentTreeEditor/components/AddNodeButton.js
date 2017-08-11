@@ -29,6 +29,8 @@ const options = [
   },
 ]
 
+const accessOption = option => option.label
+
 type ContainerPropsT = {
   interactionState: InteractionStateT,
   isFocused: boolean,
@@ -93,10 +95,11 @@ class AddNodeButtonContainer extends React.Component {
 
   handleClick = () => this.focus()
 
-  handleSelect = index => {
+  handleSelect = option => {
     const { path, onInsertNode } = this.props
+    console.log(option)
     // TODO: Put these in a constants file
-    onInsertNode(path, this.getOptions()[index].type)
+    onInsertNode(path, option.type)
     this.blur()
   }
 
@@ -146,7 +149,7 @@ class AddNodeButtonContainer extends React.Component {
           isVisible={this.state.isFocused || isVisible}
           onSelect={this.handleSelect}
           onClose={this.handleClickOutsideDropdown}
-          options={this.getOptions().map(option => option.label)}
+          options={this.getOptions()}
         />
       </span>
     )
@@ -169,7 +172,7 @@ const AddNodeButton = ({
   options,
   onClose,
   theme,
-}: Props) => (
+}: Props) =>
   <span {...theme.addNodeButton}>
     <Icon
       name="add-example"
@@ -198,7 +201,12 @@ const AddNodeButton = ({
       portal={({ close }) => {
         return (
           <Trigger triggerOn={['Click outside']} onTrigger={onClose}>
-            <OptionChooser onSelect={onSelect} options={options} preventFocus />
+            <OptionChooser
+              accessOption={accessOption}
+              onSelect={onSelect}
+              options={options}
+              preventFocus
+            />
           </Trigger>
         )
       }}
@@ -208,7 +216,6 @@ const AddNodeButton = ({
       verticalOffset={2}
     />
   </span>
-)
 
 const defaultTheme = ({ isVisible }) => ({
   addNodeButton: {
