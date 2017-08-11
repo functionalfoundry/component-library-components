@@ -32,7 +32,7 @@ export type Props = {
   value: string,
 }
 
-class PropValueChooser extends React.Component {
+class OptionChooser extends React.Component {
   props: Props
   static defaultProps = {
     accessOption: x => x,
@@ -46,13 +46,6 @@ class PropValueChooser extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { value } = nextProps
-    if (value !== this.state.value && typeof value === 'string') {
-      this.setState({ value })
-    }
-  }
-
   componentDidMount() {
     const { getRef } = this.props
     if (getRef) {
@@ -61,10 +54,16 @@ class PropValueChooser extends React.Component {
   }
 
   getOptions = () => {
-    const { disableFreeform, options } = this.props
+    const { accessOption, disableFreeform, options } = this.props
     const { value } = this.state
     if (value.length && !disableFreeform) {
-      const filteredOptions = fuzzaldrin.filter(options, value)
+      const optionsWithValue = options.map(option => ({
+        optionValue: accessOption(option),
+        option,
+      }))
+      const filteredOptions = fuzzaldrin
+        .filter(optionsWithValue, value, { key: 'optionValue' })
+        .map(option => option.option)
       /**
        * This helps us identify later if the option being handled is the
        * current value or one of the passed in options.
@@ -110,7 +109,7 @@ class PropValueChooser extends React.Component {
   }
 
   renderOption = ({ index, option }) => {
-    const { accessOption, theme } = this.props
+    const { accessOption, optionRenderer, theme } = this.props
     const { value } = this.state
     if (option.type === CURRENT_VALUE) {
       return (
@@ -120,7 +119,7 @@ class PropValueChooser extends React.Component {
       )
     }
     const matchIndexes = fuzzaldrin.match(accessOption(option), value)
-    return (
+    const optionElement = (
       <span>
         {accessOption(option).split('').map((char, index) =>
           <span
@@ -134,6 +133,7 @@ class PropValueChooser extends React.Component {
         )}
       </span>
     )
+    return optionRenderer ? optionRenderer({ option, optionElement }) : optionElement
   }
 
   setValue = value => this.setState({ value })
@@ -185,7 +185,9 @@ const defaultTheme = {
   highlightedChar: {
     fontWeight: 600,
   },
-  normalChar: {},
+  normalChar: {
+    color: Colors.grey200,
+  },
 }
 
-export default Theme('PropValueChooser', defaultTheme)(PropValueChooser)
+export default Theme('OptionChooser', defaultTheme)(OptionChooser)

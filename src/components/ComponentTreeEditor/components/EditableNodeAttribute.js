@@ -8,6 +8,11 @@ import EditableField from './EditableField'
 
 type PropsT = {
   /**
+   * Function used to access an option value from an element in in the
+   * options array.
+   */
+  accessOption?: Function,
+  /**
    * An optional function to be applied to value before rendering. It is passed `value`
    * and `isFocused` as named parameters.
    */

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import Theme from 'js-theme'
 
-import { Colors } from '@workflo/styles'
+import { Colors, Fonts } from '@workflo/styles'
 
 import type { CompletionDataT } from '../../../types/Completion'
 import type { Component, ComponentTree, Prop } from '../../../modules/ComponentTree'
@@ -34,6 +34,36 @@ const displayPropValue = ({ value, isFocused }) => {
     return value
   }
 }
+
+const renderPropValueOption = ({ option, optionElement }: any) =>
+  <div
+    style={{
+      ...Fonts.code,
+      alignItems: 'baseline',
+      display: 'flex',
+      flexDirection: 'row',
+      width: 350,
+    }}
+  >
+    <div style={{ ...Fonts.base, fontSize: 18, width: '40%' }}>
+      {optionElement}
+    </div>
+    <div style={{ color: Colors.grey600, width: '30%' }}>
+      {option.type}
+    </div>
+    <div
+      style={{
+        ...Fonts.small,
+        color: Colors.grey600,
+        fontStyle: 'italic',
+        width: '30%',
+      }}
+    >
+      {option.source}
+    </div>
+  </div>
+
+const accessPropValueOption = option => option.value
 
 const isPropFocused = ({ propNode, interactionState }) =>
   interactionState.focusedNodePath &&
@@ -105,6 +135,7 @@ const PropRenderer = ({
           {propValue !== null
             ? <span {...theme.propValue}>
                 <EditableNodeAttribute
+                  accessOption={accessPropValueOption}
                   formatValue={displayPropValue}
                   interactionState={interactionState}
                   onBlur={onBlur}
@@ -112,7 +143,8 @@ const PropRenderer = ({
                   onFocus={onFocus}
                   onFocusNext={onFocusNext}
                   onFocusPrevious={onFocusPrevious}
-                  options={propValueOptions.map(option => option.value)}
+                  optionRenderer={renderPropValueOption}
+                  options={propValueOptions}
                   nodeId={propValue.get('id')}
                   path={propPath.push('value').push('value')}
                   value={propValue.get('value')}
