@@ -97,7 +97,7 @@ class OptionChooser extends React.Component {
   handleSelect = index => {
     const { accessOption, disableFreeform, onSelect } = this.props
     const options = this.getOptions()
-    const meta = { type: 'click' }
+    const meta = { type: 'enter' }
     if (!disableFreeform) {
       const value =
         options[index].type === CURRENT_VALUE
