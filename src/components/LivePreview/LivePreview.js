@@ -145,12 +145,16 @@ class LivePreview extends React.Component {
       // This is a mac pinch to zoom event (looks like ctl scroll)
       const nextZoom = this.state.zoom - e.deltaY
 
+      // Enforce a minimum zoom level
       if (
         nextZoom * containerWidth / 100 < minContainerWidth ||
         nextZoom * containerHeight / 100 < minContainerHeight
       ) {
         return
       }
+
+      // Enforce a maximum zoom level at 5 times the container dimensions
+      if (nextZoom > 500) return
 
       this.setState({ zoom: nextZoom, zoomHasBeenChangedByUser: true })
     }
