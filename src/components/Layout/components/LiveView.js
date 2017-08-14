@@ -4,7 +4,6 @@ import Theme from 'js-theme'
 
 import { BreakPoints, Colors } from '@workflo/styles'
 
-import Canvas from './Canvas'
 import Column from './Column'
 import Row from './Row'
 
@@ -31,11 +30,15 @@ const LiveView = ({
   showBottomPanel = true,
   showLeftPanel = true,
   showRightPanel = true,
-  contentPanelHeader,
   isFullscreen,
   theme,
 }: Props) => {
-  if (isFullscreen) return <div>{children}</div>
+  if (isFullscreen)
+    return (
+      <div>
+        {children}
+      </div>
+    )
   return (
     <Column {...theme.container}>
       <Row {...theme.middle}>
@@ -45,9 +48,7 @@ const LiveView = ({
             {leftPanel}
           </Column>}
         <Column {...theme.content}>
-          <Canvas header={contentPanelHeader}>
-            {children}
-          </Canvas>
+          {children}
         </Column>
         {showRightPanel &&
           rightPanel &&
