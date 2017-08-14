@@ -139,13 +139,12 @@ class OptionChooser extends React.Component {
   setValue = value => this.setState({ value })
 
   render() {
-    const { theme } = this.props
     return (
       <List
-        {...theme.list}
         isKeyboardFocused
         onMouseDown={this.handleMouseDown}
         onSelect={this.handleSelect}
+        theme={listTheme}
       >
         {this.getOptions().map((option, index) =>
           <ListItem
@@ -174,11 +173,15 @@ const listItemTheme = ({ isKeyboardFocused }) => ({
   },
 })
 
-const defaultTheme = {
+const listTheme = {
   list: {
     backgroundColor: Colors.grey900,
     color: 'white',
+    maxHeight: 200,
   },
+}
+
+const defaultTheme = {
   currentValue: {
     fontWeight: 600,
   },
