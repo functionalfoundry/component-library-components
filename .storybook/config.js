@@ -26,6 +26,7 @@ function loadStories() {
   require('../src/components/ComponentsLeftNav/ComponentsLeftNav.story.js')
   require('../src/components/ComponentStates/ComponentStates.story.js')
   require('../src/components/ComponentTreeEditor/ComponentTreeEditor.story.js')
+  require('../src/components/ComponentTreeEditor/components/OptionChooser.story.js')
   require('../src/components/QuickAction/QuickAction.story.js')
   require('../src/components/MultiPropertiesTable/MultiPropertiesTable.story.js')
   require('../src/components/ProjectPane/ProjectPane.story.js')
