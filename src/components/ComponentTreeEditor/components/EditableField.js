@@ -70,6 +70,7 @@ class EditableFieldContainer extends React.Component {
   editableText: any
   isFocused: boolean = false
   optionChooser: any
+  disableOptionChooserFilter: boolean = false
 
   static defaultProps: ContainerDefaultPropsT = {
     formatValue: ({ value }) => value,
@@ -126,19 +127,17 @@ class EditableFieldContainer extends React.Component {
           this.editableText.refs.wrappedInstance.focusAndSelect()
         }
         /**
-         * Prevents duplicate option from being shown in OptionChooser when
-         * initially in focus.
+         * Prevents options from being filtered out when initially in focus
          */
-        this.optionChooser.setValue('')
+        this.disableOptionChooserFilter = true
       }
     )
   }
 
   handleChange = (value: string) => {
     const { onChange } = this.props
-    if (this.optionChooser && this.optionChooser.setValue) {
-      this.optionChooser.setValue(value)
-    }
+    /** After the user begins typing input after intially focused, we start filtering again */
+    this.disableOptionChooserFilter = false
     if (onChange) {
       onChange(value)
     }
@@ -224,6 +223,7 @@ class EditableFieldContainer extends React.Component {
               return (
                 <OptionChooser
                   accessOption={accessOption}
+                  disableFilter={this.disableOptionChooserFilter}
                   getRef={this.storeOptionChooser}
                   onSelect={this.handleSelect}
                   options={options}
