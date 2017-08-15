@@ -170,6 +170,11 @@ class EditableFieldContainer extends React.Component {
       onFocusPrevious()
       event.preventDefault()
     }
+
+    /** Use ESC to cancel focus */
+    if (event.keyCode === 27) {
+      this.editableText.refs.wrappedInstance.blur()
+    }
   }
 
   handleSelect = (value: string, params: Object) => {
