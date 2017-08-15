@@ -21,6 +21,11 @@ export type PropValueTypeT =
 
 export type NodeIdentifierT = string
 
+export type StatusT = {
+  isValid: boolean,
+  message: string,
+}
+
 type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
 

@@ -9,6 +9,7 @@ import {
   type ComponentTreeNodeT,
   Prop,
   PropValue,
+  Status,
 } from './ComponentTree'
 import { ADD_CHILD, ADD_SIBLING, ADD_PROP } from './constants'
 
@@ -491,7 +492,7 @@ const createTree = (data: Object): ComponentTree => {
       path,
       value: data.value,
       type: data.type,
-      status: data.status,
+      status: Status(data.status),
     })
 
   return ComponentTree({

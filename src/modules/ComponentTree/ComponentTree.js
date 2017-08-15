@@ -1,6 +1,6 @@
 /** @flow */
 import { List, Record } from 'immutable'
-import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
+import type { PropValueT, PropT, ComponentT, ComponentTreeT, StatusT } from './types'
 
 /**
  * Flow types
@@ -16,16 +16,22 @@ import type { PropValueT, PropT, ComponentT, ComponentTreeT } from './types'
 const Path = List
 export { Path }
 
+/**
+ * Record for displaying the status of a node
+ */
+const defaultStatusValue: StatusT = {
+  isValid: true,
+  message: '',
+}
+export const Status = Record(defaultStatusValue)
+
 // PropValue
 
 const defaultPropValue: PropValueT = {
   id: null,
   path: List(),
   nodeType: 'prop-value',
-  status: {
-    isValid: true,
-    message: '',
-  },
+  status: Status(),
   type: null,
   value: null,
 }
