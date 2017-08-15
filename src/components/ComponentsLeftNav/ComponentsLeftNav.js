@@ -30,6 +30,9 @@ const listTheme = {
   list: {
     backgroundColor: Colors.grey900,
     color: 'white',
+    display: 'flex',
+    flex: 1,
+    overflowY: 'scroll',
   },
   listItem: {
     ':hover': {
@@ -37,7 +40,8 @@ const listTheme = {
     },
     cursor: 'pointer',
     paddingTop: 2,
-    transition: `background-color ${Animations.Timing.t2.animationDuration}s ${Animations.Eases.entrance.animationTimingFunction}`, // eslint-disable-line
+    transition: `background-color ${Animations.Timing.t2.animationDuration}s ${Animations
+      .Eases.entrance.animationTimingFunction}`, // eslint-disable-line
   },
   selectedListItem: {
     backgroundColor: Colors.grey600,
@@ -108,7 +112,7 @@ class ComponentsLeftNav extends React.Component {
     } = this.props
     return (
       <div {...theme.componentsLeftNav}>
-        <div style={{ width: '100%' }}>
+        <div {...theme.leftNavHeader}>
           <div {...theme.titleRow}>
             <div {...theme.leftBlock}>
               <div {...theme.logoAndTitle}>
@@ -200,7 +204,7 @@ class ComponentsLeftNav extends React.Component {
           selectedIndex={ComponentsLeftNav.getSelectedIndex({ items, selectedId })}
           theme={listTheme}
         >
-          {items.map(item => (
+          {items.map(item =>
             <ListItem
               key={item.id}
               onClick={() => {
@@ -212,8 +216,7 @@ class ComponentsLeftNav extends React.Component {
             >
               {item.label}
             </ListItem>
-          ))}
-
+          )}
         </List>
       </div>
     )
@@ -226,7 +229,18 @@ const defaultTheme = {
   componentsLeftNav: {
     backgroundColor: Colors.grey900,
     color: 'white',
-    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  leftNavHeader: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexShrink: 0,
+    // CLEANUP: This needs to be fixed for scroll behavior to work on the list
+    // Is there a better place to put this constant? This'll have to be updated
+    // any time the projectPane content changes height
+    flexBasis: 263,
     width: '100%',
   },
   titleRow: {
