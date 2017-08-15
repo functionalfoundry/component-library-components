@@ -237,10 +237,7 @@ const defaultTheme = {
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
-    // CLEANUP: This needs to be fixed for scroll behavior to work on the list
-    // Is there a better place to put this constant? This'll have to be updated
-    // any time the projectPane content changes height
-    flexBasis: 263,
+    flexBasis: 'content',
     width: '100%',
   },
   titleRow: {
