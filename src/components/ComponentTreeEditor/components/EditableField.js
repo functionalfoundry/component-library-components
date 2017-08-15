@@ -83,14 +83,6 @@ class EditableFieldContainer extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps: ContainerPropsT, nextState: ContainerStateT) {
-    /** Do not update while the component is being edited */
-    if (nextState.isFocused && this.state.isFocused) {
-      return false
-    }
-    return true
-  }
-
   componentWillReceiveProps(nextProps: ContainerPropsT) {
     /** Only update isFocused to false immediately, otherwise wait for update */
     if (nextProps.isFocused !== this.props.isFocused && !nextProps.isFocused) {
@@ -214,6 +206,7 @@ class EditableFieldContainer extends React.Component {
       <span ref={this.saveRefToContainer} onKeyDown={this.handleKeyDown}>
         <EditableField
           editableTextRef={this.saveRefToEditableText}
+          isFocused={this.state.isFocused}
           onChange={this.handleChange}
           onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}
@@ -252,29 +245,38 @@ class EditableFieldContainer extends React.Component {
 
 type Props = {
   editableTextRef: Function,
+  isFocused: boolean,
   onChange: Function,
   onStartEdit: Function,
   onStopEdit: Function,
   value: string,
 }
 
-const EditableField = ({
-  editableTextRef,
-  onChange,
-  onStartEdit,
-  onStopEdit,
-  value,
-}: Props) =>
-  <span>
-    <EditableText
-      inline
-      onChange={onChange}
-      onStartEdit={onStartEdit}
-      onStopEdit={onStopEdit}
-      ref={editableTextRef}
-      theme={editableTextTheme}
-      value={value}
-    />
-  </span>
+class EditableField extends React.Component {
+  props: Props
+  shouldComponentUpdate(nextProps) {
+    /** Do not update while the component is being edited */
+    if (nextProps.isFocused && this.props.isFocused) {
+      return false
+    }
+    return true
+  }
+  render() {
+    const { editableTextRef, onChange, onStartEdit, onStopEdit, value } = this.props
+    return (
+      <span>
+        <EditableText
+          inline
+          onChange={onChange}
+          onStartEdit={onStartEdit}
+          onStopEdit={onStopEdit}
+          ref={editableTextRef}
+          theme={editableTextTheme}
+          value={value}
+        />
+      </span>
+    )
+  }
+}
 
 export default EditableFieldContainer
