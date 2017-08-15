@@ -60,6 +60,19 @@ type ComponentT = {
   children: ?List<ComponentT>,
 }
 
+type ParamT = {
+  name: string,
+  type: string,
+}
+
+type RenderCallbackNodeTypeT = 'render-callback'
+export type RenderCallbackT = {
+  id: ?NodeIdentifierT,
+  nodeType: RenderCallbackNodeTypeT,
+  child: ?ComponentT,
+  params: List<ParamT>,
+}
+
 export type ComponentTreeNodeT = ComponentT | PropT | PropValueT
 
 export type ComponentTreePathT = List<any>

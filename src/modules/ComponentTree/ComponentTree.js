@@ -66,6 +66,15 @@ const defaultComponent: ComponentT = {
 const Component = Record(defaultComponent)
 export { Component }
 
+// Render Callback
+const defaultRenderCallback = {
+  id: null,
+  nodeType: 'render-callback',
+  child: null,
+  params: List(),
+}
+export const RenderCallback = Record(defaultRenderCallback)
+
 // ComponentTree
 
 const defaultComponentTree: ComponentTreeT = {
