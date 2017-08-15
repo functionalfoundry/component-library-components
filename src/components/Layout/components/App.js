@@ -25,18 +25,26 @@ const App = ({
   showHeader = true,
   showLeftNav = true,
   theme,
-}: Props) => (
+}: Props) =>
   <Row {...theme.container}>
-    {showLeftNav && leftNav && <Column {...theme.leftNav}>{leftNav}</Column>}
+    {showLeftNav &&
+      leftNav &&
+      <Column {...theme.leftNav}>
+        {leftNav}
+      </Column>}
     <Column {...theme.page}>
-      {showHeader && header && <Row {...theme.header}>{header}</Row>}
+      {showHeader &&
+        header &&
+        <Row {...theme.header}>
+          {header}
+        </Row>}
       <Row {...theme.main}>
-
-        <Column {...theme.content}>{children}</Column>
+        <Column {...theme.content}>
+          {children}
+        </Column>
       </Row>
     </Column>
   </Row>
-)
 
 const LEFT_NAV_WIDTH = 250
 
@@ -69,6 +77,8 @@ const defaultTheme = ({ tabletShowLeftNav }) => ({
       marginRight: Spacing.small,
     },
     paddingRight: Spacing.tiny + Spacing.micro,
+    display: 'flex',
+    flexDirection: 'column',
   },
   main: {
     flexGrow: 1,
