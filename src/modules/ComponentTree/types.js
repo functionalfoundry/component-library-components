@@ -60,17 +60,16 @@ type ComponentT = {
   children: ?List<ComponentT>,
 }
 
-type ParamT = {
-  name: string,
-  type: string,
-}
-
 type RenderCallbackNodeTypeT = 'render-callback'
 export type RenderCallbackT = {
   id: ?NodeIdentifierT,
   nodeType: RenderCallbackNodeTypeT,
-  child: ?ComponentT,
-  params: List<ParamT>,
+  children: List<ComponentT>,
+  /**
+   * Must be a valid string that could be found in between the parenthesis of
+   * a JS function signature. (i.e. comma separated, default values, destructuring)
+   */
+  params: string,
 }
 
 export type ComponentTreeNodeT = ComponentT | PropT | PropValueT
