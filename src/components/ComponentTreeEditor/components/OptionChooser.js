@@ -17,6 +17,10 @@ export type Props = {
    * they will be invoked with an object representing the option.
    */
   disableFreeform: boolean,
+  /** If set to true, the list of options will not be filtered based on the value prop */
+  disableFilter: boolean,
+  /** If set to true, options will not be rendered with fuzzy highlighting. */
+  disableFuzzyHighlighting: boolean,
   /** A function to getRef that wont be blown away by HOCs */
   getRef: Function,
   /** A list of options to be rendered */
@@ -54,9 +58,13 @@ class OptionChooser extends React.Component {
   }
 
   getOptions = () => {
-    const { accessOption, disableFreeform, options } = this.props
-    const { value } = this.state
-    if (value.length && !disableFreeform) {
+    const { accessOption, disableFreeform, disableFilter, options } = this.props
+    const { value } = this.props
+
+    const freeFormValue =
+      disableFreeform || !value.length ? [] : [{ type: CURRENT_VALUE, value }]
+
+    if (!disableFilter) {
       const optionsWithValue = options.map(option => ({
         optionValue: accessOption(option),
         option,
@@ -68,9 +76,9 @@ class OptionChooser extends React.Component {
        * This helps us identify later if the option being handled is the
        * current value or one of the passed in options.
        */
-      return [{ type: CURRENT_VALUE, value }].concat(filteredOptions)
+      return freeFormValue.concat(filteredOptions)
     }
-    return options
+    return freeFormValue.concat(options)
   }
 
   handleMouseDown = e => {
@@ -135,8 +143,6 @@ class OptionChooser extends React.Component {
     )
     return optionRenderer ? optionRenderer({ option, optionElement }) : optionElement
   }
-
-  setValue = value => this.setState({ value })
 
   render() {
     return (
