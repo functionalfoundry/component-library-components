@@ -117,8 +117,13 @@ class OptionChooser extends React.Component {
   }
 
   renderOption = ({ index, option }) => {
-    const { accessOption, optionRenderer, theme } = this.props
-    const { value } = this.state
+    const {
+      accessOption,
+      disableFuzzyHighlighting,
+      optionRenderer,
+      theme,
+      value,
+    } = this.props
     if (option.type === CURRENT_VALUE) {
       return (
         <span {...theme.currentValue}>
@@ -127,20 +132,22 @@ class OptionChooser extends React.Component {
       )
     }
     const matchIndexes = fuzzaldrin.match(accessOption(option), value)
-    const optionElement = (
-      <span>
-        {accessOption(option).split('').map((char, index) =>
-          <span
-            key={index}
-            {...(matchIndexes.indexOf(index) === -1
-              ? theme.normalChar
-              : theme.highlightedChar)}
-          >
-            {char}
-          </span>
-        )}
-      </span>
-    )
+    const optionElement = !disableFuzzyHighlighting
+      ? <span>
+          {accessOption(option).split('').map((char, index) =>
+            <span
+              key={index}
+              {...(matchIndexes.indexOf(index) === -1
+                ? theme.normalChar
+                : theme.highlightedChar)}
+            >
+              {char}
+            </span>
+          )}
+        </span>
+      : <span>
+          {accessOption(option)}
+        </span>
     return optionRenderer ? optionRenderer({ option, optionElement }) : optionElement
   }
 
@@ -187,9 +194,9 @@ const listTheme = {
   },
 }
 
-const defaultTheme = {
+const defaultTheme = ({ disableFuzzyHighlighting }) => ({
   currentValue: {
-    fontWeight: 600,
+    fontWeight: disableFuzzyHighlighting ? 300 : 600,
   },
   highlightedChar: {
     fontWeight: 600,
@@ -197,6 +204,6 @@ const defaultTheme = {
   normalChar: {
     color: Colors.grey200,
   },
-}
+})
 
 export default Theme('OptionChooser', defaultTheme)(OptionChooser)
