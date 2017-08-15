@@ -71,7 +71,7 @@ const defaultRenderCallback = {
   id: null,
   nodeType: 'render-callback',
   child: null,
-  params: List(),
+  params: '',
 }
 export const RenderCallback = Record(defaultRenderCallback)
 
