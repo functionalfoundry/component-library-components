@@ -57,14 +57,14 @@ type ComponentT = {
   name: ?string,
   path: List<string>,
   props: ?List<PropT>,
-  children: ?List<ComponentT>,
+  children: ?List<ChildT>,
 }
 
 type RenderCallbackNodeTypeT = 'render-callback'
 export type RenderCallbackT = {
   id: ?NodeIdentifierT,
   nodeType: RenderCallbackNodeTypeT,
-  children: List<ComponentT>,
+  children: List<ChildT>,
   /**
    * Must be a valid string that could be found in between the parenthesis of
    * a JS function signature. (i.e. comma separated, default values, destructuring)
@@ -72,7 +72,31 @@ export type RenderCallbackT = {
   params: string,
 }
 
-export type ComponentTreeNodeT = ComponentT | PropT | PropValueT
+type TextNodeNodeTypeT = 'text'
+export type TextNodeT = {
+  id: ?NodeIdentifierT,
+  nodeType: TextNodeNodeTypeT,
+  value: string,
+}
+
+type MapExpressionNodeTypeT = 'map-expression'
+export type MapExpressionT = {
+  id: ?NodeIdentifierT,
+  nodeType: MapExpressionNodeTypeT,
+  /** The name of the collection being mapped over */
+  collection: string,
+  children: List<ChildT>,
+}
+
+export type ChildT = ComponentT | TextNodeT | RenderCallbackT | MapExpressionT
+
+export type ComponentTreeNodeT =
+  | ComponentT
+  | PropT
+  | PropValueT
+  | TextNodeT
+  | RenderCallbackT
+  | MapExpressionT
 
 export type ComponentTreePathT = List<any>
 
