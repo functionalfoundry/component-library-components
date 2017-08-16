@@ -1,6 +1,15 @@
 /** @flow */
 import { List, Record } from 'immutable'
-import type { PropValueT, PropT, ComponentT, ComponentTreeT, StatusT } from './types'
+import type {
+  ComponentT,
+  ComponentTreeT,
+  MapExpressionT,
+  PropT,
+  PropValueT,
+  RenderCallbackT,
+  StatusT,
+  TextNodeT,
+} from './types'
 
 /**
  * Flow types
@@ -74,6 +83,22 @@ const defaultRenderCallback = {
   params: '',
 }
 export const RenderCallback = Record(defaultRenderCallback)
+
+// Text Node
+const defaultTextNode: TextNodeT = {
+  id: null,
+  nodeType: 'text',
+  value: '',
+}
+export const TextNode = Record(defaultTextNode)
+
+// Map Expression
+const defaultMapExpression: MapExpressionT = {
+  id: null,
+  collection: '',
+  children: List(),
+}
+export const MapExpression = Record(defaultMapExpression)
 
 // ComponentTree
 
