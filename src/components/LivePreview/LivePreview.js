@@ -13,8 +13,6 @@ import { Helpers as TreeHelpers } from '../../modules/ComponentTree'
  * Props
  */
 
-type BundlesT = Object
-
 type ErrorT = {
   message: string,
   stacktrace: string,
@@ -23,8 +21,8 @@ type ErrorT = {
 type PropsT = {
   /** A raw component tree */
   tree: Object,
-  /** Map from tree component IDs to bundle strings */
-  bundles: BundlesT,
+  /** Bundle for the component library */
+  bundle: string,
   /** The user-specified pixel width of the contianer that is then scaled */
   containerWidth: number,
   /** The user-specified pixel height of the contianer that is then scaled */
@@ -177,7 +175,7 @@ class LivePreview extends React.Component {
       containerHeight,
       name,
       tree,
-      bundles,
+      bundle,
       React,
       ReactDOM,
       backgroundColor,
@@ -231,7 +229,7 @@ class LivePreview extends React.Component {
               <Frame
                 name={name}
                 tree={TreeHelpers.createTree(tree)}
-                bundles={bundles}
+                bundle={bundle}
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
