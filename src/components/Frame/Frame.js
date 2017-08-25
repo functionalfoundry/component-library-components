@@ -119,7 +119,7 @@ class Frame extends React.Component {
             window.implementations = implementations
           }
 
-          window.renderComponentTree = function () {
+          window.renderComponentTree = function (evaluateBundles, renderTree) {
             const bundles = __workflo_data.bundles
             const harnessElement = __workflo_data.harnessElement
             const tree = __workflo_data.tree
@@ -127,12 +127,16 @@ class Frame extends React.Component {
             window.React = React
             window.ReactDOM = ReactDOM
 
-            updateImplementations(bundles)
+            if (evaluateBundles) {
+              updateImplementations(bundles)
+            }
 
-            const treeElement = realizeComponentTree(tree, window.implementations)
-            const harness = React.cloneElement(harnessElement, {}, treeElement)
-            const root = document.getElementById('root')
-            ReactDOM.render(harness, root)
+            if (renderTree) {
+              const treeElement = realizeComponentTree(tree, window.implementations)
+              const harness = React.cloneElement(harnessElement, {}, treeElement)
+              const root = document.getElementById('root')
+              ReactDOM.render(harness, root)
+            }
           }
         </script>
       </body>
@@ -147,21 +151,30 @@ class Frame extends React.Component {
 
   componentDidMount() {
     this._isMounted = true
-    this.renderFrameContents()
+    this.renderFrameContents({ evaluateBundles: true, renderTree: true })
   }
 
-  componentDidUpdate() {
-    this.renderFrameContents()
+  componentDidUpdate(prevProps) {
+    const evaluateBundles = this.bundlesHaveChanged(prevProps.bundles, this.props.bundles)
+    const renderTree =
+      evaluateBundles || this.componentTreeHasChanged(prevProps.tree, this.props.tree)
+    if (evaluateBundles || renderTree) {
+      this.renderFrameContents({ evaluateBundles, renderTree })
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false
   }
 
-  componentWillReceiveProps(nextProps) {
-    const frame = this.getFrame(nextProps)
-    this.injectData(frame, nextProps)
-    frame.renderComponentTree()
+  bundlesHaveChanged = (oldBundles, newBundles) => {
+    return Object.keys(newBundles).reduce((changed, componentId) => {
+      return changed || oldBundles[componentId] !== newBundles[componentId]
+    }, false)
+  }
+
+  componentTreeHasChanged = (oldTree, newTree) => {
+    return !newTree.equals(oldTree)
   }
 
   /**
@@ -198,9 +211,7 @@ class Frame extends React.Component {
     }
   }
 
-  renderFrameContents() {
-    const { backgroundColor } = this.props
-
+  renderFrameContents({ evaluateBundles, renderTree }) {
     if (!this._isMounted) {
       return
     }
@@ -223,14 +234,14 @@ class Frame extends React.Component {
       this.injectData(frame, this.props)
 
       // Render the frame ASAP
-      frame.renderComponentTree()
+      frame.renderComponentTree(evaluateBundles, renderTree)
     } else {
-      setTimeout(this.renderFrameContents.bind(this), 0)
+      setTimeout(this.renderFrameContents.bind(this, { evaluateBundles, renderTree }), 0)
     }
   }
 
   render() {
-    const { name, backgroundColor, theme } = this.props
+    const { name, theme } = this.props
     return <iframe ref={c => (this._frame = c)} {...theme.frame} name={name} />
   }
 }
