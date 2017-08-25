@@ -12,9 +12,10 @@ type PropsT = {
 }
 
 /** Displays a simple table with a single header column */
-const Panel = ({ children, theme }: PropsT) => (
+const Panel = ({ children, theme }: PropsT) =>
   <div {...theme.panel}>
     {children.map((child, index) => {
+      if (!child) return null
       switch (child.type) {
         case PanelHeader:
           return (
@@ -33,7 +34,6 @@ const Panel = ({ children, theme }: PropsT) => (
       }
     })}
   </div>
-)
 
 const defaultTheme = {
   panel: { display: 'flex', flexDirection: 'column', flexGrow: 1 },

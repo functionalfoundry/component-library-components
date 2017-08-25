@@ -12,7 +12,6 @@ type Props = {
   children: React.Element<*>,
   leftPanel: React.Element<*>,
   rightPanel: React.Element<*>,
-  contentPanelHeader: React.Element<*>,
   showLeftPanel: boolean,
   showRightPanel: boolean,
   showBottomPanel: boolean,
