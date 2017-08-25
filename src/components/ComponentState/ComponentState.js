@@ -44,13 +44,11 @@ type HarnessT = {
   },
 }
 
-type BundlesT = Object
-
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
     tree: Object,
-    bundles: BundlesT,
+    bundle: string,
     React: any,
     ReactDOM: any,
     harness: HarnessT,
@@ -74,7 +72,7 @@ type PropsT = {
 const defaultProps = {
   harnessCard: {
     tree: null,
-    bundles: {},
+    bundle: '',
     React,
     ReactDOM,
     harness: {
@@ -270,7 +268,7 @@ class ComponentState extends React.Component {
             <LivePreview
               name={harnessCard.harness.id}
               tree={harnessCard.tree}
-              bundles={harnessCard.bundles}
+              bundle={harnessCard.bundle}
               React={harnessCard.React}
               ReactDOM={harnessCard.ReactDOM}
               backgroundColor={harnessCard.harness.theme.patterns.colors.background}
