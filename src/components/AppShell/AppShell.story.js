@@ -31,6 +31,11 @@ import {
 import { branches, breadCrumbPath, repos } from '../../../mocks/header'
 import { liveViewState } from '../../../mocks/live-view'
 import { stateCards } from '../../../mocks/componentStates'
+import {
+  exampleBundles,
+  rawExampleTree as rawPurpleExampleTree,
+} from '../ComponentState/ComponentState.story'
+
 import LiveCanvas from '../LiveCanvas'
 import Components from '../Components'
 import { BADGE_URL, LOADER_URL, SLIDER_URL, rawExampleTree } from '../Frame/Frame.story'
@@ -239,8 +244,8 @@ class FetchAndRender extends React.Component {
       >
         <LivePreview
           name="frame-1"
-          tree={componentTree}
-          bundles={{ badge, loader, slider }}
+          tree={rawPurpleExampleTree}
+          bundles={{ ...exampleBundles, badge, loader, slider }}
           React={React}
           ReactDOM={ReactDOM}
           alignment={{

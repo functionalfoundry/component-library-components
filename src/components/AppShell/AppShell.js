@@ -21,17 +21,14 @@ const AppShell = ({ sections, isFullscreen }: Props) =>
       bottomPanel={sections.bottomPanel}
       leftPanel={sections.leftPanel}
       rightPanel={sections.rightPanel}
-      contentPanelHeader={sections.contentPanelHeader}
       isFullscreen={isFullscreen}
       showBottomPanel
       showLeftPanel
       showRightPanel
     >
-      {isFullscreen && sections.content}
-      {!isFullscreen &&
-        <Canvas header={sections.contentPanelHeader}>
-          {sections.content}
-        </Canvas>}
+      <Canvas header={sections.contentPanelHeader} isFullscreen={isFullscreen}>
+        {sections.content}
+      </Canvas>
     </Layout.LiveView>
   </Layout.App>
 
