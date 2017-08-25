@@ -4,16 +4,14 @@ import Theme from 'js-theme'
 
 import ComponentTree from '../../modules/ComponentTree'
 
-type BundlesT = Object<string, string>
-
 type PropsT = {
   /**
    * Takes a map from component names to component functions / classes
    * and returns the composite component tree
    */
   tree: ComponentTree,
-  /** Map from tree component IDs to bundle strings */
-  bundles: BundlesT,
+  /** Bundle for the component library */
+  bundle: string,
   /**
    * The React object to use inside the iFrame (in the future should
    * this be a string and get evaluated in the iFrame?)
@@ -55,7 +53,7 @@ class Frame extends React.Component {
       <body style="margin:0px; padding:0px;">
         <div id="root" />
         <script>
-          // Needed for evaluating bundles
+          // Needed for evaluating the bundle
           window.production = 'production'
 
           function evaluateBundle (bundle) {
@@ -63,14 +61,7 @@ class Frame extends React.Component {
             return (evaluated && (evaluated.default || evaluated)) || null
           }
 
-          function evaluateBundles (bundles) {
-            return Object.keys(bundles).reduce(function (out, name) {
-              out[name] = evaluateBundle(bundles[name])
-              return out
-            }, {})
-          }
-
-          function realizeComponentTree (tree, implementations) {
+          function realizeComponentTree (tree, evaluatedBundle) {
             function realizeProps (component) {
               return component.props.reduce(function (props, prop) {
                 props[prop.name] = prop.value.value
@@ -89,7 +80,8 @@ class Frame extends React.Component {
             }
 
             function realizeComponent (component) {
-              const implementation = implementations[component.id]
+              console.log('Realize component', component, evaluatedBundle)
+              const implementation = evaluatedBundle[component.name]
               if (implementation) {
                 const props = realizeProps(component)
                 const children = realizeChildren(component) || component.text
@@ -104,35 +96,25 @@ class Frame extends React.Component {
             }
           }
 
-          function updateImplementations (newBundles) {
-            bundles = window.bundles || {}
-            implementations = window.implementations || {}
-
-            Object.keys(newBundles).forEach(function (name) {
-              if (bundles[name] !== newBundles[name]) {
-                implementations[name] = evaluateBundle(newBundles[name])
-                bundles[name] = newBundles[name]
-              }
-            })
-
-            window.bundles = bundles
-            window.implementations = implementations
+          function updateEvaluatedBundle (newBundle) {
+            window.bundle = newBundle
+            window.evaluatedBundle = evaluateBundle(newBundle)
           }
 
-          window.renderComponentTree = function (evaluateBundles, renderTree) {
-            const bundles = __workflo_data.bundles
+          window.renderComponentTree = function (evaluateBundle, renderTree) {
+            const bundle = __workflo_data.bundle
             const harnessElement = __workflo_data.harnessElement
             const tree = __workflo_data.tree
 
             window.React = React
             window.ReactDOM = ReactDOM
 
-            if (evaluateBundles) {
-              updateImplementations(bundles)
+            if (evaluateBundle) {
+              updateEvaluatedBundle(bundle)
             }
 
             if (renderTree) {
-              const treeElement = realizeComponentTree(tree, window.implementations)
+              const treeElement = realizeComponentTree(tree, window.evaluatedBundle)
               const harness = React.cloneElement(harnessElement, {}, treeElement)
               const root = document.getElementById('root')
               ReactDOM.render(harness, root)
@@ -151,15 +133,15 @@ class Frame extends React.Component {
 
   componentDidMount() {
     this._isMounted = true
-    this.renderFrameContents({ evaluateBundles: true, renderTree: true })
+    this.renderFrameContents({ evaluateBundle: true, renderTree: true })
   }
 
   componentDidUpdate(prevProps) {
-    const evaluateBundles = this.bundlesHaveChanged(prevProps.bundles, this.props.bundles)
+    const evaluateBundle = this.bundleHasChanged(prevProps.bundle, this.props.bundle)
     const renderTree =
-      evaluateBundles || this.componentTreeHasChanged(prevProps.tree, this.props.tree)
-    if (evaluateBundles || renderTree) {
-      this.renderFrameContents({ evaluateBundles, renderTree })
+      evaluateBundle || this.componentTreeHasChanged(prevProps.tree, this.props.tree)
+    if (evaluateBundle || renderTree) {
+      this.renderFrameContents({ evaluateBundle, renderTree })
     }
   }
 
@@ -167,10 +149,8 @@ class Frame extends React.Component {
     this._isMounted = false
   }
 
-  bundlesHaveChanged = (oldBundles, newBundles) => {
-    return Object.keys(newBundles).reduce((changed, componentId) => {
-      return changed || oldBundles[componentId] !== newBundles[componentId]
-    }, false)
+  bundleHasChanged = (oldBundle, newBundle) => {
+    return oldBundle !== newBundle
   }
 
   componentTreeHasChanged = (oldTree, newTree) => {
@@ -197,7 +177,7 @@ class Frame extends React.Component {
   }
 
   injectData = (frame, props) => {
-    const { bundles, harnessElement, React, ReactDOM, tree } = props
+    const { bundle, harnessElement, React, ReactDOM, tree } = props
 
     // Inject React and React DOM into the frame
     frame.React = React
@@ -206,12 +186,12 @@ class Frame extends React.Component {
     // Inject render data into the frame
     frame.__workflo_data = {
       harnessElement,
-      bundles,
+      bundle,
       tree,
     }
   }
 
-  renderFrameContents({ evaluateBundles, renderTree }) {
+  renderFrameContents({ evaluateBundle, renderTree }) {
     if (!this._isMounted) {
       return
     }
@@ -234,9 +214,9 @@ class Frame extends React.Component {
       this.injectData(frame, this.props)
 
       // Render the frame ASAP
-      frame.renderComponentTree(evaluateBundles, renderTree)
+      frame.renderComponentTree(evaluateBundle, renderTree)
     } else {
-      setTimeout(this.renderFrameContents.bind(this, { evaluateBundles, renderTree }), 0)
+      setTimeout(this.renderFrameContents.bind(this, { evaluateBundle, renderTree }), 0)
     }
   }
 
