@@ -2,20 +2,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
-import { Checkbox, Icon, View } from '@workflo/components'
+import { Checkbox, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Heading from '@workflo/components/lib/Heading'
 import { Power2, TweenMax } from 'gsap'
 import LivePreview from '../LivePreview'
-import StaggerChildren from '../StaggerChildren'
-import RotateFade from '../RotateFade'
 
 /**
  * Prop types
  */
 
-type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
-type VerticalAlignmentT = 'Top' | 'Center' | 'Right'
 type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
 
 type ComponentStateT = {
@@ -25,22 +21,9 @@ type ComponentStateT = {
 type HarnessT = {
   id: string,
   componentState: ComponentStateT,
-  alignment: {
-    horizontal: HorizontalAlignmentT,
-    vertical: VerticalAlignmentT,
-  },
   size: {
     horizontal: SizeT,
     vertical: SizeT,
-  },
-  theme: {
-    id: string,
-    name: string,
-    patterns: {
-      colors: {
-        background: string,
-      },
-    },
   },
 }
 
@@ -81,17 +64,7 @@ const defaultProps = {
       componentState: {
         name: '',
       },
-      alignment: {
-        horizontal: 'Center',
-        vertical: 'Center',
-      },
-      theme: {
-        patterns: {
-          colors: {},
-        },
-      },
     },
-    actions: [],
     isSelected: false,
     forceShowActions: false,
   },
@@ -180,13 +153,9 @@ class ComponentState extends React.Component {
 
   handleMouseEnter = () => {
     this.props.onMouseEnter()
-    // console.log('show the icons :)')
   }
 
   handleMouseLeave = () => {
-    if (!this.getForceShowActions()) {
-      // console.log('hide these icons: ', this.iconRefs)
-    }
     this.props.onMouseLeave()
   }
 
@@ -234,14 +203,10 @@ class ComponentState extends React.Component {
     TweenMax.to(this.harnessCard, 0.13, to)
   }
 
-  getForceShowActions = () => this.numOpenPopups > 0
-
   storeHarnessCard = c => (this.harnessCard = c)
 
   render() {
     const { harnessCard, onClickTitle, isHovering, theme } = this.props
-
-    const forceShowActions = this.getForceShowActions()
 
     return (
       <div
@@ -273,8 +238,6 @@ class ComponentState extends React.Component {
               bundles={harnessCard.bundles}
               React={harnessCard.React}
               ReactDOM={harnessCard.ReactDOM}
-              backgroundColor={harnessCard.harness.theme.patterns.colors.background}
-              alignment={harnessCard.harness.alignment}
             />
           </View>
         </View>
@@ -293,7 +256,6 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     width: 'inherit', // FIX
     height: 320, // FIX
     flex: '1',
-    background: harnessCard.harness.theme.patterns.colors.background,
   },
   section: {
     position: 'relative',
@@ -314,7 +276,6 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     zIndex: -0,
   },
   actions: {
-    backgroundColor: harnessCard.harness.theme.patterns.colors.background,
     display: 'flex',
     flexDirection: 'row',
     position: 'absolute',
