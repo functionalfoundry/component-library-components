@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
-import { Trigger, View } from '@workflo/components'
+import { Trigger } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
@@ -35,14 +35,10 @@ type PropsT = {
   ReactDOM?: any,
   /** A unique ID for the iFrame */
   name: string,
-  /** The background color for the harness */
-  backgroundColor: string,
   /** Less than 100 means shrink more than 100 means zoom in */
   zoom: number,
   /** Called quickly while the user is performing a continuous zoom action */
   onChangeZoom: Function,
-  /** Horizontal and vertical alignments that get rendered with flexbox */
-  alignment: AlignmentT,
   /** Optionally pass in an error */
   error?: ErrorT,
 }
@@ -52,11 +48,6 @@ type PropsT = {
  */
 
 const defaultProps = {
-  backgroundColor: 'white',
-  alignment: {
-    horizontal: 'Center',
-    vertical: 'Center',
-  },
   containerWidth: 600,
   containerHeight: 250,
 }
@@ -75,9 +66,7 @@ type StateT = {
  * Theming
  */
 
-const defaultTheme = ({ backgroundColor }: Props) => ({
-  backgroundColor,
-})
+const defaultTheme = {}
 
 /**
  * LivePreview component
@@ -139,7 +128,6 @@ class LivePreview extends React.Component {
   handleWheel = e => {
     if (this.state.isContainerFocused) return
     const { containerWidth, containerHeight } = this.props
-    const { canvasWidth, canvasHeight } = this.state
     if (e.ctrlKey) {
       e.preventDefault()
       // This is a mac pinch to zoom event (looks like ctl scroll)
@@ -180,8 +168,6 @@ class LivePreview extends React.Component {
       bundles,
       React,
       ReactDOM,
-      backgroundColor,
-      alignment,
       error,
     } = this.props
 
@@ -189,8 +175,6 @@ class LivePreview extends React.Component {
     const harnessElement = (
       <Harness
         key="harness"
-        backgroundColor={backgroundColor}
-        alignment={alignment}
         error={error}
         width={canvasWidth}
         height={canvasHeight}
@@ -226,7 +210,6 @@ class LivePreview extends React.Component {
               containerHeight={containerHeight}
               zoom={zoom}
               onWheel={this.handleWheel}
-              backgroundColor={backgroundColor}
             >
               <Frame
                 name={name}
@@ -235,10 +218,9 @@ class LivePreview extends React.Component {
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
-                backgroundColor={backgroundColor}
                 theme={{
                   frame: {
-                    backgroundColor: backgroundColor,
+                    backgroundColor: Colors.grey100,
                   },
                 }}
               />
@@ -258,15 +240,10 @@ export default ThemedLivePreview
  * Harness component
  */
 
-type AlignmentT = {
-  horizontal: 'Left' | 'Center' | 'Right',
-  vertical: 'Top' | 'Center' | 'Bottom',
-}
-
 type HarnessPropsT = {
-  alignment: AlignmentT,
-  backgroundColor: string,
-  children: React.Children,
+  width: number,
+  height: number,
+  children: React.Node,
   onWheel: Function,
   onChangeContainerFocused: Function,
   isContainerFocused: boolean,
@@ -304,20 +281,12 @@ class Harness extends React.Component {
   }
 
   render() {
-    const {
-      children,
-      backgroundColor,
-      alignment,
-      width,
-      height,
-      onWheel,
-      isContainerFocused,
-    } = this.props
+    const { children, width, height, onWheel, isContainerFocused } = this.props
     const { error } = this.state
 
     if (error) {
       return (
-        <div style={getHarnessStyle(backgroundColor, true)}>
+        <div style={getHarnessStyle(true)}>
           <div style={errorContainerStyle}>
             <ErrorView
               message={error.message}
@@ -333,11 +302,11 @@ class Harness extends React.Component {
         return (
           <Trigger triggerOn={['Click outside']} onTrigger={this.handleClickOutside}>
             <div
-              style={getHarnessStyle(backgroundColor, false, isContainerFocused)}
+              style={getHarnessStyle(false, isContainerFocused)}
               onClick={this.handleClick}
               onWheel={onWheel}
             >
-              <div style={getPreviewContainerStyle(alignment)}>
+              <div style={previewContainerStyle}>
                 {children}
               </div>
             </div>
@@ -345,7 +314,7 @@ class Harness extends React.Component {
         )
       } catch (error) {
         return (
-          <div style={getHarnessStyle(backgroundColor)}>
+          <div style={getHarnessStyle()}>
             <div style={errorContainerStyle}>
               <ErrorView message={error.message} stacktrace={error.stacktrace} />
             </div>
@@ -356,8 +325,7 @@ class Harness extends React.Component {
   }
 }
 
-const getHarnessStyle = (backgroundColor, hasError, isContainerFocused) => ({
-  backgroundColor,
+const getHarnessStyle = (hasError, isContainerFocused) => ({
   boxSizing: 'border-box',
   position: 'relative',
   width: hasError ? '100%' : '100vw',
@@ -365,41 +333,13 @@ const getHarnessStyle = (backgroundColor, hasError, isContainerFocused) => ({
   border: isContainerFocused ? `1px solid ${Colors.grey200}` : 'none',
 })
 
-const getPreviewContainerStyle = alignment =>
-  Object.assign(
-    {},
-    {
-      display: 'flex',
-      flex: '1 1 auto',
-      flexDirection: 'row',
-      height: `100%`,
-    },
-    getVerticalAlignment(alignment.vertical),
-    getHorizontalAlignment(alignment.horizontal)
-  )
+const previewContainerStyle = {
+  display: 'flex',
+  flex: '1 1 auto',
+  flexDirection: 'row',
+  height: `100%`,
+  alignItems: 'center',
+  justifyContent: 'center',
+}
 
 const errorContainerStyle = {}
-
-const getVerticalAlignment = verticalAlignment => {
-  switch (verticalAlignment) {
-    case 'Top':
-      return { alignItems: 'flex-start' }
-    case 'Bottom':
-      return { alignItems: 'flex-end' }
-    case 'Center':
-    default:
-      return { alignItems: 'center' }
-  }
-}
-
-const getHorizontalAlignment = horizontalAlignment => {
-  switch (horizontalAlignment) {
-    case 'Left':
-      return { justifyContent: 'flex-start' }
-    case 'Right':
-      return { justifyContent: 'flex-end' }
-    case 'Center':
-    default:
-      return { justifyContent: 'center' }
-  }
-}

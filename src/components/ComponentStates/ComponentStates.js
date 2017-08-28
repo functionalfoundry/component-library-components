@@ -1,12 +1,8 @@
 import React from 'react'
 import Theme from 'js-theme'
 import ComponentState from '../ComponentState'
-import { View } from '@workflo/components'
 import MultiSizeGrid from '@workflo/components/lib/MultiSizeGrid/MultiSizeGrid'
-import { Colors, Spacing } from '@workflo/styles'
 
-type HorizontalAlignmentT = 'Left' | 'Center' | 'Right'
-type VerticalAlignmentT = 'Top' | 'Center' | 'Bottom'
 type SizeT = 'Tiny' | 'Small' | 'Base' | 'Large'
 
 type ComponentStateT = {
@@ -16,22 +12,9 @@ type ComponentStateT = {
 type HarnessT = {
   id: string,
   state: ComponentStateT,
-  alignment: {
-    horizontal: HorizontalAlignmentT,
-    vertical: VerticalAlignmentT,
-  },
   size: {
     horizontal: SizeT,
     vertical: SizeT,
-  },
-  theme: {
-    id: string,
-    name: string,
-    patterns: {
-      colors: {
-        background: string,
-      },
-    },
   },
 }
 
