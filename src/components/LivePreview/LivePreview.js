@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
-import { Trigger, View } from '@workflo/components'
+import { Trigger } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
@@ -75,7 +75,7 @@ type StateT = {
  * Theming
  */
 
-const defaultTheme = ({ backgroundColor }: Props) => ({
+const defaultTheme = ({ backgroundColor }: PropsT) => ({
   backgroundColor,
 })
 
@@ -139,7 +139,6 @@ class LivePreview extends React.Component {
   handleWheel = e => {
     if (this.state.isContainerFocused) return
     const { containerWidth, containerHeight } = this.props
-    const { canvasWidth, canvasHeight } = this.state
     if (e.ctrlKey) {
       e.preventDefault()
       // This is a mac pinch to zoom event (looks like ctl scroll)
