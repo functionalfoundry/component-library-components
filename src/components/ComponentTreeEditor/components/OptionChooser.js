@@ -17,6 +17,11 @@ export type Props = {
    * they will be invoked with an object representing the option.
    */
   disableFreeform: boolean,
+  /**
+   * If set to false, then the freeform value, will only be shown if it does not
+   * match one of the options.
+   */
+  disableFreeformDuplicate: boolean,
   /** If set to true, the list of options will not be filtered based on the value prop */
   disableFilter: boolean,
   /** If set to true, options will not be rendered with fuzzy highlighting. */
@@ -44,8 +49,15 @@ class OptionChooser extends React.PureComponent {
   }
 
   constructor(props: Props) {
+    const { accessOption, options, value } = props
     super(props)
+    const optionsWithValue = options.map(option => ({
+      optionValue: accessOption(option),
+      option,
+    }))
+    const matchIndex = optionsWithValue.map(option => option.optionValue).indexOf(value)
     this.state = {
+      focusedIndex: Math.max(matchIndex, 0),
       value: '',
     }
   }
@@ -57,18 +69,36 @@ class OptionChooser extends React.PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { value, disableFreeform } = nextProps
+    if (this.props.value !== value && !disableFreeform) {
+      this.setState({
+        focusedIndex: 0,
+      })
+    }
+  }
+
   getOptions = () => {
-    const { accessOption, disableFreeform, disableFilter, options } = this.props
+    const {
+      accessOption,
+      disableFreeform,
+      disableFreeformDuplicate,
+      disableFilter,
+      options,
+    } = this.props
     const { value } = this.props
+    const optionsWithValue = options.map(option => ({
+      optionValue: accessOption(option),
+      option,
+    }))
+    const matchIndex = optionsWithValue.map(option => option.optionValue).indexOf(value)
 
     const freeFormValue =
-      disableFreeform || !value.length ? [] : [{ type: CURRENT_VALUE, value }]
+      disableFreeform || !value.length || (matchIndex >= 0 && disableFreeformDuplicate)
+        ? []
+        : [{ type: CURRENT_VALUE, value }]
 
     if (!disableFilter) {
-      const optionsWithValue = options.map(option => ({
-        optionValue: accessOption(option),
-        option,
-      }))
       const filteredOptions = fuzzaldrin
         .filter(optionsWithValue, value, { key: 'optionValue' })
         .map(option => option.option)
