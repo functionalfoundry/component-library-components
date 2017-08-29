@@ -36,7 +36,7 @@ export type Props = {
   value: string,
 }
 
-class OptionChooser extends React.Component {
+class OptionChooser extends React.PureComponent {
   props: Props
   static defaultProps = {
     accessOption: x => x,
@@ -102,6 +102,10 @@ class OptionChooser extends React.Component {
     onSelect && onSelect(options[index], meta)
   }
 
+  handleFocus = focusedIndex => {
+    this.setState({ focusedIndex })
+  }
+
   handleSelect = index => {
     const { accessOption, disableFreeform, onSelect } = this.props
     const options = this.getOptions()
@@ -154,9 +158,12 @@ class OptionChooser extends React.Component {
   render() {
     return (
       <List
-        isKeyboardFocused
+        enableKeyboardNavigation
+        enableMouseNavigation
+        focusedIndex={this.state.focusedIndex}
         onMouseDown={this.handleMouseDown}
         onSelect={this.handleSelect}
+        onFocus={this.handleFocus}
         theme={listTheme}
       >
         {this.getOptions().map((option, index) =>
@@ -173,15 +180,9 @@ class OptionChooser extends React.Component {
   }
 }
 
-const listItemTheme = ({ isKeyboardFocused }) => ({
+const listItemTheme = ({ isSelected, isFocused }) => ({
   listItem: {
-    ':hover': {
-      backgroundColor: Colors.grey800,
-    },
-    ':active': {
-      backgroundColor: Colors.grey700,
-    },
-    backgroundColor: isKeyboardFocused ? Colors.grey800 : Colors.grey900,
+    backgroundColor: isFocused ? Colors.grey800 : Colors.grey900,
     cursor: 'pointer',
   },
 })
