@@ -114,9 +114,9 @@
     babel-traverse "^6.18.0"
     babylon "^6.11.0"
 
-"@workflo/components@^0.8.125":
-  version "0.8.125"
-  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.125.tgz#9227a31ed07487e035ef1fd619c1eff5cc7cd9c7"
+"@workflo/components@^0.8.127":
+  version "0.8.127"
+  resolved "https://registry.yarnpkg.com/@workflo/components/-/components-0.8.127.tgz#cf4b272e093d8f77070a20526fec2c12d58b0817"
   dependencies:
     "@workflo/babel-standalone" "6.18.2"
     "@workflo/styles" "^0.7.10"
@@ -129,6 +129,7 @@
     babel-types "^6.18.0"
     babylon "^6.13.1"
     dom-helpers "^3.0.0"
+    element-resize-detector "^1.1.12"
     escodegen "^1.8.1"
     fbjs "^0.8.4"
     gsap "^1.19.1"
@@ -1364,6 +1365,10 @@ base64-js@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.1.tgz#a91947da1f4a516ea38e5b4ec0ec3773675e0886"
 
+batch-processor@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
+
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.1.tgz#63bc5dcb61331b92bc05fd528953c33462a06f8d"
@@ -2233,6 +2238,12 @@ electron-to-chromium@^1.2.7:
 element-class@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/element-class/-/element-class-0.2.2.tgz#9d3bbd0767f9013ef8e1c8ebe722c1402a60050e"
+
+element-resize-detector@^1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.1.12.tgz#8b3fd6eedda17f9c00b360a0ea2df9927ae80ba2"
+  dependencies:
+    batch-processor "^1.0.0"
 
 emojis-list@^2.0.0:
   version "2.1.0"
