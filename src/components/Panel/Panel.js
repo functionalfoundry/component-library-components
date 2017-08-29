@@ -1,38 +1,29 @@
 import React from 'react'
-import PanelHeader from '../PanelHeader'
-import PanelContent from '../PanelContent'
 import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
 
 type PropsT = {
-  /* Array of PanelRow's to display in the table */
+  /** Array of PanelRow's to display in the table */
   children: any,
-  /* The JS Theme */
+  /** Markup to render in the content area */
+  content?: React.Element<*> | Array<React.Element<*>>,
+  /** Markup to render in the toolbar header */
+  header?: React.Element<*> | Array<React.Element<*>>,
+  /** The JS Theme */
   theme: Object,
 }
 
 /** Displays a simple table with a single header column */
-const Panel = ({ children, theme }: PropsT) =>
+const Panel = ({ children, content, header, theme }: PropsT) =>
   <div {...theme.panel}>
-    {children.map((child, index) => {
-      if (!child) return null
-      switch (child.type) {
-        case PanelHeader:
-          return (
-            <div key={index}>
-              {child}
-            </div>
-          )
-        case PanelContent:
-          return (
-            <div key={index} {...theme.panelContentContainer}>
-              {child}
-            </div>
-          )
-        default:
-          return child
-      }
-    })}
+    {header &&
+      <div>
+        {header}
+      </div>}
+    {(content || children) &&
+      <div {...theme.panelContentContainer}>
+        {content || children}
+      </div>}
   </div>
 
 const defaultTheme = {
