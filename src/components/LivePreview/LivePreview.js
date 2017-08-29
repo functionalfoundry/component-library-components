@@ -199,12 +199,6 @@ class LivePreview extends React.Component {
           React={React}
           ReactDOM={ReactDOM}
           harnessElement={fullscreenHarnessElement}
-          backgroundColor={backgroundColor}
-          theme={{
-            frame: {
-              backgroundColor: backgroundColor,
-            },
-          }}
         />
       )
     }

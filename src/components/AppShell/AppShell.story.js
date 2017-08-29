@@ -252,7 +252,6 @@ class FetchAndRender extends React.Component {
             horizontal: 'Center',
             vertical: 'Center',
           }}
-          backgroundColor="white"
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
           error={error}
@@ -316,14 +315,18 @@ const LiveView = ({ isFullscreen }) => {
           </PanelToolbar>
         ),
         rightPanel: (
-          <Panel>
-            <PanelHeader showLeftBorder>
-              <PanelToolbar align="Left">Editor</PanelToolbar>
-            </PanelHeader>
-            <PanelContent>
-              {rightPanel}
-            </PanelContent>
-          </Panel>
+          <Panel
+            header={
+              <PanelHeader showLeftBorder>
+                <PanelToolbar align="Left">Editor</PanelToolbar>
+              </PanelHeader>
+            }
+            content={
+              <PanelContent>
+                {rightPanel}
+              </PanelContent>
+            }
+          />
         ),
       }}
     />
@@ -335,8 +338,7 @@ storiesOf('AppShell', module)
     <AppShell
       sections={{
         content: (
-          <Panel>
-            <PanelHeader />
+          <Panel header={<PanelHeader />}>
             <Layout.ScrollableContent theme={scrollableContentTheme}>
               <ComponentStates harnessCards={stateCards} />
             </Layout.ScrollableContent>

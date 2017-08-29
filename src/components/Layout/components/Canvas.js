@@ -10,7 +10,7 @@ type PropsT = {
 }
 
 /** Helper component for rendering flexbox row w/ semantically meaninful markup */
-const Canvas = ({ children, header, isFullscreen, ...props }: PropsT) => {
+const Canvas = ({ children, isFullscreen, header, ...props }: PropsT) => {
   if (isFullscreen)
     return (
       <div>
@@ -18,15 +18,19 @@ const Canvas = ({ children, header, isFullscreen, ...props }: PropsT) => {
       </div>
     )
   return (
-    <Panel {...props}>
-      {header &&
+    <Panel
+      {...props}
+      header={
         <PanelHeader>
           {header}
-        </PanelHeader>}
-      <PanelContent>
-        {children}
-      </PanelContent>
-    </Panel>
+        </PanelHeader>
+      }
+      content={
+        <PanelContent>
+          {children}
+        </PanelContent>
+      }
+    />
   )
 }
 
