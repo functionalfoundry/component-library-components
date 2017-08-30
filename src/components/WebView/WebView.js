@@ -167,13 +167,15 @@ class WebView extends React.Component {
       console.log('Preview log message:', e.message)
     })
 
-    const { bundles, commonsChunk, tree } = this.props
+    this._webView.view.addEventListener('dom-ready', () => {
+      const { bundles, commonsChunk, tree } = this.props
 
-    this._webView.send('render', {
-      bundles,
-      commonsChunk,
-      // harnessElement,
-      tree: tree.toJS(),
+      this._webView.send('render', {
+        bundles,
+        commonsChunk,
+        // harnessElement,
+        tree: tree.toJS(),
+      })
     })
   }
 
