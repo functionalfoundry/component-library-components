@@ -58,5 +58,6 @@
   "VerticalSeparator",
   "WalkthroughBloop",
   "WalkthroughDialog",
-  "WalkthroughStep"
+  "WalkthroughStep",
+  "WebView"
 ]
