@@ -63,7 +63,9 @@ const BOILERPLATE_HTML = `
         }
 
         function realizeChildren (component) {
-          if (component.children.isEmpty()) {
+          if (component.children === undefined
+              || component.children.length === 0)
+          {
             return null
           } else {
             return component.children.map(function (child) {
@@ -166,7 +168,7 @@ class WebView extends React.Component {
       bundles,
       commonsChunk,
       // harnessElement,
-      tree,
+      tree.toJS(),
     })
   }
 
