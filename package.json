@@ -51,6 +51,7 @@
     "fuzzaldrin-plus": "^0.4.1",
     "grommet": "^0.6.10",
     "gsap": "^1.19.1",
+    "js-base64": "^2.1.9",
     "js-theme": "0.8.2",
     "lodash": "^4.13.1",
     "prop-types": "^15.5.8",
