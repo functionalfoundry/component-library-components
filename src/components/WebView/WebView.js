@@ -1,6 +1,7 @@
 import React from 'react'
 import ComponentTree from '../../modules/ComponentTree'
 const ElectronWebView = require('react-electron-web-view')
+const preload = require('./preload.js')
 
 /**
  * Props
@@ -28,6 +29,9 @@ type StateT = {}
  */
 
 const BOILERPLATE_HTML = `
+<!DOCTYPE html>
+<html>
+  <head></head>
   <body style="margin:0px; padding:0px">
     <div id="preview"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
@@ -124,7 +128,8 @@ const BOILERPLATE_HTML = `
         }
       }
     </script>
-  </body>`
+  </body>
+</html>`
 
 /**
  * WebView component
@@ -144,6 +149,7 @@ class WebView extends React.Component {
     return (
       <ElectronWebView
         ref={ref => (this._webView = ref)}
+        preload="file:./preload.js"
         src={`data:text/html,${BOILERPLATE_HTML}`}
       />
     )
