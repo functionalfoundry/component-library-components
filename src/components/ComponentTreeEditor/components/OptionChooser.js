@@ -38,7 +38,7 @@ export type Props = {
   preventFocus?: boolean,
   theme: Object,
   /** The value/expression to fuzzy filter the options by */
-  value: string,
+  value?: string,
 }
 
 class OptionChooser extends React.PureComponent {
@@ -94,11 +94,14 @@ class OptionChooser extends React.PureComponent {
     const matchIndex = optionsWithValue.map(option => option.optionValue).indexOf(value)
 
     const freeFormValue =
-      disableFreeform || !value.length || (matchIndex >= 0 && disableFreeformDuplicate)
+      disableFreeform ||
+      !value ||
+      !value.length ||
+      (matchIndex >= 0 && disableFreeformDuplicate)
         ? []
         : [{ type: CURRENT_VALUE, value }]
 
-    if (!disableFilter) {
+    if (!disableFilter && value) {
       const filteredOptions = fuzzaldrin
         .filter(optionsWithValue, value, { key: 'optionValue' })
         .map(option => option.option)
@@ -150,7 +153,7 @@ class OptionChooser extends React.PureComponent {
     onSelect && onSelect(options[index], meta)
   }
 
-  renderOption = ({ index, option }) => {
+  renderOption = ({ index, option }: { index: number, option: Object }) => {
     const {
       accessOption,
       disableFuzzyHighlighting,
