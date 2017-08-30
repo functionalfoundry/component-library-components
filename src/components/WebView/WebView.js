@@ -134,8 +134,8 @@ const BOILERPLATE_HTML = `
 
       // Receive render requests
       const { ipcRenderer } = require('electron')
-      ipcRenderer.on('render', function (data) {
-        console.log('RENDER', data)
+      ipcRenderer.on('render', function (event, data) {
+        console.log('RENDER', arguments)
         //window.renderComponentTree(data)
       })
     </script>
