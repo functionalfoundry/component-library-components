@@ -133,17 +133,14 @@ class Frame extends React.Component {
             window.ReactDOM = ReactDOM
 
             if (evaluateCommonsChunk) {
-              console.debug('Evaluate common chunk')
               window.commonsChunk = eval(commonsChunk) // eslint-disable-line no-eval
             }
 
             if (evaluateBundles) {
-              console.debug('Evaluate bundles')
               updateImplementations(bundles)
             }
 
             if (renderTree) {
-              console.debug('Render tree')
               const treeElement = realizeComponentTree(tree, window.implementations)
               const harness = React.cloneElement(harnessElement, {}, treeElement)
               const root = document.getElementById('root')
