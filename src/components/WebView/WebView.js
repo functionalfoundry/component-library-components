@@ -156,7 +156,7 @@ class WebView extends React.Component {
 
   componentDidMount() {
     console.log('WebView did mount:', this._webView)
-    this._webView.addEventListener('console-message', e => {
+    this._webView.view.addEventListener('console-message', e => {
       console.log('Preview log message:', e.message)
     })
 
