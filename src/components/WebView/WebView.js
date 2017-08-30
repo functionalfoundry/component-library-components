@@ -154,8 +154,9 @@ class WebView extends React.Component {
 
   _webView = undefined
 
-  componentDidMount() {
-    console.log('WebView did mount:', this._webView)
+  handleDidAttach = () => {
+    console.log('WebView did attach:', this._webView)
+
     this._webView.view.addEventListener('console-message', e => {
       console.log('Preview log message:', e.message)
     })
@@ -175,6 +176,7 @@ class WebView extends React.Component {
       <ElectronWebView
         ref={ref => (this._webView = ref)}
         src={`data:text/html;base64,${BOILERPLATE_BASE64}`}
+        onDidAttach={this.handleDidAttach}
       />
     )
   }
