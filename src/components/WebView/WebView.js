@@ -38,7 +38,7 @@ class WebView extends React.Component {
         autosize={false}
         nodeintegration={false}
         plugins={false}
-        preload="./boilerplate.js"
+        preload="file:./boilerplate.js"
       />
     )
   }
