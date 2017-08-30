@@ -135,8 +135,8 @@ const BOILERPLATE_HTML = `
       // Receive render requests
       const { ipcRenderer } = require('electron')
       ipcRenderer.on('render', function (data) {
-        console.log('RENDER')
-        window.renderComponentTree(data)
+        console.log('RENDER', data)
+        //window.renderComponentTree(data)
       })
     </script>
   </body>
@@ -165,8 +165,8 @@ class WebView extends React.Component {
 
     this._webView.send('render', {
       bundles,
-      commonsChunk,
-      harnessElement,
+      // commonsChunk,
+      // harnessElement,
       tree,
     })
   }
