@@ -23,6 +23,8 @@ type ErrorT = {
 type PropsT = {
   /** A raw component tree */
   tree: Object,
+  /** A chunk with common JS modules for components from the same repo */
+  commonsChunk: string,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
   /** The user-specified pixel width of the contianer that is then scaled */
@@ -165,6 +167,7 @@ class LivePreview extends React.Component {
       containerHeight,
       name,
       tree,
+      commonsChunk,
       bundles,
       React,
       ReactDOM,
@@ -214,6 +217,7 @@ class LivePreview extends React.Component {
               <Frame
                 name={name}
                 tree={TreeHelpers.createTree(tree)}
+                commonsChunk={commonsChunk}
                 bundles={bundles}
                 React={React}
                 ReactDOM={ReactDOM}

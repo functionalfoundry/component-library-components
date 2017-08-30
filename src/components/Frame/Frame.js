@@ -12,6 +12,8 @@ type PropsT = {
    * and returns the composite component tree
    */
   tree: ComponentTree,
+  /** A chunk with common JS modules for components from the same repo */
+  commonsChunk: string,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
   /**
@@ -119,7 +121,10 @@ class Frame extends React.Component {
             window.implementations = implementations
           }
 
-          window.renderComponentTree = function (evaluateBundles, renderTree) {
+          window.renderComponentTree = function (
+            evaluateCommonsChunk, evaluateBundles, renderTree
+          ) {
+            const commonsChunk = __workflo_data.commonsChunk
             const bundles = __workflo_data.bundles
             const harnessElement = __workflo_data.harnessElement
             const tree = __workflo_data.tree
@@ -127,11 +132,18 @@ class Frame extends React.Component {
             window.React = React
             window.ReactDOM = ReactDOM
 
+            if (evaluateCommonsChunk) {
+              console.debug('Evaluate common chunk')
+              window.commonsChunk = eval(commonsChunk) // eslint-disable-line no-eval
+            }
+
             if (evaluateBundles) {
+              console.debug('Evaluate bundles')
               updateImplementations(bundles)
             }
 
             if (renderTree) {
+              console.debug('Render tree')
               const treeElement = realizeComponentTree(tree, window.implementations)
               const harness = React.cloneElement(harnessElement, {}, treeElement)
               const root = document.getElementById('root')
@@ -151,15 +163,22 @@ class Frame extends React.Component {
 
   componentDidMount() {
     this._isMounted = true
-    this.renderFrameContents({ evaluateBundles: true, renderTree: true })
+    this.renderFrameContents({
+      evaluateCommonsChunk: true,
+      evaluateBundles: true,
+      renderTree: true,
+    })
   }
 
   componentDidUpdate(prevProps) {
+    const evaluateCommonsChunk = prevProps.commonsChunk !== this.props.commonsChunk
     const evaluateBundles = this.bundlesHaveChanged(prevProps.bundles, this.props.bundles)
     const renderTree =
-      evaluateBundles || this.componentTreeHasChanged(prevProps.tree, this.props.tree)
-    if (evaluateBundles || renderTree) {
-      this.renderFrameContents({ evaluateBundles, renderTree })
+      evaluateCommonsChunk ||
+      evaluateBundles ||
+      this.componentTreeHasChanged(prevProps.tree, this.props.tree)
+    if (evaluateCommonsChunk || evaluateBundles || renderTree) {
+      this.renderFrameContents({ evaluateCommonsChunk, evaluateBundles, renderTree })
     }
   }
 
@@ -197,7 +216,7 @@ class Frame extends React.Component {
   }
 
   injectData = (frame, props) => {
-    const { bundles, harnessElement, React, ReactDOM, tree } = props
+    const { commonsChunk, bundles, harnessElement, React, ReactDOM, tree } = props
 
     // Inject React and React DOM into the frame
     frame.React = React
@@ -206,12 +225,13 @@ class Frame extends React.Component {
     // Inject render data into the frame
     frame.__workflo_data = {
       harnessElement,
+      commonsChunk,
       bundles,
       tree,
     }
   }
 
-  renderFrameContents({ evaluateBundles, renderTree }) {
+  renderFrameContents({ evaluateCommonsChunk, evaluateBundles, renderTree }) {
     if (!this._isMounted) {
       return
     }
@@ -234,9 +254,16 @@ class Frame extends React.Component {
       this.injectData(frame, this.props)
 
       // Render the frame ASAP
-      frame.renderComponentTree(evaluateBundles, renderTree)
+      frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
     } else {
-      setTimeout(this.renderFrameContents.bind(this, { evaluateBundles, renderTree }), 0)
+      setTimeout(
+        this.renderFrameContents.bind(this, {
+          evaluateCommonsChunk,
+          evaluateBundles,
+          renderTree,
+        }),
+        0
+      )
     }
   }
 
