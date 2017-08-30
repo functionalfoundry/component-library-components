@@ -177,6 +177,7 @@ class WebView extends React.Component {
         ref={ref => (this._webView = ref)}
         src={`data:text/html;base64,${BOILERPLATE_BASE64}`}
         onDidAttach={this.handleDidAttach}
+        nodeintegration={true}
       />
     )
   }
