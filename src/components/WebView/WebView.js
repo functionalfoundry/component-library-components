@@ -16,6 +16,8 @@ type PropsT = {
   commonsChunk: string,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
+  /** Harness element to render the component inside */
+  harnessElement: React.Element<any>,
 }
 
 /**
@@ -101,32 +103,41 @@ const BOILERPLATE_HTML = `
         window.implementations = implementations
       }
 
-      window.renderComponentTree = function (
-        evaluateCommonsChunk, evaluateBundles, renderTree
-      ) {
-        const commonsChunk = __workflo_data.commonsChunk
-        const bundles = __workflo_data.bundles
-        const harnessElement = __workflo_data.harnessElement
-        const tree = __workflo_data.tree
+      window.renderComponentTree = function (data) {
+        // Extract data
+        const evaluateCommonsChunk = data.evaluateCommonsChunk
+        const evaluateBundles = data.evaluateBundles
+        const renderTree = data.renderTree
+        const commonsChunk = data.commonsChunk
+        const bundles = data.bundles
+        const harnessElement = data.harnessElement
+        const tree = data.tree
 
-        window.React = React
-        window.ReactDOM = ReactDOM
-
-        if (evaluateCommonsChunk) {
+        //if (evaluateCommonsChunk) {
+          console.log('Evaluate commons chunk')
           eval(commonsChunk) // eslint-disable-line no-eval
-        }
+        //}
 
-        if (evaluateBundles) {
+        //if (evaluateBundles) {
+          console.log('Evaluate bundles')
           updateImplementations(bundles)
-        }
+        //}
 
-        if (renderTree) {
+        //if (renderTree) {
+          console.log('Render tree')
           const treeElement = realizeComponentTree(tree, window.implementations)
           const harness = React.cloneElement(harnessElement, {}, treeElement)
           const root = document.getElementById('root')
           ReactDOM.render(harness, root)
-        }
+        //}
       }
+
+      // Receive render requests
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.on('render', function (data) {
+        console.log('RENDER')
+        window.renderComponentTree(data)
+      })
     </script>
   </body>
 </html>`
@@ -145,6 +156,18 @@ class WebView extends React.Component {
 
   componentDidMount() {
     console.log('WebView did mount:', this._webView)
+    this._webView.addEventListener('console-message', e => {
+      console.log('Preview log message:', e.message)
+    })
+
+    const { bundles, commonsChunk, harnessElement, tree } = this.props
+
+    this._webView.send('render', {
+      bundles,
+      commonsChunk,
+      harnessElement,
+      tree,
+    })
   }
 
   render() {
