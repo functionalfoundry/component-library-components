@@ -204,6 +204,7 @@ const AddNodeButton = ({
             <OptionChooser
               accessOption={accessOption}
               disableFreeform
+              disableFilter
               onSelect={onSelect}
               options={options}
               preventFocus
