@@ -168,7 +168,7 @@ class WebView extends React.Component {
       bundles,
       commonsChunk,
       // harnessElement,
-      tree.toJS(),
+      tree: tree.toJS(),
     })
   }
 
