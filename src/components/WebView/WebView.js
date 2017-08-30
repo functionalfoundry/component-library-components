@@ -138,7 +138,11 @@ const BOILERPLATE_HTML = `
       const { ipcRenderer } = require('electron')
       ipcRenderer.on('render', function (event, data) {
         console.log('RENDER', arguments.length)
-        window.renderComponentTree(data)
+        try {
+          window.renderComponentTree(data)
+        } catch (error) {
+          console.error('Failed to render:', error)
+        }
       })
     </script>
   </body>
