@@ -128,15 +128,16 @@ const BOILERPLATE_HTML = `
         //if (renderTree) {
           console.log('Render tree')
           const treeElement = realizeComponentTree(tree, window.implementations)
-          const harness = React.cloneElement(harnessElement, {}, treeElement)
-          const root = document.getElementById('root')
-          ReactDOM.render(harness, root)
+          //const harness = React.cloneElement(harnessElement, {}, treeElement)
+          const root = document.getElementById('preview')
+          ReactDOM.render(treeElement, root)
         //}
       }
 
       // Receive render requests
       const { ipcRenderer } = require('electron')
       ipcRenderer.on('render', function (event, data) {
+        console.log('RENDER', arguments.length)
         window.renderComponentTree(data)
       })
     </script>
