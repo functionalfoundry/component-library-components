@@ -26,6 +26,8 @@ export type Props = {
   disableFilter: boolean,
   /** If set to true, options will not be rendered with fuzzy highlighting. */
   disableFuzzyHighlighting: boolean,
+  /** A function for rendering the freeform value passed in through the 'value' prop */
+  freeformRenderer?: Function,
   /** A function to getRef that wont be blown away by HOCs */
   getRef: Function,
   /** A list of options to be rendered */
@@ -157,6 +159,7 @@ class OptionChooser extends React.PureComponent {
     const {
       accessOption,
       disableFuzzyHighlighting,
+      freeformRenderer,
       optionRenderer,
       theme,
       value,
@@ -164,7 +167,7 @@ class OptionChooser extends React.PureComponent {
     if (option.type === CURRENT_VALUE) {
       return (
         <span {...theme.currentValue}>
-          {option.value}
+          {freeformRenderer ? freeformRenderer(option.value) : option.value}
         </span>
       )
     }

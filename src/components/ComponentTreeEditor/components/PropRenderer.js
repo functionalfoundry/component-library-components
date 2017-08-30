@@ -63,6 +63,48 @@ const renderPropValueOption = ({ option, optionElement }: any) =>
     </div>
   </div>
 
+/** Helper for rendering the current value in the OptionChooser  */
+const freeformValueMaxLength = 24
+const renderPropValueFreeform = value => {
+  const maybeShortenedValue =
+    value.length > freeformValueMaxLength
+      ? '...' + value.slice(value.length - freeformValueMaxLength)
+      : value
+  return (
+    <div
+      style={{
+        ...Fonts.code,
+        alignItems: 'baseline',
+        display: 'flex',
+        flexDirection: 'row',
+        width: 350,
+      }}
+    >
+      <div
+        style={{
+          ...Fonts.base,
+          fontSize: 18,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          width: '70%',
+        }}
+      >
+        {maybeShortenedValue}
+      </div>
+      <div
+        style={{
+          ...Fonts.small,
+          color: Colors.grey600,
+          fontStyle: 'italic',
+          width: '30%',
+        }}
+      >
+        {'expression'}
+      </div>
+    </div>
+  )
+}
+
 const accessPropValueOption = option => option.value
 
 const isPropFocused = ({ propNode, interactionState }) =>
@@ -137,6 +179,7 @@ const PropRenderer = ({
                 <EditableNodeAttribute
                   accessOption={accessPropValueOption}
                   formatValue={displayPropValue}
+                  freeformRenderer={renderPropValueFreeform}
                   interactionState={interactionState}
                   onBlur={onBlur}
                   onChangeNode={onChangeValueNode}
