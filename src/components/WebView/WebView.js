@@ -28,9 +28,6 @@ type StateT = {}
  */
 
 const BOILERPLATE_HTML = `
-<!DOCTYPE html>
-<html>
-  <head></head>
   <body style="margin:0px; padding:0px">
     <div id="preview"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
@@ -127,8 +124,7 @@ const BOILERPLATE_HTML = `
         }
       }
     </script>
-  </body>
-</html>`
+  </body>`
 
 /**
  * WebView component
