@@ -33,7 +33,7 @@ type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
     tree: Object,
-    commonChunk: string,
+    commonsChunk: string,
     bundles: BundlesT,
     React: any,
     ReactDOM: any,
@@ -58,7 +58,7 @@ type PropsT = {
 const defaultProps = {
   harnessCard: {
     tree: null,
-    commonChunk: '',
+    commonsChunk: '',
     bundles: {},
     React,
     ReactDOM,
@@ -237,7 +237,7 @@ class ComponentState extends React.Component {
             <LivePreview
               name={harnessCard.harness.id}
               tree={harnessCard.tree}
-              commonChunk={harnessCard.commonChunk}
+              commonsChunk={harnessCard.commonsChunk}
               bundles={harnessCard.bundles}
               React={harnessCard.React}
               ReactDOM={harnessCard.ReactDOM}
