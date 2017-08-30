@@ -27,6 +27,7 @@ type ContainerPropsT = {
    * and `isFocused` as named parameters.
    */
   formatValue: Function,
+  freeformRenderer: Function,
   /**
    * Indicates whether the editableField focused. Is merged in with local isFocused state
    * for faster local updates when the focus is triggered from the "inside".
@@ -199,7 +200,14 @@ class EditableFieldContainer extends React.Component {
   storeOptionChooser = (ref: any) => (this.optionChooser = ref)
 
   render() {
-    const { accessOption, formatValue, options, optionRenderer, value } = this.props
+    const {
+      accessOption,
+      formatValue,
+      freeformRenderer,
+      options,
+      optionRenderer,
+      value,
+    } = this.props
     const { isFocused } = this.state
     return (
       <span ref={this.saveRefToContainer} onKeyDown={this.handleKeyDown}>
@@ -225,6 +233,7 @@ class EditableFieldContainer extends React.Component {
                   accessOption={accessOption}
                   disableFilter={this.isFirstClickFocused}
                   disableFreeformDuplicate={this.isFirstClickFocused}
+                  freeformRenderer={freeformRenderer}
                   getRef={this.storeOptionChooser}
                   onSelect={this.handleSelect}
                   options={options}

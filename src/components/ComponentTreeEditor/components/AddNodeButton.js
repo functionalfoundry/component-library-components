@@ -97,7 +97,6 @@ class AddNodeButtonContainer extends React.Component {
 
   handleSelect = option => {
     const { path, onInsertNode } = this.props
-    console.log(option)
     // TODO: Put these in a constants file
     onInsertNode(path, option.type)
     this.blur()
