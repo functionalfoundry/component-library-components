@@ -5,7 +5,7 @@ import { Trigger } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
 import LiveCanvas from '../LiveCanvas'
-import Frame from '../Frame'
+import WebView from '../WebView'
 
 import { Helpers as TreeHelpers } from '../../modules/ComponentTree'
 
@@ -214,7 +214,7 @@ class LivePreview extends React.Component {
               zoom={zoom}
               onWheel={this.handleWheel}
             >
-              <Frame
+              <WebView
                 name={name}
                 tree={TreeHelpers.createTree(tree)}
                 commonsChunk={commonsChunk}
