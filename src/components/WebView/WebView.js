@@ -1,7 +1,7 @@
 import React from 'react'
 import ComponentTree from '../../modules/ComponentTree'
 const ElectronWebView = require('react-electron-web-view')
-const preload = require('./preload.js')
+const Base64 = require('js-base64').Base64
 
 /**
  * Props
@@ -131,6 +131,8 @@ const BOILERPLATE_HTML = `
   </body>
 </html>`
 
+const BOILERPLATE_BASE64 = Base64.encode(BOILERPLATE_HTML)
+
 /**
  * WebView component
  */
@@ -149,8 +151,7 @@ class WebView extends React.Component {
     return (
       <ElectronWebView
         ref={ref => (this._webView = ref)}
-        preload="file:./preload.js"
-        src={`data:text/html,${BOILERPLATE_HTML}`}
+        src={`data:text/html;base64,${BOILERPLATE_BASE64}`}
       />
     )
   }
