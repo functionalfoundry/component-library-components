@@ -145,7 +145,8 @@ class ComponentTreeEditor extends React.Component {
         }
         if (
           (node.nodeType === 'prop' && !node.get('name')) ||
-          (node.nodeType === 'component' && !node.get('name'))
+          (node.nodeType === 'component' && !node.get('name')) ||
+          (node.nodeType === 'text' && !node.get('value'))
         ) {
           return ctx.set('data', ctx.data.push(node.id))
         }
@@ -322,7 +323,12 @@ class ComponentTreeEditor extends React.Component {
     const newTree = Helpers.insertNodeAtPath(componentTree, insertionPath, newNode)
 
     this.updateComponentTree(newTree, () => {
-      this.focusNodeAttribute(insertionPath.push('name'))
+      if (newNode.nodeType === 'component') {
+        this.focusNodeAttribute(insertionPath.push('name'))
+      }
+      if (newNode.nodeType === 'text') {
+        this.focusNodeAttribute(insertionPath.push('value'))
+      }
     })
 
     const parentPath = insertionPath.pop().pop()

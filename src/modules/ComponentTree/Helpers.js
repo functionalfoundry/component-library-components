@@ -69,6 +69,8 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
       .setIn(['node', ...relativePath], childCtx.node)
   }
 
+  const traverseTextNode = (ctx: TraverseContext): TraverseContext => ctx.visitor(ctx)
+
   /**
    * Traverses a component node, its name, its props and its children
    * and merges the result into the parent context.
@@ -88,6 +90,9 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
     // Traverse the component's children
     if (!ctx.node.children.isEmpty()) {
       ctx = ctx.node.children.reduce((ctx, child, index) => {
+        if (child.nodeType === 'text') {
+          return traverseChildNode(ctx, ['children', index], child, traverseTextNode)
+        }
         if (child.nodeType === 'component') {
           return traverseChildNode(ctx, ['children', index], child, traverseComponent)
         }
