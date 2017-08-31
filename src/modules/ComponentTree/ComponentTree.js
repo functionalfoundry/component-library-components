@@ -76,11 +76,12 @@ const Component = Record(defaultComponent)
 export { Component }
 
 // Render Callback
-const defaultRenderCallback = {
+const defaultRenderCallback: RenderCallbackT = {
   id: null,
   nodeType: 'render-callback',
   child: null,
   params: '',
+  path: List(),
 }
 export const RenderCallback = Record(defaultRenderCallback)
 
@@ -88,6 +89,7 @@ export const RenderCallback = Record(defaultRenderCallback)
 const defaultTextNode: TextNodeT = {
   id: null,
   nodeType: 'text',
+  path: List(),
   value: '',
 }
 export const TextNode = Record(defaultTextNode)
@@ -97,6 +99,7 @@ const defaultMapExpression: MapExpressionT = {
   id: null,
   collection: '',
   children: List(),
+  path: List(),
 }
 export const MapExpression = Record(defaultMapExpression)
 

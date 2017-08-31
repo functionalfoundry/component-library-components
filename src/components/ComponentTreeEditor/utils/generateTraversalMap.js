@@ -46,7 +46,11 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
       )
     }
     traversalList.push(NodePointer({ path: path.push('add-button'), type: null }))
-    componentNode.get('children').forEach(processComponent)
+    componentNode.get('children').forEach(child => {
+      if (child.nodeType === 'component') {
+        processComponent(child)
+      }
+    })
   }
 
   if (componentTree.root) {

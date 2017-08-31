@@ -378,14 +378,10 @@ class TreeEditorContainer extends React.Component {
   }
 
   render() {
-    const layout = generateTreeLayout(this.state.tree)
-    const markup = generateTreeLayoutMarkup(layout)
     return (
       <div>
         <ComponentTreeEditor
           tree={this.state.tree}
-          layout={layout}
-          markup={markup}
           completionData={completionData}
           nodeIdGenerator={() => Math.random().toString()}
           onChange={action('onChange')}

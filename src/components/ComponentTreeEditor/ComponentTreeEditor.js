@@ -13,6 +13,8 @@ import {
   Helpers,
   Path,
   Prop,
+  RenderCallback,
+  TextNode,
   type TraverseContext,
 } from '../../modules/ComponentTree'
 import ComponentRenderer from './components/ComponentRenderer'
@@ -119,25 +121,6 @@ class ComponentTreeEditor extends React.Component {
     )
   }
 
-  createEmptyProp = path => {
-    const { nodeIdGenerator } = this.props
-    const newProp = Prop({
-      id: nodeIdGenerator(),
-      path,
-    })
-    return newProp
-  }
-
-  createEmptyComponent = path => {
-    const { nodeIdGenerator } = this.props
-    const newComponent = Component({
-      id: nodeIdGenerator(),
-      path,
-      props: List(),
-    })
-    return newComponent
-  }
-
   /** Deletes empty nodes that are currently not in focus */
   clearEmptyNodes = () => {
     const { onRemoveComponent, onRemoveProp } = this.props
@@ -240,7 +223,7 @@ class ComponentTreeEditor extends React.Component {
       /** We convert from the path of the node attribute to the path of the new node */
       const newPath = path.pop()
       if (type === 'prop') {
-        this.insertNode(newPath, ADD_PROP)
+        this.insertNode(newPath, ADD_PROP, Prop())
       }
     }
   }
@@ -322,8 +305,12 @@ class ComponentTreeEditor extends React.Component {
    * Adds node of a certain type to a place in the componentTree relative to the
    * given path.
    */
-  insertNode = (path: Path, type = ADD_PROP | ADD_SIBLING | ADD_CHILD) => {
-    const { onInsertComponent, onInsertProp } = this.props
+  insertNode = (
+    path: Path,
+    type = ADD_PROP | ADD_SIBLING | ADD_CHILD,
+    emptyNode: Prop | Component | RenderCallback | TextNode
+  ) => {
+    const { nodeIdGenerator, onInsertComponent, onInsertProp } = this.props
     const { componentTree } = this.state
 
     if (type !== ADD_PROP && type !== ADD_SIBLING && type !== ADD_CHILD) {
@@ -331,10 +318,7 @@ class ComponentTreeEditor extends React.Component {
     }
 
     const insertionPath = Helpers.getInsertionPath(componentTree, path, type)
-    const newNode =
-      type === ADD_PROP
-        ? this.createEmptyProp(insertionPath)
-        : this.createEmptyComponent(insertionPath)
+    const newNode = emptyNode.set('id', nodeIdGenerator())
     const newTree = Helpers.insertNodeAtPath(componentTree, insertionPath, newNode)
 
     this.updateComponentTree(newTree, () => {
@@ -356,7 +340,7 @@ class ComponentTreeEditor extends React.Component {
     }
   }
 
-  handleInsertNode = (path, type) => this.insertNode(path, type)
+  handleInsertNode = (path, type, emptyNode) => this.insertNode(path, type, emptyNode)
 
   updateComponentTree = (componentTree: ComponentTree, callback?: Function) => {
     const { onChange } = this.props

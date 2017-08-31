@@ -174,24 +174,27 @@ const ComponentRenderer = ({
           })}
         </Line>}
       {childComponents
-        .map((childComponent, index) =>
-          <ThemedComponentRenderer
-            key={childComponent.get('id')}
-            completionData={completionData}
-            componentNode={childComponent}
-            componentTree={componentTree}
-            indentLevel={indentLevel + 1}
-            interactionState={interactionState}
-            onChangeNode={onChangeNode}
-            onChangePropName={onChangePropName}
-            onChangePropValue={onChangePropValue}
-            onSelectComponent={onSelectComponent}
-            onInsertNode={onInsertNode}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            onFocusNext={onFocusNext}
-            onFocusPrevious={onFocusPrevious}
-          />
+        .map(
+          (child, index) =>
+            child.nodeType === 'component'
+              ? <ThemedComponentRenderer
+                  key={child.get('id')}
+                  completionData={completionData}
+                  componentNode={child}
+                  componentTree={componentTree}
+                  indentLevel={indentLevel + 1}
+                  interactionState={interactionState}
+                  onChangeNode={onChangeNode}
+                  onChangePropName={onChangePropName}
+                  onChangePropValue={onChangePropValue}
+                  onSelectComponent={onSelectComponent}
+                  onInsertNode={onInsertNode}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  onFocusNext={onFocusNext}
+                  onFocusPrevious={onFocusPrevious}
+                />
+              : child.nodeType
         )
         .toArray()}
       {childComponents.count() > 0 &&

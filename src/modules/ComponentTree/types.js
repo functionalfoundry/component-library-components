@@ -26,7 +26,7 @@ export type StatusT = {
   message: string,
 }
 
-type PropValueNodeTypeT = 'prop-value'
+export type PropValueNodeTypeT = 'prop-value'
 type PropValueValueT = any
 
 type PropValueT = {
@@ -41,7 +41,7 @@ type PropValueT = {
   value: ?PropValueValueT,
 }
 
-type PropNodeTypeT = 'prop'
+export type PropNodeTypeT = 'prop'
 type PropT = {
   id: ?NodeIdentifierT,
   path: List<string>,
@@ -50,7 +50,7 @@ type PropT = {
   value: ?PropValueT,
 }
 
-type ComponentNodeTypeT = 'component'
+export type ComponentNodeTypeT = 'component'
 type ComponentT = {
   id: ?NodeIdentifierT,
   nodeType: ComponentNodeTypeT,
@@ -60,7 +60,7 @@ type ComponentT = {
   children: ?List<ChildT>,
 }
 
-type RenderCallbackNodeTypeT = 'render-callback'
+export type RenderCallbackNodeTypeT = 'render-callback'
 export type RenderCallbackT = {
   id: ?NodeIdentifierT,
   nodeType: RenderCallbackNodeTypeT,
@@ -72,14 +72,14 @@ export type RenderCallbackT = {
   params: string,
 }
 
-type TextNodeNodeTypeT = 'text'
+export type TextNodeNodeTypeT = 'text'
 export type TextNodeT = {
   id: ?NodeIdentifierT,
   nodeType: TextNodeNodeTypeT,
   value: string,
 }
 
-type MapExpressionNodeTypeT = 'map-expression'
+export type MapExpressionNodeTypeT = 'map-expression'
 export type MapExpressionT = {
   id: ?NodeIdentifierT,
   nodeType: MapExpressionNodeTypeT,
