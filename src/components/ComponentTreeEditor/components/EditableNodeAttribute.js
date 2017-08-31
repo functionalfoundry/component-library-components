@@ -35,6 +35,8 @@ type PropsT = {
   onFocusPrevious: Function,
   options?: Array<any>,
   optionRenderer?: Function,
+  /** Indicates whether the value can extend to multiple lines */
+  multipleLines?: boolean,
   /** The ID of the componentTree node being modififed */
   nodeId: string,
   /** The path of the attribute being modified within the componentTree node (may be nested) */

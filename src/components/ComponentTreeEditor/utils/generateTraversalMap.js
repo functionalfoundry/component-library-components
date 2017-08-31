@@ -2,6 +2,7 @@ import {
   type ComponentTree,
   type Component,
   type Prop,
+  type TextNode,
   Path,
 } from '../../../modules/ComponentTree'
 import { List, Map, Record } from 'immutable'
@@ -31,6 +32,11 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     }
   }
 
+  const processTextNode = (textNode: TextNode) => {
+    const path = textNode.get('path')
+    traversalList.push(NodePointer({ path: path.push('value'), type: 'text' }))
+  }
+
   const processComponent = (componentNode: Component) => {
     const path = componentNode.get('path')
     const props = componentNode.get('props')
@@ -47,6 +53,9 @@ const generateTraversalMap = (componentTree: ComponentTree): TraversalMapT => {
     }
     traversalList.push(NodePointer({ path: path.push('add-button'), type: null }))
     componentNode.get('children').forEach(child => {
+      if (child.nodeType === 'text') {
+        processTextNode(child)
+      }
       if (child.nodeType === 'component') {
         processComponent(child)
       }

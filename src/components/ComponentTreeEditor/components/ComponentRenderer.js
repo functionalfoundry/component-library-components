@@ -12,6 +12,7 @@ import AddNodeButton from './AddNodeButton'
 import PropRenderer from './PropRenderer'
 import Line from './Line'
 import EditableNodeAttribute from './EditableNodeAttribute'
+import TextNode from './TextNode'
 
 type Props = {
   completionData: CompletionDataT,
@@ -174,28 +175,42 @@ const ComponentRenderer = ({
           })}
         </Line>}
       {childComponents
-        .map(
-          (child, index) =>
-            child.nodeType === 'component'
-              ? <ThemedComponentRenderer
-                  key={child.get('id')}
-                  completionData={completionData}
-                  componentNode={child}
-                  componentTree={componentTree}
-                  indentLevel={indentLevel + 1}
-                  interactionState={interactionState}
-                  onChangeNode={onChangeNode}
-                  onChangePropName={onChangePropName}
-                  onChangePropValue={onChangePropValue}
-                  onSelectComponent={onSelectComponent}
-                  onInsertNode={onInsertNode}
-                  onBlur={onBlur}
-                  onFocus={onFocus}
-                  onFocusNext={onFocusNext}
-                  onFocusPrevious={onFocusPrevious}
-                />
-              : child.nodeType
-        )
+        .map((child, index) => {
+          if (child.nodeType === 'text') {
+            return (
+              <TextNode
+                key={child.get('id')}
+                indentLevel={indentLevel + 1}
+                interactionState={interactionState}
+                onBlur={onBlur}
+                onChangeNode={onChangeNode}
+                onFocus={onFocus}
+                onFocusNext={onFocusNext}
+                onFocusPrevious={onFocusPrevious}
+                textNode={child}
+              />
+            )
+          }
+          return child.nodeType === 'component'
+            ? <ThemedComponentRenderer
+                key={child.get('id')}
+                completionData={completionData}
+                componentNode={child}
+                componentTree={componentTree}
+                indentLevel={indentLevel + 1}
+                interactionState={interactionState}
+                onChangeNode={onChangeNode}
+                onChangePropName={onChangePropName}
+                onChangePropValue={onChangePropValue}
+                onSelectComponent={onSelectComponent}
+                onInsertNode={onInsertNode}
+                onBlur={onBlur}
+                onFocus={onFocus}
+                onFocusNext={onFocusNext}
+                onFocusPrevious={onFocusPrevious}
+              />
+            : child.nodeType
+        })
         .toArray()}
       {childComponents.count() > 0 &&
         <Line indentLevel={indentLevel}>

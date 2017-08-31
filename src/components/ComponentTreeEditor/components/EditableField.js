@@ -27,12 +27,14 @@ type ContainerPropsT = {
    * and `isFocused` as named parameters.
    */
   formatValue: Function,
-  freeformRenderer: Function,
+  freeformRenderer?: Function,
   /**
    * Indicates whether the editableField focused. Is merged in with local isFocused state
    * for faster local updates when the focus is triggered from the "inside".
    */
   isFocused: boolean,
+  /** Indicates whether the text input should expand to multiple lines */
+  multipleLines?: boolean,
   onBlur: Function,
   onChange: Function,
   /**
@@ -163,6 +165,15 @@ class EditableFieldContainer extends React.Component {
       event.preventDefault()
     }
 
+    /**
+     * Focus next if enter is hit. Note that this logic is handled in handleSelect when
+     * OptionChooser is present (it will swallow the enter keyboard event).
+     */
+    if (event.keyCode === 13) {
+      onFocusNext()
+      this.editableText.refs.wrappedInstance.blur()
+    }
+
     /** Use ESC to cancel focus */
     if (event.keyCode === 27) {
       this.editableText.refs.wrappedInstance.blur()
@@ -204,6 +215,7 @@ class EditableFieldContainer extends React.Component {
       accessOption,
       formatValue,
       freeformRenderer,
+      multipleLines,
       options,
       optionRenderer,
       value,
@@ -214,6 +226,7 @@ class EditableFieldContainer extends React.Component {
         <EditableField
           editableTextRef={this.saveRefToEditableText}
           isFocused={this.state.isFocused}
+          multipleLines={multipleLines}
           onChange={this.handleChange}
           onStartEdit={this.handleStartEdit}
           onStopEdit={this.handleStopEdit}
@@ -256,6 +269,7 @@ class EditableFieldContainer extends React.Component {
 type Props = {
   editableTextRef: Function,
   isFocused: boolean,
+  multipleLines: boolean,
   onChange: Function,
   onStartEdit: Function,
   onStopEdit: Function,
@@ -272,11 +286,19 @@ class EditableField extends React.Component {
     return true
   }
   render() {
-    const { editableTextRef, onChange, onStartEdit, onStopEdit, value } = this.props
+    const {
+      editableTextRef,
+      multipleLines,
+      onChange,
+      onStartEdit,
+      onStopEdit,
+      value,
+    } = this.props
     return (
       <span>
         <EditableText
           inline
+          multipleLines={multipleLines}
           onChange={onChange}
           onStartEdit={onStartEdit}
           onStopEdit={onStopEdit}
