@@ -87,11 +87,12 @@ const traverse = (tree: ComponentTree, data: any, visitor: Function): TraverseRe
 
     // Traverse the component's children
     if (!ctx.node.children.isEmpty()) {
-      ctx = ctx.node.children.reduce(
-        (ctx, child, index) =>
-          traverseChildNode(ctx, ['children', index], child, traverseComponent),
-        ctx
-      )
+      ctx = ctx.node.children.reduce((ctx, child, index) => {
+        if (child.nodeType === 'component') {
+          return traverseChildNode(ctx, ['children', index], child, traverseComponent)
+        }
+        return ctx
+      }, ctx)
     }
 
     ctx = ctx.visitor(ctx, 'post')

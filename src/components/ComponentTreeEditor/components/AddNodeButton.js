@@ -5,7 +5,13 @@ import { is } from 'immutable'
 import { Colors } from '@workflo/styles'
 import { Icon, AlignedPointer, Trigger } from '@workflo/components'
 
-import { Path } from '../../../modules/ComponentTree'
+import {
+  Component,
+  Path,
+  Prop,
+  RenderCallback,
+  TextNode,
+} from '../../../modules/ComponentTree'
 import type { InteractionStateT } from '../types'
 import {
   ADD_PROP,
@@ -18,14 +24,37 @@ const options = [
   {
     type: ADD_PROP,
     label: 'Add Prop',
+    emptyNode: Prop(),
   },
   {
     type: ADD_SIBLING,
-    label: 'Add Sibling',
+    label: 'Add Sibling Component',
+    emptyNode: Component(),
+  },
+  {
+    type: ADD_SIBLING,
+    label: 'Add Sibling Render Callback',
+    emptyNode: RenderCallback(),
+  },
+  {
+    type: ADD_SIBLING,
+    label: 'Add Sibling Text',
+    emptyNode: TextNode(),
   },
   {
     type: ADD_CHILD,
-    label: 'Add Child',
+    label: 'Add Child Component',
+    emptyNode: Component(),
+  },
+  {
+    type: ADD_CHILD,
+    label: 'Add Child Render Callback',
+    emptyNode: RenderCallback(),
+  },
+  {
+    type: ADD_CHILD,
+    label: 'Add Child Text',
+    emptyNode: TextNode(),
   },
 ]
 
@@ -97,8 +126,7 @@ class AddNodeButtonContainer extends React.Component {
 
   handleSelect = option => {
     const { path, onInsertNode } = this.props
-    // TODO: Put these in a constants file
-    onInsertNode(path, option.type)
+    onInsertNode(path, option.type, option.emptyNode)
     this.blur()
   }
 
