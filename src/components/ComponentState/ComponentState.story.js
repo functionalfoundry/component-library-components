@@ -86,7 +86,7 @@ const actions = [
   />,
 ]
 
-storiesOf('Component State', module).add('Regular', () => (
+storiesOf('Component State', module).add('Regular', () =>
   <PreviewContainer>
     <Preview
       label="Regular"
@@ -99,7 +99,7 @@ storiesOf('Component State', module).add('Regular', () => (
       <Container />
     </Preview>
   </PreviewContainer>
-))
+)
 
 class Container extends React.Component {
   constructor(props) {
@@ -110,18 +110,20 @@ class Container extends React.Component {
   }
 
   toggleSelected = () => {
-    this.setState(state => (state.isSelected = !state.isSelected))
+    this.setState(prevState => ({ isSelected: !prevState.isSelected }))
   }
 
   handleChangeIsSelected = isSelected => {
     action('onChangeIsSelected')(null, isSelected)
-    this.setState(state => (state.isSelected = isSelected))
+    this.setState(() => ({ isSelected }))
   }
 
   render() {
     return (
-      <div>
-        <p><button onClick={this.toggleSelected}>Toggle selected</button></p>
+      <div style={{ display: 'flex', flexDirection: 'column', height: 350 }}>
+        <div>
+          <button onClick={this.toggleSelected}>Toggle selected</button>
+        </div>
         <ComponentState
           harnessCard={{
             actions,
