@@ -215,9 +215,9 @@ class LivePreview extends React.Component {
       <div
         style={{
           backgroundColor: Colors.grey100,
-          width: `100%`,
-          height: `100%`,
-          position: 'absolute',
+          display: 'flex',
+          flexBasis: 0,
+          flexGrow: 1,
           overflow: 'hidden',
         }}
       >
