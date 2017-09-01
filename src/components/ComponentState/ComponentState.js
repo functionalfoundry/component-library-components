@@ -38,6 +38,7 @@ type PropsT = {
     React: any,
     ReactDOM: any,
     harness: HarnessT,
+    /** Not implemented */
     actions: Array<React.Element<*>>,
     isSelected: boolean,
     forceShowActions: boolean,
@@ -162,7 +163,7 @@ class ComponentState extends React.Component {
   }
 
   componentDidMount() {
-    this.animateSelectionChange(this.props.harnessCard.isSelected)
+    // this.animateSelectionChange(this.props.harnessCard.isSelected)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -212,38 +213,38 @@ class ComponentState extends React.Component {
 
     return (
       <div
-        {...theme.harnessCard}
-        key={harnessCard.harness.id}
+        {...theme.componentState}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
-        ref={this.storeHarnessCard}
-        {...harnessCard.extraProps}
       >
-        <View {...theme.section}>
-          <div style={{ display: 'flex' }}>
-            <View {...theme.titleContainer}>
-              {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
-                <Checkbox
-                  checked={harnessCard.isSelected}
-                  onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
-                  theme={{ checkbox: { marginTop: 2 } }}
-                />}
-              <Heading {...theme.title} size={'Base'} onPress={() => onClickTitle()}>
-                {harnessCard.harness.componentState.name}
-              </Heading>
-            </View>
+        <div {...theme.titleContainer}>
+          {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
+            <div {...theme.checkboxContainer}>
+              <Checkbox
+                checked={harnessCard.isSelected}
+                onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
+                theme={{ checkbox: { marginTop: 2 } }}
+              />
+            </div>}
+          <div {...theme.title} onClick={() => onClickTitle()}>
+            {harnessCard.harness.componentState.name}
           </div>
-          <View {...theme.preview}>
-            <LivePreview
-              name={harnessCard.harness.id}
-              tree={harnessCard.tree}
-              commonsChunk={harnessCard.commonsChunk}
-              bundles={harnessCard.bundles}
-              React={harnessCard.React}
-              ReactDOM={harnessCard.ReactDOM}
-            />
-          </View>
-        </View>
+        </div>
+        <div
+          {...theme.harnessCard}
+          key={harnessCard.harness.id}
+          ref={this.storeHarnessCard}
+          {...harnessCard.extraProps}
+        >
+          <LivePreview
+            name={harnessCard.harness.id}
+            tree={harnessCard.tree}
+            commonsChunk={harnessCard.commonsChunk}
+            bundles={harnessCard.bundles}
+            React={harnessCard.React}
+            ReactDOM={harnessCard.ReactDOM}
+          />
+        </div>
       </div>
     )
   }
@@ -252,60 +253,34 @@ class ComponentState extends React.Component {
 const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 
 const defaultTheme = ({ harnessCard, isHovering }) => ({
+  checkboxContainer: {
+    transform: 'scale(0.75)',
+  },
+  componentState: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  },
   harnessCard: {
     display: 'flex',
-    position: 'relative',
     overflow: 'hidden',
-    width: 'inherit', // FIX
-    height: 320, // FIX
-    flex: '1',
-  },
-  section: {
-    position: 'relative',
-    display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  preview: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    zIndex: -0,
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'absolute',
-    top: Spacing.small - 4,
-    right: 0,
-    paddingRight: Spacing.small,
-    zIndex: 100,
-    color: Colors.grey800,
+    flexGrow: 1,
   },
   titleContainer: {
-    position: 'absolute',
+    alignItems: 'center',
     display: 'flex',
+    flexBasis: 25,
     flexDirection: 'row',
-    top: Spacing.small - 2,
-    left: Spacing.small,
-    zIndex: 10,
   },
   title: {
-    ...Fonts.large,
-    fontSize: 24, // BIG HACK. HEADING BASE?
+    ...Fonts.base,
     transform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
       ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
       : `translate3d(0, 0, 0)`,
     WebkitTransform: shouldShowCheckbox(isHovering, harnessCard.isSelected)
       ? `translate3d(${Spacing.tiny + Spacing.micro}px, 0, 0)`
       : `translate3d(0, 0, 0)`,
-    color: Colors.grey800,
+    color: Colors.grey200,
     display: 'inline',
     transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
     cursor: 'pointer',
