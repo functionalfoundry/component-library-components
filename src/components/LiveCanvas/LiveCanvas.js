@@ -24,6 +24,8 @@ type PropsT = {
   containerHeight: number,
   /* Called with the new zoom value when the user pinches to zoom */
   onWheel: Function,
+  /** JS-theme theme */
+  theme: Object,
 }
 
 const defaultProps = {
@@ -35,8 +37,6 @@ const defaultProps = {
   containerHeight: 400,
   onChangeZoom: () => {},
 }
-
-const ZOOM_FACTOR = 1
 
 /* Renders content inside a zoomable and pannable canvas */
 class LiveCanvas extends React.Component {
@@ -56,14 +56,14 @@ class LiveCanvas extends React.Component {
   render() {
     const {
       children,
-      theme,
+      theme, // eslint-disable-line no-unused-vars
       containerWidth,
       containerHeight,
       canvasWidth,
       canvasHeight,
       onWheel,
-      panX,
-      panY,
+      panX, // eslint-disable-line no-unused-vars
+      panY, // eslint-disable-line no-unused-vars
       zoom,
     } = this.props
     const zoomValue = zoom * 0.01
@@ -78,20 +78,23 @@ class LiveCanvas extends React.Component {
     const newPanY = (canvasHeight - actualContainerHeight) / 2
     return (
       <div onWheel={onWheel} {...theme.liveCanvas}>
-        <div {...theme.center}>
+        <div
+          {...theme.artBoardContainer}
+          style={getArtboardContainerTransformStyle(zoomValue, newPanX, newPanY)}
+        >
           <div
-            {...theme.componentPreviewContainer}
+            {...theme.artBoard}
             ref={this.storeComponentContainer}
             style={{
               width: containerWidth,
               height: containerHeight,
-              ...getTransformStyle(zoomValue, newPanX, newPanY),
+              // ...getTransformStyle(zoomValue, newPanX, newPanY),
             }}
           >
             {children}
           </div>
           <div
-            {...theme.containerSizeText}
+            {...theme.artBoardDimensionLabel}
             style={getTextTransformStyle(zoomValue, newPanX, newPanY, containerHeight)}
           >
             {containerWidth}x{containerHeight}
@@ -105,35 +108,30 @@ class LiveCanvas extends React.Component {
 const defaultTheme = ({ backgroundColor }: PropsT) => {
   return {
     liveCanvas: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      backgroundColor: Colors.grey100,
+      backgroundColor: Colors.grey200,
+      flexGrow: 1,
+      overflow: 'hidden',
     },
-    center: {
+    artBoardContainer: {
+      alignItems: 'flex-start',
       display: 'flex',
-      flex: '1',
+      flexDirection: 'column',
+      transformOrigin: 'left top',
     },
-    componentPreviewContainer: {
+    artBoard: {
       backgroundColor,
       boxSizing: 'border-box',
-      transformOrigin: 'top left',
-      position: 'absolute',
-      top: 0,
-      left: 0,
       overflow: 'scroll',
-      zIndex: 0,
     },
-    containerSizeText: {
+    artBoardDimensionLabel: {
       ...Fonts.small,
-      color: Colors.grey300,
+      color: Colors.grey600,
+      transformOrigin: 'left top',
     },
   }
 }
 
-const getTransformStyle = (zoom, panX, panY) => {
+const getArtboardContainerTransformStyle = (zoom, panX, panY) => {
   let transforms = []
   zoom && transforms.push(`scale(${zoom})`)
   panX && transforms.push(`translateX(${panX / zoom}px)`)
@@ -144,12 +142,9 @@ const getTransformStyle = (zoom, panX, panY) => {
   }
 }
 
-const textSpacing = Spacing.tiny
-
 const getTextTransformStyle = (zoom, panX, panY, containerHeight) => {
   let transforms = []
-  panX && transforms.push(`translateX(${panX}px)`)
-  panY && transforms.push(`translateY(${panY + containerHeight * zoom + textSpacing}px)`)
+  zoom && transforms.push(`scale(${1 / zoom})`)
   if (transforms.length === 0) return {}
   return {
     transform: transforms.join(' '),
