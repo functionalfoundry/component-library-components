@@ -94,6 +94,7 @@ class LivePreview extends React.Component {
       zoom: 100,
       zoomHasBeenChangedByUser: false,
       isContainerFocused: false,
+      error: undefined,
     }
   }
 
@@ -152,6 +153,14 @@ class LivePreview extends React.Component {
     }
   }
 
+  handleReportError = error => {
+    this.setState({ error })
+  }
+
+  handleClearError = () => {
+    this.setState({ error: undefined })
+  }
+
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions)
     setTimeout(() => {
@@ -173,11 +182,10 @@ class LivePreview extends React.Component {
       bundles,
       React,
       ReactDOM,
-      error,
       isFullscreen,
     } = this.props
 
-    const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
+    const { canvasWidth, canvasHeight, error, isContainerFocused, zoom } = this.state
     const harnessElement = (
       <Harness
         key="harness"
@@ -199,6 +207,8 @@ class LivePreview extends React.Component {
           React={React}
           ReactDOM={ReactDOM}
           harnessElement={fullscreenHarnessElement}
+          onReportError={this.handleReportError}
+          onClearError={this.handleClearError}
         />
       )
     }
@@ -239,6 +249,8 @@ class LivePreview extends React.Component {
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
+                onReportError={this.handleReportError}
+                onClearError={this.handleClearError}
                 theme={{
                   frame: {
                     backgroundColor: Colors.grey100,
