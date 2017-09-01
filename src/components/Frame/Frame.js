@@ -29,6 +29,10 @@ type PropsT = {
   harnessElement: React.Element<any>,
   /** Background color to use for the frame */
   backgroundColor: string,
+  /** Function prop to report errors with. */
+  onReportError: Function,
+  /** Function prop to clear errors with. */
+  onClearError: Function,
   /** The theme for the frame */
   theme: Object,
 }
@@ -251,7 +255,14 @@ class Frame extends React.Component {
       this.injectData(frame, this.props)
 
       // Render the frame ASAP
-      frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
+      try {
+        frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
+        const { onClearError } = this.props
+        onClearError()
+      } catch (error) {
+        const { onReportError } = this.props
+        onReportError(error)
+      }
     } else {
       setTimeout(
         this.renderFrameContents.bind(this, {
