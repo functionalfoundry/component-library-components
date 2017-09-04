@@ -132,9 +132,11 @@ class Frame extends React.Component {
             window.React = React
             window.ReactDOM = ReactDOM
 
-            if (evaluateCommonsChunk) {
-              window.commonsChunk = eval(commonsChunk) // eslint-disable-line no-eval
-            }
+            // NOTE: This should only be necessary if 'evaluateCommonsChunk'
+            // is true. However, it seems that causes examples to not rerender
+            // properly when hot reloading. So for the moment, we're always
+            // re-evaluating the commons chunk.
+            window.commonsChunk = eval(commonsChunk) // eslint-disable-line no-eval
 
             if (evaluateBundles) {
               updateImplementations(bundles)
