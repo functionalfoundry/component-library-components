@@ -131,7 +131,7 @@ const leftPanel = (
 
 const scrollableContentTheme = {
   container: {
-    backgroundColor: '#f1f1f1',
+    backgroundColor: Colors.grey900,
     paddingLeft: Spacing.small,
     paddingRight: Spacing.small,
     paddingTop: Spacing.small,

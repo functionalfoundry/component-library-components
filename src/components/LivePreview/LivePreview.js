@@ -241,7 +241,7 @@ class LivePreview extends React.Component {
                 harnessElement={harnessElement}
                 theme={{
                   frame: {
-                    backgroundColor: Colors.grey100,
+                    backgroundColor: 'white',
                   },
                 }}
               />

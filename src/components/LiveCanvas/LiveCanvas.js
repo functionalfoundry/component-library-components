@@ -108,7 +108,7 @@ class LiveCanvas extends React.Component {
 const defaultTheme = ({ backgroundColor }: PropsT) => {
   return {
     liveCanvas: {
-      backgroundColor: Colors.grey200,
+      backgroundColor: 'white',
       flexGrow: 1,
       overflow: 'hidden',
     },

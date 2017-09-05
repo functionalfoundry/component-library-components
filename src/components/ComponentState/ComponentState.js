@@ -217,33 +217,35 @@ class ComponentState extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        <div {...theme.titleContainer}>
-          {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
-            <div {...theme.checkboxContainer}>
-              <Checkbox
-                checked={harnessCard.isSelected}
-                onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
-                theme={{ checkbox: { marginTop: 2 } }}
-              />
-            </div>}
-          <div {...theme.title} onClick={() => onClickTitle()}>
-            {harnessCard.harness.componentState.name}
+        <div {...theme.selectionContainer}>
+          <div {...theme.titleContainer}>
+            {shouldShowCheckbox(isHovering, harnessCard.isSelected) &&
+              <div {...theme.checkboxContainer}>
+                <Checkbox
+                  checked={harnessCard.isSelected}
+                  onChange={() => this.handleChangeIsSelected(!harnessCard.isSelected)}
+                  theme={{ checkbox: { marginTop: 2 } }}
+                />
+              </div>}
+            <div {...theme.title} onClick={() => onClickTitle()}>
+              {harnessCard.harness.componentState.name}
+            </div>
           </div>
-        </div>
-        <div
-          {...theme.harnessCard}
-          key={harnessCard.harness.id}
-          ref={this.storeHarnessCard}
-          {...harnessCard.extraProps}
-        >
-          <LivePreview
-            name={harnessCard.harness.id}
-            tree={harnessCard.tree}
-            commonsChunk={harnessCard.commonsChunk}
-            bundles={harnessCard.bundles}
-            React={harnessCard.React}
-            ReactDOM={harnessCard.ReactDOM}
-          />
+          <div
+            {...theme.harnessCard}
+            key={harnessCard.harness.id}
+            ref={this.storeHarnessCard}
+            {...harnessCard.extraProps}
+          >
+            <LivePreview
+              name={harnessCard.harness.id}
+              tree={harnessCard.tree}
+              commonsChunk={harnessCard.commonsChunk}
+              bundles={harnessCard.bundles}
+              React={harnessCard.React}
+              ReactDOM={harnessCard.ReactDOM}
+            />
+          </div>
         </div>
       </div>
     )
@@ -255,6 +257,7 @@ const shouldShowCheckbox = (isHovering, isSelected) => isHovering || isSelected
 const defaultTheme = ({ harnessCard, isHovering }) => ({
   checkboxContainer: {
     transform: 'scale(0.75)',
+    paddingBottom: Spacing.tiny,
   },
   componentState: {
     display: 'flex',
@@ -265,6 +268,12 @@ const defaultTheme = ({ harnessCard, isHovering }) => ({
     display: 'flex',
     overflow: 'hidden',
     flexGrow: 1,
+  },
+  selectionContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    paddingTop: 10,
   },
   titleContainer: {
     alignItems: 'center',
