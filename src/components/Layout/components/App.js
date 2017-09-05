@@ -30,9 +30,11 @@ const App = ({
 }: Props) => {
   if (isFullscreen) {
     return (
-      <div>
-        {children}
-      </div>
+      <Row {...theme.container}>
+        <Column {...theme.main}>
+          {children}
+        </Column>
+      </Row>
     )
   }
   return (

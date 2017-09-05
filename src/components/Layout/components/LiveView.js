@@ -34,9 +34,9 @@ const LiveView = ({
 }: Props) => {
   if (isFullscreen)
     return (
-      <div>
+      <Column {...theme.container}>
         {children}
-      </div>
+      </Column>
     )
   return (
     <Column {...theme.container}>
