@@ -2,6 +2,7 @@ import React from 'react'
 import Panel from '../../Panel'
 import PanelHeader from '../../PanelHeader'
 import PanelContent from '../../PanelContent'
+import Column from './Column'
 
 type PropsT = {
   children: React.Element,
@@ -13,9 +14,9 @@ type PropsT = {
 const Canvas = ({ children, isFullscreen, header, ...props }: PropsT) => {
   if (isFullscreen)
     return (
-      <div>
+      <Column style={{ flexGrow: 1 }}>
         {children}
-      </div>
+      </Column>
     )
   return (
     <Panel
