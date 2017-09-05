@@ -76,7 +76,6 @@ const defaultTheme = ({ tabletShowLeftPanel }) => ({
   },
   content: {
     flexGrow: 1,
-    position: 'relative',
   },
   leftPanel: {
     flexBasis: 300,
