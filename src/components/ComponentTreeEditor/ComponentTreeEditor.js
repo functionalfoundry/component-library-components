@@ -323,7 +323,7 @@ class ComponentTreeEditor extends React.Component {
     const newTree = Helpers.insertNodeAtPath(componentTree, insertionPath, newNode)
 
     this.updateComponentTree(newTree, () => {
-      if (newNode.nodeType === 'component') {
+      if (newNode.nodeType === 'component' || newNode.nodeType === 'prop') {
         this.focusNodeAttribute(insertionPath.push('name'))
       }
       if (newNode.nodeType === 'text') {
