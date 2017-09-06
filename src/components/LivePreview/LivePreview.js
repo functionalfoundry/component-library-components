@@ -95,14 +95,12 @@ class LivePreview extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (
-      nextProps.containerWidth !== this.props.containerWidth ||
-      nextProps.containerHeight !== this.props.containerHeight
+      prevProps.containerWidth !== this.props.containerWidth ||
+      prevProps.containerHeight !== this.props.containerHeight
     ) {
-      // The dimensions have to be recalculated after rendering with the new
-      // width and height
-      setTimeout(this.updateDimensions)
+      this.updateDimensions()
     }
   }
 
