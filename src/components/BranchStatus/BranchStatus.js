@@ -1,7 +1,7 @@
 import React from 'react'
 import Theme from 'js-theme'
 import { Colors, Fonts } from '@workflo/styles'
-import { Tooltip } from '@workflo/components'
+import { Icon, Tooltip } from '@workflo/components'
 
 import Building from './Building'
 import PopoverError from '../PopoverError'
@@ -37,7 +37,14 @@ const BranchStatus = ({ onIconClick, status, error, theme }: PropsT) => {
     case 'Building':
       return <div {...theme.label}>Building {icon}</div>
     default:
-      return <div {...theme.label}>Setup required {icon}</div>
+      return (
+        <div {...theme.label}>
+          Setup required
+          <div {...theme.icon} onClick={onIconClick}>
+            <Icon name="settings" size="regular" theme={{ svg: { marginTop: '-4px' } }} />
+          </div>
+        </div>
+      )
   }
 }
 
@@ -66,6 +73,13 @@ const defaultTheme = ({ onIconClick, status }: PropsT) => {
       backgroundColor: colorMap[status],
       display: 'flex',
       ...(typeof onIconClick === 'function' ? { cursor: 'pointer' } : {}),
+    },
+    icon: {
+      cursor: 'pointer',
+      stroke: colorMap[status],
+      ':hover': {
+        stroke: Colors.grey300,
+      },
     },
   }
 }
