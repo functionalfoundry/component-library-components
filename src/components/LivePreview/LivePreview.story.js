@@ -14,6 +14,8 @@ class FetchAndRender extends React.Component {
       badge: null,
       loader: null,
       zoom: 100,
+      containerWidth: 300,
+      containerHeight: 300,
     }
   }
 
@@ -48,10 +50,15 @@ class FetchAndRender extends React.Component {
   componentWillMount() {
     this.fetchBadge()
     this.fetchLoader()
+    if (this.props.updateDimensions) {
+      setTimeout(() => {
+        this.setState({ containerWidth: 600 })
+      }, 2000)
+    }
   }
 
   render() {
-    const { badge, loader, zoom } = this.state
+    const { badge, loader, zoom, containerWidth, containerHeight } = this.state
     const { error } = this.props
     return (
       <div
@@ -78,6 +85,8 @@ class FetchAndRender extends React.Component {
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
           error={error}
+          containerWidth={containerWidth}
+          containerHeight={containerHeight}
         />
       </div>
     )
@@ -145,7 +154,7 @@ class FetchAndRender extends React.Component {
 
 storiesOf('LivePreview', module)
   .add('Default', () => <FetchAndRender />)
-  .add('With error', () => (
+  .add('With error', () =>
     <FetchAndRender
       error={{
         message: "Cannot read property 'length' of undefined and other errors happening",
@@ -164,7 +173,9 @@ at h._createInitialChildren (https://s3.amazonaws.com/workflo-infra/component-li
 at h.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:17601)`,
       }}
     />
-  ))
+  )
+  .add('With updating dimensions', () => <FetchAndRender updateDimensions />)
+
 // .add('Failing component', () => (
 //   <PreviewContainer>
 //     <div style={previewStyle} label="Failing component">
