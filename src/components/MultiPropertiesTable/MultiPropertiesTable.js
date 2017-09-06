@@ -59,17 +59,18 @@ export default class MultiPropertiesTable extends React.Component {
           tabs: {
             marginTop: Spacing.tiny, // Remove when we add padding option to app layout
             color: 'white',
+            flexShrink: 1,
           },
         }}
       >
         <TabList>
-          {components.map((component, index) => (
+          {components.map((component, index) =>
             <Tab key={`tab-${index}`}>
               {component.name}
             </Tab>
-          ))}
+          )}
         </TabList>
-        {components.map((component, index) => (
+        {components.map((component, index) =>
           <TabPanel
             key={`panel-${index}`}
             theme={{
@@ -87,7 +88,7 @@ export default class MultiPropertiesTable extends React.Component {
               onClickMinus={onClickMinus}
             />
           </TabPanel>
-        ))}
+        )}
       </Tabs>
     )
   }

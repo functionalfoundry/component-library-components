@@ -122,15 +122,9 @@ class Properties extends React.Component {
               onClick={onSortChange}
             />
           </div>
-          <div {...theme.typeHeader}>
-            Type
-          </div>
-          <div {...theme.defaultHeader}>
-            Default
-          </div>
-          <div {...theme.descriptionHeader}>
-            Description
-          </div>
+          <div {...theme.typeHeader}>Type</div>
+          <div {...theme.defaultHeader}>Default</div>
+          <div {...theme.descriptionHeader}>Description</div>
         </div>
         <div {...theme.body} onMouseLeave={this.handleMouseLeave}>
           {this.sort(properties).map((property, index) => {
@@ -164,7 +158,7 @@ const Row = ({
   getHandleClickMinus,
   forceHoverRowIndex,
   index,
-}) => (
+}) =>
   <div
     {...theme.row}
     style={isHovering ? selectedStyle : {}}
@@ -222,7 +216,6 @@ const Row = ({
       {property.description}
     </div>
   </div>
-)
 
 const getDataAttributeForRow = (index, forceHoverRowIndex) => {
   if (index === forceHoverRowIndex) {
@@ -285,9 +278,10 @@ const defaultRowTheme = ({ property, isHovering }) => ({
   },
   propName: {
     // Sync with Component State Checkbox animation
-    transform: isHovering || property.isUsedByTreeEditor
-      ? `translate3d(28px, 0, 0)`
-      : `translate3d(0, 0, 0)`,
+    transform:
+      isHovering || property.isUsedByTreeEditor
+        ? `translate3d(28px, 0, 0)`
+        : `translate3d(0, 0, 0)`,
     transition: '0.3s transform cubic-bezier(0.19, 1, 0.22, 1)',
   },
   typeCell: {
@@ -336,6 +330,7 @@ const defaultTheme = {
     display: 'flex',
     flexShrink: 1,
     alignItems: 'flex-start',
+    height: 70,
   },
   typeHeader: Object.assign({}, headerCellBase, middleCell, {
     flexBasis: typeWidth,
