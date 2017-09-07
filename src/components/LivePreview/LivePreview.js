@@ -95,6 +95,15 @@ class LivePreview extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.containerWidth !== this.props.containerWidth ||
+      prevProps.containerHeight !== this.props.containerHeight
+    ) {
+      this.updateDimensions()
+    }
+  }
+
   getDimensions = () => {
     const node = ReactDOM.findDOMNode(this)
     return {
