@@ -1,3 +1,4 @@
+/** @flow */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
@@ -175,6 +176,7 @@ class LivePreview extends React.Component {
       containerWidth,
       containerHeight,
       name,
+      onError,
       tree,
       commonsChunk,
       bundles,
@@ -225,10 +227,10 @@ class LivePreview extends React.Component {
               onWheel={this.handleWheel}
             >
               <Frame
-                name={name}
-                tree={TreeHelpers.createTree(tree)}
-                commonsChunk={commonsChunk}
                 bundles={bundles}
+                commonsChunk={commonsChunk}
+                name={name}
+                onError={onError}
                 React={React}
                 ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
@@ -237,6 +239,7 @@ class LivePreview extends React.Component {
                     backgroundColor: 'white',
                   },
                 }}
+                tree={TreeHelpers.createTree(tree)}
               />
             </LiveCanvas>
           : null}
@@ -257,11 +260,11 @@ export default ThemedLivePreview
 type HarnessPropsT = {
   width: number,
   height: number,
-  children: React.Node,
+  children?: any,
+  error?: Object,
   onWheel: Function,
   onChangeContainerFocused: Function,
   isContainerFocused: boolean,
-  theme: any,
 }
 
 class Harness extends React.Component {
@@ -274,10 +277,6 @@ class Harness extends React.Component {
     this.state = {
       error: props.error,
     }
-  }
-
-  unstable_handleError(error) {
-    this.setState({ error })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -304,7 +303,7 @@ class Harness extends React.Component {
           <div style={errorContainerStyle}>
             <ErrorView
               message={error.message}
-              stacktrace={error.stacktrace}
+              stacktrace={error.stack}
               width={width}
               height={height}
             />

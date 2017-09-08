@@ -2,16 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { storiesOf } from '@kadira/storybook'
 import LivePreview from './LivePreview'
-import Preview from '@workflo/components/lib/Preview'
-import PreviewContainer from '@workflo/components/lib/PreviewContainer/PreviewContainer'
 
 import { BADGE_URL, LOADER_URL, rawExampleTree } from '../Frame/Frame.story'
 
+type FetchAndRenderPropsT = {
+  error?: Object,
+}
+
 class FetchAndRender extends React.Component {
-  constructor() {
-    super()
+  props: FetchAndRenderPropsT
+
+  constructor(props) {
+    const { error } = props
+    super(props)
     this.state = {
       badge: null,
+      error,
       loader: null,
       zoom: 100,
       containerWidth: 300,
@@ -25,6 +31,7 @@ class FetchAndRender extends React.Component {
     }))
   }
 
+  handleError = errorEvent => this.setState({ error: errorEvent.error })
   fetchBadge = () => {
     let xhr = new XMLHttpRequest()
     xhr.onreadystatechange = () => {
@@ -58,8 +65,7 @@ class FetchAndRender extends React.Component {
   }
 
   render() {
-    const { badge, loader, zoom, containerWidth, containerHeight } = this.state
-    const { error } = this.props
+    const { badge, error, loader, zoom, containerWidth, containerHeight } = this.state
     return (
       <div
         style={{
@@ -84,6 +90,7 @@ class FetchAndRender extends React.Component {
           backgroundColor="cyan"
           zoom={zoom}
           onChangeZoom={this.handleChangeZoom}
+          onError={this.handleError}
           error={error}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
@@ -158,7 +165,7 @@ storiesOf('LivePreview', module)
     <FetchAndRender
       error={{
         message: "Cannot read property 'length' of undefined and other errors happening",
-        stacktrace: `TypeError: Cannot read property 'length' of undefined
+        stack: `TypeError: Cannot read property 'length' of undefined
 at Steps.render (eval at evaluateBundle (:6:31), <anonymous>:13079:29)
 at p._renderValidatedComponentWithoutOwnerOrContext (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:10750)
 at p._renderValidatedComponent (https://s3.amazonaws.com/workflo-infra/component-library/component-library.js:91:10877)
@@ -174,8 +181,11 @@ at h.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/co
       }}
     />
   )
+<<<<<<< HEAD
   .add('With updating dimensions', () => <FetchAndRender updateDimensions />)
 
+=======
+>>>>>>> LivePreview: Wire up Frame's new onError prop
 // .add('Failing component', () => (
 //   <PreviewContainer>
 //     <div style={previewStyle} label="Failing component">
