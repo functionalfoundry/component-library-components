@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { storiesOf } from '@kadira/storybook'
 import LivePreview from './LivePreview'
 
@@ -81,8 +80,6 @@ class FetchAndRender extends React.Component {
           name="frame-1"
           tree={rawExampleTree}
           bundles={{ badge, loader }}
-          React={React}
-          ReactDOM={ReactDOM}
           alignment={{
             horizontal: 'Center',
             vertical: 'Center',
