@@ -229,14 +229,8 @@ class Frame extends React.Component {
               const treeElement = realizeComponentTree(tree, window.implementations)
               const harness = React.cloneElement(
                 harnessElement,
-                // FIXME: This is a temporary solution to make the React error boundary
-                // implemented by the Harness component catch errors during render.
-                // It would be much better if we didn't have to force-remount the
-                // harness every time, but for now using a time-based key will do
-                // exactly that and allow us to transition back and forth between
-                // broken and unbroken previews.
-                { key: Date.now() },
-                treeElement
+                {},
+                treeElement,
               )
               const root = document.getElementById('root')
               ReactDOM.render(harness, root)
