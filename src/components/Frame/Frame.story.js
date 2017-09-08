@@ -91,8 +91,6 @@ class FetchAndRender extends React.Component {
             harnessElement={<HarnessComponent />}
             onError={action('onError')}
             name="frame-1"
-            React={React}
-            ReactDOM={ReactDOM}
             tree={exampleTree}
           />
         </Preview>

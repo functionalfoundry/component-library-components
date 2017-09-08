@@ -32,12 +32,19 @@ type PropsT = {
   containerWidth: number,
   /** The user-specified pixel height of the contianer that is then scaled */
   containerHeight: number,
-  /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
-  React?: any,
-  /** The ReactDOM object to use inside the iFrame */
-  ReactDOM?: any,
   /** A unique ID for the iFrame */
   name: string,
+  /**
+   * Packages to load into the iFrame from unpkg.com CDN. Must be valid npm
+   * packages/ versions. Versions may follow semver rules.
+   *
+   * If specified, must include a version of 'react' and 'react-dom'. (Defaults to React15)
+   *
+   * i.e. { react: '15.6.3', react-dom: '15.6.3' } or { react: '15', react-dom: '15' }
+   */
+  packageVersions: {
+    [string]: string,
+  },
   /** Less than 100 means shrink more than 100 means zoom in */
   zoom: number,
   /** Called quickly while the user is performing a continuous zoom action */
@@ -231,8 +238,6 @@ class LivePreview extends React.Component {
                 commonsChunk={commonsChunk}
                 name={name}
                 onError={onError}
-                React={React}
-                ReactDOM={ReactDOM}
                 harnessElement={harnessElement}
                 theme={{
                   frame: {

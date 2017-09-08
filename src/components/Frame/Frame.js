@@ -20,12 +20,16 @@ type PropsT = {
   /** Harness element to render the component inside */
   harnessElement: React.Element<any>,
   /**
-  * The React object to use inside the iFrame (in the future should
-  * this be a string and get evaluated in the iFrame?)
-  */
-  React?: any,
-  /** The ReactDOM object to use inside the iFrame */
-  ReactDOM?: any,
+   * Packages to load into the iFrame from unpkg.com CDN. Must be valid npm
+   * packages/ versions. Versions may follow semver rules.
+   *
+   * If specified, must include a version of 'react' and 'react-dom'. (Defaults to React15)
+   *
+   * i.e. { react: '15.6.3', react-dom: '15.6.3' } or { react: '15', react-dom: '15' }
+   */
+  packageVersions: {
+    [string]: string,
+  },
   /** The theme for the frame */
   theme: Object,
   /**
@@ -49,13 +53,92 @@ class Frame extends React.Component {
   props: PropsT
   state: StateT
 
+  static defaultProps = {
+    packageVersions: {
+      react: '15',
+      'react-dom': '15',
+    },
+  }
+
   _isMounted: boolean
   _isInitialContentSet: boolean
 
-  static initialContent = `
+  constructor(props, context) {
+    super(props, context)
+
+    this._isMounted = false
+    this._isInitialContentSet = false
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+    this.renderFrameContents({
+      evaluateCommonsChunk: true,
+      evaluateBundles: true,
+      renderTree: true,
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    const evaluateCommonsChunk = prevProps.commonsChunk !== this.props.commonsChunk
+    const evaluateBundles = this.bundlesHaveChanged(prevProps.bundles, this.props.bundles)
+    const renderTree =
+      evaluateCommonsChunk ||
+      evaluateBundles ||
+      this.componentTreeHasChanged(prevProps.tree, this.props.tree)
+    if (evaluateCommonsChunk || evaluateBundles || renderTree) {
+      this.renderFrameContents({ evaluateCommonsChunk, evaluateBundles, renderTree })
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
+  bundlesHaveChanged = (oldBundles, newBundles) => {
+    return Object.keys(newBundles).reduce((changed, componentId) => {
+      return changed || oldBundles[componentId] !== newBundles[componentId]
+    }, false)
+  }
+
+  componentTreeHasChanged = (oldTree, newTree) => {
+    return !newTree.equals(oldTree)
+  }
+
+  /**
+   * Returns the iframe element.
+   */
+  getFrame = props => {
+    return window.frames[props.name]
+  }
+
+  /**
+   * Returns the iFrame's document
+   */
+  getDocument = () => {
+    const node = this._frame
+    if (node !== null) {
+      return node.contentDocument // eslint-disable-line
+    } else {
+      return undefined
+    }
+  }
+  /* eslint-disable standard/computed-property-even-spacing */
+  getInitialHTML = () => {
+    const { packageVersions } = this.props
+    const packageNames = Object.keys(packageVersions)
+    return `
     <!DOCTYPE html>
-    <html>
-      <head></head>
+    <html >
+      <head>
+        ${packageNames.map(
+          packageName =>
+            `<script src="https://unpkg.com/${packageName}@${packageVersions[
+              packageName
+            ]}/dist/${packageName}.min.js"></script>
+            `
+        )}
+      </head>
       <body style="margin:0px; padding:0px;">
         <div id="root" />
         <script>
@@ -132,9 +215,6 @@ class Frame extends React.Component {
             const harnessElement = __workflo_data.harnessElement
             const tree = __workflo_data.tree
 
-            window.React = React
-            window.ReactDOM = ReactDOM
-
             // NOTE: This should only be necessary if 'evaluateCommonsChunk'
             // is true. However, it seems that causes examples to not rerender
             // properly when hot reloading. So for the moment, we're always
@@ -165,66 +245,6 @@ class Frame extends React.Component {
         </script>
       </body>
     </html>`
-
-  constructor(props, context) {
-    super(props, context)
-
-    this._isMounted = false
-    this._isInitialContentSet = false
-  }
-
-  componentDidMount() {
-    this._isMounted = true
-    this.renderFrameContents({
-      evaluateCommonsChunk: true,
-      evaluateBundles: true,
-      renderTree: true,
-    })
-  }
-
-  componentDidUpdate(prevProps) {
-    const evaluateCommonsChunk = prevProps.commonsChunk !== this.props.commonsChunk
-    const evaluateBundles = this.bundlesHaveChanged(prevProps.bundles, this.props.bundles)
-    const renderTree =
-      evaluateCommonsChunk ||
-      evaluateBundles ||
-      this.componentTreeHasChanged(prevProps.tree, this.props.tree)
-    if (evaluateCommonsChunk || evaluateBundles || renderTree) {
-      this.renderFrameContents({ evaluateCommonsChunk, evaluateBundles, renderTree })
-    }
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false
-  }
-
-  bundlesHaveChanged = (oldBundles, newBundles) => {
-    return Object.keys(newBundles).reduce((changed, componentId) => {
-      return changed || oldBundles[componentId] !== newBundles[componentId]
-    }, false)
-  }
-
-  componentTreeHasChanged = (oldTree, newTree) => {
-    return !newTree.equals(oldTree)
-  }
-
-  /**
-   * Returns the iframe element.
-   */
-  getFrame = props => {
-    return window.frames[props.name]
-  }
-
-  /**
-   * Returns the iFrame's document
-   */
-  getDocument = () => {
-    const node = this._frame
-    if (node !== null) {
-      return node.contentDocument // eslint-disable-line
-    } else {
-      return undefined
-    }
   }
 
   handleError = (...args) => {
@@ -235,11 +255,8 @@ class Frame extends React.Component {
   }
 
   injectData = (frame, props) => {
-    const { commonsChunk, bundles, harnessElement, React, ReactDOM, tree } = props
+    const { commonsChunk, bundles, harnessElement, tree } = props
 
-    // Inject React and React DOM into the frame
-    frame.React = React
-    frame.ReactDOM = ReactDOM
     frame.handleError = this.handleError
 
     // Inject render data into the frame
@@ -267,7 +284,7 @@ class Frame extends React.Component {
 
       if (!this._isInitialContentSet) {
         doc.open('text/html', 'replace')
-        doc.write(Frame.initialContent)
+        doc.write(this.getInitialHTML())
         doc.close()
 
         this._isInitialContentSet = true
