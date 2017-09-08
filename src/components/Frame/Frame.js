@@ -7,30 +7,32 @@ import ComponentTree from '../../modules/ComponentTree'
 type BundlesT = Object<string, string>
 
 type PropsT = {
-  /**
-   * Takes a map from component names to component functions / classes
-   * and returns the composite component tree
-   */
-  tree: ComponentTree,
-  /** A chunk with common JS modules for components from the same repo */
-  commonsChunk: string,
+  /** Background color to use for the frame */
+  backgroundColor: string,
   /** Map from tree component IDs to bundle strings */
   bundles: BundlesT,
+  /** A chunk with common JS modules for components from the same repo */
+  commonsChunk: string,
+  /** A unique ID for the iFrame */
+  name: string,
+  /** Callback invoked if an error is triggered in the iFrame */
+  onError?: Function,
+  /** Harness element to render the component inside */
+  harnessElement: React.Element<any>,
   /**
-   * The React object to use inside the iFrame (in the future should
-   * this be a string and get evaluated in the iFrame?)
-   */
+  * The React object to use inside the iFrame (in the future should
+  * this be a string and get evaluated in the iFrame?)
+  */
   React?: any,
   /** The ReactDOM object to use inside the iFrame */
   ReactDOM?: any,
-  /** A unique ID for the iFrame */
-  name: string,
-  /** Harness element to render the component inside */
-  harnessElement: React.Element<any>,
-  /** Background color to use for the frame */
-  backgroundColor: string,
   /** The theme for the frame */
   theme: Object,
+  /**
+  * Takes a map from component names to component functions / classes
+  * and returns the composite component tree
+  */
+  tree: ComponentTree,
 }
 
 /**
@@ -59,6 +61,7 @@ class Frame extends React.Component {
         <script>
           // Needed for evaluating bundles
           window.production = 'production'
+          window.addEventListener('error', window.handleError)
 
           function evaluateBundle (bundle) {
             const evaluated = eval(bundle || '') // eslint-disable-line no-eval
@@ -224,12 +227,20 @@ class Frame extends React.Component {
     }
   }
 
+  handleError = (...args) => {
+    const { onError } = this.props
+    if (onError) {
+      onError(...args)
+    }
+  }
+
   injectData = (frame, props) => {
     const { commonsChunk, bundles, harnessElement, React, ReactDOM, tree } = props
 
     // Inject React and React DOM into the frame
     frame.React = React
     frame.ReactDOM = ReactDOM
+    frame.handleError = this.handleError
 
     // Inject render data into the frame
     frame.__workflo_data = {
@@ -251,6 +262,9 @@ class Frame extends React.Component {
         this._isInitialContentSet = false
       }
 
+      const frame = this.getFrame(this.props)
+      this.injectData(frame, this.props)
+
       if (!this._isInitialContentSet) {
         doc.open('text/html', 'replace')
         doc.write(Frame.initialContent)
@@ -258,9 +272,6 @@ class Frame extends React.Component {
 
         this._isInitialContentSet = true
       }
-
-      const frame = this.getFrame(this.props)
-      this.injectData(frame, this.props)
 
       // Render the frame ASAP
       frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
