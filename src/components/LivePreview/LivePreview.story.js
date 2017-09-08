@@ -76,22 +76,24 @@ class FetchAndRender extends React.Component {
           position: 'absolute',
         }}
       >
-        <LivePreview
-          name="frame-1"
-          tree={rawExampleTree}
-          bundles={{ badge, loader }}
-          alignment={{
-            horizontal: 'Center',
-            vertical: 'Center',
-          }}
-          backgroundColor="cyan"
-          zoom={zoom}
-          onChangeZoom={this.handleChangeZoom}
-          onError={this.handleError}
-          error={error}
-          containerWidth={containerWidth}
-          containerHeight={containerHeight}
-        />
+        {badge &&
+          loader &&
+          <LivePreview
+            containerWidth={containerWidth}
+            containerHeight={containerHeight}
+            name="frame-1"
+            tree={rawExampleTree}
+            bundles={{ badge, loader }}
+            alignment={{
+              horizontal: 'Center',
+              vertical: 'Center',
+            }}
+            backgroundColor="cyan"
+            zoom={zoom}
+            onChangeZoom={this.handleChangeZoom}
+            onError={this.handleError}
+            error={error}
+          />}
       </div>
     )
   }
