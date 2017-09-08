@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { action, storiesOf } from '@kadira/storybook'
 import { Preview, PreviewContainer } from '@workflo/components'
 import Frame from './Frame'
@@ -86,13 +85,15 @@ class FetchAndRender extends React.Component {
     return (
       <PreviewContainer>
         <Preview title="Frame">
-          <Frame
-            bundles={{ badge, loader }}
-            harnessElement={<HarnessComponent />}
-            onError={action('onError')}
-            name="frame-1"
-            tree={exampleTree}
-          />
+          {badge &&
+            loader &&
+            <Frame
+              bundles={badge && loader ? { badge, loader } : null}
+              harnessElement={<HarnessComponent />}
+              onError={action('onError')}
+              name="frame-1"
+              tree={exampleTree}
+            />}
         </Preview>
       </PreviewContainer>
     )
