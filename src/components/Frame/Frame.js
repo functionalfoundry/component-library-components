@@ -131,16 +131,17 @@ class Frame extends React.Component {
     <!DOCTYPE html>
     <html >
       <head>
-        ${packageNames.map(
-          packageName =>
-            `<script src="https://unpkg.com/${packageName}@${packageVersions[
-              packageName
-            ]}/dist/${packageName}.min.js"></script>
-            `
-        )}
+        ${packageNames
+          .map(
+            packageName =>
+              `<script src="https://unpkg.com/${packageName}@${packageVersions[
+                packageName
+              ]}/dist/${packageName}.min.js"></script>`
+          )
+          .join('\n')}
       </head>
       <body style="margin:0px; padding:0px;">
-        <div id="root" />
+        <div id="root" ></div>
         <script>
           // Needed for evaluating bundles
           window.production = 'production'
@@ -230,7 +231,7 @@ class Frame extends React.Component {
               const harness = React.cloneElement(
                 harnessElement,
                 {},
-                treeElement,
+                treeElement
               )
               const root = document.getElementById('root')
               ReactDOM.render(harness, root)
