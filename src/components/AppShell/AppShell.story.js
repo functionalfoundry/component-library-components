@@ -104,15 +104,17 @@ const leftNav = (
 )
 
 const bottomPanel = (
-  <MultiPropertiesTable
-    components={[
-      {
-        id: '1',
-        name: 'FirstComponent',
-        properties: liveViewState.component.properties,
-      },
-    ]}
-  />
+  <div style={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}>
+    <MultiPropertiesTable
+      components={[
+        {
+          id: '1',
+          name: 'FirstComponent',
+          properties: liveViewState.component.properties,
+        },
+      ]}
+    />
+  </div>
 )
 const rightPanel = (
   <LiveEditor

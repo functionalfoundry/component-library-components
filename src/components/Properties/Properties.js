@@ -330,7 +330,7 @@ const defaultTheme = {
     display: 'flex',
     flexShrink: 1,
     alignItems: 'flex-start',
-    height: 70,
+    height: 55,
   },
   typeHeader: Object.assign({}, headerCellBase, middleCell, {
     flexBasis: typeWidth,
