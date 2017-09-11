@@ -187,28 +187,23 @@ class LivePreview extends React.Component {
       tree,
       commonsChunk,
       bundles,
-      React,
-      ReactDOM,
       error,
     } = this.props
 
     const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
-    const harnessElement = (
-      <Harness
-        key="harness"
-        error={error}
-        width={canvasWidth}
-        height={canvasHeight}
-        onWheel={this.handleWheel}
-        onChangeContainerFocused={this.handleChangeContainerFocused}
-        isContainerFocused={isContainerFocused}
-      />
-    )
 
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
       return (
         <div style={{ width: `100%`, height: `100%`, position: 'absolute' }}>
-          {harnessElement}
+          <Harness
+            key="harness"
+            error={error}
+            width={canvasWidth}
+            height={canvasHeight}
+            onWheel={this.handleWheel}
+            onChangeContainerFocused={this.handleChangeContainerFocused}
+            isContainerFocused={isContainerFocused}
+          />
         </div>
       )
     }
@@ -238,7 +233,17 @@ class LivePreview extends React.Component {
                 commonsChunk={commonsChunk}
                 name={name}
                 onError={onError}
-                harnessElement={harnessElement}
+                harnessElement={
+                  <Harness
+                    key="harness"
+                    error={error}
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    onWheel={this.handleWheel}
+                    onChangeContainerFocused={this.handleChangeContainerFocused}
+                    isContainerFocused={isContainerFocused}
+                  />
+                }
                 theme={{
                   frame: {
                     backgroundColor: 'white',
