@@ -60,12 +60,14 @@ class Frame extends React.Component {
     },
   }
 
+  _isFrameDOMLoaded: boolean
   _isMounted: boolean
   _isInitialContentSet: boolean
 
   constructor(props, context) {
     super(props, context)
 
+    this._isFrameDOMLoaded = false
     this._isMounted = false
     this._isInitialContentSet = false
   }
@@ -146,6 +148,7 @@ class Frame extends React.Component {
           // Needed for evaluating bundles
           window.production = 'production'
           window.addEventListener('error', window.handleError)
+          window.addEventListener('DOMContentLoaded', window.handleDOMContentLoaded)
 
           function evaluateBundle (bundle) {
             const evaluated = eval(bundle || '') // eslint-disable-line no-eval
@@ -228,18 +231,25 @@ class Frame extends React.Component {
 
             if (renderTree) {
               const treeElement = realizeComponentTree(tree, window.implementations)
-              const harness = React.cloneElement(
+              const harness = window.React.cloneElement(
                 harnessElement,
                 {},
                 treeElement
               )
               const root = document.getElementById('root')
-              ReactDOM.render(harness, root)
+              window.ReactDOM.render(harness, root)
             }
           }
+
         </script>
       </body>
     </html>`
+  }
+
+  handleDOMContentLoaded = () => {
+    const frame = this.getFrame(this.props)
+    frame.renderComponentTree(true, true, true)
+    this._isFrameDOMLoaded = true
   }
 
   handleError = (...args) => {
@@ -253,6 +263,7 @@ class Frame extends React.Component {
     const { commonsChunk, bundles, harnessElement, tree } = props
 
     frame.handleError = this.handleError
+    frame.handleDOMContentLoaded = this.handleDOMContentLoaded
 
     // Inject render data into the frame
     frame.__workflo_data = {
@@ -276,7 +287,6 @@ class Frame extends React.Component {
 
       const frame = this.getFrame(this.props)
       this.injectData(frame, this.props)
-
       if (!this._isInitialContentSet) {
         doc.open('text/html', 'replace')
         doc.write(this.getInitialHTML())
@@ -284,9 +294,10 @@ class Frame extends React.Component {
 
         this._isInitialContentSet = true
       }
-
-      // Render the frame ASAP
-      frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
+      // Render the frame if the Frame's DOM has been loaded
+      if (this._isFrameDOMLoaded) {
+        frame.renderComponentTree(evaluateCommonsChunk, evaluateBundles, renderTree)
+      }
     } else {
       setTimeout(
         this.renderFrameContents.bind(this, {
