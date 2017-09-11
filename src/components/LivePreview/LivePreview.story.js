@@ -180,11 +180,7 @@ at h.mountComponent (https://s3.amazonaws.com/workflo-infra/component-library/co
       }}
     />
   )
-<<<<<<< HEAD
   .add('With updating dimensions', () => <FetchAndRender updateDimensions />)
-
-=======
->>>>>>> LivePreview: Wire up Frame's new onError prop
 // .add('Failing component', () => (
 //   <PreviewContainer>
 //     <div style={previewStyle} label="Failing component">
