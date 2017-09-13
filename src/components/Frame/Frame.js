@@ -149,7 +149,8 @@ class Frame extends React.Component {
           window.production = 'production'
           window.addEventListener('error', window.handleError)
           window.addEventListener('DOMContentLoaded', window.handleDOMContentLoaded)
-
+        </script>
+        <script>
           function evaluateBundle (bundle) {
             const evaluated = eval(bundle || '') // eslint-disable-line no-eval
             return (evaluated && (evaluated.default || evaluated)) || null
@@ -230,14 +231,18 @@ class Frame extends React.Component {
             }
 
             if (renderTree) {
-              const treeElement = realizeComponentTree(tree, window.implementations)
-              const harness = window.React.cloneElement(
-                harnessElement,
-                {},
-                treeElement
-              )
-              const root = document.getElementById('root')
-              window.ReactDOM.render(harness, root)
+              try {
+                const treeElement = realizeComponentTree(tree, window.implementations)
+                const harness = window.React.cloneElement(
+                  harnessElement,
+                  {},
+                  treeElement
+                )
+                const root = document.getElementById('root')
+                window.ReactDOM.render(harness, root)
+              } catch (error) {
+                window.handleError(new ErrorEvent('RenderError', { error }))
+              }
             }
           }
 

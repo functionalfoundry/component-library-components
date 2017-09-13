@@ -185,7 +185,6 @@ class LivePreview extends React.Component {
   }
 
   handleError = errorEvent => {
-    console.log(errorEvent)
     this.setState({ error: errorEvent.error || new Error('Unknown error') })
   }
 
