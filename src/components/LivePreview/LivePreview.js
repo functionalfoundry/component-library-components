@@ -2,6 +2,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
+import { isEqual } from 'lodash'
+
 import { Trigger } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
@@ -32,6 +34,8 @@ type PropsT = {
   containerWidth: number,
   /** The user-specified pixel height of the contianer that is then scaled */
   containerHeight: number,
+  /** Error to render in the LivePreview (example will not be rendered if set) */
+  error: { message: string, stack: string },
   /** A unique ID for the iFrame */
   name: string,
   /**
@@ -49,6 +53,8 @@ type PropsT = {
   zoom: number,
   /** Called quickly while the user is performing a continuous zoom action */
   onChangeZoom: Function,
+  /** Called with an ErrorEvent object i.e. { error: { message: 'foo', stack: 'bar' }} */
+  onError: Function,
 }
 
 /**
@@ -114,8 +120,11 @@ class LivePreview extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
-    this.setState({ error: null })
+  componentWillReceiveProps(nextProps: PropsT) {
+    const { error, tree } = nextProps
+    if (!isEqual(tree, this.props.tree)) {
+      this.setState({ error })
+    }
   }
 
   getDimensions = () => {

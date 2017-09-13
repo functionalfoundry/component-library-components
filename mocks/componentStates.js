@@ -1,15 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
 import {
   exampleBundles,
   rawExampleTree,
 } from '../src/components/ComponentState/ComponentState.story'
 
-const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) => ({
+const getCard = ({
+  alignment,
+  color,
+  error,
+  isSelected = false,
+  name,
+  size = 'Base',
+}) => ({
   tree: rawExampleTree,
   bundles: exampleBundles,
-  React: React,
-  ReactDOM: ReactDOM,
+  error,
   harness: {
     id: Math.random().toString(),
     componentState: {
@@ -33,6 +37,12 @@ const getCard = ({ name, alignment, color, size = 'Base', isSelected = false }) 
   forceShowActions: false,
 })
 
+const error = {
+  message: 'doSomething is not defined',
+  stack: `ReferenceError: doSomething is not defined
+    at setTimeout (<anonymous>:6:30)`,
+}
+
 export const stateCards = [
   getCard({
     name: 'With title',
@@ -54,6 +64,13 @@ export const stateCards = [
     name: 'Full width align right',
     alignment: 'Right',
     color: 'white',
+    size: 'Large',
+  }),
+  getCard({
+    name: 'Full width align right',
+    alignment: 'Right',
+    color: 'white',
+    error,
     size: 'Large',
   }),
 ]

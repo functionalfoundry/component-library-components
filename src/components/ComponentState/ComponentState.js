@@ -31,6 +31,7 @@ type BundlesT = Object
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
+    error: Event,
     tree: Object,
     commonsChunk: string,
     bundles: BundlesT,
@@ -233,10 +234,11 @@ class ComponentState extends React.Component {
             {...harnessCard.extraProps}
           >
             <LivePreview
+              bundles={harnessCard.bundles}
+              commonsChunk={harnessCard.commonsChunk}
+              error={harnessCard.error}
               name={harnessCard.harness.id}
               tree={harnessCard.tree}
-              commonsChunk={harnessCard.commonsChunk}
-              bundles={harnessCard.bundles}
             />
           </div>
         </div>
