@@ -49,8 +49,6 @@ type PropsT = {
   zoom: number,
   /** Called quickly while the user is performing a continuous zoom action */
   onChangeZoom: Function,
-  /** Optionally pass in an error */
-  error?: ErrorT,
 }
 
 /**
@@ -69,7 +67,10 @@ const defaultProps = {
 type StateT = {
   canvasWidth: ?number,
   canvasHeight: ?number,
+  error: ?ErrorT,
+  isContainerFocused: boolean,
   zoom: number,
+  zoomHasBeenChangedByUser: boolean,
 }
 
 /**
@@ -100,6 +101,7 @@ class LivePreview extends React.Component {
       zoom: 100,
       zoomHasBeenChangedByUser: false,
       isContainerFocused: false,
+      error: null,
     }
   }
 
@@ -110,6 +112,10 @@ class LivePreview extends React.Component {
     ) {
       this.updateDimensions()
     }
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ error: null })
   }
 
   getDimensions = () => {
@@ -178,19 +184,21 @@ class LivePreview extends React.Component {
     window.removeEventListener('resize', this.updateDimensions)
   }
 
+  handleError = errorEvent => {
+    this.setState({ error: errorEvent.error || new Error('Unknown error') })
+  }
+
   render() {
     const {
       containerWidth,
       containerHeight,
       name,
-      onError,
       tree,
       commonsChunk,
       bundles,
-      error,
     } = this.props
 
-    const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
+    const { canvasWidth, canvasHeight, error, isContainerFocused, zoom } = this.state
 
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
       return (
@@ -232,7 +240,7 @@ class LivePreview extends React.Component {
                 bundles={bundles}
                 commonsChunk={commonsChunk}
                 name={name}
-                onError={onError}
+                onError={this.handleError}
                 harnessElement={
                   <Harness
                     key="harness"
