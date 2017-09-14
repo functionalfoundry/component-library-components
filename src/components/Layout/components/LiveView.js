@@ -75,6 +75,15 @@ const defaultTheme = ({ tabletShowLeftPanel }) => ({
     flexGrow: 1,
   },
   content: {
+    /**
+     * This is a hack to prevent the layout from breaking when we pass in very large
+     * numbers as the width of the LiveView.
+     * TODO: Don't set large width on any elements outside of the iFrame (including the iframe)
+     */
+    width: 0,
+    minHeight: 0,
+    /** end hack */
+    overflow: 'hidden',
     flexGrow: 1,
   },
   leftPanel: {
