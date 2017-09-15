@@ -1,6 +1,9 @@
+/** @flow */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
+import { isEqual } from 'lodash'
+
 import { Trigger } from '@workflo/components'
 import { Colors, Spacing } from '@workflo/styles'
 import ErrorView from '../ErrorView'
@@ -31,18 +34,27 @@ type PropsT = {
   containerWidth: number,
   /** The user-specified pixel height of the contianer that is then scaled */
   containerHeight: number,
-  /** The React object to use inside the iFrame (in the future should this be a string and get evaluated in the iFrame?) */
-  React?: any,
-  /** The ReactDOM object to use inside the iFrame */
-  ReactDOM?: any,
+  /** Error to render in the LivePreview (example will not be rendered if set) */
+  error: { message: string, stack: string },
   /** A unique ID for the iFrame */
   name: string,
+  /**
+   * Packages to load into the iFrame from unpkg.com CDN. Must be valid npm
+   * packages/ versions. Versions may follow semver rules.
+   *
+   * If specified, must include a version of 'react' and 'react-dom'. (Defaults to React15)
+   *
+   * i.e. { react: '15.6.3', react-dom: '15.6.3' } or { react: '15', react-dom: '15' }
+   */
+  packageVersions: {
+    [string]: string,
+  },
   /** Less than 100 means shrink more than 100 means zoom in */
   zoom: number,
   /** Called quickly while the user is performing a continuous zoom action */
   onChangeZoom: Function,
-  /** Optionally pass in an error */
-  error?: ErrorT,
+  /** Called with an ErrorEvent object i.e. { error: { message: 'foo', stack: 'bar' }} */
+  onError: Function,
 }
 
 /**
@@ -61,7 +73,10 @@ const defaultProps = {
 type StateT = {
   canvasWidth: ?number,
   canvasHeight: ?number,
+  error: ?ErrorT,
+  isContainerFocused: boolean,
   zoom: number,
+  zoomHasBeenChangedByUser: boolean,
 }
 
 /**
@@ -92,6 +107,7 @@ class LivePreview extends React.Component {
       zoom: 100,
       zoomHasBeenChangedByUser: false,
       isContainerFocused: false,
+      error: null,
     }
   }
 
@@ -101,6 +117,13 @@ class LivePreview extends React.Component {
       prevProps.containerHeight !== this.props.containerHeight
     ) {
       this.updateDimensions()
+    }
+  }
+
+  componentWillReceiveProps(nextProps: PropsT) {
+    const { error, tree } = nextProps
+    if (!isEqual(tree, this.props.tree)) {
+      this.setState({ error })
     }
   }
 
@@ -170,6 +193,10 @@ class LivePreview extends React.Component {
     window.removeEventListener('resize', this.updateDimensions)
   }
 
+  handleError = errorEvent => {
+    this.setState({ error: errorEvent.error || new Error('Unknown error') })
+  }
+
   render() {
     const {
       containerWidth,
@@ -178,28 +205,22 @@ class LivePreview extends React.Component {
       tree,
       commonsChunk,
       bundles,
-      React,
-      ReactDOM,
-      error,
     } = this.props
 
-    const { canvasWidth, canvasHeight, isContainerFocused, zoom } = this.state
-    const harnessElement = (
-      <Harness
-        key="harness"
-        error={error}
-        width={canvasWidth}
-        height={canvasHeight}
-        onWheel={this.handleWheel}
-        onChangeContainerFocused={this.handleChangeContainerFocused}
-        isContainerFocused={isContainerFocused}
-      />
-    )
+    const { canvasWidth, canvasHeight, error, isContainerFocused, zoom } = this.state
 
     if (error && canvasWidth !== undefined && canvasHeight !== undefined) {
       return (
         <div style={{ width: `100%`, height: `100%`, position: 'absolute' }}>
-          {harnessElement}
+          <Harness
+            key="harness"
+            error={error}
+            width={canvasWidth}
+            height={canvasHeight}
+            onWheel={this.handleWheel}
+            onChangeContainerFocused={this.handleChangeContainerFocused}
+            isContainerFocused={isContainerFocused}
+          />
         </div>
       )
     }
@@ -225,18 +246,27 @@ class LivePreview extends React.Component {
               onWheel={this.handleWheel}
             >
               <Frame
-                name={name}
-                tree={TreeHelpers.createTree(tree)}
-                commonsChunk={commonsChunk}
                 bundles={bundles}
-                React={React}
-                ReactDOM={ReactDOM}
-                harnessElement={harnessElement}
+                commonsChunk={commonsChunk}
+                name={name}
+                onError={this.handleError}
+                harnessElement={
+                  <Harness
+                    key="harness"
+                    error={error}
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    onWheel={this.handleWheel}
+                    onChangeContainerFocused={this.handleChangeContainerFocused}
+                    isContainerFocused={isContainerFocused}
+                  />
+                }
                 theme={{
                   frame: {
                     backgroundColor: 'white',
                   },
                 }}
+                tree={TreeHelpers.createTree(tree)}
               />
             </LiveCanvas>
           : null}
@@ -257,11 +287,11 @@ export default ThemedLivePreview
 type HarnessPropsT = {
   width: number,
   height: number,
-  children: React.Node,
+  children?: any,
+  error?: Object,
   onWheel: Function,
   onChangeContainerFocused: Function,
   isContainerFocused: boolean,
-  theme: any,
 }
 
 class Harness extends React.Component {
@@ -274,10 +304,6 @@ class Harness extends React.Component {
     this.state = {
       error: props.error,
     }
-  }
-
-  unstable_handleError(error) {
-    this.setState({ error })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -304,7 +330,7 @@ class Harness extends React.Component {
           <div style={errorContainerStyle}>
             <ErrorView
               message={error.message}
-              stacktrace={error.stacktrace}
+              stacktrace={error.stack}
               width={width}
               height={height}
             />

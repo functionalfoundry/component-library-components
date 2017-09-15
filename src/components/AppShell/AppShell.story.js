@@ -20,6 +20,9 @@ import QuickActionButton from '../QuickActionButton'
 import PanelHeader from '../PanelHeader'
 import PanelContent from '../PanelContent'
 import PanelToolbar from '../PanelToolbar'
+import FilledTextInput from '../FilledTextInput'
+import QuickActionColorPicker from '../QuickActionColorPicker'
+
 import {
   componentTree,
   fullComponentTree,
@@ -235,7 +238,7 @@ class FetchAndRender extends React.Component {
 
   render() {
     const { badge, loader, slider, zoom } = this.state
-    const { isFullscreen, error } = this.props
+    const { containerHeight, containerWidth, isFullscreen, error } = this.props
     return (
       <div
         style={{
@@ -244,94 +247,153 @@ class FetchAndRender extends React.Component {
         }}
       >
         <LivePreview
-          name="frame-1"
-          tree={rawPurpleExampleTree}
-          bundles={{ ...exampleBundles, badge, loader, slider }}
-          React={React}
-          ReactDOM={ReactDOM}
           alignment={{
             horizontal: 'Center',
             vertical: 'Center',
           }}
-          zoom={zoom}
-          onChangeZoom={this.handleChangeZoom}
+          bundles={{ ...exampleBundles, badge, loader, slider }}
+          containerHeight={containerHeight}
+          containerWidth={containerWidth}
           error={error}
           isFullscreen={isFullscreen}
+          name="frame-1"
+          onChangeZoom={this.handleChangeZoom}
+          tree={rawPurpleExampleTree}
+          zoom={zoom}
         />
       </div>
     )
   }
 }
 
-const LiveView = ({ isFullscreen }) => {
-  return (
-    <AppShell
-      isFullscreen={isFullscreen}
-      sections={{
-        bottomPanel,
-        header,
-        leftNav,
-        content: <FetchAndRender isFullscreen={isFullscreen} />,
-        contentPanelHeader: (
-          <PanelToolbar align="Right">
-            <QuickAction
-              icon="alignment"
-              label="Alignment"
-              shade="Light"
-              input={{
-                type: 'Icon',
-                value: 'align-left',
-                options: [
-                  {
-                    name: 'align-left',
-                    hint: 'Left',
-                  },
-                  {
-                    name: 'align-center',
-                    hint: 'Center',
-                  },
-                  {
-                    name: 'align-right',
-                    hint: 'Right',
-                  },
-                ],
-              }}
-              onClick={action('onClick')}
-              paddingBottom={16}
-              showLabelInButton
+const ContainerSizeQuickAction = ({ containerWidth, containerHeight, onChange }) =>
+  <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', marginRight: 8 }}>
+      <FilledTextInput
+        label="Width"
+        value={containerWidth}
+        width={60}
+        onChange={width => onChange({ width, height: containerHeight })}
+      />
+    </div>
+    <div style={{ display: 'flex' }}>
+      <FilledTextInput
+        label="Height"
+        value={containerHeight}
+        width={60}
+        onChange={height => onChange({ height, width: containerWidth })}
+      />
+    </div>
+  </div>
+
+class LiveView extends React.Component {
+  props: { isFullscreen?: boolean }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      containerWidth: 600,
+      containerHeight: 250,
+    }
+  }
+  render() {
+    const { isFullscreen } = this.props
+    const { containerHeight, containerWidth } = this.state
+    return (
+      <AppShell
+        isFullscreen={isFullscreen}
+        sections={{
+          bottomPanel,
+          header,
+          leftNav,
+          content: (
+            <FetchAndRender
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              isFullscreen={isFullscreen}
             />
-            <QuickAction
-              icon="theme"
-              label="Theme"
-              shade="Light"
-              input={{
-                type: 'Radio',
-                value: 'Light',
-                options: ['Light', 'Grey', 'Dark'],
-              }}
-              onClick={action('onClick')}
-              paddingBottom={16}
-              showLabelInButton
+          ),
+          contentPanelHeader: (
+            <PanelToolbar align="Right">
+              <QuickAction
+                icon="alignment"
+                label="Alignment"
+                shade="Light"
+                input={{
+                  type: 'Icon',
+                  value: 'align-left',
+                  options: [
+                    {
+                      name: 'align-left',
+                      hint: 'Left',
+                    },
+                    {
+                      name: 'align-center',
+                      hint: 'Center',
+                    },
+                    {
+                      name: 'align-right',
+                      hint: 'Right',
+                    },
+                  ],
+                }}
+                onClick={action('onClick')}
+                paddingBottom={16}
+                showLabelInButton
+              />
+              <QuickAction
+                icon="size"
+                label="Size"
+                shade="Light"
+                input={{
+                  type: 'Custom',
+                  element: (
+                    <ContainerSizeQuickAction
+                      {...{ containerHeight, containerWidth }}
+                      onChange={({ height, width }) =>
+                        this.setState({
+                          containerHeight: height,
+                          containerWidth: width,
+                        })}
+                    />
+                  ),
+                }}
+                onClick={action('onClick')}
+                paddingBottom={16}
+                showLabelInButton
+              />
+              <QuickAction
+                icon="color"
+                label="Color"
+                shade="Light"
+                input={{
+                  type: 'Custom',
+                  element: <QuickActionColorPicker />,
+                }}
+                onClick={action('onClick')}
+                paddingBottom={16}
+                showLabelInButton
+              />
+            </PanelToolbar>
+          ),
+          rightPanel: (
+            <Panel
+              header={
+                <PanelHeader showLeftBorder>
+                  <PanelToolbar align="Left">Editor</PanelToolbar>
+                </PanelHeader>
+              }
+              content={
+                <PanelContent>
+                  {rightPanel}
+                </PanelContent>
+              }
             />
-          </PanelToolbar>
-        ),
-        rightPanel: (
-          <Panel
-            header={
-              <PanelHeader showLeftBorder>
-                <PanelToolbar align="Left">Editor</PanelToolbar>
-              </PanelHeader>
-            }
-            content={
-              <PanelContent>
-                {rightPanel}
-              </PanelContent>
-            }
-          />
-        ),
-      }}
-    />
-  )
+          ),
+        }}
+      />
+    )
+  }
 }
 
 storiesOf('AppShell', module)

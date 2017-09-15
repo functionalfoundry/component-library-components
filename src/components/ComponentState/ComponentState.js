@@ -1,6 +1,5 @@
 /* @flow */
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Theme from 'js-theme'
 import { Checkbox, View } from '@workflo/components'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
@@ -32,11 +31,10 @@ type BundlesT = Object
 type PropsT = {
   harnessCard: {
     element: ?React.Element<*>,
+    error: Event,
     tree: Object,
     commonsChunk: string,
     bundles: BundlesT,
-    React: any,
-    ReactDOM: any,
     harness: HarnessT,
     /** Not implemented */
     actions: Array<React.Element<*>>,
@@ -61,8 +59,6 @@ const defaultProps = {
     tree: null,
     commonsChunk: '',
     bundles: {},
-    React,
-    ReactDOM,
     harness: {
       componentState: {
         name: '',
@@ -238,12 +234,11 @@ class ComponentState extends React.Component {
             {...harnessCard.extraProps}
           >
             <LivePreview
+              bundles={harnessCard.bundles}
+              commonsChunk={harnessCard.commonsChunk}
+              error={harnessCard.error}
               name={harnessCard.harness.id}
               tree={harnessCard.tree}
-              commonsChunk={harnessCard.commonsChunk}
-              bundles={harnessCard.bundles}
-              React={harnessCard.React}
-              ReactDOM={harnessCard.ReactDOM}
             />
           </div>
         </div>
