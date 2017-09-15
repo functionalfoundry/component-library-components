@@ -238,7 +238,7 @@ const BaseQuickAction = ({
   onClick,
   paddingTop,
   paddingBottom,
-}) => (
+}) =>
   <AlignedPointer
     position="Bottom"
     openTriggers={['Mouse enter']}
@@ -279,8 +279,8 @@ const BaseQuickAction = ({
         theme={{
           svg: {
             display: 'inline-block',
-            width: 24,
-            height: 24,
+            width: 30,
+            height: 30,
             marginRight: 3,
           },
         }}
@@ -296,7 +296,6 @@ const BaseQuickAction = ({
         </Text>}
     </View>
   </AlignedPointer>
-)
 
 const baseTextStyle = {
   textTransform: 'uppercase',
@@ -343,7 +342,7 @@ const getButtonWrapperStyle = ({
   return buttonWrapperStyle
 }
 
-const Radios = ({ options, value, onChange }) => (
+const Radios = ({ options, value, onChange }) =>
   <RadioGroup
     value={value}
     onChange={onChange}
@@ -353,7 +352,7 @@ const Radios = ({ options, value, onChange }) => (
       },
     }}
   >
-    {options.map((option, index) => (
+    {options.map((option, index) =>
       <Radio
         key={index}
         label={option}
@@ -365,9 +364,8 @@ const Radios = ({ options, value, onChange }) => (
           },
         }}
       />
-    ))}
+    )}
   </RadioGroup>
-)
 
 const getColor = (shade, iconKind) => {
   if (iconKind === 'Primary') return Colors.primary
