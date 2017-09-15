@@ -21,6 +21,8 @@ import PanelHeader from '../PanelHeader'
 import PanelContent from '../PanelContent'
 import PanelToolbar from '../PanelToolbar'
 import FilledTextInput from '../FilledTextInput'
+import QuickActionColorPicker from '../QuickActionColorPicker'
+
 import {
   componentTree,
   fullComponentTree,
@@ -355,6 +357,18 @@ class LiveView extends React.Component {
                         })}
                     />
                   ),
+                }}
+                onClick={action('onClick')}
+                paddingBottom={16}
+                showLabelInButton
+              />
+              <QuickAction
+                icon="color"
+                label="Color"
+                shade="Light"
+                input={{
+                  type: 'Custom',
+                  element: <QuickActionColorPicker />,
                 }}
                 onClick={action('onClick')}
                 paddingBottom={16}
