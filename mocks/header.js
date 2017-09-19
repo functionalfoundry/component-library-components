@@ -53,6 +53,10 @@ export const repos = [
     id: 3,
     name: 'example-library',
     url: 'https://github.com/workfloapp/example-library',
-    status: 'Healthy',
+    ref: 'master',
+    commit: '93952fa',
+    status: 'Building',
   },
 ]
+
+export const repo = repos[2]

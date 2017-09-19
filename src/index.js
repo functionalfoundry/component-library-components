@@ -2,7 +2,6 @@ const ActionButton = require('./components/ActionButton')
 const App = require('./components/App')
 const App2 = require('./components/App2')
 const AppShell = require('./components/AppShell')
-const BranchDropdown = require('./components/BranchDropdown')
 const BulkActionBar = require('./components/BulkActionBar')
 const Code = require('./components/Code')
 const Configuration = require('./components/Configuration')
@@ -22,7 +21,6 @@ import Layout from './components/Layout'
 const LiveEditor = require('./components/LiveEditor')
 const LivePreview = require('./components/LivePreview')
 const MultiPropertiesTable = require('./components/MultiPropertiesTable')
-const OrganizationChooser = require('./components/OrganizationChooser')
 const OrganizationSignIn = require('./components/OrganizationSignIn')
 const Panel = require('./components/Panel')
 const PanelHeader = require('./components/PanelHeader')
@@ -31,12 +29,11 @@ const PanelToolbar = require('./components/PanelToolbar')
 const Preferences = require('./components/Preferences')
 const RepoPreferences = require('./components/RepoPreferences')
 const ThemePreferences = require('./components/ThemePreferences')
-const ProjectPane = require('./components/ProjectPane')
+const RepoPane = require('./components/RepoPane')
 const Properties = require('./components/Properties')
 const QuickAction = require('./components/QuickAction')
 const QuickActionButton = require('./components/QuickActionButton')
 const QuickActionSelection = require('./components/QuickActionSelection')
-const RepositoryChooser = require('./components/RepositoryChooser')
 const RotateFade = require('./components/RotateFade')
 const ScrollableContent = require('./components/ScrollableContent')
 const Search = require('./components/Search')
@@ -56,7 +53,6 @@ const WorkfloComponents = {
   App,
   App2,
   AppShell,
-  BranchDropdown,
   BulkActionBar,
   Button,
   Code,
@@ -79,12 +75,11 @@ const WorkfloComponents = {
   LivePreview,
   RotateFade,
   MultiPropertiesTable,
-  OrganizationChooser,
   Panel,
   PanelHeader,
   PanelContent,
   PanelToolbar,
-  ProjectPane,
+  RepoPane,
   OrganizationSignIn,
   Preferences,
   RepoPreferences,
@@ -93,7 +88,6 @@ const WorkfloComponents = {
   QuickAction,
   QuickActionButton,
   QuickActionSelection,
-  RepositoryChooser,
   ScrollableContent,
   Search,
   StaggerChildren,
