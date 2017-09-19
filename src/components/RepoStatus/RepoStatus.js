@@ -6,36 +6,49 @@ import { Icon, Tooltip } from '@workflo/components'
 import Building from './Building'
 import PopoverError from '../PopoverError'
 
-export type BuildStatusT = 'Success' | 'Failed' | 'Building' | 'SetupRequired'
+export type RepoStatusT = 'Success' | 'Failed' | 'Building' | 'SetupRequired'
 
 type PropsT = {
   /* Function property to be called when the status icon is clicked */
   onIconClick?: Function,
   /* One of three possible states */
-  status: BuildStatusT,
+  status: RepoStatusT,
   /* The error message, if there is an error */
   error?: string,
   /* The JS Theme */
   theme: Object,
 }
 
-const BranchStatus = ({ onIconClick, status, error, theme }: PropsT) => {
-  const icon = status === 'Building'
-    ? <div {...theme.circle} onClick={onIconClick}><Building /></div>
-    : <div {...theme.circle} onClick={onIconClick} />
+const RepoStatus = ({ onIconClick, status, error, theme }: PropsT) => {
+  const icon =
+    status === 'Building'
+      ? <div {...theme.circle} onClick={onIconClick}>
+          <Building />
+        </div>
+      : <div {...theme.circle} onClick={onIconClick} />
 
   switch (status) {
     case 'Success':
-      return <div {...theme.label}>Success {icon}</div>
+      return (
+        <div {...theme.label}>
+          Success {icon}
+        </div>
+      )
     case 'Failed':
       return (
         <Tooltip position="Right" portal={<PopoverError error={error} />} padding={0}>
-          <div {...theme.label}>Failed {icon}</div>
+          <div {...theme.label}>
+            Failed {icon}
+          </div>
         </Tooltip>
       )
 
     case 'Building':
-      return <div {...theme.label}>Building {icon}</div>
+      return (
+        <div {...theme.label}>
+          Building {icon}
+        </div>
+      )
     default:
       return (
         <div {...theme.label}>
@@ -84,5 +97,5 @@ const defaultTheme = ({ onIconClick, status }: PropsT) => {
   }
 }
 
-const ThemedBranchStatus = Theme('BranchStatus', defaultTheme)(BranchStatus)
-export default ThemedBranchStatus
+const ThemedRepoStatus = Theme('RepoStatus', defaultTheme)(RepoStatus)
+export default ThemedRepoStatus
