@@ -4,11 +4,13 @@ import List, { ListItem } from '@workflo/components/lib/List'
 import { Colors, Fonts, Spacing } from '@workflo/styles'
 import Animations from '@workflo/styles/lib/Animations'
 import Theme from 'js-theme'
-import ProjectPane from '../ProjectPane'
+import RepoPane, { RepoT } from '../RepoPane'
 import HorizontalSeparator from '../HorizontalSeparator'
 import QuickActionButton from '../QuickActionButton'
 
 type Props = {
+  /** Repository to show */
+  repo: RepoT,
   /** Filter state to display in left nav */
   filterValue: string,
   /** Items to display in left nav */
@@ -100,14 +102,9 @@ class ComponentsLeftNav extends React.Component {
       items,
       onChangeFilter,
       selectedId,
-      repos,
-      branches,
-      selectedRepoId,
-      selectedBranchId,
+      repo,
       onClickComponentBrowser,
       onClickRepoGithub,
-      onSelectRepo,
-      buildStatus,
       theme,
     } = this.props
     return (
@@ -134,16 +131,8 @@ class ComponentsLeftNav extends React.Component {
               </div>
             </div>
           </div>
-          <div {...theme.projectPane}>
-            <ProjectPane
-              repos={repos}
-              branches={branches}
-              selectedRepoId={selectedRepoId}
-              selectedBranchId={selectedBranchId}
-              onClickRepoGithub={onClickRepoGithub}
-              onSelectRepo={onSelectRepo}
-              buildStatus={buildStatus}
-            />
+          <div {...theme.RepoPane}>
+            <RepoPane repo={repo} onClickRepoGithub={onClickRepoGithub} />
           </div>
           <HorizontalSeparator
             theme={{
@@ -278,7 +267,7 @@ const defaultTheme = {
     marginRight: SEPARATOR_MARGIN,
     marginLeft: SEPARATOR_MARGIN,
   },
-  projectPane: {},
+  RepoPane: {},
   galleryButtonWrapper: {
     marginBottom: 2,
   },

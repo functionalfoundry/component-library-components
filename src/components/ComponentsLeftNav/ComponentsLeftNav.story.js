@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf, action } from '@kadira/storybook'
 import ComponentsLeftNav from './ComponentsLeftNav'
-import { branches, repos } from '../../../mocks/header'
+import { repo } from '../../../mocks/header'
 
 const items = [
   {
@@ -18,11 +18,11 @@ const items = [
   },
 ]
 
-storiesOf('ComponentsLeftNav', module).add('Regular', () => (
+storiesOf('ComponentsLeftNav', module).add('Regular', () =>
   <div style={{ height: 800, width: 250 }}>
     <Container />
   </div>
-))
+)
 
 class Container extends React.Component {
   constructor(props) {
@@ -42,7 +42,6 @@ class Container extends React.Component {
     return items.filter(item => item.label.indexOf(this.state.filterValue) !== -1)
   }
   render() {
-    console.log('branches: ', branches)
     return (
       <ComponentsLeftNav
         filterValue={this.state.filterValue}
@@ -50,13 +49,8 @@ class Container extends React.Component {
         onChangeFilter={this.handleChangeFilter}
         onSelect={this.handleSelect}
         selectedId={this.state.selectedId}
-        repos={repos}
-        branches={branches}
-        selectedRepoId={repos[0].id}
-        selectedBranchId={branches[0].id}
+        repo={repo}
         onClickRepoGithub={action('clickRepoGithub')}
-        onSelectRepo={action('onSelectRepo')}
-        buildStatus="Success"
       />
     )
   }
