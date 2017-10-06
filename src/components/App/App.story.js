@@ -19,9 +19,8 @@ class AppScrollTopContainer extends React.Component {
 
   handleChangeScreen = () => {
     this.setState(state => {
-      state.screen = state.screen === 'Initial screen'
-        ? 'Second screen'
-        : 'Initial screen'
+      state.screen =
+        state.screen === 'Initial screen' ? 'Second screen' : 'Initial screen'
       return state
     })
   }
@@ -46,9 +45,7 @@ class AppScrollTopContainer extends React.Component {
           },
           centerLeft: {
             element: (
-              <div style={{ backgroundColor: Colors.red600, flex: 1 }}>
-                Content
-              </div>
+              <div style={{ backgroundColor: Colors.red600, flex: 1 }}>Content</div>
             ),
           },
           bottom: {
@@ -65,79 +62,28 @@ class AppScrollTopContainer extends React.Component {
 }
 
 storiesOf('App', module)
-  .add('LiveView', () => (
+  .add('Header and Content', () =>
     <App
       sections={{
         header: {
           element: (
-            <Header
-              title={{
-                value: 'Drawer',
-              }}
-              subtitle={{
-                value: 'Collapsed',
-              }}
-            />
+            <div style={{ backgroundColor: Colors.red600, height: 100 }}>Header</div>
           ),
         },
         centerLeft: {
           element: (
-            <LivePreview
-              Component={MyComponent}
-              propMap={{}}
-              alignment={{
-                horizontal: 'Center',
-                vertical: 'Center',
-              }}
-              backgroundColor="cyan"
-            />
-          ),
-        },
-        centerRight: {
-          element: (
-            <LiveEditor
-              componentTree={componentTree}
-              data={{ text: dataCode }}
-              actions={{ text: actionsCode }}
-              onChangeData={action('onChangeData')}
-              onChangeActions={action('onChangeActions')}
-            />
-          ),
-        },
-        bottom: {
-          element: <Properties properties={liveViewState.component.properties} />,
-        },
-      }}
-    />
-  ))
-  .add('Header and Content', () => (
-    <App
-      sections={{
-        header: {
-          element: (
-            <div style={{ backgroundColor: Colors.red600, height: 100 }}>
-              Header
-            </div>
-          ),
-        },
-        centerLeft: {
-          element: (
-            <div style={{ backgroundColor: Colors.red400, height: 400 }}>
-              Content
-            </div>
+            <div style={{ backgroundColor: Colors.red400, height: 400 }}>Content</div>
           ),
         },
       }}
     />
-  ))
-  .add('Left and Right Center', () => (
+  )
+  .add('Left and Right Center', () =>
     <App
       sections={{
         header: {
           element: (
-            <div style={{ backgroundColor: Colors.red400, height: 100 }}>
-              Header
-            </div>
+            <div style={{ backgroundColor: Colors.red400, height: 100 }}>Header</div>
           ),
         },
         centerLeft: {
@@ -147,24 +93,20 @@ storiesOf('App', module)
         },
         centerRight: {
           element: (
-            <div style={{ backgroundColor: Colors.primary300, height: 400 }}>
-              Right
-            </div>
+            <div style={{ backgroundColor: Colors.primary300, height: 400 }}>Right</div>
           ),
         },
         bottom: {
           element: (
-            <div style={{ backgroundColor: Colors.green300, height: 300 }}>
-              Bottom
-            </div>
+            <div style={{ backgroundColor: Colors.green300, height: 300 }}>Bottom</div>
           ),
         },
       }}
     />
-  ))
+  )
   .add('Scroll top animation', () => <AppScrollTopContainer />)
 
-const MyComponent = () => (
+const MyComponent = () =>
   <div
     style={{
       backgroundColor: 'magenta',
@@ -179,4 +121,3 @@ const MyComponent = () => (
   >
     Hello
   </div>
-)

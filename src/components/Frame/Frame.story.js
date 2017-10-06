@@ -5,7 +5,7 @@ import Frame from './Frame'
 
 import { Helpers as ComponentTreeHelpers } from '../../modules/ComponentTree'
 
-storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
+// storiesOf('Frame', module).add('New frame', () => <FetchAndRender />)
 
 export const rawExampleTree = {
   id: 'badge',

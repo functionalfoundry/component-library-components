@@ -35,14 +35,7 @@ const themes = [
 ]
 
 storiesOf('Preferences', module)
-  .add('Empty', () => (
-    <PreviewContainer>
-      <Preview label={'Empty'}>
-        <Preferences />
-      </Preview>
-    </PreviewContainer>
-  ))
-  .add('Repo preferences', () => (
+  .add('Repo preferences', () =>
     <PreviewContainer>
       <Preview label={'Empty'}>
         <Preferences>
@@ -50,8 +43,8 @@ storiesOf('Preferences', module)
         </Preferences>
       </Preview>
     </PreviewContainer>
-  ))
-  .add('Repo & theme preferences', () => (
+  )
+  .add('Repo & theme preferences', () =>
     <PreviewContainer>
       <Preview label={'Empty'}>
         <Preferences>
@@ -65,4 +58,4 @@ storiesOf('Preferences', module)
         </Preferences>
       </Preview>
     </PreviewContainer>
-  ))
+  )
