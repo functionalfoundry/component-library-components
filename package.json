@@ -16,20 +16,16 @@
     "flow:watch": "flow",
     "flow:stop": "flow stop",
     "storybook": "start-storybook -p 9001 --dont-track",
+    "build-storybook": "build-storybook -c .storybook -o .out",
     "test": "jest"
   },
-  "files": [
-    "lib",
-    "src"
-  ],
+  "files": ["lib", "src"],
   "repository": {
     "type": "git",
     "url": "workfloapp/component-library-components"
   },
   "license": "All Rights Reserved",
-  "pre-commit": [
-    "test"
-  ],
+  "pre-commit": ["test"],
   "ava": {
     "babel": "inherit"
   },
